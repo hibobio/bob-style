@@ -1,16 +1,22 @@
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef,
-  Component, EventEmitter,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
   Input,
   OnDestroy,
-  OnInit, Output,
-  ViewChild
+  OnInit,
+  Output,
+  ViewChild,
 } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 import { Icon } from '../../icons/icon.interface';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
+import { EmptyStateConfig } from '../../indicators/empty-state/empty-state.interface';
 import {
   itemID,
   SelectGroupOption,
@@ -19,15 +25,16 @@ import {
 import { InputObservable, InputSubject } from '../../services/utils/decorators';
 import {
   arrayRemoveItemMutate,
-  asArray, getFuzzyMatcher, isEmptyArray, isEmptyString,
-  isNotEmptyArray, isNotEmptyString, normalizeString,
-  unsubscribeArray
+  asArray,
+  getFuzzyMatcher,
+  isEmptyArray,
+  isEmptyString,
+  isNotEmptyArray,
+  isNotEmptyString,
+  unsubscribeArray,
 } from '../../services/utils/functional-utils';
-import { map, tap } from 'rxjs/operators';
-import { SingleListComponent } from '../single-list/single-list.component';
-import { EmptyStateConfig } from '../../indicators/empty-state/empty-state.interface';
-import { TranslateService } from '@ngx-translate/core';
 import { DISPLAY_SEARCH_OPTION_NUM } from '../list.consts';
+import { SingleListComponent } from '../single-list/single-list.component';
 
 export interface ViewListItem {
   id: itemID;
@@ -42,9 +49,10 @@ export interface ViewListItem {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectAndViewComponent implements OnInit, OnDestroy {
-
-  constructor(private translateService: TranslateService,
-              private cd: ChangeDetectorRef) {}
+  constructor(
+    private translateService: TranslateService,
+    private cd: ChangeDetectorRef
+  ) {}
 
   @InputObservable([])
   @Input('options')
@@ -82,7 +90,9 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
   };
   readonly emptyStateConfig: EmptyStateConfig = {
     icon: Icons.checkbox,
-    text: this.translateService.instant('bob-style.select-and-view.empty-list-text')
+    text: this.translateService.instant(
+      'bob-style.select-and-view.empty-list-text'
+    ),
   };
 
   public shouldDisplaySearch = false;
@@ -115,21 +125,21 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
           )
         )
         .subscribe(this.listValue$),
-      combineLatest([
-        this.inputOptions$,
-        this.listValue$,
-        this.searchValue$
-      ])
+      combineLatest([this.inputOptions$, this.listValue$, this.searchValue$])
         .pipe(
           tap(([_, value, searchValue]) => {
-            this.shouldDisplaySearch = isNotEmptyString(searchValue) || value.length >= DISPLAY_SEARCH_OPTION_NUM;
-            this.shouldDisplayEmpty = isEmptyString(searchValue) && isEmptyArray(value);
+            this.shouldDisplaySearch =
+              isNotEmptyString(searchValue) ||
+              value.length >= DISPLAY_SEARCH_OPTION_NUM;
+            this.shouldDisplayEmpty =
+              isEmptyString(searchValue) && isEmptyArray(value);
             this.cd.detectChanges();
           }),
-          map(([options, value, searchValue]) => isNotEmptyArray(value)
-            ? this.getViewListData(options, value, searchValue)
-            : []
-          ),
+          map(([options, value, searchValue]) =>
+            isNotEmptyArray(value)
+              ? this.getViewListData(options, value, searchValue)
+              : []
+          )
         )
         .subscribe(this.viewList$),
       this.listValue$.subscribe(this.changed)
@@ -139,11 +149,9 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     unsubscribeArray(this.subs);
 
-    [
-      this.viewList$,
-      this.selectOptions$,
-      this.changed
-    ].forEach((subj) => subj.complete());
+    [this.viewList$, this.selectOptions$, this.changed].forEach((subj) =>
+      subj.complete()
+    );
   }
 
   private getOptionsWithoutSelected(
@@ -171,9 +179,9 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
     options.forEach((group) =>
       group.options.forEach(
         (option) =>
-          asArray(value).includes(option.id)
-          && (this.testMatch(matcher, group.groupName) || this.testMatch(matcher, option.value))
-          && data.push({
+          asArray(value).includes(option.id) &&
+          (matcher.test(group.groupName) || matcher.test(option.value)) &&
+          data.push({
             value: option.value,
             groupName: group.groupName,
             id: option.id,
@@ -182,11 +190,6 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
     );
 
     return data.sort((a, b) => value.indexOf(a.id) - value.indexOf(b.id));
-  }
-
-  private testMatch(matcher: RegExp, value: string): boolean {
-    matcher.lastIndex = 0;
-    return matcher.test(normalizeString(value));
   }
 
   public removeItemFromList(itemId: itemID): void {
@@ -202,5 +205,4 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
   public resetValue(): void {
     this.listValue$.next(this.valueDefault);
   }
-
 }

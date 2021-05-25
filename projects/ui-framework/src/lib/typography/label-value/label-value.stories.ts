@@ -27,7 +27,7 @@ const story2 = storiesOf(ComponentGroupType.Layout, module).addDecorator(
 );
 
 const templateAlt = `
-  <p class="mrg-0"
+  <b-label-value class="mrg-0"
     [labelValue]="{
       type:type,
       textAlign:textAlign,
@@ -41,7 +41,7 @@ const templateAlt = `
       iconPosition:iconPosition,
       iconSize:iconSize,
       iconColor:iconColor
-    }"></p>
+    }"></b-label-value>
 `;
 
 const template3 = `

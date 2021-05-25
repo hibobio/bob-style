@@ -22,9 +22,16 @@ import { delay, take } from 'rxjs/operators';
 import { ElementRef, SimpleChange, SimpleChanges, Type } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
 
+import { FUZZY_SRCH_MIN_LENGTH } from '../../consts';
 import { controlKeys, KEYCODES, Keys, metaKeys } from '../../enums';
 import { SelectGroupOption } from '../../lists/list.interface';
-import { Color, GenericObject, HexColor, SortType } from '../../types';
+import {
+  Color,
+  GenericObject,
+  HexColor,
+  RegExpWrapper,
+  SortType,
+} from '../../types';
 import {
   ColorPalette,
   PalletteColorSet,
@@ -932,11 +939,6 @@ export const normalizeString = (
     .toLowerCase();
 };
 
-export const testNormalized = (partial: string, full: string): boolean => {
-  const matcher = getMatcher(partial);
-  return matcher.test(normalizeString(full));
-};
-
 // ----------------------
 // FUNCTIONS
 // ----------------------
@@ -1108,6 +1110,23 @@ export const timeDifferenceHHmm = (timeA: string, timeB: string): string => {
 // REGEX
 // ----------------------
 
+export const wrapRegExp = (
+  regExp: RegExp,
+  normalizeStr = false
+): RegExpWrapper => {
+  return {
+    regExp,
+    exec: (str) => {
+      regExp.lastIndex = 0;
+      return regExp.exec(normalizeStr ? normalizeString(str) : str);
+    },
+    test: (str: string): boolean => {
+      regExp.lastIndex = 0;
+      return regExp.test(normalizeStr ? normalizeString(str) : str);
+    },
+  };
+};
+
 export const escapeRegExp = (value: string): string => {
   return value.replace(/[.*+?^${}()|[\]\\\/]/g, '\\$&');
 };
@@ -1116,17 +1135,22 @@ export const stringToRegex = (value: string, options = 'i'): RegExp => {
   return new RegExp(escapeRegExp(value), options);
 };
 
-export const getMatcher = (searchStr: string): RegExp =>
-  stringToRegex(normalizeString(searchStr), 'i');
+export const getMatcher = (searchStr: string, fuzzy = false): RegExpWrapper =>
+  fuzzy
+    ? getFuzzyMatcher(searchStr)
+    : wrapRegExp(stringToRegex(normalizeString(searchStr), 'i'), true);
 
-export const getFuzzyMatcher = (searchStr: string): RegExp => {
+export const getFuzzyMatcher = (searchStr: string): RegExpWrapper => {
+  if (searchStr.length < FUZZY_SRCH_MIN_LENGTH) {
+    return getMatcher(searchStr, false);
+  }
   const split = normalizeString(searchStr, true, true)?.split('');
   const ptrn = split.length
     ? split.reduce((a, b) => {
         return a + '[^' + b + ']*' + b;
       })
     : '';
-  return new RegExp(ptrn, 'gi');
+  return wrapRegExp(new RegExp(ptrn, 'gi'), true);
 };
 
 // ----------------------

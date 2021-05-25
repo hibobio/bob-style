@@ -18,7 +18,6 @@ import {
   isNotEmptyArray,
   isNullOrUndefined,
   isNumber,
-  normalizeString,
   objectRemoveKey,
 } from '../../services/utils/functional-utils';
 import {
@@ -216,10 +215,9 @@ export class ListModelService {
                 const searcheableValue = option.value
                   .split(/^<[^>]+>|</)
                   .filter(Boolean)[0];
-                matcher.lastIndex = 0;
                 return (
-                  matcher.test(normalizeString(searcheableValue)) ||
-                  matcher.test(normalizeString(group.groupName))
+                  matcher.test(searcheableValue) ||
+                  matcher.test(group.groupName)
                 );
               }),
             })

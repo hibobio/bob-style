@@ -32,7 +32,7 @@ import { IconPosition, LabelValueType, TextAlign } from './label-value.enum';
 import { LabelValue } from './label-value.interface';
 
 @Component({
-  selector: 'b-label-value, [labelValue]',
+  selector: 'b-label-value',
   templateUrl: './label-value.component.html',
   styleUrls: ['./label-value.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

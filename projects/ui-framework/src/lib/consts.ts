@@ -31,6 +31,8 @@ export const mobileBreakpoint = 768;
 
 export const SERVER_DATE_FORMAT = 'yyyy-MM-dd';
 
+export const FUZZY_SRCH_MIN_LENGTH = 4;
+
 export const LOCALE_FORMATS: DateLocaleFormats = {
   'DD/MM/YYYY': {
     DayMonth: 'dd/MM',

@@ -25,6 +25,9 @@ export interface ArrayES<T = any> extends Array<T> {
   flatMap(func: (x: T) => T): Array<T>;
 }
 
+export interface RegExpWrapper extends Pick<RegExp, 'exec' | 'test'> {
+  regExp: RegExp;
+}
 export interface OverlayPositionClasses {
   'panel-below'?: boolean;
   'panel-above'?: boolean;
