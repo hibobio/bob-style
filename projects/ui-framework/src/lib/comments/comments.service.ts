@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { HTML_TAG_TEST } from '../services/html/html-parser.const';
+import { HTML_TEST } from '../services/html/html-parser.const';
 import { HtmlParserHelpers } from '../services/html/html-parser.service';
 import { SanitizerService } from '../services/html/sanitizer.service';
 import { HTML_COMMENT_SANITIZER_OPTIONS } from './comments.const';
@@ -21,7 +21,7 @@ export class CommentsUtilService {
 
   sanitizeValue(value: string, isHtml = null, editable = false): string {
     if (isHtml === null) {
-      isHtml = HTML_TAG_TEST.test(value);
+      isHtml = HTML_TEST.test(value);
     }
     return !isHtml
       ? this.linkify(value, editable)
