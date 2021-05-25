@@ -6,6 +6,7 @@ import { withKnobs } from '@storybook/addon-knobs';
 import { SelectAndViewModule } from './select-and-view.module';
 import { optionsMock } from './select-and-view.mock';
 import { cloneDeep } from 'lodash';
+import { action } from '@storybook/addon-actions';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -13,7 +14,9 @@ const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
 
 const template = `
 <b-select-and-view [options]="options"
-                   [value]="value">
+                   [value]="value"
+                   [valueDefault]="valueDefault"
+                   (changed)="onChanged($event)">
 </b-select-and-view>
 `;
 
@@ -36,6 +39,8 @@ const value = [
   options[1].options[1].id
 ];
 
+const valueDefault = [options[2].options[2].id];
+
 story.add(
   'Select and view',
   () => ({
@@ -43,6 +48,8 @@ story.add(
     props: {
       options: options,
       value: value,
+      valueDefault: valueDefault,
+      onChanged: action('onChanged')
     },
     moduleMetadata: {
       imports: [

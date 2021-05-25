@@ -2,10 +2,10 @@ import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
 
 import {
   ChangeDetectionStrategy, ChangeDetectorRef,
-  Component,
+  Component, EventEmitter,
   Input,
   OnDestroy,
-  OnInit,
+  OnInit, Output,
   ViewChild
 } from '@angular/core';
 
@@ -54,8 +54,12 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
   @Input('value')
   public listValue$: BehaviorSubject<itemID[]>;
 
+  @Input() valueDefault: itemID[];
+
   @ViewChild(SingleListComponent, { static: true })
   listComponent: SingleListComponent;
+
+  @Output() changed: EventEmitter<itemID[]> = new EventEmitter<itemID[]>();
 
   public selectOptions$: BehaviorSubject<
     SelectGroupOption[]
@@ -127,14 +131,19 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
             : []
           ),
         )
-        .subscribe(this.viewList$)
+        .subscribe(this.viewList$),
+      this.listValue$.subscribe(this.changed)
     );
   }
 
   ngOnDestroy(): void {
     unsubscribeArray(this.subs);
 
-    [this.viewList$, this.selectOptions$].forEach((subj) => subj.complete());
+    [
+      this.viewList$,
+      this.selectOptions$,
+      this.changed
+    ].forEach((subj) => subj.complete());
   }
 
   private getOptionsWithoutSelected(
@@ -189,4 +198,9 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
   public searchChange(searchValue: string): void {
     this.searchValue$.next(searchValue.trim());
   }
+
+  public resetValue(): void {
+    this.listValue$.next(this.valueDefault);
+  }
+
 }

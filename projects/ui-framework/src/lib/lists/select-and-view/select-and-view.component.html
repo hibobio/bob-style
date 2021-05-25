@@ -1,40 +1,45 @@
-<b-single-list class="slc-n-viw-list"
-               [options]="selectOptions$ | async"
-               [startWithGroupsCollapsed]="false">
-</b-single-list>
+<div class="select-and-view">
+  <b-single-list class="slc-n-viw-list"
+                 [options]="selectOptions$ | async"
+                 [startWithGroupsCollapsed]="false">
+  </b-single-list>
 
-<div *ngLet="{
-    viewList: viewList$ | async,
-    searchValue: searchValue$ | async
-  } as data"
-     class="slc-n-viw-list brd rounded shadow">
+  <div *ngLet="{
+      viewList: viewList$ | async,
+      searchValue: searchValue$ | async
+    } as data"
+       class="slc-n-viw-list brd rounded shadow">
 
-  <b-search *ngIf="shouldDisplaySearch"
-            (searchChange)="searchChange($event)"
-            [ngClass]="{ 'no-result': !data.viewList?.length }">
-  </b-search>
+    <b-search *ngIf="shouldDisplaySearch"
+              (searchChange)="searchChange($event)"
+              [ngClass]="{ 'no-result': !data.viewList?.length }">
+    </b-search>
 
-  <div *ngIf="shouldDisplaySearch && !data.viewList?.length"
-       class="clr-grey-600 mrg-l-16">
-    {{'bob-style.lists.empty-state-default' | translate}}
-  </div>
-
-  <div class="items scroll-visible-alt">
-    <div *ngFor="let item of data.viewList; trackBy: 'id' | trackByProp"
-         class="viewItem grd brd-b">
-      <b-icon class="mrg-l-8 mrg-r-16" [config]="viewItemIconConfig"></b-icon>
-      <div class="mrg-y-auto">
-        <div [innerHTML]="item.value | highlight: data.searchValue:true"></div>
-        <div class="b-caption clr-grey-600"
-             [innerHTML]="item.groupName | highlight: data.searchValue:true"></div>
-      </div>
-      <b-icon class="remove-button mrg-l-16 mrg-r-8"
-              [config]="removeViewItemIconConfig"
-              (click)="removeItemFromList(item.id)"></b-icon>
+    <div *ngIf="shouldDisplaySearch && !data.viewList?.length"
+         class="clr-grey-600 mrg-l-16">
+      {{'bob-style.lists.empty-state-default' | translate}}
     </div>
-  </div>
 
-  <b-empty-state *ngIf="shouldDisplayEmpty"
-                 [config]="emptyStateConfig">
-  </b-empty-state>
+    <div class="items scroll-visible-alt">
+      <div *ngFor="let item of data.viewList; trackBy: 'id' | trackByProp"
+           class="viewItem grd brd-b">
+        <b-icon class="mrg-l-8 mrg-r-16" [config]="viewItemIconConfig"></b-icon>
+        <div class="mrg-y-auto">
+          <div [innerHTML]="item.value | highlight: data.searchValue:true"></div>
+          <div class="b-caption clr-grey-600"
+               [innerHTML]="item.groupName | highlight: data.searchValue:true"></div>
+        </div>
+        <b-icon class="remove-button mrg-l-16 mrg-r-8"
+                [config]="removeViewItemIconConfig"
+                (click)="removeItemFromList(item.id)"></b-icon>
+      </div>
+    </div>
+
+    <b-empty-state *ngIf="shouldDisplayEmpty"
+                   [config]="emptyStateConfig">
+    </b-empty-state>
+  </div>
 </div>
+<b-text-button *ngIf="valueDefault" class="mrg-t-8"
+               [text]="'common.reset' | translate"
+               (clicked)="resetValue()"></b-text-button>
