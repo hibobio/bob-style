@@ -8,7 +8,6 @@ import { storiesOf } from '@storybook/angular';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { arrayOfNumbers } from './functional-utils';
-import { debug } from './rxjs.operators';
 import { slicer, timedSlice } from './rxjs.oprtrs.slicer';
 
 const story = storiesOf(ComponentGroupType.Services, module).addDecorator(
@@ -51,7 +50,7 @@ const code2 = `items$ = of(arrayOfNumbers(27, 1)).pipe(
           <h3>slicer</h3>
 
           <div class="flx flx-center">
-            <button (click)="prev$.next()">&lt; prev</button>
+            <button (click)="prev1$.next()">&lt; prev</button>
             <h4
               class="brd pad-16 mrg-8"
               style="width: 120px; text-align: center;"
@@ -60,7 +59,22 @@ const code2 = `items$ = of(arrayOfNumbers(27, 1)).pipe(
                 {{ itm }}
               </ng-container>
             </h4>
-            <button (click)="next$.next()">next &gt;</button>
+            <button (click)="next1$.next()">next &gt;</button>
+          </div>
+
+          <h3 class="mrg-t-16">slicer (loop: true)</h3>
+
+          <div class="flx flx-center">
+            <button (click)="prev2$.next()">&lt; prev</button>
+            <h4
+              class="brd pad-16 mrg-8"
+              style="width: 120px; text-align: center;"
+            >
+              <ng-container *ngFor="let itm of itemsSlicedLooped$ | async">
+                {{ itm }}
+              </ng-container>
+            </h4>
+            <button (click)="next2$.next()">next &gt;</button>
           </div>
         </div>
 
@@ -114,23 +128,27 @@ export class RxjsOperatorsComponent implements OnInit {
   code1 = code1;
   code2 = code2;
 
-  prev$ = new Subject();
-  next$ = new Subject();
+  prev1$ = new Subject();
+  next1$ = new Subject();
+
+  prev2$ = new Subject();
+  next2$ = new Subject();
 
   itemsSliced$ = of(arrayOfNumbers(10, 1)).pipe(
-    slicer(3, this.next$, this.prev$, {
+    slicer(3, this.next1$, this.prev1$)
+  );
+
+  itemsSlicedLooped$ = of(arrayOfNumbers(10, 1)).pipe(
+    slicer(3, this.next2$, this.prev2$, {
       loop: true,
-      // shuffle: true,
-    }),
-    debug('itemsSliced$')
+    })
   );
 
   itemsTimeSliced$ = of(arrayOfNumbers(27, 1)).pipe(
     timedSlice(5, 1000, {
       loop: true,
       shuffle: 'auto',
-    }),
-    debug('itemsTimeSliced$')
+    })
   );
 
   ngOnInit() {}

@@ -58,7 +58,6 @@ export function timedSlice<T = unknown>(
  * <button (click)="next$.next()">next</button>
  * ```
  */
-
 export function slicer<T = unknown>(
   slice: number,
   next$: Observable<any>,
