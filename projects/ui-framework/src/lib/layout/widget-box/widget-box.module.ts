@@ -6,7 +6,7 @@ import { TypographyModule } from '../../typography/typography.module';
 import { IconsModule } from '../../icons/icons.module';
 import { ListLayoutComponent } from './list-layout/list-layout.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { DividerModule } from '../divider/divider.module';
+import { TrackByPropModule } from '../../services/filters/trackByProp.pipe';
 
 @NgModule({
   declarations: [
@@ -19,7 +19,7 @@ import { DividerModule } from '../divider/divider.module';
     ButtonsModule,
     TypographyModule,
     IconsModule,
-    DividerModule
+    TrackByPropModule,
   ],
   exports: [WidgetBoxComponent, ListLayoutComponent],
   providers: [],
