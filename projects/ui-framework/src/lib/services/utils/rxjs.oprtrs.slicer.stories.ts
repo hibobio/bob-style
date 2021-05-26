@@ -1,7 +1,7 @@
 import { of, Subject } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
-import { Component, NgModule, OnInit } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 
@@ -122,9 +122,7 @@ const code2 = `items$ = of(arrayOfNumbers(27, 1)).pipe(
   ],
   providers: [],
 })
-export class RxjsOperatorsComponent implements OnInit {
-  constructor() {}
-
+export class RxjsOperatorsComponent {
   code1 = code1;
   code2 = code2;
 
@@ -150,8 +148,6 @@ export class RxjsOperatorsComponent implements OnInit {
       shuffle: 'auto',
     })
   );
-
-  ngOnInit() {}
 }
 
 @NgModule({
