@@ -1,5 +1,5 @@
-import { interval, Observable, of, Subject, Subscription } from 'rxjs';
-import { filter, map, takeUntil } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, Subject, Subscription } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
 import { Component, NgModule, OnInit } from '@angular/core';
@@ -7,58 +7,141 @@ import { withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 
 import { ComponentGroupType } from '../../consts';
+import { mockThings } from '../../mock.const';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { PalletteColorSet } from '../color-service/color-palette.enum';
-import { ColorPaletteService } from '../color-service/color-palette.service';
+import { GenericObject } from '../../types';
 import {
+  cloneDeepSimpleObject,
   randomFromArray,
-  randomNumber,
+  stringify,
   unsubscribeArray,
 } from './functional-utils';
-import { debug } from './rxjs.operators';
 import { cacheMap, cacheSwitchMap } from './rxjs.oprtrs.cachemap';
 
 const story = storiesOf(ComponentGroupType.Services, module).addDecorator(
   withKnobs
 );
 
+const code1 = `input$.pipe(
+  cacheSwitchMap(
+    (v) => apiGetSmth$(v)
+  )
+).subscribe()`;
+
+const code2 = `input$.pipe(
+  cacheMap(
+    (v) => expensiveCalculation(v)
+  )
+).subscribe()`;
+
 @Component({
   selector: 'b-rxjs-operators',
   template: `
-    <div class="brd pad-16 mrg-16">
-      <p>
-        CacheMap example: <br />
-        {{ cacheMapLog }}<br />
-        {{ cacheMapLog2 }}
-      </p>
-      <div class="flx">
-        <button class="mrg-r-8" type="button" (click)="subscToCacheMap()">
-          start
-        </button>
-        <button type="button" (click)="unSubscToCacheMap()">stop</button>
+    <div class="brd pad-16 grd-eq-2 gap-16 mrg-b-24">
+      <div class="flx-grow">
+        <h3 class="brd-b pad-b-8 mrg-b-16 mrg-t-0">cacheMap</h3>
+
+        <strong>input:</strong>
+        <div class="flx mrg-t-8">
+          <button class="mrg-4" (click)="req2(5)">5</button>
+          <button class="mrg-4" (click)="req2({ a: 6 })">
+            {{ '{' }}a:6{{ '}' }}
+          </button>
+          <button class="mrg-4" (click)="req2([1, 2, 3])">[1,2,3]</button>
+        </div>
+
+        <div class="flx">
+          <input
+            hidden
+            #reqInp2
+            class="mrg-4"
+            type="text"
+            placeholder="req smth!"
+          /><button class="mrg-4" (click)="req2(reqInp2.value)">
+            something!
+          </button>
+        </div>
+      </div>
+
+      <textarea
+        class="flx-grow brd pad-16"
+        style="min-width: 250px; height:150px; resize: none; background: transparent;"
+        >{{ code2 }}</textarea
+      >
+
+      <div class="flx-grow brd pad-4" style="border-color:red;">
+        <strong class="mrg-4">map "expensive calculation" call log:</strong>
+        <div
+          class="brd pad-8 mrg-4"
+          style="width: 200px; height:auto; resize: none; background: transparent; white-space:pre-line;"
+          [innerHTML]="calcLog1frmtd$ | async"
+        ></div>
+      </div>
+
+      <div class="flx-grow brd pad-4" style="border-color:green;">
+        <strong class="mrg-4"
+          ><u>cache</u>Map "expensive calculation" call log:</strong
+        >
+        <div
+          class="brd pad-8 mrg-4"
+          style="width: 200px; height:auto; resize: none; background: transparent; white-space:pre-line;"
+          [innerHTML]="calcLog2frmtd$ | async"
+        ></div>
       </div>
     </div>
 
-    <div class="brd pad-16 mrg-16">
-      <p>
-        CacheSwitchMap example: <br />
-        {{ cacheSwitchMapLog }}<br />
-        {{ cacheSwitchMapLog2 }}
-      </p>
-      <div class="flx">
-        <button class="mrg-r-8" type="button" (click)="subscToCacheSwitchMap()">
-          start
-        </button>
-        <button type="button" (click)="unSubscToCacheSwitchMap()">stop</button>
+    <div class="brd pad-16 grd-eq-2 gap-16">
+      <div class="flx-grow">
+        <h3 class="brd-b pad-b-8 mrg-b-16 mrg-t-0">cacheSwitchMap</h3>
+
+        <strong>send "request":</strong>
+        <div class="flx mrg-t-8">
+          <button class="mrg-4" (click)="req1(5)">5</button>
+          <button class="mrg-4" (click)="req1({ a: 6 })">
+            {{ '{' }}a:6{{ '}' }}
+          </button>
+          <button class="mrg-4" (click)="req1([1, 2, 3])">[1,2,3]</button>
+        </div>
+        <div class="flx">
+          <input
+            hidden
+            #reqInp1
+            class="mrg-4"
+            type="text"
+            placeholder="req smth!"
+          /><button class="mrg-4" (click)="req1(reqInp1.value)">
+            something!
+          </button>
+        </div>
+      </div>
+      <textarea
+        class="flx-grow brd pad-16"
+        style="min-width: 250px; height:150px; resize: none; background: transparent;"
+        >{{ code1 }}</textarea
+      >
+
+      <div class="flx-grow brd pad-4" style="border-color:red;">
+        <strong class="mrg-4">switchMap "api" call log:</strong>
+        <div
+          class="brd pad-8 mrg-4"
+          style="width: 200px; height:auto; resize: none; background: transparent; white-space:pre-line;"
+          [innerHTML]="apiLog1frmtd$ | async"
+        ></div>
+      </div>
+
+      <div class="flx-grow brd pad-4" style="border-color:green;">
+        <strong class="mrg-4"><u>cache</u>SwitchMap "api" call log:</strong>
+        <div
+          class="brd pad-8 mrg-4"
+          style="width: 200px; height:auto; resize: none; background: transparent; white-space:pre-line;"
+          [innerHTML]="apiLog2frmtd$ | async"
+        ></div>
       </div>
     </div>
   `,
   styles: [
     `
       :host {
-        width: 350px;
-        padding: 16px;
-        border: 1px solid black;
         text-align: left;
       }
     `,
@@ -66,150 +149,95 @@ const story = storiesOf(ComponentGroupType.Services, module).addDecorator(
   providers: [],
 })
 export class RxjsOperatorsComponent implements OnInit {
-  constructor(private cps: ColorPaletteService) {}
+  code1 = code1;
+  code2 = code2;
+  subs: Subscription[] = [];
 
-  interval$: Observable<number> = interval(1000);
-  cacheMapped$: Observable<string>;
-  cacheSwitchMapped$: Observable<string>;
-  cacheMapLog = '';
-  cacheMapLog2 = '';
-  cacheSwitchMapLog = '';
-  cacheSwitchMapLog2 = '';
-  subs1: Subscription[] = [];
-  subs2: Subscription[] = [];
-  cache = new Map();
+  cswApi$ = new Subject<any>();
+  apiLog1$ = new BehaviorSubject<GenericObject>({});
+  apiLog2$ = new BehaviorSubject<GenericObject>({});
+  apiLog1frmtd$: Observable<string>;
+  apiLog2frmtd$: Observable<string>;
 
-  counter1 = -1;
-  counter2 = -1;
+  cwCalc$ = new Subject<any>();
+  calcLog1$ = new BehaviorSubject<GenericObject>({});
+  calcLog2$ = new BehaviorSubject<GenericObject>({});
+  calcLog1frmtd$: Observable<string>;
+  calcLog2frmtd$: Observable<string>;
 
-  done$ = new Subject();
+  rndmReqs = mockThings(5).concat([5, { a: 6 }, [1, 2, 3]]);
 
-  counters = {};
-
-  colorPaletteGenerator = this.cps.paletteColorGenerator(PalletteColorSet.set1);
+  req1(what: any) {
+    this.cswApi$.next(
+      cloneDeepSimpleObject(what || randomFromArray(this.rndmReqs))
+    );
+  }
+  req2(what: any) {
+    this.cwCalc$.next(
+      cloneDeepSimpleObject(what || randomFromArray(this.rndmReqs))
+    );
+  }
 
   ngOnInit() {
-    const falsyValues = [null, undefined, {}, [], 0, ''];
-
-    const values = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 2, 4, 6, 8, 10];
-
-    this.cacheMapped$ = this.interval$.pipe(
-      filter(() => {
-        if (this.counter1 >= values.length - 1) {
-          this.done$.next(1);
-          return false;
-        }
-        return true;
-      }),
-      map(() => {
-        return randomNumber(1, 100) > 70
-          ? randomFromArray(falsyValues)
-          : (() => {
-              return values[++this.counter1];
-            })();
-      }),
-      cacheMap<number, string>({
-        mapper: (num) => '-' + num,
-        ignoreEmpty: true,
-      })
-    );
-
-    const mapper$ = (num: number) => {
-      return of('-' + String(num));
+    const action = <T = GenericObject>(log: T, smth: any) => {
+      const key = stringify(smth).replace(/\s+/g, '');
+      return { [key]: (log[key] || 0) + 1 } as T;
     };
 
-    this.cacheSwitchMapped$ = this.interval$.pipe(
-      filter(() => {
-        if (this.counter2 >= values.length - 1) {
-          this.done$.next(1);
-          return false;
-        }
-        return true;
-      }),
-      map(() => {
-        return randomNumber(1, 100) > 70
-          ? randomFromArray(falsyValues)
-          : (() => {
-              return values[++this.counter2];
-            })();
-      }),
-      cacheSwitchMap<number, string>({
-        mapper: (num) => {
-          return mapper$(num);
-        },
-        ignoreEmpty: true,
-      })
-    );
-  }
+    const calculator = <T = GenericObject>(log$: BehaviorSubject<T>) => (
+      smth: any
+    ): T => action(log$.getValue(), smth);
 
-  subscToCacheMap() {
-    this.counter1 = -1;
+    const mapper = <T = GenericObject>(log$: BehaviorSubject<T>) => (
+      smth: any
+    ): Observable<T> => of(action(log$.getValue(), smth));
 
-    this.subs1.push(
-      this.cacheMapped$
+    const combiner = <T = GenericObject>(log$: BehaviorSubject<T>) => (
+      smth: T
+    ): T => ({
+      ...log$.getValue(),
+      ...smth,
+    });
+
+    const formatter = (log: GenericObject): string => {
+      return stringify(log)
+        .replace(/([:}][^,{}]+),/g, '$1\n')
+        .replace(/^{\s*|\s*}$/g, '');
+    };
+
+    this.subs.push(
+      this.cswApi$
+        .pipe(switchMap(mapper(this.apiLog1$)), map(combiner(this.apiLog1$)))
+        .subscribe(this.apiLog1$),
+
+      this.cswApi$
         .pipe(
-          debug('cacheMapped sub 1', {
-            color: this.colorPaletteGenerator.next(),
-          }),
-          takeUntil(this.done$)
+          cacheSwitchMap(mapper(this.apiLog2$)),
+          map(combiner(this.apiLog2$))
         )
-        .subscribe((v) => {
-          this.cacheMapLog += v;
-        })
-    );
+        .subscribe(this.apiLog2$),
 
-    setTimeout(() => {
-      this.subs1.push(
-        this.cacheMapped$
-          .pipe(
-            debug('cacheMapped sub 2', {
-              color: this.colorPaletteGenerator.next(),
-            }),
-            takeUntil(this.done$)
-          )
-          .subscribe((v) => {
-            this.cacheMapLog2 += v;
-          })
-      );
-    }, 1000);
-  }
-  unSubscToCacheMap() {
-    unsubscribeArray(this.subs1);
-  }
+      this.cwCalc$
+        .pipe(map(calculator(this.calcLog1$)), map(combiner(this.calcLog1$)))
+        .subscribe(this.calcLog1$),
 
-  subscToCacheSwitchMap() {
-    this.counter2 = -1;
-
-    this.subs2.push(
-      this.cacheSwitchMapped$
+      this.cwCalc$
         .pipe(
-          debug('cacheSwitchMapped sub 1', {
-            color: this.colorPaletteGenerator.next(),
-          }),
-          takeUntil(this.done$)
+          cacheMap(calculator(this.calcLog2$)),
+          map(combiner(this.calcLog2$))
         )
-        .subscribe((v) => {
-          this.cacheSwitchMapLog += v;
-        })
+        .subscribe(this.calcLog2$)
     );
 
-    setTimeout(() => {
-      this.subs2.push(
-        this.cacheSwitchMapped$
-          .pipe(
-            debug('cacheSwitchMapped sub 2', {
-              color: this.colorPaletteGenerator.next(),
-            }),
-            takeUntil(this.done$)
-          )
-          .subscribe((v) => {
-            this.cacheSwitchMapLog2 += v;
-          })
-      );
-    }, 1000);
+    this.apiLog1frmtd$ = this.apiLog1$.pipe(map(formatter));
+    this.apiLog2frmtd$ = this.apiLog2$.pipe(map(formatter));
+
+    this.calcLog1frmtd$ = this.calcLog1$.pipe(map(formatter));
+    this.calcLog2frmtd$ = this.calcLog2$.pipe(map(formatter));
   }
-  unSubscToCacheSwitchMap() {
-    unsubscribeArray(this.subs2);
+
+  ngOnDestroy() {
+    unsubscribeArray(this.subs);
   }
 }
 

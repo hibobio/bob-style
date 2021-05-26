@@ -241,7 +241,8 @@ export function onlyDistinct<T = any>(config?: EqualByValuesConfig) {
  * that will perform deep comparison of incoming values and the provided reference
  * and let only different through. (onlyDistinct/distinctUntilChanged compare
  * incoming value to previous).
- * @param prev the value to compare any incoming values to
+ * @param prev the value to compare incoming values to,
+ * or a function that will return such value (for dynamic values)
  * @param config Additional options: ignoreProps - an array of
  * object properties to ignore during comparison; sort (defaults to
  * true) - set to false if order of array values and/or object keys

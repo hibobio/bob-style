@@ -1,7 +1,7 @@
 import { of, Subject } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
-import { Component, NgModule, OnInit } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 
@@ -47,7 +47,7 @@ const code2 = `items$ = of(arrayOfNumbers(27, 1)).pipe(
     <div class="brd pad-16">
       <div class="flx" style="flex-wrap:wrap; justify-content:space-between">
         <div class="flx-col flx-grow flx-center mrg-16">
-          <h3>slicer</h3>
+          <h3 class="mrg-t-0 mrg-b-24">slicer</h3>
 
           <div class="flx flx-center">
             <button (click)="prev1$.next()">&lt; prev</button>
@@ -89,7 +89,10 @@ const code2 = `items$ = of(arrayOfNumbers(27, 1)).pipe(
     <div class="brd pad-16 mrg-t-16">
       <div class="flx" style="flex-wrap:wrap; justify-content:space-between">
         <div class="flx-col flx-grow flx-center mrg-16">
-          <h3>timedSlice</h3>
+          <h3 class="mrg-y-0">timedSlice</h3>
+          <div class="mrg-b-24">
+            <b>slicer</b> with (rxjs) interval as next$
+          </div>
 
           <div class="flx flx-center">
             <h4
@@ -122,9 +125,7 @@ const code2 = `items$ = of(arrayOfNumbers(27, 1)).pipe(
   ],
   providers: [],
 })
-export class RxjsOperatorsComponent implements OnInit {
-  constructor() {}
-
+export class RxjsOperatorsComponent {
   code1 = code1;
   code2 = code2;
 
@@ -150,8 +151,6 @@ export class RxjsOperatorsComponent implements OnInit {
       shuffle: 'auto',
     })
   );
-
-  ngOnInit() {}
 }
 
 @NgModule({
