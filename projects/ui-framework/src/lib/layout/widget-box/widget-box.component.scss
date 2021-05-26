@@ -27,11 +27,3 @@ header {
   flex-grow: 1;
 }
 
-b-button ::ng-deep button {
-  color: $grey-700;
-  font-weight: 700 !important;
-  height: 27px !important;
-  &:hover {
-    background-color: $grey-200;
-  }
-}

@@ -5,11 +5,23 @@
   flex-direction: column;
 }
 
+.item-container[data-scroll=true] {
+  max-height: var(--container-max-height);
+}
+
 .list-item {
-  height: 70px;
+  height: var(--item-height);
   display: flex;
   align-items: center;
+  padding: 0 16px;
   &:not(:last-child) {
-    border-bottom: 1px solid $grey-400;
+    border-bottom: 1px solid $border-color;
+  }
+}
+
+b-button ::ng-deep button.small {
+  height: 27px;
+  &:hover {
+    background-color: $grey-200;
   }
 }
