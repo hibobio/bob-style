@@ -225,14 +225,14 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'RxJs Operators'" style="background-color: rgb(247,247,247);">
+<b-story-book-layout [title]="'RxJs: cacheMap / cacheSwitchMap'" style="background-color: rgb(247,247,247);">
     ${template}
 
 </b-story-book-layout>
 `;
 
 const note = `
-  ## RxJs Operators
+  ## RxJs: cacheMap / cacheSwitchMap
 
   ### cacheMap / CacheSwitchMapConfig
 
@@ -289,7 +289,7 @@ const note = `
 `;
 
 story.add(
-  'RxJs Operators',
+  'RxJs: cacheMap',
   () => {
     return {
       template: storyTemplate,

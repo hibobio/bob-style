@@ -3,10 +3,8 @@ import { of, Subject } from 'rxjs';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { arrayOfNumbers } from '../../../ui-framework/src/lib/services/utils/functional-utils';
-import {
-  debug,
-  timedSlice,
-} from '../../../ui-framework/src/lib/services/utils/rxjs.operators';
+import { debug } from '../../../ui-framework/src/lib/services/utils/rxjs.operators';
+import { timedSlice } from '../../../ui-framework/src/lib/services/utils/rxjs.oprtrs.slicer';
 
 @Component({
   selector: 'app-root',

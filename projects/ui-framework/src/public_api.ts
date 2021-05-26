@@ -638,6 +638,7 @@ export * from './lib/services/component-renderer/component-renderer.service';
 // RxJs operators
 export * from './lib/services/utils/rxjs.operators';
 export * from './lib/services/utils/rxjs.oprtrs.cachemap';
+export * from './lib/services/utils/rxjs.oprtrs.slicer';
 // Event Manager Plugins
 export {
   EventManagerPlugins,

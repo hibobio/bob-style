@@ -42,7 +42,8 @@ import {
   isDefined,
 } from '../../services/utils/functional-utils';
 import { MutationObservableService } from '../../services/utils/mutation-observable';
-import { insideZone, timedSlice } from '../../services/utils/rxjs.operators';
+import { insideZone } from '../../services/utils/rxjs.operators';
+import { timedSlice } from '../../services/utils/rxjs.oprtrs.slicer';
 import { AvatarSize } from '../avatar/avatar.enum';
 import { Avatar } from '../avatar/avatar.interface';
 import {
