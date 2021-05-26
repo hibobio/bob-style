@@ -1,39 +1,40 @@
 import {
+  ChangeDetectorRef,
   Component,
+  EventEmitter,
   Input,
   NgModule,
-  SimpleChanges,
   OnChanges,
   Output,
-  EventEmitter,
-  ChangeDetectorRef,
+  SimpleChanges,
 } from '@angular/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { BrowserModule } from '@angular/platform-browser';
-import { CollapsibleSectionModule } from './collapsible-section.module';
+
+import { AvatarSize } from '../../avatar/avatar/avatar.enum';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
-import { TypographyModule } from '../../typography/typography.module';
+import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
+import { ButtonsModule } from '../../buttons/buttons.module';
+import { InputModule } from '../../form-elements/input/input.module';
+import { IconColor, Icons } from '../../icons/icons.enum';
+import { IconsModule } from '../../icons/icons.module';
 import {
   mockAvatar,
-  mockName,
-  mockJobs,
-  mockText,
   mockDateRange,
+  mockJobs,
+  mockName,
+  mockText,
 } from '../../mock.const';
-import {
-  LabelValueType,
-  IconPosition,
-} from '../../typography/label-value/label-value.enum';
-import { randomNumber, makeArray } from '../../services/utils/functional-utils';
-import { ButtonsModule } from '../../buttons/buttons.module';
-import { IconColor, Icons } from '../../icons/icons.enum';
-import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
-import { LabelValueModule } from '../../typography/label-value/label-value.module';
-import { AvatarSize } from '../../avatar/avatar/avatar.enum';
-import { InputModule } from '../../form-elements/input/input.module';
 import { ColorService } from '../../services/color-service/color.service';
-import { IconsModule } from '../../icons/icons.module';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { makeArray, randomNumber } from '../../services/utils/functional-utils';
+import {
+  IconPosition,
+  LabelValueType,
+} from '../../typography/label-value/label-value.enum';
+import { LabelValueModule } from '../../typography/label-value/label-value.module';
+import { TypographyModule } from '../../typography/typography.module';
 import { CollapsibleOptions } from './collapsible-section.interface';
+import { CollapsibleSectionModule } from './collapsible-section.module';
 
 @Component({
   selector: 'b-collapsible-section-example-1',
@@ -131,9 +132,7 @@ import { CollapsibleOptions } from './collapsible-section.interface';
           </div>
         </div>
 
-        <h5 class="b-bold-body">
-          Who's out
-        </h5>
+        <h5 class="b-bold-body">Who's out</h5>
 
         <div class="row">
           <div class="cell">
@@ -209,6 +208,7 @@ export class CollapsibleSectionExample1Component implements OnChanges {
   @Input() disabled = false;
   @Input() divided = true;
   @Input() disableAnimation = false;
+  @Input() headerTranscludeStopPropagation = false;
 
   @Output() opened: EventEmitter<void> = new EventEmitter<void>();
   @Output() openedFirst: EventEmitter<void> = new EventEmitter<void>();
@@ -292,7 +292,12 @@ export class CollapsibleSectionExample1Component implements OnChanges {
     if (changes.collapsible && changes.collapsible.firstChange) {
       this.collapsible = true;
     }
-    this.options = { ...this.options, disableAnimation: this.disableAnimation };
+    this.options = {
+      ...this.options,
+      disableAnimation: this.disableAnimation,
+      headerTranscludeStopPropagation:
+        this.headerTranscludeStopPropagation || false,
+    };
     this.cd.detectChanges();
   }
 
@@ -366,6 +371,8 @@ export class CollapsibleSectionExample2Component implements OnChanges {
   @Input() title = mockText(randomNumber(2, 5));
   @Input() description = mockText(randomNumber(3, 6));
 
+  @Input() headerTranscludeStopPropagation = true;
+
   @Output() opened: EventEmitter<void> = new EventEmitter<void>();
   @Output() openedFirst: EventEmitter<void> = new EventEmitter<void>();
   @Output() closed: EventEmitter<void> = new EventEmitter<void>();
@@ -375,7 +382,6 @@ export class CollapsibleSectionExample2Component implements OnChanges {
   public buttonText1 = mockText(1);
   public buttonText2 = mockText(1);
   public options: CollapsibleOptions = {
-    headerTranscludeStopPropagation: true,
     indicatorColor: ColorService.prototype.randomColor(),
   };
 
@@ -389,7 +395,13 @@ export class CollapsibleSectionExample2Component implements OnChanges {
     if (changes.collapsible && changes.collapsible.firstChange) {
       this.collapsible = false;
     }
-    this.options = { ...this.options, disableAnimation: this.disableAnimation };
+    this.options = {
+      ...this.options,
+      disableAnimation: this.disableAnimation,
+
+      headerTranscludeStopPropagation:
+        this.headerTranscludeStopPropagation || false,
+    };
     this.cd.detectChanges();
   }
 

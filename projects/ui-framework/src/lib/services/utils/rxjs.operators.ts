@@ -23,7 +23,6 @@ import {
   cloneDeepSimpleObject,
   EqualByValuesConfig,
   getEventPath,
-  isArray,
   isEmpty,
   isEqualByValues,
   isFalsyOrEmpty,
@@ -275,9 +274,7 @@ export function distinctFrom<T = any>(
   );
 }
 
-export interface TimedSliceConfig {
-  slice?: number;
-  time?: number | boolean;
+export interface SlicerConfig {
   loop?: boolean;
   shuffle?: boolean | 'auto';
 }
@@ -297,92 +294,11 @@ export interface TimedSliceConfig {
  * ...
  */
 export function timedSlice<T = unknown>(
-  config: TimedSliceConfig = {}
+  slice: number,
+  time: number | false,
+  config: SlicerConfig
 ): OperatorFunction<T[], T[]> {
-  const { slice, time = null, loop = false, shuffle = false } = config;
-
-  return function (source: Observable<T[]>): Observable<T[]> {
-    //
-    return defer(() => {
-      return new Observable<T[]>((subscriber) => {
-        //
-        const intrvl = isNumber(time) ? interval(time) : EMPTY;
-        let data: T[],
-          dataSize: number,
-          sliceSize: number,
-          currentSlice: [number, number?],
-          sliceIndex: number,
-          doShuffle: boolean | 'auto';
-
-        const reset = () => {
-          data = dataSize = sliceSize = doShuffle = undefined;
-          sliceIndex = -1;
-          currentSlice = [0];
-        };
-
-        return merge(source, intrvl).subscribe({
-          //
-          next: (arrOrNum: T[] | number) => {
-            //
-            if (!isArray(arrOrNum) && !data) {
-              return;
-            }
-
-            if (isArray(arrOrNum)) {
-              reset();
-              dataSize = arrOrNum.length;
-              sliceSize = slice > 0 ? slice : dataSize;
-              doShuffle =
-                shuffle === 'auto' && loop && dataSize >= sliceSize * 2
-                  ? true
-                  : shuffle;
-              data =
-                doShuffle === true
-                  ? randomFromArray(arrOrNum, null)
-                  : arrOrNum.slice();
-            }
-
-            ++sliceIndex;
-            if (!loop && currentSlice[1] >= dataSize) {
-              reset();
-              subscriber.complete();
-              return;
-            }
-
-            (currentSlice || (currentSlice = [] as any))[0] =
-              (sliceSize * sliceIndex) %
-              (loop ? Math.max(dataSize, sliceSize) : dataSize);
-
-            currentSlice[1] = currentSlice[0] + sliceSize;
-
-            if (loop && currentSlice[1] > dataSize) {
-              while (data.length < currentSlice[1]) {
-                data.push(
-                  ...(doShuffle === true ? randomFromArray(data, null) : data)
-                );
-              }
-              dataSize = data.length;
-            }
-
-            if (currentSlice[0] > 0) {
-              window.requestAnimationFrame(() => {
-                subscriber.next(data.slice(...currentSlice));
-              });
-            } else {
-              subscriber.next(data.slice(...currentSlice));
-            }
-          },
-
-          error: (error) => {
-            subscriber.error(error);
-          },
-          complete: () => {
-            subscriber.complete();
-          },
-        });
-      });
-    });
-  };
+  return slicer(slice, isNumber(time) ? interval(time) : EMPTY, null, config);
 }
 
 /**
@@ -411,14 +327,12 @@ export function slicer<T = unknown>(
   slice: number,
   next$: Observable<any>,
   prev$: Observable<any> = null,
-  config?: {
-    loop?: boolean;
-  }
+  config?: SlicerConfig
 ): OperatorFunction<T[], T[]> {
   if (prev$ === next$) {
     prev$ = null;
   }
-  const { loop } = config || {};
+  const { loop, shuffle } = config || {};
   //
   return function (source: Observable<T[]>): Observable<T[]> {
     //
@@ -429,16 +343,22 @@ export function slicer<T = unknown>(
           dataSize: number,
           sliceSize: number,
           currentSlice: [number, number?],
-          sliceIndex: number;
+          sliceIndex: number,
+          cntr = -1;
 
         return merge(
           source.pipe(
             tap((newData) => {
               dataSize = newData.length;
               sliceSize = slice > 0 ? slice : dataSize;
-              data = newData.slice();
               sliceIndex = 0;
               currentSlice = [0];
+
+              data =
+                shuffle === true ||
+                (shuffle === 'auto' && loop && dataSize >= sliceSize * 2)
+                  ? randomFromArray(newData, null)
+                  : newData.slice();
             })
           ),
           next$.pipe(
@@ -459,21 +379,36 @@ export function slicer<T = unknown>(
               return;
             }
 
+            // this actually never happens because of the next/prev filters
             if (currentSlice[1] >= dataSize && !prev$ && !loop) {
               data = undefined;
               currentSlice = [0];
+              subscriber.complete();
               return;
             }
 
-            currentSlice[0] =
-              (sliceSize * sliceIndex) %
-              (loop ? Math.max(dataSize, sliceSize) : dataSize);
-            currentSlice[1] = currentSlice[0] + sliceSize || undefined;
+            currentSlice[0] = loop
+              ? (sliceSize * sliceIndex) % dataSize
+              : sliceSize * sliceIndex;
 
-            console.log('sliceIndex', sliceIndex, 'currentSlice', currentSlice);
+            currentSlice[1] =
+              (loop
+                ? (currentSlice[0] + sliceSize) % dataSize
+                : currentSlice[0] + sliceSize) || undefined;
 
-            subscriber.next(data.slice(...currentSlice));
-            //
+            const dataSlice =
+              currentSlice[1] < currentSlice[0] ||
+              (currentSlice[0] < 0 && currentSlice[1] > 0)
+                ? data
+                    .slice(currentSlice[0])
+                    .concat(data.slice(0, currentSlice[1]))
+                : data.slice(...currentSlice);
+
+            ++cntr > 0
+              ? window.requestAnimationFrame(() => {
+                  subscriber.next(dataSlice);
+                })
+              : subscriber.next(dataSlice);
           },
           complete: () => {
             subscriber.complete();

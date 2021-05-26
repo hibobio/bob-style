@@ -252,16 +252,17 @@ export class EmployeesShowcaseComponent
 
     this.avatars$ = combineLatest([avatars$, avatarsSlice$]).pipe(
       switchMap(([avatars, avatarsSlice]) => {
+        const shouldShuffle = avatars.length > avatarsSlice && this.doShuffle;
+
         return of(avatars).pipe(
-          timedSlice({
-            slice: avatarsSlice,
-            shuffle: 'auto',
-            ...(avatars.length > avatarsSlice &&
-              this.doShuffle && {
-                time: AVATAR_SHOWCASE_SHUFFLE_INTERVAL,
-                loop: true,
-              }),
-          })
+          timedSlice(
+            avatarsSlice,
+            shouldShuffle && AVATAR_SHOWCASE_SHUFFLE_INTERVAL,
+            {
+              shuffle: 'auto',
+              loop: shouldShuffle,
+            }
+          )
         );
       })
     );

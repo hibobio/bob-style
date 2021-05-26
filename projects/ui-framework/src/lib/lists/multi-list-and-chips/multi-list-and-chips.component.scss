@@ -10,9 +10,15 @@ b-chip-list {
     @include disabled-state;
   }
 
-  &.all-group {
+  &.all-group,
+  &.group-is-option {
     .chip-text {
       font-weight: 700;
+    }
+  }
+
+  &.all-group {
+    .chip-text {
       &:after {
         content: var(--translation-all, '(all)');
         font-weight: 400;

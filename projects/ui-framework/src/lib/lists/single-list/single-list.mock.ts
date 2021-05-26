@@ -1,10 +1,9 @@
-import { cloneDeep } from 'lodash';
-
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 import { IconColor, Icons } from '../../icons/icons.enum';
 import { SwitchToggleComponent } from '../../indicators/switch-toggle/switch-toggle.component';
 import { mockAvatar, mockJobs, mockName, mockText } from '../../mock.const';
 import {
+  cloneDeep,
   makeArray,
   randomNumber,
   simpleUID,
@@ -119,7 +118,21 @@ export const optionsMock: SelectGroupOption[] = [
     ],
   },
 
-  ...makeArray(groupNum).map((group, index) => {
+  ...makeArray(groupNum + 1).map((group, index) => {
+    if (index === 3) {
+      return {
+        groupName: 'Human, after all',
+        key: 'human',
+        options: [
+          {
+            id: 'human',
+            value: 'Human, after all',
+            exclusive: false,
+          },
+        ],
+      };
+    }
+
     const groupId = simpleUID(
       groupNames[index].replace(/\s+/g, '').slice(0, 8).toUpperCase() + '-',
       3
@@ -161,13 +174,14 @@ export const optionsMock: SelectGroupOption[] = [
                   },
           },
           someOptionData: simpleUID(),
-          description: mayBeSelected(35) ? mockText(10) : null,
+          description: mayBeSelected(35) ? optVal + mockText(10) : null,
         };
       }),
 
       someGroupData: simpleUID(),
     };
   }),
+
   {
     groupName: 'Group with empty options',
     options: [],

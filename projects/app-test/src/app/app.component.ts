@@ -2,9 +2,10 @@ import { of, Subject } from 'rxjs';
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
+import { arrayOfNumbers } from '../../../ui-framework/src/lib/services/utils/functional-utils';
 import {
   debug,
-  slicer,
+  timedSlice,
 } from '../../../ui-framework/src/lib/services/utils/rxjs.operators';
 
 @Component({
@@ -17,9 +18,14 @@ export class AppComponent {
   prev$ = new Subject();
   next$ = new Subject();
 
-  items$ = of([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).pipe(
-    slicer(3, this.next$, this.prev$, {
+  items$ = of(arrayOfNumbers(13, 1)).pipe(
+    // slicer(4, this.next$, this.prev$, {
+    //   loop: true,
+    //   shuffle: true,
+    // }),
+    timedSlice(7, 1000, {
       loop: true,
+      shuffle: 'auto',
     }),
     debug('items$')
   );

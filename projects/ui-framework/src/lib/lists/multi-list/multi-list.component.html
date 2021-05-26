@@ -52,7 +52,7 @@
                 [attr.data-max-lines]="size === formElementSize.smaller ? 2 : 3"
                 [innerHTML]="header.groupName | highlight: searchValue:true"></span>
 
-          <span *ngIf="header.selectedCount"
+          <span *ngIf="header.selectedCount && !header.groupIsOption"
                 class="header-selected-count">
             ({{header.selectedCount}})
           </span>
