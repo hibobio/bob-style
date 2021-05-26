@@ -28,7 +28,7 @@ export class ListLayoutComponent extends ContentTemplateConsumer {
   }
 
   public isScroll(): boolean {
-    return !!(this.showAll && (this.items.length > this.numberOfItemsBeforeScroll))
+    return !!(this.showAll && (this.items?.length > this.numberOfItemsBeforeScroll))
   }
 
   private setCssVars(): void {

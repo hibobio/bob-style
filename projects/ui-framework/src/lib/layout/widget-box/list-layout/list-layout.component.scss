@@ -7,7 +7,6 @@
 
 .item-container[data-scroll=true] {
   max-height: var(--container-max-height);
-  overflow-y: scroll;
 }
 
 .list-item {
@@ -25,9 +24,4 @@ b-button ::ng-deep button.small {
   &:hover {
     background-color: $grey-200;
   }
-}
-
-footer {
-  display: flex;
-  flex-direction: column;
 }
