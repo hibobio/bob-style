@@ -1,16 +1,11 @@
+import { of, Subject } from 'rxjs';
+
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { interval, of } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+
 import {
-  mockBadJobs,
-  mockNames,
-} from '../../../ui-framework/src/lib/mock.const';
-import {
-  makeArray,
-  simpleUID,
-} from '../../../ui-framework/src/lib/services/utils/functional-utils';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { COLOR_PICKER_DEFAULT, Icons } from 'bob-style';
+  debug,
+  slicer,
+} from '../../../ui-framework/src/lib/services/utils/rxjs.operators';
 
 @Component({
   selector: 'app-root',
@@ -19,52 +14,13 @@ import { COLOR_PICKER_DEFAULT, Icons } from 'bob-style';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
+  prev$ = new Subject();
+  next$ = new Subject();
 
-  formGroup: FormGroup;
-  icons = Icons;
-
-  constructor(formBuilder: FormBuilder) {
-    this.formGroup = formBuilder.group({
-      tester: ['', Validators.required]
-    });
-  }
-
-  makeDefault() {
-    this.formGroup.get('tester').setValue(COLOR_PICKER_DEFAULT);
-  }
-
-  num = 3;
-  ids = makeArray(this.num).map(() => simpleUID());
-  names = makeArray(this.num).map(() => mockNames(1));
-  enabled = true;
-
-  inputEventHandler(val) {
-    console.log('val: ', val);
-  }
-
-  stopIt() {
-    this.enabled = false;
-  }
-  startIt() {
-    this.enabled = true;
-  }
-
-  items$ = interval(1000).pipe(
-    filter(() => this.enabled),
-    map(() =>
-      makeArray(this.num).map((_, index) => ({
-        id: this.ids[index],
-        name: this.names[index],
-        job: mockBadJobs(1),
-      }))
-    )
-  );
-
-  date$ = interval(1000).pipe(
-    filter(() => this.enabled),
-    map(() => {
-      const date = new Date();
-      return `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
-    })
+  items$ = of([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).pipe(
+    slicer(3, this.next$, this.prev$, {
+      loop: true,
+    }),
+    debug('items$')
   );
 }

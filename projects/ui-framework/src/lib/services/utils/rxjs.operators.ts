@@ -24,6 +24,7 @@ import {
   EqualByValuesConfig,
   getEventPath,
   isArray,
+  isEmpty,
   isEqualByValues,
   isFalsyOrEmpty,
   isFunction,
@@ -70,18 +71,37 @@ export function filterEmpty<T = any>(discardAllFalsey = false) {
   return filter<T>((value) => !isFalsyOrEmpty(value, discardAllFalsey));
 }
 
+/**
+ * Deep clone any incoming object or array
+ * with primitive values. Any functions or class instances will be removed
+ * from the clone. Cloning is based on JSON.stringify/JSON.parse.
+ * ```ts
+ * smth$.pipe(clone())
+ * ```
+ * ...
+ */
 export function clone<T = any>() {
   return map<T, T>((value) => cloneDeepSimpleObject<T>(value));
 }
 
 // https://indepth.dev/create-a-taponce-custom-rxjs-operator
-export function tapOnce<T = any>(fn: (value: T) => void) {
+/**
+ * An operator similar to tap(), but it will invoke the callback
+ * function only once
+ * @param fn callback to perform
+ * @param ignoreFalsy if callback should be performed only on non-empty incoming value; defaults to false
+ * ```ts
+ * smth$.pipe( tapOnce((v)=> console.log('stream init')) )
+ * ```
+ * ...
+ */
+export function tapOnce<T = any>(fn: (value: T) => void, ignoreFalsy = false) {
   return (source: Observable<T>): Observable<T> =>
     defer(() => {
       let first = true;
       return source.pipe(
         tap<T>((payload) => {
-          if (first) {
+          if ((!ignoreFalsy || !isEmpty(payload)) && first) {
             fn(payload);
           }
           first = false;
@@ -91,6 +111,15 @@ export function tapOnce<T = any>(fn: (value: T) => void) {
 }
 
 // https://netbasal.com/creating-custom-operators-in-rxjs-32f052d69457
+/**
+ * An operator that will console.log any incoming values,
+ * as well as observable status (subscribed, complete etc)
+ * @param tag string to use as a prefix to the log, for identification
+ * (put component/service/method/observable name here)
+ * @param config supported options: color - hex color string to use for
+ * color-coding of the log; onlyValues - if true, will not log observable
+ * status (subscribed, complete etc)
+ */
 export function debug<T = any>(
   tag: string,
   config: {
@@ -124,11 +153,16 @@ export function debug<T = any>(
     });
 }
 
-export function counter<T = any>() {
+/**
+ * Convert any incoming values to increasing numbers, acting as a "counter"
+ *
+ * ...
+ */
+export function counter<T = any>(startWith = 1, multiplier = 1) {
   return function (source: Observable<T>): Observable<number> {
     return defer(() => {
-      let i = 0;
-      return source.pipe(map(() => ++i));
+      let i = startWith - 1;
+      return source.pipe(map(() => ++i * multiplier));
     });
   };
 }
@@ -192,6 +226,16 @@ export function filterDOMevent<
   });
 }
 
+/**
+ * Operator similar to distinctUntilChanged(isEqual), that will
+ * perform deep comparison of incoming values and let only unique through.
+ * Compared to distinctUntilChanged(isEqual), it uses a bit
+ * different comparison mechanism - for example, it will consider differently
+ * ordered arrays/objects with same absolute values equal
+ * @param config Additional options: ignoreProps - an array of object properties
+ * to ignore during comparison; sort (defaults to true) - set to false
+ * if order of array values and/or object keys is important
+ */
 export function onlyDistinct<T = any>(config?: EqualByValuesConfig) {
   return distinctUntilChanged((prev: T, curr: T) =>
     isEqualByValues<T>(prev, curr, {
@@ -203,6 +247,19 @@ export function onlyDistinct<T = any>(config?: EqualByValuesConfig) {
   );
 }
 
+/**
+ * Operator similar to onlyDistinct (and distinctUntilChanged),
+ * that will perform deep comparison of incoming values and the provided reference
+ * and let only different through. (onlyDistinct/distinctUntilChanged compare
+ * incoming value to previous).
+ * @param prev the value to compare any incoming values to
+ * @param config Additional options: ignoreProps - an array of
+ * object properties to ignore during comparison; sort (defaults to
+ * true) - set to false if order of array values and/or object keys
+ * is important
+ *
+ * ...
+ */
 export function distinctFrom<T = any>(
   prev: T | (() => T),
   config?: EqualByValuesConfig
@@ -225,6 +282,20 @@ export interface TimedSliceConfig {
   shuffle?: boolean | 'auto';
 }
 
+/**
+ * Emit partials of incoming data array at set
+ * interval, until the data is depleted. Can optionally loop, shuffle
+ * or emit a single slice of data.
+ * @param config additional options: slice - the slice size, set to 0
+ * to emit all the data at once; time - the timeout
+ * between slice emissions, set to false to only emit the first slice;
+ * loop - if true, once the values in array
+ * are depleted, will loop and emit from the start again; shuffle - if true,
+ * will randomize the data, set to 'auto' and it will only shuffle if loop
+ * is enabled and the array lengh is at least 2 times the size of slice
+ *
+ * ...
+ */
 export function timedSlice<T = unknown>(
   config: TimedSliceConfig = {}
 ): OperatorFunction<T[], T[]> {
@@ -265,7 +336,6 @@ export function timedSlice<T = unknown>(
                 shuffle === 'auto' && loop && dataSize >= sliceSize * 2
                   ? true
                   : shuffle;
-
               data =
                 doShuffle === true
                   ? randomFromArray(arrOrNum, null)
@@ -315,6 +385,120 @@ export function timedSlice<T = unknown>(
   };
 }
 
+/**
+ *
+ * @param slice slice size
+ * @param next$ observable/subject that will trigger Next slice
+ * @param prev$ observable/subject that will trigger Prev slice
+ *
+ * ```ts
+ * prev$ = new Subject();
+ * next$ = new Subject();
+ * items$ = of([1, 2, 3, 4, 5]).pipe(
+ *    slicer(1, this.next$, this.prev$)
+ * );
+ * ```
+ * ```html
+ * <ng-container *ngFor="let itm of items$|async">
+ *   {{ itm }}
+ * </ng-container>
+ * <button (click)="prev$.next()">prev</button>
+ * <button (click)="next$.next()">next</button>
+ * ```
+ */
+
+export function slicer<T = unknown>(
+  slice: number,
+  next$: Observable<any>,
+  prev$: Observable<any> = null,
+  config?: {
+    loop?: boolean;
+  }
+): OperatorFunction<T[], T[]> {
+  if (prev$ === next$) {
+    prev$ = null;
+  }
+  const { loop } = config || {};
+  //
+  return function (source: Observable<T[]>): Observable<T[]> {
+    //
+    return defer(() => {
+      return new Observable<T[]>((subscriber) => {
+        //
+        let data: T[],
+          dataSize: number,
+          sliceSize: number,
+          currentSlice: [number, number?],
+          sliceIndex: number;
+
+        return merge(
+          source.pipe(
+            tap((newData) => {
+              dataSize = newData.length;
+              sliceSize = slice > 0 ? slice : dataSize;
+              data = newData.slice();
+              sliceIndex = 0;
+              currentSlice = [0];
+            })
+          ),
+          next$.pipe(
+            filter(
+              () =>
+                data && (!currentSlice[1] || loop || currentSlice[1] < dataSize)
+            ),
+            map(() => ++sliceIndex)
+          ),
+          prev$?.pipe(
+            filter(() => data && (loop || sliceIndex > 0)),
+            map(() => --sliceIndex)
+          ) || EMPTY
+        ).subscribe({
+          //
+          next: () => {
+            if (!data) {
+              return;
+            }
+
+            if (currentSlice[1] >= dataSize && !prev$ && !loop) {
+              data = undefined;
+              currentSlice = [0];
+              return;
+            }
+
+            currentSlice[0] =
+              (sliceSize * sliceIndex) %
+              (loop ? Math.max(dataSize, sliceSize) : dataSize);
+            currentSlice[1] = currentSlice[0] + sliceSize || undefined;
+
+            console.log('sliceIndex', sliceIndex, 'currentSlice', currentSlice);
+
+            subscriber.next(data.slice(...currentSlice));
+            //
+          },
+          complete: () => {
+            subscriber.complete();
+          },
+          error: (error) => {
+            subscriber.error(error);
+          },
+        });
+      });
+    });
+  };
+}
+
+/**
+ * Collect all incoming values into an array.
+ * On every incoming value received, emit the expanding array with
+ * all so far collected values.
+ * @param startArray an array of items that w
+ * @param clearValue defaults to null. if such value is received,
+ * the collection will be cleared
+ * ```ts
+ * smth$.pipe(collectToArray())
+ * ```
+ * ...
+ */
 export function collectToArray<T = unknown>(
   startArray: T[] = [],
   clearValue = null

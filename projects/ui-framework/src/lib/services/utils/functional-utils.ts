@@ -90,7 +90,7 @@ export const isDate = (value: any): value is Date =>
   typeof value.getMonth === 'function' &&
   String(value) !== 'Invalid Date';
 
-export const isNotEmptyArray = <T = any>(val: T, min = 0): boolean =>
+export const isNotEmptyArray = <T = any>(val: any, min = 0): val is T[] =>
   isArray(val) && val.length > min;
 
 export const isEmptyArray = (val: any, falsyIsEmpty = true): boolean =>
@@ -1022,6 +1022,23 @@ export const isDateFormat = (frmt: string): boolean => {
   );
 };
 
+/**
+ * Check if provided string is time in HH:mm format
+ *
+ * (first 1-2 digits represent integer number less than 24;
+ * last 1-2 digits represent integer number less than 60;
+ * can be separated by any non-word character)
+ * @param val string to check
+ * @returns true if value conforms to HH:mm format
+ */
+export const isHHmmTimeString = (val: string): boolean => {
+  if (!isString(val) || !/^\d{1,2}\W\d{1,2}$/.test(val?.trim())) {
+    return false;
+  }
+  const parsed = val.split(/\W/).map((v) => parseInt(v, 10) || 0);
+  return parsed[0] <= 23 && parsed[1] <= 59;
+};
+
 export const thisYear = <T = number>(short = false): T => {
   const year = new Date().getFullYear();
   return ((short ? (year + '').slice(2) : year) as any) as T;
@@ -1081,14 +1098,22 @@ export const isSameDay = (
 };
 
 /**
- *
+ * Difference between two times in *HH:mm* format.
+ * Assumes timeA was earlier than timeB,
+ * so difference between 1:00 and 23:00 will be 22:00,
+ * and difference between 23:00 and 1:00 will be 2:00.
  * @param timeA start time in HH:mm format
  * @param timeB end time in HH:mm format
- * @returns time difference in HH:mm format.
- * We assume timeA was earlier than timeB,
- * so difference between 23:00 and 1:00 will be 2:00.
+ * @returns time difference in HH:mm format
  */
 export const timeDifferenceHHmm = (timeA: string, timeB: string): string => {
+  if (!isHHmmTimeString(timeA) || !isHHmmTimeString(timeB)) {
+    log.err(
+      'Provided times must be strings in HH:mm format.',
+      'timeDifferenceHHmm'
+    );
+  }
+  const separator = timeA[timeA.search(/\D/)] || ':';
   const dayMS = 24 * 3.6e6;
   const aMS =
     parseInt(timeA.split(/\D/)[0], 10) * 3.6e6 +
@@ -1103,7 +1128,7 @@ export const timeDifferenceHHmm = (timeA: string, timeB: string): string => {
   const diffH = Math.floor(diffMS / 3.6e6);
   const diffM = (diffMS - diffH * 3.6e6) / 60000;
 
-  return `${padWith0(diffH)}:${padWith0(diffM)}`;
+  return `${padWith0(diffH)}${separator}${padWith0(diffM)}`;
 };
 
 // ----------------------
@@ -1404,16 +1429,15 @@ export const isEqualByValuesConfigured = <T = any>(
  * @param array The array the filter is applied on
  * @param childrenKey The recursive key in the object, i.e: children
  * @param fn The function predicate for the filter
- * // returns a copy of the array
- const array = [
- { v: 'a', archived: false,
-   y: [ {v: 'a-1', archived: true}, {v: 'a-2', archived: false } ]
- },
- { v: 'b', archived: true,
-   y: [ {v: 'b-1', archived: false} ]
- }
- ];
- recursiveFilter(array, 'y', o => !o.archived); // [{ v: 'a', archived: false, y: [{v: 'a-2', x: false}]}]
+ *
+ * ```typescript
+ * const array = [ { v: 'a', archived: false, y: [ {v: 'a-1', archived: true}, {v: 'a-2', archived: false } ] },
+ * { v: 'b', archived: true, y: [ {v: 'b-1', archived: false} ] } ];
+ * recursiveFilter(array, 'y', o => !o.archived);
+ * // [{ v: 'a', archived: false, y: [{v: 'a-2', x: false}]}]
+ * ```
+ *
+ * ...
  */
 export const recursiveFilter = <T = any>(
   array: T[],
