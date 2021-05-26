@@ -1,20 +1,22 @@
-import { storiesOf } from '@storybook/angular';
-import { withKnobs } from '@storybook/addon-knobs';
-import { ComponentGroupType } from '../../consts';
 import { interval, Observable, of, Subject, Subscription } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
+
+import { CommonModule } from '@angular/common';
 import { Component, NgModule, OnInit } from '@angular/core';
+import { withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { PalletteColorSet } from '../color-service/color-palette.enum';
+import { ColorPaletteService } from '../color-service/color-palette.service';
 import {
   randomFromArray,
   randomNumber,
   unsubscribeArray,
 } from './functional-utils';
-import { cacheMap, cacheSwitchMap } from './rxjs.oprtrs.cachemap';
-import { CommonModule } from '@angular/common';
 import { debug } from './rxjs.operators';
-import { ColorPaletteService } from '../color-service/color-palette.service';
-import { PalletteColorSet } from '../color-service/color-palette.enum';
+import { cacheMap, cacheSwitchMap } from './rxjs.oprtrs.cachemap';
 
 const story = storiesOf(ComponentGroupType.Services, module).addDecorator(
   withKnobs
@@ -223,33 +225,33 @@ const template = `
 `;
 
 const storyTemplate = `
-<b-story-book-layout [title]="'RxJs Operators'" style="background-color: rgb(247,247,247);">
+<b-story-book-layout [title]="'RxJs: cacheMap / cacheSwitchMap'" style="background-color: rgb(247,247,247);">
     ${template}
 
 </b-story-book-layout>
 `;
 
 const note = `
-  ## RxJs Operators
+  ## RxJs: cacheMap / cacheSwitchMap
 
   ### cacheMap / CacheSwitchMapConfig
 
-  \`cacheMap\` is like \`map\` operator, except it caches mapping results.
+  \`cacheMap\` is like \`map\` operator, except it caches mapping results.<br>
   takes mapper function: \`(val: T) => R\`
 
-  \`cacheSwitchMap\` is like \`switchMap\` operator, except it caches switch-mapping results.
+  \`cacheSwitchMap\` is like \`switchMap\` operator, except it caches switch-mapping results.<br>
   takes mapper function: \`(val: T) => Observable<R>\`
 
-  Internal cache (instance of \`SimpleCache\`) stores max 20 items for max 15 min, configurable.
+  Internal cache (instance of \`SimpleCache\`) stores max 20 items for max 15 min, configurable.<br>
   After the stream has no more subscriptions, cache is cleared.
 
-  **Additional (optional) arguments:**
-  trackBy: \`(val: T) => K\` - function to get unique id from value
-  ignoreEmpty: \`boolean\` - if true, will ignore empty & falsy values (except 0 and '')
-  capacity: \`number\` - max size of cache (defaults to 20)
-  TTL: \`number\` - time to live, in ms. items in cache expire after this time. if item is requested, expiration timer resets.
-  clearCacheOnComplete: \`boolean\` - if cache should be cleared when there are no more subsciptions to the stream (useful when you pass your own dataCache).
-  dataCache: \`Map<K, R | Observable<R>>\` - you can pass your own Map that will be used for cache store - for example to share cache between streams, or to store it on the component - in this case you can set \`TTL\` to null and \`clearCacheOnComplete\` to false
+  **Additional (optional) arguments:** <br>
+  <u>trackBy</u>: \`(val: T) => K\` - function to get unique id from value<br>
+  <u>ignoreEmpty</u>: \`boolean\` - if true, will ignore empty & falsy values (except 0 and '')<br>
+  <u>capacity</u>: \`number\` - max size of cache (defaults to 20)<br>
+  <u>TTL</u>: \`number\` - time to live, in ms. items in cache expire after this time. if item is requested, expiration timer resets.<br>
+  <u>clearCacheOnComplete</u>: \`boolean\` - if cache should be cleared when there are no more subsciptions to the stream (useful when you pass your own dataCache).<br>
+  <u>dataCache</u>: \`Map<K, R | Observable<R>>\` - you can pass your own Map that will be used for cache store - for example to share cache between streams, or to store it on the component - in this case you can set \`TTL\` to null and \`clearCacheOnComplete\` to false
 
 
   ~~~
@@ -287,7 +289,7 @@ const note = `
 `;
 
 story.add(
-  'RxJs Operators',
+  'RxJs: cacheMap',
   () => {
     return {
       template: storyTemplate,

@@ -1,5 +1,3 @@
-import { cloneDeep } from 'lodash';
-
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { action } from '@storybook/addon-actions';
@@ -22,6 +20,7 @@ import formElemsPropsDoc from '../../form-elements/form-elements.properties.md';
 import { FormElementsCommonProps } from '../../form-elements/form-elements.stories.common';
 import { Icons } from '../../icons/icons.enum';
 import { mockText } from '../../mock.const';
+import { cloneDeep } from '../../services/utils/functional-utils';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { TypographyModule } from '../../typography/typography.module';
 import { ListModelService } from '../list-service/list-model.service';

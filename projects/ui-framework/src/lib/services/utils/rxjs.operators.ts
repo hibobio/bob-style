@@ -1,12 +1,4 @@
-import {
-  defer,
-  EMPTY,
-  interval,
-  merge,
-  Observable,
-  OperatorFunction,
-  Subscription,
-} from 'rxjs';
+import { defer, Observable, OperatorFunction, Subscription } from 'rxjs';
 import {
   distinctUntilChanged,
   filter,
@@ -23,13 +15,11 @@ import {
   cloneDeepSimpleObject,
   EqualByValuesConfig,
   getEventPath,
-  isArray,
+  isEmpty,
   isEqualByValues,
   isFalsyOrEmpty,
   isFunction,
-  isNumber,
   isString,
-  randomFromArray,
 } from './functional-utils';
 import { log } from './logger';
 
@@ -70,18 +60,37 @@ export function filterEmpty<T = any>(discardAllFalsey = false) {
   return filter<T>((value) => !isFalsyOrEmpty(value, discardAllFalsey));
 }
 
+/**
+ * Deep clone any incoming object or array
+ * with primitive values. Any functions or class instances will be removed
+ * from the clone. Cloning is based on JSON.stringify/JSON.parse.
+ * ```ts
+ * smth$.pipe(clone())
+ * ```
+ * ...
+ */
 export function clone<T = any>() {
   return map<T, T>((value) => cloneDeepSimpleObject<T>(value));
 }
 
 // https://indepth.dev/create-a-taponce-custom-rxjs-operator
-export function tapOnce<T = any>(fn: (value: T) => void) {
+/**
+ * An operator similar to tap(), but it will invoke the callback
+ * function only once
+ * @param fn callback to perform
+ * @param ignoreFalsy if callback should be performed only on non-empty incoming value; defaults to false
+ * ```ts
+ * smth$.pipe( tapOnce((v)=> console.log('stream init')) )
+ * ```
+ * ...
+ */
+export function tapOnce<T = any>(fn: (value: T) => void, ignoreFalsy = false) {
   return (source: Observable<T>): Observable<T> =>
     defer(() => {
       let first = true;
       return source.pipe(
         tap<T>((payload) => {
-          if (first) {
+          if ((!ignoreFalsy || !isEmpty(payload)) && first) {
             fn(payload);
           }
           first = false;
@@ -91,6 +100,15 @@ export function tapOnce<T = any>(fn: (value: T) => void) {
 }
 
 // https://netbasal.com/creating-custom-operators-in-rxjs-32f052d69457
+/**
+ * An operator that will console.log any incoming values,
+ * as well as observable status (subscribed, complete etc)
+ * @param tag string to use as a prefix to the log, for identification
+ * (put component/service/method/observable name here)
+ * @param config supported options: color - hex color string to use for
+ * color-coding of the log; onlyValues - if true, will not log observable
+ * status (subscribed, complete etc)
+ */
 export function debug<T = any>(
   tag: string,
   config: {
@@ -124,11 +142,16 @@ export function debug<T = any>(
     });
 }
 
-export function counter<T = any>() {
+/**
+ * Convert any incoming values to increasing numbers, acting as a "counter"
+ *
+ * ...
+ */
+export function counter<T = any>(startWith = 1, multiplier = 1) {
   return function (source: Observable<T>): Observable<number> {
     return defer(() => {
-      let i = 0;
-      return source.pipe(map(() => ++i));
+      let i = startWith - 1;
+      return source.pipe(map(() => ++i * multiplier));
     });
   };
 }
@@ -192,6 +215,16 @@ export function filterDOMevent<
   });
 }
 
+/**
+ * Operator similar to distinctUntilChanged(isEqual), that will
+ * perform deep comparison of incoming values and let only unique through.
+ * Compared to distinctUntilChanged(isEqual), it uses a bit
+ * different comparison mechanism - for example, it will consider differently
+ * ordered arrays/objects with same absolute values equal
+ * @param config Additional options: ignoreProps - an array of object properties
+ * to ignore during comparison; sort (defaults to true) - set to false
+ * if order of array values and/or object keys is important
+ */
 export function onlyDistinct<T = any>(config?: EqualByValuesConfig) {
   return distinctUntilChanged((prev: T, curr: T) =>
     isEqualByValues<T>(prev, curr, {
@@ -203,6 +236,19 @@ export function onlyDistinct<T = any>(config?: EqualByValuesConfig) {
   );
 }
 
+/**
+ * Operator similar to onlyDistinct (and distinctUntilChanged),
+ * that will perform deep comparison of incoming values and the provided reference
+ * and let only different through. (onlyDistinct/distinctUntilChanged compare
+ * incoming value to previous).
+ * @param prev the value to compare any incoming values to
+ * @param config Additional options: ignoreProps - an array of
+ * object properties to ignore during comparison; sort (defaults to
+ * true) - set to false if order of array values and/or object keys
+ * is important
+ *
+ * ...
+ */
 export function distinctFrom<T = any>(
   prev: T | (() => T),
   config?: EqualByValuesConfig
@@ -218,103 +264,18 @@ export function distinctFrom<T = any>(
   );
 }
 
-export interface TimedSliceConfig {
-  slice?: number;
-  time?: number | boolean;
-  loop?: boolean;
-  shuffle?: boolean | 'auto';
-}
-
-export function timedSlice<T = unknown>(
-  config: TimedSliceConfig = {}
-): OperatorFunction<T[], T[]> {
-  const { slice, time = null, loop = false, shuffle = false } = config;
-
-  return function (source: Observable<T[]>): Observable<T[]> {
-    //
-    return defer(() => {
-      return new Observable<T[]>((subscriber) => {
-        //
-        const intrvl = isNumber(time) ? interval(time) : EMPTY;
-        let data: T[],
-          dataSize: number,
-          sliceSize: number,
-          currentSlice: [number, number?],
-          sliceIndex: number,
-          doShuffle: boolean | 'auto';
-
-        const reset = () => {
-          data = dataSize = sliceSize = doShuffle = undefined;
-          sliceIndex = -1;
-          currentSlice = [0];
-        };
-
-        return merge(source, intrvl).subscribe({
-          //
-          next: (arrOrNum: T[] | number) => {
-            //
-            if (!isArray(arrOrNum) && !data) {
-              return;
-            }
-
-            if (isArray(arrOrNum)) {
-              reset();
-              dataSize = arrOrNum.length;
-              sliceSize = slice > 0 ? slice : dataSize;
-              doShuffle =
-                shuffle === 'auto' && loop && dataSize >= sliceSize * 2
-                  ? true
-                  : shuffle;
-
-              data =
-                doShuffle === true
-                  ? randomFromArray(arrOrNum, null)
-                  : arrOrNum.slice();
-            }
-
-            ++sliceIndex;
-            if (!loop && currentSlice[1] >= dataSize) {
-              reset();
-              subscriber.complete();
-              return;
-            }
-
-            (currentSlice || (currentSlice = [] as any))[0] =
-              (sliceSize * sliceIndex) %
-              (loop ? Math.max(dataSize, sliceSize) : dataSize);
-
-            currentSlice[1] = currentSlice[0] + sliceSize;
-
-            if (loop && currentSlice[1] > dataSize) {
-              while (data.length < currentSlice[1]) {
-                data.push(
-                  ...(doShuffle === true ? randomFromArray(data, null) : data)
-                );
-              }
-              dataSize = data.length;
-            }
-
-            if (currentSlice[0] > 0) {
-              window.requestAnimationFrame(() => {
-                subscriber.next(data.slice(...currentSlice));
-              });
-            } else {
-              subscriber.next(data.slice(...currentSlice));
-            }
-          },
-
-          error: (error) => {
-            subscriber.error(error);
-          },
-          complete: () => {
-            subscriber.complete();
-          },
-        });
-      });
-    });
-  };
-}
-
+/**
+ * Collect all incoming values into an array.
+ * On every incoming value received, emit the expanding array with
+ * all so far collected values.
+ * @param startArray an array of items that w
+ * @param clearValue defaults to null. if such value is received,
+ * the collection will be cleared
+ * ```ts
+ * smth$.pipe(collectToArray())
+ * ```
+ * ...
+ */
 export function collectToArray<T = unknown>(
   startArray: T[] = [],
   clearValue = null

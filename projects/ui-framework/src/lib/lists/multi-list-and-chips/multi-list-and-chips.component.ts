@@ -115,8 +115,9 @@ export class MultiListAndChipsComponent
 
     options.forEach((group: SelectGroupOption, index) => {
       if (
-        this.chipListConfig.type !== ChipType.avatar &&
-        group.options.every((option: SelectOption) => isSelected(option))
+        group.options.every((option: SelectOption) => isSelected(option)) &&
+        (this.chipListConfig.type !== ChipType.avatar ||
+          group.options.length === 1)
       ) {
         chips.push({
           text: group.groupName,
@@ -125,7 +126,11 @@ export class MultiListAndChipsComponent
             key: this.listModelService.getGroupKey(group),
             name: group.groupName,
           },
-          class: 'all-group',
+          type:
+            group.options.length === 1
+              ? this.getChipTypeFromOption(group.options[0])
+              : undefined,
+          class: group.options.length === 1 ? 'group-is-option' : 'all-group',
         });
       } else {
         group.options.forEach((option: SelectOption) => {

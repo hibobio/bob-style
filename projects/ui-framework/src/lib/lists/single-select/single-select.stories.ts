@@ -147,8 +147,9 @@ const toAdd = () => ({
       'Props'
     ),
 
-    showNoneOption: boolean('showNoneOption', true, 'Props'),
     ghost: boolean('ghost', false, 'Props'),
+
+    showNoneOption: boolean('showNoneOption', true, 'Props'),
     showSingleGroupHeader: boolean('showSingleGroupHeader', true, 'Props'),
     startWithGroupsCollapsed: boolean(
       'startWithGroupsCollapsed',

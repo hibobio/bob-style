@@ -1,61 +1,65 @@
 import {
+  CdkOverlayOrigin,
+  ConnectedPosition,
+  OverlayRef,
+} from '@angular/cdk/overlay';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Directive,
+  ElementRef,
+  EventEmitter,
+  HostBinding,
   Input,
+  NgZone,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
   TemplateRef,
   ViewChild,
   ViewContainerRef,
-  ElementRef,
-  AfterViewInit,
-  NgZone,
-  ChangeDetectorRef,
-  OnDestroy,
-  EventEmitter,
-  Output,
-  OnChanges,
-  SimpleChanges,
-  Directive,
-  OnInit,
-  HostBinding,
 } from '@angular/core';
-import {
-  CdkOverlayOrigin,
-  OverlayRef,
-  ConnectedPosition,
-} from '@angular/cdk/overlay';
+import { TranslateService } from '@ngx-translate/core';
+
+import { AvatarSize } from '../avatar/avatar/avatar.enum';
 import { BaseFormElement } from '../form-elements/base-form-element';
-import { DOMhelpers } from '../services/html/dom-helpers.service';
-import { TruncateTooltipType } from '../popups/truncate-tooltip/truncate-tooltip.enum';
-import { OverlayPositionClasses } from '../types';
 import {
-  hasChanges,
-  applyChanges,
-  notFirstChanges,
-  isNotEmptyArray,
-} from '../services/utils/functional-utils';
-import { SelectGroupOption, ListFooterActions, itemID } from './list.interface';
-import { ListChange } from './list-change/list-change';
-import { PanelDefaultPosVer } from '../popups/panel/panel.enum';
-import { ListChangeService } from './list-change/list-change.service';
-import { selectValueOrFail } from '../services/utils/transformers';
-import { ListModelService } from './list-service/list-model.service';
-import { SelectType, SelectMode, BackdropClickMode } from './list.enum';
-import {
-  FormEvents,
   FormElementSize,
+  FormEvents,
 } from '../form-elements/form-elements.enum';
+import { Icons } from '../icons/icons.enum';
+import { PanelDefaultPosVer } from '../popups/panel/panel.enum';
+import { Panel } from '../popups/panel/panel.interface';
+import { TooltipClass } from '../popups/tooltip/tooltip.enum';
+import { TruncateTooltipType } from '../popups/truncate-tooltip/truncate-tooltip.enum';
+import { DOMhelpers } from '../services/html/dom-helpers.service';
+import {
+  applyChanges,
+  hasChanges,
+  isDefined,
+  isNotEmptyArray,
+  notFirstChanges,
+} from '../services/utils/functional-utils';
+import { MobileService } from '../services/utils/mobile.service';
+import { selectValueOrFail } from '../services/utils/transformers';
+import { OverlayPositionClasses } from '../types';
+import { ListChange } from './list-change/list-change';
+import { ListChangeService } from './list-change/list-change.service';
 import {
   ListPanelService,
   OverlayEnabledComponent,
 } from './list-panel.service';
-import { MobileService } from '../services/utils/mobile.service';
-import { TooltipClass } from '../popups/tooltip/tooltip.enum';
-import { TranslateService } from '@ngx-translate/core';
-import { AvatarSize } from '../avatar/avatar/avatar.enum';
-import { Icons } from '../icons/icons.enum';
-import { Panel } from '../popups/panel/panel.interface';
+import { ListModelService } from './list-service/list-model.service';
+import { SELECT_PANEL_PROPS_DEF } from './list.consts';
+import { BackdropClickMode, SelectMode, SelectType } from './list.enum';
+import { itemID, ListFooterActions, SelectGroupOption } from './list.interface';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
-export abstract class BaseSelectPanelElement extends BaseFormElement
+export abstract class BaseSelectPanelElement
+  extends BaseFormElement
   implements
     OverlayEnabledComponent,
     OnChanges,
@@ -82,36 +86,38 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
   @ViewChild('templateRef', { static: true }) templateRef: TemplateRef<any>;
   @ViewChild('prefix') prefix: ElementRef;
 
-  @HostBinding('attr.data-size') @Input() size = FormElementSize.regular;
+  @HostBinding('attr.data-size') @Input() size = SELECT_PANEL_PROPS_DEF.size;
 
   @Input() value: itemID[];
   @Input() options: SelectGroupOption[] = [];
   @Input() optionsDefault: SelectGroupOption[];
-  @Input() mode: SelectMode = SelectMode.classic;
+  @Input() mode: SelectMode = SELECT_PANEL_PROPS_DEF.mode;
 
   @Input() isQuickFilter = false;
   @Input() hasPrefix = false;
 
   @Input() panelPosition: PanelDefaultPosVer | ConnectedPosition[];
   @Input() panelClass: string;
-  @Input() hasArrow = true;
+  @Input() hasArrow = SELECT_PANEL_PROPS_DEF.hasArrow;
   @Input() hasBackdrop: boolean;
 
   @Input() showSingleGroupHeader = false;
-  @Input() startWithGroupsCollapsed = true;
-  @Input() tooltipType: TruncateTooltipType = TruncateTooltipType.auto;
+  @Input() startWithGroupsCollapsed =
+    SELECT_PANEL_PROPS_DEF.startWithGroupsCollapsed;
+  @Input() tooltipType: TruncateTooltipType =
+    SELECT_PANEL_PROPS_DEF.tooltipType;
   @Input() listActions: ListFooterActions;
 
   @Input() min: number;
   @Input() max: number;
 
   @Input() defaultIcon: Icons;
-  @Input() backdropClickMode: BackdropClickMode = BackdropClickMode.apply;
-  @Input() showValueShowcase = true;
+  @Input() backdropClickMode: BackdropClickMode =
+    SELECT_PANEL_PROPS_DEF.backdropClickMode;
+  @Input() showValueShowcase = SELECT_PANEL_PROPS_DEF.showValueShowcase;
 
-  @Output() selectChange: EventEmitter<ListChange> = new EventEmitter<
-    ListChange
-  >();
+  @Output()
+  selectChange: EventEmitter<ListChange> = new EventEmitter<ListChange>();
   @Output() opened: EventEmitter<OverlayRef> = new EventEmitter<OverlayRef>();
   @Output() closed: EventEmitter<void> = new EventEmitter<void>();
 
@@ -148,12 +154,14 @@ export abstract class BaseSelectPanelElement extends BaseFormElement
       this,
       changes,
       {
-        options: [],
-        mode: SelectMode.classic,
+        ...SELECT_PANEL_PROPS_DEF,
         placeholder: this.translate.instant('common.select'),
       },
       ['value'],
-      true
+      true,
+      {
+        truthyCheck: isDefined,
+      }
     );
 
     if (

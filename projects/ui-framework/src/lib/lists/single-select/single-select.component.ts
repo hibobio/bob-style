@@ -5,6 +5,7 @@ import {
   Input,
   NgZone,
   OnChanges,
+  SimpleChanges,
   ViewContainerRef,
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -27,6 +28,7 @@ import { ListChangeService } from '../list-change/list-change.service';
 import { SINGLE_LIST_LIST_ACTIONS_DEF } from '../list-footer/list-footer.const';
 import { ListPanelService } from '../list-panel.service';
 import { ListModelService } from '../list-service/list-model.service';
+import { SELECT_PANEL_PROPS_DEF } from '../list.consts';
 import { SelectType } from '../list.enum';
 import { SelectOption } from '../list.interface';
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
@@ -84,7 +86,7 @@ export class SingleSelectComponent
     this.listActions = { ...SINGLE_LIST_LIST_ACTIONS_DEF };
   }
 
-  @Input() showNoneOption = true;
+  @Input() showNoneOption = SELECT_PANEL_PROPS_DEF.showNoneOption;
   @Input() ghost = false;
 
   public valueAvatar: Avatar;
@@ -106,7 +108,7 @@ export class SingleSelectComponent
     return option?.value;
   }
 
-  ngOnChanges(changes) {
+  ngOnChanges(changes: SimpleChanges): void {
     if (changes.ghost) {
       this.panelClassList = this.panelClassList.filter(
         (className) => className !== 'panel-ghost'

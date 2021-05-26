@@ -42,7 +42,8 @@ import {
   isDefined,
 } from '../../services/utils/functional-utils';
 import { MutationObservableService } from '../../services/utils/mutation-observable';
-import { insideZone, timedSlice } from '../../services/utils/rxjs.operators';
+import { insideZone } from '../../services/utils/rxjs.operators';
+import { timedSlice } from '../../services/utils/rxjs.oprtrs.slicer';
 import { AvatarSize } from '../avatar/avatar.enum';
 import { Avatar } from '../avatar/avatar.interface';
 import {
@@ -252,16 +253,17 @@ export class EmployeesShowcaseComponent
 
     this.avatars$ = combineLatest([avatars$, avatarsSlice$]).pipe(
       switchMap(([avatars, avatarsSlice]) => {
+        const shouldShuffle = avatars.length > avatarsSlice && this.doShuffle;
+
         return of(avatars).pipe(
-          timedSlice({
-            slice: avatarsSlice,
-            shuffle: 'auto',
-            ...(avatars.length > avatarsSlice &&
-              this.doShuffle && {
-                time: AVATAR_SHOWCASE_SHUFFLE_INTERVAL,
-                loop: true,
-              }),
-          })
+          timedSlice(
+            avatarsSlice,
+            shouldShuffle && AVATAR_SHOWCASE_SHUFFLE_INTERVAL,
+            {
+              shuffle: 'auto',
+              loop: shouldShuffle,
+            }
+          )
         );
       })
     );

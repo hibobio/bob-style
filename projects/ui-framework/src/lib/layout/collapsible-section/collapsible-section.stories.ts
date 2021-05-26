@@ -1,13 +1,14 @@
-import { storiesOf } from '@storybook/angular';
-import { boolean, text, withKnobs } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
-import { ComponentGroupType } from '../../consts';
-import { CollapsibleSectionModule } from './collapsible-section.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { action } from '@storybook/addon-actions';
+import { boolean, text, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ComponentGroupType } from '../../consts';
 import { mockText } from '../../mock.const';
 import { randomNumber } from '../../services/utils/functional-utils';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { CollapsibleSectionExampleModule } from './collapsible-section-example.module';
+import { CollapsibleSectionModule } from './collapsible-section.module';
 
 const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
   withKnobs
@@ -55,6 +56,7 @@ const storyTemplate = `
       [disabled]="disabled"
       [divided]="divided"
       [disableAnimation]="disableAnimation"
+      [headerTranscludeStopPropagation]="headerTranscludeStopPropagation"
       (openedFirst)="loadData()"
       (closed)="onPanelClosed()"
       (opened)="onPanelOpened()">
@@ -68,6 +70,7 @@ const storyTemplate = `
       [disabled]="disabled"
       [divided]="divided"
       [disableAnimation]="disableAnimation"
+      [headerTranscludeStopPropagation]="headerTranscludeStopPropagation"
       (openedFirst)="loadData()"
       (closed)="onPanelClosed()"
       (opened)="onPanelOpened()">
@@ -125,6 +128,10 @@ story.add(
         disabled: boolean('disabled', false),
         divided: boolean('divided', true),
         disableAnimation: boolean('disableAnimation', false),
+        headerTranscludeStopPropagation: boolean(
+          'headerStopPropagation',
+          false
+        ),
         title: text('title', mockText(randomNumber(2, 5))),
         description: text('description', mockText(randomNumber(3, 6))),
         loadData: action('Panel opened FIRST'),
