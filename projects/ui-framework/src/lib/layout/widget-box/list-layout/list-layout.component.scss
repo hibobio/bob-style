@@ -12,8 +12,8 @@
 .list-item {
   height: var(--item-height);
   padding: 0 16px;
-  &:not(:last-child) {
-    box-shadow: inset 0px -1px 0px 0px $border-color;
+  &:not(:first-child) {
+    box-shadow: inset 0px 1px 0px 0px $border-color;
   }
 }
 

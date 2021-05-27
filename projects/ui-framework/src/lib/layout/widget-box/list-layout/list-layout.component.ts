@@ -30,11 +30,11 @@ export class ListLayoutComponent extends ContentTemplateConsumer {
     const itemHeight = this.listItemsRef.nativeElement.getBoundingClientRect().height;
     this.DOM.setCssProps(this.elRef.nativeElement, {
       '--item-height': `${itemHeight}px`,
-      '--container-max-height': `${itemHeight * this.numberOfItemsBeforeScroll - 1}px`,
+      '--container-max-height': `${itemHeight * this.numberOfItemsBeforeScroll}px`,
     });
   }
 
-  public isScroll(): boolean {
+  public hasScroll(): boolean {
     return !!(this.showAll && (this.items?.length > this.numberOfItemsBeforeScroll))
   }
 
