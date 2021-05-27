@@ -11,12 +11,9 @@
 
 .list-item {
   height: var(--item-height);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
+  padding: 0 16px;
   &:not(:last-child) {
-    border-bottom: 1px solid $border-color;
+    box-shadow: inset 0px -1px 0px 0px $border-color;
   }
 }
 
