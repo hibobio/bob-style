@@ -128,13 +128,20 @@ const note = `
 `;
 
 const itemsNumber = 145;
+const things = mockThings();
 const itemsMock = arrayOfNumbers(itemsNumber).map((_, n) => {
-  const item = mockThings(1).toLowerCase();
+  const item = things[n % things.length].toLowerCase();
   return (
     n +
     1 +
     ' ' +
-    item +
+    (n === 0 && item.endsWith('s')
+      ? things
+          .slice()
+          .reverse()
+          .find((i) => !i.endsWith('s'))
+          .toLowerCase()
+      : item) +
     (n !== 0 && ['h', 'x', 'ss'].some((e) => item.endsWith(e))
       ? 'es'
       : n !== 0 && !item.endsWith('s')
