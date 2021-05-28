@@ -1,6 +1,7 @@
 import {
   Component,
   EventEmitter,
+  HostBinding,
   Input,
   NgZone,
   OnInit,
@@ -17,6 +18,7 @@ import {
   isNumber,
   numberMinMax,
 } from '../../services/utils/functional-utils';
+import { PAGER_CONFIG_DEF } from './pager.const';
 import { PagerConfig } from './pager.interface';
 import { PagerService } from './pager.service';
 
@@ -37,7 +39,7 @@ export class PagerComponent<T = any> implements OnInit {
       this.emitChange();
     }
   }
-  private config: PagerConfig;
+  public config: PagerConfig;
 
   @Input('items') set setItems(items: number | T[]) {
     if (
@@ -64,6 +66,10 @@ export class PagerComponent<T = any> implements OnInit {
   }
   public currentPage: number;
 
+  @HostBinding('attr.data-show-slice-select') get showSliceSelect() {
+    return Boolean((this.config || PAGER_CONFIG_DEF).showSliceSizeSelect);
+  }
+
   @Output() sliceChange: EventEmitter<number[] | T[]> = new EventEmitter<
     number[] | T[]
   >();
@@ -89,6 +95,10 @@ export class PagerComponent<T = any> implements OnInit {
       this.initViewModel();
       this.emitChange();
     }
+  }
+
+  public isCurrent(page: number): boolean {
+    return this.totalPages > 1 && this.currentPage === page;
   }
 
   public onPageClick(event: MouseEvent): void {

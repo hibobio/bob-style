@@ -13,7 +13,19 @@
   display: flex;
   text-align: center;
   flex-grow: 1;
-  justify-content: flex-end;
+}
+
+:host[data-show-slice-select='true'] ::ng-deep {
+  .bpgr-page-buttons {
+    justify-content: flex-end;
+    margin-left: auto;
+  }
+}
+
+:host[data-show-slice-select='false'] ::ng-deep {
+  .bpgr-page-buttons {
+    justify-content: space-between;
+  }
 }
 
 .bpgr-slice-select {

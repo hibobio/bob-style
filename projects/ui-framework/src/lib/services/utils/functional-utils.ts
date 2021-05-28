@@ -1097,38 +1097,90 @@ export const isSameDay = (
   return true;
 };
 
+export interface TimeDifferenceParsed {
+  start: {
+    display: string;
+    hh: number;
+    mm: number;
+  };
+  end: {
+    display: string;
+    hh: number;
+    mm: number;
+  };
+  diff: {
+    display: string;
+    hh: number;
+    mm: number;
+  };
+  separator: string;
+  endsNextDay: boolean;
+}
+
 /**
  * Difference between two times in *HH:mm* format.
  * Assumes timeA was earlier than timeB,
  * so difference between 1:00 and 23:00 will be 22:00,
  * and difference between 23:00 and 1:00 will be 2:00.
- * @param timeA start time in HH:mm format
- * @param timeB end time in HH:mm format
- * @returns time difference in HH:mm format
+ * @param startTime start time in HH:mm format
+ * @param endTime end time in HH:mm format
+ * @param returnParsed if true, will return an object with
+ * start, end and diff times parsed to numbers, as well as
+ * display strings.
+ * @returns time difference in as HH:mm string (or an object
+ * with parsed times, in case of returnParsed=true)
  */
-export const timeDifferenceHHmm = (timeA: string, timeB: string): string => {
-  if (!isHHmmTimeString(timeA) || !isHHmmTimeString(timeB)) {
+export const timeDifferenceHHmm = <R extends boolean>(
+  startTime: string,
+  endTime: string,
+  returnParsed?: R
+): R extends true ? TimeDifferenceParsed : string => {
+  if (!isHHmmTimeString(startTime) || !isHHmmTimeString(endTime)) {
     log.err(
       'Provided times must be strings in HH:mm format.',
       'timeDifferenceHHmm'
     );
   }
-  const separator = timeA[timeA.search(/\D/)] || ':';
-  const dayMS = 24 * 3.6e6;
-  const aMS =
-    parseInt(timeA.split(/\D/)[0], 10) * 3.6e6 +
-    parseInt(timeA.split(/\D/)[1], 10) * 60000;
-  let bMS =
-    parseInt(timeB.split(/\D/)[0], 10) * 3.6e6 +
-    parseInt(timeB.split(/\D/)[1], 10) * 60000;
-  if (bMS < aMS) {
-    bMS = bMS + dayMS;
-  }
-  const diffMS = Math.abs(aMS - bMS);
-  const diffH = Math.floor(diffMS / 3.6e6);
-  const diffM = (diffMS - diffH * 3.6e6) / 60000;
+  let endsNextDay = false;
+  const separator = startTime[startTime.search(/\D/)] || ':',
+    dayMS = 24 * 3.6e6,
+    startTimeH = parseInt(startTime.split(/\D/)[0], 10),
+    startTimeM = parseInt(startTime.split(/\D/)[1], 10),
+    endTimeH = parseInt(endTime.split(/\D/)[0], 10),
+    endTimeM = parseInt(endTime.split(/\D/)[1], 10);
 
-  return `${padWith0(diffH)}${separator}${padWith0(diffM)}`;
+  const startTimeMS = startTimeH * 3.6e6 + startTimeM * 60000;
+  let endTimeMS = endTimeH * 3.6e6 + endTimeM * 60000;
+  if (endTimeMS < startTimeMS) {
+    endsNextDay = true;
+    endTimeMS = endTimeMS + dayMS;
+  }
+  const diffMS = Math.abs(startTimeMS - endTimeMS),
+    diffH = Math.floor(diffMS / 3.6e6),
+    diffM = (diffMS - diffH * 3.6e6) / 60000,
+    diffDisplay = `${padWith0(diffH)}${separator}${padWith0(diffM)}`;
+
+  return returnParsed === true
+    ? ({
+        separator,
+        endsNextDay,
+        start: {
+          display: startTime,
+          hh: startTimeH,
+          mm: startTimeM,
+        },
+        end: {
+          display: endTime,
+          hh: endTimeH,
+          mm: endTimeM,
+        },
+        diff: {
+          display: diffDisplay,
+          hh: diffH,
+          mm: diffM,
+        },
+      } as any)
+    : (diffDisplay as any);
 };
 
 // ----------------------
