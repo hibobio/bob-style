@@ -9,7 +9,12 @@ import {
 } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
 
-import { isFunction, isNumber, randomFromArray } from './functional-utils';
+import {
+  isArray,
+  isFunction,
+  isNumber,
+  randomFromArray,
+} from './functional-utils';
 
 export interface SlicerConfig {
   loop?: boolean;
@@ -92,6 +97,7 @@ export function slicer<T = unknown>(
 
         return merge(
           source.pipe(
+            filter(isArray),
             tap((newData) => {
               dataSize = newData.length;
               sliceSize = slice > 0 ? slice : dataSize;

@@ -105,14 +105,17 @@ export class EditableListComponent extends BaseEditableListElement {
       this.currentAction = null;
 
       if (this.deleted.has(valueID)) {
-        this.listState.list.unshift({ ...this.deleted.get(valueID), value });
+        this.listState.list.splice(this.currentSlice[0], 0, {
+          ...this.deleted.get(valueID),
+          value,
+        });
         this.deleted.delete(valueID);
       } else {
-        this.listState.create.push(value);
-        this.listState.list.unshift({
+        this.listState.list.splice(this.currentSlice[0], 0, {
           id: simpleUID('new--'),
           value,
         });
+        this.listState.create.push(value);
       }
 
       this.transmit();

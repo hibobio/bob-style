@@ -1,3 +1,6 @@
+import { of } from 'rxjs';
+import { delay } from 'rxjs/operators';
+
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { action } from '@storybook/addon-actions';
@@ -28,7 +31,7 @@ const storyTemplate = `
 
     <div class="mrg-b-24" style="min-height:130px;">
       <ul class="reset-list flx flx-wrap" style="font-size:8px; line-height:1;">
-        <li class="brd rounded" style="padding: 1px 2px; margin: 2px;" *ngFor="let item of (items | pager:pager)">
+        <li class="brd rounded" style="padding: 1px 2px; margin: 2px;" *ngFor="let item of (items$ | pager:pager)">
           {{item}}
         </li>
       </ul>
@@ -150,6 +153,8 @@ const itemsMock = arrayOfNumbers(itemsNumber).map((_, n) => {
   );
 });
 
+const itemsMock$ = of(itemsMock).pipe(delay(500));
+
 story.add(
   'Pager',
   () => {
@@ -157,7 +162,8 @@ story.add(
       template: storyTemplate,
       props: {
         currentPage: number('currentPage', 2),
-        items: object('items', itemsMock),
+        itemsNotes: object('items', itemsMock),
+        items$: itemsMock$,
         config: object('config', {
           sliceStep: 25,
           sliceMax: 100,

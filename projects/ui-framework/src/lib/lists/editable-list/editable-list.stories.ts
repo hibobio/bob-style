@@ -1,17 +1,23 @@
-import { storiesOf } from '@storybook/angular';
-import { withKnobs, boolean, select, number, object } from '@storybook/addon-knobs';
-import { ComponentGroupType } from '../../consts';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { cloneDeep } from 'lodash';
-import { EditableListModule } from './editable-list.module';
-import { editableListMock } from './editable-list.mock';
-import { action } from '@storybook/addon-actions';
-import { ListSortType } from './editable-list.enum';
+
 import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { action } from '@storybook/addon-actions';
+import { boolean, number, select, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ComponentGroupType } from '../../consts';
+import { mockText } from '../../mock.const';
+import {
+  makeArray,
+  randomNumber,
+  simpleUID,
+} from '../../services/utils/functional-utils';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { ListSortType } from './editable-list.enum';
+import { editableListMock } from './editable-list.mock';
+import { EditableListModule } from './editable-list.module';
 import { EditableListUtils } from './editable-list.static';
-import { EditableListActions } from './editable-list.interface';
-import { EDITABLE_LIST_ALLOWED_ACTIONS_DEF } from './editable-list.const';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -89,11 +95,18 @@ const note = `
 
 `;
 
-const listMock = cloneDeep(editableListMock);
+const listMock = makeArray(1000).map((_, index) => ({
+  id: simpleUID(),
+  value: mockText(randomNumber(2, 4)),
+  selected: randomNumber() > 90,
+  canBeDeleted: true,
+})); //cloneDeep(editableListMock);
+
 const listMockAsc = cloneDeep(editableListMock);
 const listMockDesc = cloneDeep(editableListMock);
 EditableListUtils.sortList(listMockAsc, ListSortType.Asc);
 EditableListUtils.sortList(listMockDesc, ListSortType.Desc);
+
 story.add(
   'Editable List',
   () => {

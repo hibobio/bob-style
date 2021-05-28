@@ -24,6 +24,8 @@ import { Button } from '../../buttons/buttons.interface';
 import { Keys } from '../../enums';
 import { InputAutoCompleteOptions } from '../../form-elements/input/input.enum';
 import { Icons } from '../../icons/icons.enum';
+import { PagerComponent } from '../../navigation/pager/pager.component';
+import { PagerConfig } from '../../navigation/pager/pager.interface';
 import {
   applyChanges,
   cloneDeepSimpleObject,
@@ -38,7 +40,11 @@ import {
 import { filterByEventKey } from '../../services/utils/rxjs.operators';
 import { UtilsService } from '../../services/utils/utils.service';
 import { itemID, SelectOption } from '../list.interface';
-import { EDITABLE_LIST_ALLOWED_ACTIONS_DEF } from './editable-list.const';
+import {
+  EDITABLE_LIST_ALLOWED_ACTIONS_DEF,
+  EDITABLE_LIST_ITEMS_BEFORE_PAGER,
+  EDITABLE_LIST_PAGER_SLICESIZE,
+} from './editable-list.const';
 import { ListActionType, ListSortType } from './editable-list.enum';
 import {
   EditableListActions,
@@ -67,8 +73,9 @@ export abstract class BaseEditableListElement
   @ViewChildren('editItemInput') editItemInputs: QueryList<
     ElementRef<HTMLInputElement>
   >;
+  @ViewChild(PagerComponent) pager: PagerComponent;
 
-  @Input() list: SelectOption[] = [];
+  @Input() list: SelectOption[];
   @Input() sortType: ListSortType;
   @Input() allowedActions: EditableListActions = {
     ...EDITABLE_LIST_ALLOWED_ACTIONS_DEF,
@@ -77,9 +84,11 @@ export abstract class BaseEditableListElement
 
   @Output() changed: EventEmitter<EditableListState> = new EventEmitter();
 
+  public currentSlice = [0, EDITABLE_LIST_PAGER_SLICESIZE];
   public currentAction: ListActionType;
   public currentItemIndex: number = null;
   public ready = false;
+  readonly pagerMinItems = EDITABLE_LIST_ITEMS_BEFORE_PAGER;
 
   public get currentItem() {
     return this.listState.list[this.currentItemIndex] || this.listState.newItem;
@@ -90,6 +99,14 @@ export abstract class BaseEditableListElement
 
   readonly order = ListSortType;
   readonly autoComplete = InputAutoCompleteOptions;
+  readonly itemsBeforePager = EDITABLE_LIST_ITEMS_BEFORE_PAGER;
+
+  readonly pagerConfig: PagerConfig = {
+    sliceStep: EDITABLE_LIST_PAGER_SLICESIZE,
+    sliceMax: EDITABLE_LIST_PAGER_SLICESIZE,
+    sliceSize: EDITABLE_LIST_PAGER_SLICESIZE,
+    showSliceSizeSelect: false,
+  };
 
   readonly addButton: Button = {
     ...LIST_EDIT_BTN_BASE,
@@ -158,7 +175,7 @@ export abstract class BaseEditableListElement
     {
       key: 'remove',
       label: this.translateService.instant('common.delete'),
-    }
+    },
   ];
 
   readonly listState: EditableListStateLocal = {
@@ -184,6 +201,7 @@ export abstract class BaseEditableListElement
 
     if (hasChanges(changes, ['list'])) {
       this.listState.list = cloneDeepSimpleObject(this.list);
+
       this.sortType = EditableListUtils.getListSortType(this.listState.list);
     }
 
@@ -272,6 +290,9 @@ export abstract class BaseEditableListElement
   }
 
   public onDrop({ previousIndex, currentIndex }: CdkDragDrop<any>): void {
+    previousIndex = previousIndex + this.currentSlice[0];
+    currentIndex = currentIndex + this.currentSlice[0];
+
     this.currentAction = null;
 
     if (previousIndex !== currentIndex) {

@@ -8,7 +8,9 @@ import { ButtonsModule } from '../../buttons/buttons.module';
 import { InputMessageModule } from '../../form-elements/input-message/input-message.module';
 import { IconsModule } from '../../icons/icons.module';
 import { MenuModule } from '../../navigation/menu/menu.module';
+import { PagerModule } from '../../navigation/pager/pager.module';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
+import { NgLetModule } from '../../services/utils/nglet.directive';
 import { EditableListComponent } from './editable-list.component';
 
 @NgModule({
@@ -21,6 +23,8 @@ import { EditableListComponent } from './editable-list.component';
     DragDropModule,
     FormsModule,
     MenuModule,
+    PagerModule,
+    NgLetModule,
   ],
   declarations: [EditableListComponent],
   exports: [EditableListComponent],

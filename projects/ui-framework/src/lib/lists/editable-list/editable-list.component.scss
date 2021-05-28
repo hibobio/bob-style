@@ -13,6 +13,10 @@ $bel-item-dragged-border-color: $grey-400;
   position: relative;
 }
 
+.bel-header {
+  user-select: none;
+}
+
 .bel-header-top {
   min-height: $bel-item-height;
 }
@@ -29,6 +33,23 @@ $bel-item-dragged-border-color: $grey-400;
   &.clr-grey-700 ::ng-deep {
     button:before {
       color: $grey-600;
+    }
+  }
+}
+
+:host ::ng-deep .bel-item-list.has-items {
+  &:empty {
+    min-height: 250px;
+    position: relative;
+
+    @include mini-preloader(
+      $base-selector: '&',
+      $full-size-selector: null,
+      $abs-pos-center: true
+    );
+
+    & + .bel-pager {
+      display: none;
     }
   }
 }
