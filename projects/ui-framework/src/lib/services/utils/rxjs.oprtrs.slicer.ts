@@ -1,4 +1,5 @@
 import {
+  BehaviorSubject,
   defer,
   EMPTY,
   interval,
@@ -8,11 +9,12 @@ import {
 } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
 
-import { isNumber, randomFromArray } from './functional-utils';
+import { isFunction, isNumber, randomFromArray } from './functional-utils';
 
 export interface SlicerConfig {
   loop?: boolean;
   shuffle?: boolean | 'auto';
+  state$?: BehaviorSubject<any>;
 }
 
 /**
@@ -42,20 +44,27 @@ export function timedSlice<T = unknown>(
  * @param slice slice size
  * @param next$ observable/subject that will trigger Next slice
  * @param prev$ observable/subject that will trigger Prev slice
+ * @param config additional options: loop - will endlessly loop through
+ * the items; shuffle - will randmize the array; state$ - provide a subject
+ * to emit current slice state - 'first', 'last' or curent slice indexes
  *
  * ```ts
  * prev$ = new Subject();
  * next$ = new Subject();
+ * sliceState$ = new BehaviorSubject(null);
+ *
  * items$ = of([1, 2, 3, 4, 5]).pipe(
- *    slicer(1, this.next$, this.prev$)
+ *    slicer(1, this.next$, this.prev$, { state$: this.sliceState$ })
  * );
  * ```
  * ```html
  * <ng-container *ngFor="let itm of items$|async">
  *   {{ itm }}
  * </ng-container>
- * <button (click)="prev$.next()">prev</button>
- * <button (click)="next$.next()">next</button>
+ *
+ * <button (click)="prev$.next()" [disabled]="(sliceState$|async)==='first'">prev</button>
+ *
+ * <button (click)="next$.next()" [disabled]="(sliceState$|async)==='last'">next</button>
  * ```
  */
 export function slicer<T = unknown>(
@@ -138,6 +147,16 @@ export function slicer<T = unknown>(
                     .slice(currentSlice[0])
                     .concat(data.slice(0, currentSlice[1]))
                 : data.slice(...currentSlice);
+
+            if (isFunction(config?.state$?.next)) {
+              config.state$.next(
+                !loop && currentSlice[0] === 0
+                  ? 'first'
+                  : !loop && currentSlice[1] >= dataSize
+                  ? 'last'
+                  : [...currentSlice]
+              );
+            }
 
             ++cntr > 0
               ? window.requestAnimationFrame(() => {
