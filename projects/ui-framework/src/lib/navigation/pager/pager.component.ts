@@ -57,7 +57,7 @@ export class PagerComponent<T = any> implements OnInit {
       }
     }
   }
-  private items: number | T[];
+  public items: number | T[];
 
   @Input('currentPage') set setCurrentPage(newPage: number) {
     if (newPage !== this.currentPage) {
