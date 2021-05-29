@@ -37,6 +37,12 @@ $bel-item-dragged-border-color: $grey-400;
   }
 }
 
+.bel-item-list {
+  &.disabled {
+    @include disabled-state;
+  }
+}
+
 .bel-item {
   height: $bel-item-height;
   user-select: none;
