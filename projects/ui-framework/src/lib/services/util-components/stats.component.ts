@@ -15,7 +15,7 @@ import { countChildren } from '../utils/functional-utils';
 
 @Component({
   selector: 'b-stats',
-  template: `
+  template: `<div (click.double)="hidden = true" [hidden]="hidden">
     <p>
       changes: <span #counter1></span>&nbsp;<span
         class="cntr-diff"
@@ -24,7 +24,7 @@ import { countChildren } from '../utils/functional-utils';
       {{ changesCount() }}
     </p>
     <p *ngIf="countChildren">elements: <span #counter3></span></p>
-  `,
+  </div>`,
   styles: [
     `
       :host {
@@ -71,20 +71,17 @@ export class StatsComponent implements DoCheck {
     });
   }
 
-  @ViewChild('counter1', { static: true }) counter1ElRef: ElementRef<
-    HTMLElement
-  >;
-  @ViewChild('counter2', { static: true }) counter2ElRef: ElementRef<
-    HTMLElement
-  >;
-  @ViewChild('counter3', { static: false }) counter3ElRef: ElementRef<
-    HTMLElement
-  >;
+  @ViewChild('counter1', { static: true })
+  counter1ElRef: ElementRef<HTMLElement>;
+  @ViewChild('counter2', { static: true })
+  counter2ElRef: ElementRef<HTMLElement>;
+  @ViewChild('counter3', { static: false })
+  counter3ElRef: ElementRef<HTMLElement>;
 
   private _changesCount1 = 0;
   private _changesCount2 = 0;
   public elementsCount = 0;
-
+  public hidden = false;
   private dcu: Function;
 
   @Input() rootElem = 'body';
