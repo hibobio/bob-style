@@ -37,23 +37,6 @@ $bel-item-dragged-border-color: $grey-400;
   }
 }
 
-:host ::ng-deep .bel-item-list.has-items {
-  &:empty {
-    min-height: 250px;
-    position: relative;
-
-    @include mini-preloader(
-      $base-selector: '&',
-      $full-size-selector: null,
-      $abs-pos-center: true
-    );
-
-    & + .bel-pager {
-      display: none;
-    }
-  }
-}
-
 .bel-item {
   height: $bel-item-height;
   user-select: none;

@@ -83,6 +83,10 @@ export class EditableListComponent extends BaseEditableListElement {
       ? this.removeItem(item, index)
       : action === 'edit'
       ? this.editItem(item, index)
+      : action === 'moveToStart'
+      ? this.onDrop({ previousIndex: index, currentIndex: 0 })
+      : action === 'moveToEnd'
+      ? this.onDrop({ previousIndex: index, currentIndex: this.listState.size })
       : null;
   }
 

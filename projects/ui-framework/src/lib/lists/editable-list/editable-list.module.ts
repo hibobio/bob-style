@@ -9,6 +9,8 @@ import { InputMessageModule } from '../../form-elements/input-message/input-mess
 import { IconsModule } from '../../icons/icons.module';
 import { MenuModule } from '../../navigation/menu/menu.module';
 import { PagerModule } from '../../navigation/pager/pager.module';
+import { CompactSearchModule } from '../../search/compact-search/compact-search.module';
+import { SearchModule } from '../../search/search/search.module';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { NgLetModule } from '../../services/utils/nglet.directive';
 import { EditableListComponent } from './editable-list.component';
@@ -25,6 +27,8 @@ import { EditableListComponent } from './editable-list.component';
     MenuModule,
     PagerModule,
     NgLetModule,
+    CompactSearchModule,
+    SearchModule,
   ],
   declarations: [EditableListComponent],
   exports: [EditableListComponent],

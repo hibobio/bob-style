@@ -11,11 +11,12 @@ import {
 } from '@angular/core';
 
 import { isArray } from '../../services/utils/functional-utils';
-import { PagerComponent } from './pager.component';
-import { pager } from './pager.operator';
+import { CompactSearchComponent } from '../compact-search/compact-search.component';
+import { SearchComponent } from './search.component';
+import { search } from './search.operator';
 
-@Pipe({ name: 'pager', pure: false })
-export class PagerPipe<T = any> implements PipeTransform, OnDestroy {
+@Pipe({ name: 'search', pure: false })
+export class SearchPipe<T = any> implements PipeTransform, OnDestroy {
   constructor(private cd: ChangeDetectorRef) {
     this.asyncPipe = new AsyncPipe(cd);
   }
@@ -23,20 +24,24 @@ export class PagerPipe<T = any> implements PipeTransform, OnDestroy {
   private sub: Subscription;
 
   private items$: BehaviorSubject<T[]> = new BehaviorSubject(undefined);
-  private itemsSlice$: Observable<T[]>;
+  private itemsFiltered$: Observable<T[]>;
 
   transform(
     items: T[] | Observable<T[]>,
-    pagerCmpnt: PagerComponent<T>,
-    minItems?: number
+    searchCmpnt: SearchComponent | CompactSearchComponent,
+    searchPath?: string,
+    minLength?: number
   ): T[] {
-    if ((!isArray(items) && !isObservable(items)) || !pagerCmpnt?.sliceChange) {
+    if (
+      (!isArray(items) && !isObservable(items)) ||
+      !searchCmpnt?.searchChange
+    ) {
       return;
     }
 
-    if (!this.itemsSlice$) {
-      this.itemsSlice$ = this.items$.pipe(
-        pager(pagerCmpnt, minItems),
+    if (!this.itemsFiltered$) {
+      this.itemsFiltered$ = this.items$.pipe(
+        search(searchCmpnt, searchPath, minLength),
         shareReplay(1)
       );
     }
@@ -50,7 +55,7 @@ export class PagerPipe<T = any> implements PipeTransform, OnDestroy {
       this.items$.next(items);
     }
 
-    return this.asyncPipe.transform(this.itemsSlice$);
+    return this.asyncPipe.transform(this.itemsFiltered$);
   }
 
   ngOnDestroy(): void {

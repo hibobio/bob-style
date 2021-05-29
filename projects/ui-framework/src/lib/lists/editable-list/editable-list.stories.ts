@@ -7,9 +7,10 @@ import { boolean, number, select, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 
 import { ComponentGroupType } from '../../consts';
-import { mockText } from '../../mock.const';
+import { mockAnimals, mockHobbies } from '../../mock.const';
 import {
   makeArray,
+  randomFromArray,
   randomNumber,
   simpleUID,
 } from '../../services/utils/functional-utils';
@@ -95,9 +96,19 @@ const note = `
 
 `;
 
+const prefixes = mockAnimals(15)
+  .filter((a) => a.split(' ').length === 1)
+  .slice(0, 10)
+  .map((a) => a.toUpperCase());
+const hobbies = mockHobbies().filter((a) => a.split(' ').length > 1);
+
 const listMock = makeArray(1000).map((_, index) => ({
   id: simpleUID(),
-  value: mockText(randomNumber(2, 4)),
+  value:
+    randomFromArray(prefixes, 1) +
+    ': ' +
+    hobbies[index % hobbies.length] +
+    ` (${index})`,
   selected: randomNumber() > 90,
   canBeDeleted: true,
 })); //cloneDeep(editableListMock);

@@ -17,4 +17,5 @@ export interface EditableListState {
 
 export interface EditableListStateLocal extends EditableListState {
   newItem: SelectOption;
+  size: number;
 }
