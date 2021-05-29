@@ -82,6 +82,9 @@ const note = `
   #### Connect everything automatically with PagerPipe
 
   ~~~
+  public pager: PagerComponent;
+
+      /* ! items can also be observable items$ ! */
   <ng-container *ngFor="let item of items | pager:pager">
     <some-component [item]="item"></some-component>
   </ng-container>
