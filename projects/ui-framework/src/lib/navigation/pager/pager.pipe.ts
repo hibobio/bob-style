@@ -25,6 +25,8 @@ export class PagerPipe<T = any> implements PipeTransform, OnDestroy {
   private items$: BehaviorSubject<T[]> = new BehaviorSubject(undefined);
   private itemsSlice$: Observable<T[]>;
 
+  private lastItems: T[] | Observable<T[]>;
+
   transform(
     items: T[] | Observable<T[]>,
     pagerCmpnt: PagerComponent<T>,
@@ -41,13 +43,17 @@ export class PagerPipe<T = any> implements PipeTransform, OnDestroy {
       );
     }
 
-    if (isObservable(items)) {
-      this.sub?.unsubscribe();
-      this.sub = items.subscribe(this.items$);
-    }
+    if (this.lastItems !== items) {
+      this.lastItems = items;
 
-    if (isArray(items)) {
-      this.items$.next(items);
+      if (isObservable(items)) {
+        this.sub?.unsubscribe();
+        this.sub = items.subscribe(this.items$);
+      }
+
+      if (isArray(items)) {
+        this.items$.next(items.slice());
+      }
     }
 
     return this.asyncPipe.transform(this.itemsSlice$);
