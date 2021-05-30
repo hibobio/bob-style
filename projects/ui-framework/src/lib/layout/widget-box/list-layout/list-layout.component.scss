@@ -16,7 +16,7 @@
   justify-content: space-between;
 
   &:not(:last-child) {
-    border-bottom: 1px solid $border-color;
+    box-shadow: inset 0px 1px 0px 0px $border-color;
   }
 }
 
