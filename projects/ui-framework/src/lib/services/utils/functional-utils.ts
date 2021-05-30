@@ -1187,6 +1187,15 @@ export const timeDifferenceHHmm = <R extends boolean>(
 // REGEX
 // ----------------------
 
+/**
+ *
+ * @param regExp the regular expression to wrap
+ * @param normalizeStr if search values should be normalized
+ * (spaces, Crème Brulée, etc)
+ * @returns a wrapper around the RegExp object, where exec and test
+ * will reset RegExp lastIndex state to 0 on each call and additionaly
+ * can normalize the search values
+ */
 export const wrapRegExp = (
   regExp: RegExp,
   normalizeStr = false
@@ -1229,6 +1238,22 @@ export const getFuzzyMatcher = (searchStr: string): RegExpWrapper => {
     : '';
   return wrapRegExp(new RegExp(ptrn, 'gi'), true);
 };
+
+// SEARCH
+
+/**
+ *
+ * @param value string that will be searched
+ * @returns if value has html tags or line break (\n), will
+ * return substring before the first tag or line break,
+ * or the content of the first tag; otherwise
+ * will return full string
+ */
+export const getSearchableValue = (value: string): string =>
+  value
+    ?.trim()
+    .split(/^<[^>]+>|<|\n/)
+    .filter(Boolean)[0];
 
 // ----------------------
 // RANDOMIZERS
