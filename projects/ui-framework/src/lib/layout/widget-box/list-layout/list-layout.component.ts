@@ -30,7 +30,7 @@ export class ListLayoutComponent extends ContentTemplateConsumer {
         take(1)
       )
       .subscribe((queryList) => {
-        const itemHeight = queryList.first.nativeElement.getBoundingClientRect().height;
+        const itemHeight = queryList.first.nativeElement.offsetHeight;
         this.DOM.setCssProps(this.elRef.nativeElement, {
           '--item-height': `${itemHeight}px`,
           '--container-max-height': `${itemHeight * this.numberOfItemsBeforeScroll}px`,
