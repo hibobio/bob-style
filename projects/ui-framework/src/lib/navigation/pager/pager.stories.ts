@@ -1,12 +1,12 @@
-import { storiesOf } from '@storybook/angular';
-import { object, withKnobs } from '@storybook/addon-knobs';
-import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { arrayOfNumbers } from '../../services/utils/functional-utils';
-import { PagerModule } from './pager.module';
 import { action } from '@storybook/addon-actions';
-import { number } from '@storybook/addon-knobs';
+import { boolean, number, object, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ComponentGroupType } from '../../consts';
+import { arrayOfNumbers } from '../../services/utils/functional-utils';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { PagerModule } from './pager.module';
 
 const story = storiesOf(ComponentGroupType.Navigation, module).addDecorator(
   withKnobs
@@ -22,7 +22,18 @@ const template = `<b-pager  [items]="items"
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Pager'">
-    ${template}
+    <b-pager  [items]="items"
+            [currentPage]="currentPage"
+            [config]="{
+              sliceStep: config.sliceStep,
+              sliceMax: config.sliceMax,
+              sliceSize: config.sliceSize,
+              showSliceSizeSelect: showSliceSizeSelect
+            }"
+            (pageChange)="onPageChange($event)"
+            (sliceChange)="onSliceChange($event)"
+            (sliceSizeChange)="onSliceSizeChange($event)">
+</b-pager>
 </b-story-book-layout>
 `;
 
@@ -103,6 +114,9 @@ story.add(
           sliceMax: 100,
           sliceSize: 50,
         }),
+
+        showSliceSizeSelect: boolean('showSliceSizeSelect', true),
+
         onSliceChange: action('sliceChange'),
         onPageChange: action('pageChange'),
         onSliceSizeChange: action('sliceSizeChange'),

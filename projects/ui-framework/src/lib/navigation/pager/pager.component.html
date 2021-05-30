@@ -1,4 +1,4 @@
-  <b-single-select *ngIf="sliceOptions && sliceOptions[0].options.length > 1"
+  <b-single-select *ngIf="showSliceSelect && sliceOptions && sliceOptions[0].options.length > 1"
                    class="bpgr-slice-select"
                    [options]="sliceOptions"
                    [size]="formElementSize.smaller"
@@ -9,37 +9,37 @@
                    (selectChange)="onSliceSizeChange($event)">
   </b-single-select>
 
-  <span class="mrg-l-8"
+  <span *ngIf="showSliceSelect"
+        class="mrg-l-8"
         data-max-lines="1">{{'bob-style.pager.items_per_page' | translate}}</span>
 
-  <div class="bpgr-page-buttons mrg-l-auto"
+  <div class="bpgr-page-buttons"
        role="navigation"
        [hidden]="totalPages < 2 || !(totalItems > 0)"
        (click.outside-zone)="onPageClick($event)">
 
     <b-square-button [type]="buttonType.tertiary"
                      [icon]="icons.chevron_left"
-                     [disabled]="currentPage === 0">
+                     [disabled]="currentPage === 0"
+                     [size]="showSliceSelect?'medium':'small'">
     </b-square-button>
 
     <b-square-button *ngFor="let page of pagesViewModel; trackBy: pageButtonsTrackBy;"
-                     [type]="totalPages > 1 && currentPage===page
-                     ?
-                     buttonType.secondary
-                     :
-                     buttonType.tertiary"
-                     [class.current-page]="totalPages > 1 && currentPage===page"
-                     [disabled]="page !== page || totalPages < 2">
+                     [type]="isCurrent(page)?buttonType.secondary:buttonType.tertiary"
+                     [class.current-page]="isCurrent(page)"
+                     [disabled]="page !== page || totalPages < 2"
+                     [size]="showSliceSelect?'medium':'small'">
       {{page === page ? page + 1 : '...'}}
     </b-square-button>
 
     <b-square-button [type]="buttonType.tertiary"
                      [icon]="icons.chevron_right"
-                     [disabled]="currentPage >= totalPages - 1">
+                     [disabled]="currentPage >= totalPages - 1"
+                     [size]="showSliceSelect?'medium':'small'">
     </b-square-button>
   </div>
 
-  <span *ngIf="sliceOptions && sliceOptions[0].options.length === 1"
+  <span *ngIf="showSliceSelect && sliceOptions && sliceOptions[0].options.length === 1"
         class="bpgr-slice-size-select clr-grey-600 mrg-l-16">
     {{sliceOptions[0].options[0].value}}
   </span>

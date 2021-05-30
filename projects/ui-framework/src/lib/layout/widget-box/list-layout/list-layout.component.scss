@@ -5,17 +5,25 @@
   flex-direction: column;
 }
 
-.item-container[data-scroll=true] {
-  max-height: var(--container-max-height);
+.item-container {
+  &[data-scroll=true] {
+    max-height: var(--container-max-height);
+  }
+  
+  @include mobile($small-mobile-media-width) {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
 }
 
 .list-item {
   height: var(--item-height);
   display: flex;
   align-items: center;
-  padding: 0 16px;
-  &:not(:last-child) {
-    border-bottom: 1px solid $border-color;
+  justify-content: space-between;
+
+  &:not(:first-child) {
+    box-shadow: inset 0px 1px 0px 0px $border-color;
   }
 }
 
