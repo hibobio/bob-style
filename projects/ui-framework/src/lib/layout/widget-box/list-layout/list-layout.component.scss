@@ -5,8 +5,15 @@
   flex-direction: column;
 }
 
-.item-container[data-scroll=true] {
-  max-height: var(--container-max-height);
+.item-container {
+  &[data-scroll=true] {
+    max-height: var(--container-max-height);
+  }
+  
+  @include mobile($small-mobile-media-width) {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
 }
 
 .list-item {
