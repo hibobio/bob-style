@@ -52,7 +52,7 @@ export class PagerPipe<T = any> implements PipeTransform, OnDestroy {
       }
 
       if (isArray(items)) {
-        this.items$.next(items.slice());
+        this.items$.next(items);
       }
     }
 

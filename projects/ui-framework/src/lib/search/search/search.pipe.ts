@@ -26,6 +26,8 @@ export class SearchPipe<T = any> implements PipeTransform, OnDestroy {
   private items$: BehaviorSubject<T[]> = new BehaviorSubject(undefined);
   private itemsFiltered$: Observable<T[]>;
 
+  private lastItems: T[] | Observable<T[]>;
+
   transform(
     items: T[] | Observable<T[]>,
     searchCmpnt: SearchComponent | CompactSearchComponent,
@@ -46,13 +48,17 @@ export class SearchPipe<T = any> implements PipeTransform, OnDestroy {
       );
     }
 
-    if (isObservable(items)) {
-      this.sub?.unsubscribe();
-      this.sub = items.subscribe(this.items$);
-    }
+    if (this.lastItems !== items) {
+      this.lastItems = items;
 
-    if (isArray(items)) {
-      this.items$.next(items);
+      if (isObservable(items)) {
+        this.sub?.unsubscribe();
+        this.sub = items.subscribe(this.items$);
+      }
+
+      if (isArray(items)) {
+        this.items$.next(items);
+      }
     }
 
     return this.asyncPipe.transform(this.itemsFiltered$);

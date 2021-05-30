@@ -868,6 +868,38 @@ export const stringify = (smth: any, limit = 300, limitKeys = null): string => {
     : stringified;
 };
 
+/**
+ * Given an object or an array, will return a string containing just the values, with non-word characters removed
+ * @param smth any object or array, of any levels deep;
+ * the deepest values are assumed to be stringifiable primitives
+ * @returns string representing all stringifiable values, in order
+ * of appearance
+ */
+export const stringifyValue = (smth: any): string => {
+  let parts: string[], result: string;
+
+  try {
+    if (isObject(smth)) {
+      parts = Object.values(smth).map((v) => stringifyValue(v));
+    } else if (isArray(smth)) {
+      parts = smth.map(stringifyValue);
+    } else if (isMap(smth)) {
+      parts = Array.from(smth.values()).map(stringifyValue);
+    } else if (isSet(smth)) {
+      parts = Array.from(smth).map(stringifyValue);
+    } else if (!isPrimitive(smth)) {
+      parts = [smth.toString()];
+    } else {
+      parts = [String(smth)];
+    }
+    result = normalizeStringSpaces(removePunctuation(parts.join(' '), ' '));
+  } catch (e) {
+    log.err(e, 'stringifyValue');
+  }
+
+  return result;
+};
+
 export const capitalize = (smth: string): string => {
   if (!isString(smth)) {
     return smth;
@@ -911,8 +943,8 @@ export const sameStringsDifferentCase = (a: string, b: string): boolean => {
   );
 };
 
-export const removePunctuation = (val: string): string =>
-  val?.replace(/[\.,-\/\\#!$%\^&\*;:{}=\-_`~()@\+\?><\[\]\+]/g, '');
+export const removePunctuation = (val: string, replaceChar = ''): string =>
+  val?.replace(/[\.,-\/\\#!$%\^&\*;:{}=\-_`~()@\+\?><\[\]\+]/g, replaceChar);
 
 export const normalizeStringSpaces = (
   value: string,

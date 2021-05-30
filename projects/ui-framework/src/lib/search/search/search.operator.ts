@@ -4,8 +4,10 @@ import { distinctUntilChanged, filter, map, startWith } from 'rxjs/operators';
 import {
   get,
   getFuzzyMatcher,
+  getSearchableValue,
   isArray,
   isPrimitive,
+  stringifyValue,
 } from '../../services/utils/functional-utils';
 import { RegExpWrapper } from '../../types';
 import { CompactSearchComponent } from '../compact-search/compact-search.component';
@@ -22,6 +24,7 @@ export function search<T = any>(
       return new Observable<T[]>((subscriber) => {
         return combineLatest([
           items$.pipe(filter(isArray)),
+
           searchCmpnt.searchChange.pipe(
             startWith(''),
             distinctUntilChanged(),
@@ -40,13 +43,9 @@ export function search<T = any>(
                 : itms.filter((item) => {
                     //
                     const value = get(item, searchPath, item);
-                    const searcheableValue: string = (isPrimitive(value)
-                      ? String(value)
-                      : JSON.stringify(value)
-                    )
-                      .split(/^<[^>]+>|</)
-                      .filter(Boolean)[0];
-
+                    const searcheableValue: string = getSearchableValue(
+                      isPrimitive(value) ? String(value) : stringifyValue(value)
+                    );
                     return matcher.test(searcheableValue);
                   })
             );
