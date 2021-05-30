@@ -1,6 +1,6 @@
-<ul class="reset-list item-container scroll-visible-alt pad-x-16" [attr.data-scroll]="isScroll()">
-  <li class="list-item" *ngFor="let item of (showAll ? items : (items | slice:0:defaultNumOfItems));
-    let i = index; trackBy: '$index' | trackByProp">
+<ul class="reset-list item-container scroll-visible-alt pad-x-16" [attr.data-scroll]="hasScroll()">
+  <li class="list-item" *ngFor="let item of (showAll ? items : (items | slice:0:defaultNumOfItems)); 
+    let i = index; trackBy: '$index' | trackByProp" #listItem>
     <ng-container *ngTemplateOutlet="contentTemplate; context: { item: item, index: i }">
     </ng-container>
   </li>
