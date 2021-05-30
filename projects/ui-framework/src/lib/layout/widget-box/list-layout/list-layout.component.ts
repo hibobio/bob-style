@@ -1,7 +1,8 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, QueryList, ViewChildren } from '@angular/core';
 import { ButtonType, ButtonSize } from '../../../buttons/buttons.enum';
 import { ContentTemplateConsumer } from '../../../services/utils/contentTemplate.directive';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
+import { filter, take } from 'rxjs/operators';
 
 @Component({
   selector: 'b-list-layout',
@@ -17,21 +18,24 @@ export class ListLayoutComponent extends ContentTemplateConsumer {
   readonly defaultNumOfItems = 3;
   readonly numberOfItemsBeforeScroll = 6;
   
-  @ViewChild("listItem") private listItemsRef: ElementRef;
+  @ViewChildren("listItem") private listItems: QueryList<ElementRef<HTMLElement>>;
 
   constructor(private elRef: ElementRef, private DOM: DOMhelpers,) {
     super();
   }
 
-  ngOnInit() { 
-  }
-
   ngAfterViewInit(): void {
-    const itemHeight = this.listItemsRef.nativeElement.getBoundingClientRect().height;
-    this.DOM.setCssProps(this.elRef.nativeElement, {
-      '--item-height': `${itemHeight}px`,
-      '--container-max-height': `${itemHeight * this.numberOfItemsBeforeScroll}px`,
-    });
+    this.listItems.changes.pipe(
+        filter((queryList) => queryList.first),
+        take(1)
+      )
+      .subscribe((queryList) => {
+        const itemHeight = queryList.first.nativeElement.getBoundingClientRect().height;
+        this.DOM.setCssProps(this.elRef.nativeElement, {
+          '--item-height': `${itemHeight}px`,
+          '--container-max-height': `${itemHeight * this.numberOfItemsBeforeScroll}px`,
+        });
+      });
   }
 
   public hasScroll(): boolean {
