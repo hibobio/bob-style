@@ -1,17 +1,5 @@
-import {
-  BehaviorSubject,
-  fromEvent,
-  merge,
-  Observable,
-  Subscription,
-} from 'rxjs';
-import {
-  distinctUntilChanged,
-  filter,
-  map,
-  shareReplay,
-  tap,
-} from 'rxjs/operators';
+import { fromEvent, merge, Observable, Subscription } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 
 import { CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import {
@@ -24,9 +12,7 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  QueryList,
   ViewChild,
-  ViewChildren,
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -37,22 +23,17 @@ import { InputAutoCompleteOptions } from '../../form-elements/input/input.enum';
 import { Icons } from '../../icons/icons.enum';
 import { PagerComponent } from '../../navigation/pager/pager.component';
 import { PagerConfig } from '../../navigation/pager/pager.interface';
-import { pager } from '../../navigation/pager/pager.operator';
 import { CompactSearchComponent } from '../../search/compact-search/compact-search.component';
 import { CompactSearchConfig } from '../../search/compact-search/compact-search.interface';
-import { search } from '../../search/search/search.operator';
-import { HighlightPipe } from '../../services/filters/highlight.pipe';
 import { InputObservable } from '../../services/utils/decorators';
 import {
   getEventPath,
   getMapValues,
-  isArray,
   isFunction,
   isKey,
   unsubscribeArray,
 } from '../../services/utils/functional-utils';
 import {
-  clone,
   filterByEventKey,
   outsideZone,
 } from '../../services/utils/rxjs.operators';
@@ -62,16 +43,14 @@ import {
   EDITABLE_LIST_ALLOWED_ACTIONS_DEF,
   EDITABLE_LIST_ITEMS_BEFORE_PAGER,
   EDITABLE_LIST_PAGER_SLICESIZE,
-  EDITABLE_LIST_SEARCH_MIN_LENGTH,
   LIST_EDIT_BTN_BASE,
 } from './editable-list.const';
 import { ListActionType, ListSortType } from './editable-list.enum';
 import {
   EditableListActions,
   EditableListState,
-  EditableListViewItem,
 } from './editable-list.interface';
-import { EditableListUtils, EditListState } from './editable-list.static';
+import { EditListState } from './editable-list.static';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -82,11 +61,7 @@ export abstract class BaseEditableListElement implements OnInit, OnDestroy {
     protected translateService: TranslateService,
     protected utilsService: UtilsService
   ) {
-    this.state = new EditListState(
-      this.list$,
-      this.searchValue$,
-      this.currentSlice$
-    );
+    this.state = new EditListState();
   }
 
   @ViewChild(CdkDropList, { static: true, read: ElementRef })
@@ -94,9 +69,7 @@ export abstract class BaseEditableListElement implements OnInit, OnDestroy {
 
   @ViewChild('addItemInput')
   addItemInput: ElementRef<HTMLInputElement>;
-  @ViewChildren('editItemInput') editItemInputs: QueryList<
-    ElementRef<HTMLInputElement>
-  >;
+  @ViewChild('editItemInput') editItemInput: ElementRef<HTMLInputElement>;
   @ViewChild(PagerComponent, { static: true }) pagerCmpnt: PagerComponent;
   @ViewChild(CompactSearchComponent, { static: true })
   searchCmpnt: CompactSearchComponent;
@@ -104,10 +77,8 @@ export abstract class BaseEditableListElement implements OnInit, OnDestroy {
   @Input() maxChars = 100;
 
   @Input('sortType') set setSortType(sortType: ListSortType) {
-    sortType &&
-      this.sortList(this.state.list, null, (this.sortType = sortType));
+    sortType && this.sortList(null, (this.state.sortType = sortType));
   }
-  public sortType: ListSortType;
 
   @Input('allowedActions') set setAllowedActions(
     allowedActions: EditableListActions
@@ -123,23 +94,13 @@ export abstract class BaseEditableListElement implements OnInit, OnDestroy {
 
   @InputObservable()
   @Input('list')
-  listInput$: BehaviorSubject<SelectOption[]>;
-
-  readonly list$: BehaviorSubject<SelectOption[]> = new BehaviorSubject([]);
-  public viewList$: Observable<EditableListViewItem[]>;
-  readonly searchValue$: BehaviorSubject<string> = new BehaviorSubject('');
-  readonly currentSlice$: BehaviorSubject<
-    [number, number]
-  > = new BehaviorSubject([0, EDITABLE_LIST_PAGER_SLICESIZE]);
+  listInput$: Observable<SelectOption[]>;
 
   readonly pagerMinItems = EDITABLE_LIST_ITEMS_BEFORE_PAGER;
-  readonly emptyIterable = [];
   readonly order = ListSortType;
   readonly autoComplete = InputAutoCompleteOptions;
 
-  protected deleted: Map<string, SelectOption> = new Map();
   protected subs: Subscription[] = [];
-
   readonly state: EditListState;
 
   //#region config consts
@@ -235,62 +196,10 @@ export abstract class BaseEditableListElement implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     //
-    this.viewList$ = this.list$.pipe(
-      search(this.searchCmpnt, 'value', EDITABLE_LIST_SEARCH_MIN_LENGTH),
-      pager(this.pagerCmpnt, EDITABLE_LIST_ITEMS_BEFORE_PAGER),
-
-      map((list) =>
-        list.map((item, viewIndex) => ({
-          index: this.getIndexByItem(item),
-          viewIndex,
-          data: item,
-          highlightedValue:
-            this.state.searchValue &&
-            HighlightPipe.prototype.transform(
-              item.value,
-              this.state.searchValue,
-              true
-            ),
-        }))
-      ),
-      shareReplay(1)
-    );
+    this.state.init(this.listInput$, this.searchCmpnt, this.pagerCmpnt);
 
     this.subs.push(
-      this.listInput$
-        .pipe(
-          filter(isArray),
-          distinctUntilChanged(),
-          clone(),
-          tap((list) => {
-            this.emptyIterable.length =
-              list.length > EDITABLE_LIST_ITEMS_BEFORE_PAGER
-                ? EDITABLE_LIST_PAGER_SLICESIZE
-                : EDITABLE_LIST_ITEMS_BEFORE_PAGER;
-            this.sortType = EditableListUtils.getListSortType(list);
-          })
-        )
-        .subscribe(this.list$),
-
-      this.searchCmpnt.searchChange
-        .pipe(
-          map(
-            (value) =>
-              (value?.trim().length >= EDITABLE_LIST_SEARCH_MIN_LENGTH &&
-                value?.trim()) ||
-              ''
-          ),
-          distinctUntilChanged()
-          // tap(() => {
-          //   this.pagerCmpnt.currentPage = 0;
-          // })
-        )
-        .subscribe(this.searchValue$),
-
-      this.pagerCmpnt.sliceChange
-        .pipe(filter(Boolean))
-        .subscribe(this.currentSlice$),
-
+      //
       fromEvent<MouseEvent>(this.itemListElRef.nativeElement, 'mouseover')
         .pipe(outsideZone(this.zone))
         .subscribe((event) => {
@@ -317,7 +226,7 @@ export abstract class BaseEditableListElement implements OnInit, OnDestroy {
                 el.matches(
                   this.state.currentAction === 'add'
                     ? '.bel-header-top'
-                    : '.bel-item[cdkDrag].focused'
+                    : '.bel-item-edit'
                 )
             );
           })
@@ -341,13 +250,13 @@ export abstract class BaseEditableListElement implements OnInit, OnDestroy {
           }
           if (this.state.currentAction === 'remove') {
             this.removeItemApply(
-              this.state.list[this.state.currentItemIndex],
+              this.state.currentItem,
               this.state.currentItemIndex
             );
           }
           if (this.state.currentAction === 'edit') {
             this.editItemApply(
-              this.state.list[this.state.currentItemIndex],
+              this.state.currentItem,
               this.state.currentItemIndex
             );
           }
@@ -357,10 +266,10 @@ export abstract class BaseEditableListElement implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     unsubscribeArray(this.subs);
+    this.state.destroy();
   }
 
   public abstract sortList(
-    list: SelectOption[],
     order: ListSortType,
     currentOrder: ListSortType
   ): void;
@@ -397,7 +306,7 @@ export abstract class BaseEditableListElement implements OnInit, OnDestroy {
 
       create: this.state.create.slice(),
 
-      ...getMapValues(this.deleted).reduce(
+      ...getMapValues(this.state.deleted).reduce(
         (acc, item) => {
           acc.delete.push(this.state.getItemOrigValue(item));
           acc.deletedIDs.push(item.id);
@@ -408,14 +317,7 @@ export abstract class BaseEditableListElement implements OnInit, OnDestroy {
     });
   }
 
-  public getIndexFromViewListIndex(
-    subList: SelectOption[],
-    subListIndex: number
-  ): number {
-    return this.state.list.findIndex((i) => i === subList[subListIndex].data);
-  }
-
-  public getIndexByItem(item: SelectOption): number {
-    return this.state.list.findIndex((i) => i === item);
+  public getGridRowFromIndex(index: number): string {
+    return (index || 0) + 1 + '/' + ((index || 0) + 2);
   }
 }

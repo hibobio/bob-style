@@ -16,7 +16,6 @@ import { TranslateService } from '@ngx-translate/core';
 
 import {
   arrayRemoveItemMutate,
-  isFunction,
   isNumber,
   normalizeString,
   normalizeStringSpaces,
@@ -25,6 +24,7 @@ import {
 import { UtilsService } from '../../services/utils/utils.service';
 import { SelectOption } from '../list.interface';
 import { BaseEditableListElement } from './editable-list.abstract';
+import { EDITABLE_LIST_ITEMS_BEFORE_PAGER } from './editable-list.const';
 import { ListActionType, ListSortType } from './editable-list.enum';
 import { EditableListUtils } from './editable-list.static';
 
@@ -79,73 +79,68 @@ export class EditableListComponent extends BaseEditableListElement {
     super(zone, cd, translateService, utilsService);
   }
 
+  debug = false;
+
   public onMenuAction(
     action: ListActionType,
     item: SelectOption,
-    index: number,
-    viewListIndex?: number
+    index: number
   ): void {
     action === 'remove'
       ? this.removeItem(item, index)
       : action === 'edit'
-      ? this.editItem(item, index, viewListIndex)
+      ? this.editItem(item, index)
       : action === 'moveToStart'
       ? this.onDrop({ previousIndex: index, currentIndex: 0 })
       : action === 'moveToEnd'
       ? this.onDrop({
           previousIndex: index,
-          currentIndex: this.state.list.length,
+          currentIndex: this.state.size,
         })
       : null;
   }
 
   public onMouseOver(event: MouseEvent): void {
     const target = event.target as HTMLElement;
-
-    const hoverItemIndex = parseInt(target.dataset.itemViewIndex, 10);
+    const hoverItemViewIndex = parseInt(target.dataset.itemViewIndex, 10);
 
     if (
-      !isNumber(hoverItemIndex) &&
-      !target.matches('.bel-item-edit, .bel-item-edit *') &&
+      !isNumber(hoverItemViewIndex) &&
+      !target.matches('.bel-item, .bel-item *') &&
       this.state.currentAction === null &&
-      this.state.hoverItemIndex !== null
+      this.state.hoverItemViewIndex !== null
     ) {
-      this.state.hoverItemIndex = null;
+      this.state.hoverItemViewIndex = null;
       this.cd.detectChanges();
-      console.log(this.state.hoverItemIndex);
     } else if (
-      isNumber(hoverItemIndex) &&
-      this.state.hoverItemIndex !== hoverItemIndex
+      isNumber(hoverItemViewIndex) &&
+      this.state.hoverItemViewIndex !== hoverItemViewIndex
     ) {
-      this.state.hoverItemIndex = hoverItemIndex;
+      this.state.hoverItemViewIndex = hoverItemViewIndex;
       this.cd.detectChanges();
-      console.log(this.state.hoverItemIndex);
     }
   }
 
   public sortList(
-    list: SelectOption[] = this.state.list,
     order: ListSortType = null,
-    currentOrder: ListSortType = this.sortType
+    currentOrder: ListSortType = this.state.sortType
   ): void {
-    this.sortType = EditableListUtils.sortList(list, order, currentOrder);
+    this.state.sortType = EditableListUtils.sortList(
+      this.state.list,
+      order,
+      currentOrder
+    );
     this.state.updateList();
     this.transmit();
   }
 
-  public onDrop(
-    { item, previousIndex, currentIndex }: Partial<CdkDragDrop<any>>,
-    subList?: SelectOption[]
-  ): void {
-    if (subList) {
-      previousIndex = this.getIndexFromViewListIndex(subList, previousIndex);
-      currentIndex = this.getIndexFromViewListIndex(subList, currentIndex);
-    } else {
-      previousIndex = previousIndex + this.state.currentSlice[0];
-      currentIndex = currentIndex + this.state.currentSlice[0];
-    }
-
-    console.log('onDrop', item, subList, previousIndex, currentIndex);
+  public onDrop({
+    item,
+    previousIndex,
+    currentIndex,
+  }: Partial<CdkDragDrop<any>>): void {
+    previousIndex = this.state.getIndexFromViewListIndex(previousIndex);
+    currentIndex = this.state.getIndexFromViewListIndex(currentIndex);
 
     this.state.currentAction = null;
 
@@ -156,7 +151,7 @@ export class EditableListComponent extends BaseEditableListElement {
         this.state.list.splice(previousIndex, 1)[0]
       );
       this.state.updateList();
-      this.sortType = ListSortType.UserDefined;
+      this.state.sortType = ListSortType.UserDefined;
       this.transmit();
     }
     this.cd.detectChanges();
@@ -180,12 +175,12 @@ export class EditableListComponent extends BaseEditableListElement {
     if (value) {
       this.state.currentAction = null;
 
-      if (this.deleted.has(valueID)) {
+      if (this.state.deleted.has(valueID)) {
         this.state.list.splice(this.state.currentSlice[0], 0, {
-          ...this.deleted.get(valueID),
+          ...this.state.deleted.get(valueID),
           value,
         });
-        this.deleted.delete(valueID);
+        this.state.deleted.delete(valueID);
       } else {
         this.state.list.splice(this.state.currentSlice[0], 0, {
           id: simpleUID('new--'),
@@ -197,8 +192,10 @@ export class EditableListComponent extends BaseEditableListElement {
       this.state.updateList();
       this.transmit();
 
-      this.sortType = ListSortType.UserDefined;
+      this.state.sortType = ListSortType.UserDefined;
       this.state.newItem.value = '';
+      this.state.size - 1 <= EDITABLE_LIST_ITEMS_BEFORE_PAGER &&
+        (this.state.emptyIterable.length = this.state.size);
       this.cd.detectChanges();
       //
     } else {
@@ -218,7 +215,7 @@ export class EditableListComponent extends BaseEditableListElement {
     this.state.currentItemIndex = null;
 
     if (!String(item.id).startsWith('new--')) {
-      this.deleted.set(normalizeString(item.value, true, true), item);
+      this.state.deleted.set(normalizeString(item.value, true, true), item);
     } else {
       arrayRemoveItemMutate(this.state.create, item.value);
     }
@@ -227,24 +224,19 @@ export class EditableListComponent extends BaseEditableListElement {
     this.state.updateList();
     this.transmit();
 
+    this.state.size + 1 <= EDITABLE_LIST_ITEMS_BEFORE_PAGER &&
+      (this.state.emptyIterable.length = this.state.size);
     this.cd.detectChanges();
   }
 
-  public editItem(
-    item: SelectOption,
-    index: number,
-    viewListIndex?: number
-  ): void {
+  public editItem(item: SelectOption, index: number): void {
     this.state.ready = true;
     this.state.currentAction = 'edit';
     this.state.currentItemIndex = index;
     this.state.saveItemPrevValue(item);
     this.cd.detectChanges();
 
-    (isFunction(this.editItemInputs?.get)
-      ? this.editItemInputs?.get(viewListIndex)
-      : this.editItemInputs?.toArray()[viewListIndex]
-    )?.nativeElement.focus();
+    this.editItemInput?.nativeElement.focus();
   }
 
   public editItemApply(item: SelectOption, index: number): void {
