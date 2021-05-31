@@ -16,7 +16,6 @@
         <b-round-button *ngIf="showPrev"
                         type="tertiary"
                         [matTooltip]="tooltipPrev"
-                        [matTooltipHideDelay]="10000000"
                         [disabled]="disablePrev"
                         (clicked)="prevClicked.emit($event)"
                         [icon]="icons.chevron_left">
