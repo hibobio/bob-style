@@ -11,6 +11,8 @@ import { MenuModule } from '../../navigation/menu/menu.module';
 import { PagerModule } from '../../navigation/pager/pager.module';
 import { CompactSearchModule } from '../../search/compact-search/compact-search.module';
 import { SearchModule } from '../../search/search/search.module';
+import { FiltersModule } from '../../services/filters/filters.module';
+import { TrackByPropModule } from '../../services/filters/trackByProp.pipe';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import { NgLetModule } from '../../services/utils/nglet.directive';
 import { EditableListComponent } from './editable-list.component';
@@ -29,6 +31,8 @@ import { EditableListComponent } from './editable-list.component';
     NgLetModule,
     CompactSearchModule,
     SearchModule,
+    FiltersModule,
+    TrackByPropModule,
   ],
   declarations: [EditableListComponent],
   exports: [EditableListComponent],

@@ -31,7 +31,12 @@ export function pager<T = any>(
                 minItems &&
                   (hidePager = pagerCmpnt.hidden = itms.length <= minItems);
                 pagerCmpnt.items = itms.length;
-                pagerCmpnt.ngOnInit();
+
+                if (!pagerCmpnt.pagesViewModel) {
+                  pagerCmpnt.ngOnInit();
+                } else {
+                  pagerCmpnt['initViewModel']();
+                }
               }
             })
           ),

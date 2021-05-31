@@ -5,6 +5,7 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -23,6 +24,7 @@ import { UtilsService } from '../../services/utils/utils.service';
 import { SelectOption } from '../list.interface';
 import { BaseEditableListElement } from './editable-list.abstract';
 import { ListActionType, ListSortType } from './editable-list.enum';
+import { EditableListUtils } from './editable-list.static';
 
 @Component({
   selector: 'b-editable-list',
@@ -77,55 +79,97 @@ export class EditableListComponent extends BaseEditableListElement {
   public onMenuAction(
     action: ListActionType,
     item: SelectOption,
-    index: number
+    index: number,
+    viewListIndex: number
   ): void {
     action === 'remove'
       ? this.removeItem(item, index)
       : action === 'edit'
-      ? this.editItem(item, index)
+      ? this.editItem(item, index, viewListIndex)
       : action === 'moveToStart'
       ? this.onDrop({ previousIndex: index, currentIndex: 0 })
       : action === 'moveToEnd'
-      ? this.onDrop({ previousIndex: index, currentIndex: this.listState.size })
+      ? this.onDrop({
+          previousIndex: index,
+          currentIndex: this.state.list.length,
+        })
       : null;
   }
 
+  public sortList(
+    list: SelectOption[] = this.state.list,
+    order: ListSortType = null,
+    currentOrder: ListSortType = this.sortType
+  ): void {
+    this.sortType = EditableListUtils.sortList(list, order, currentOrder);
+    this.state.updateList();
+    this.transmit();
+  }
+
+  public onDrop(
+    { item, previousIndex, currentIndex }: Partial<CdkDragDrop<any>>,
+    subList?: SelectOption[]
+  ): void {
+    if (subList) {
+      previousIndex = this.getIndexFromSublistIndex(subList, previousIndex);
+      currentIndex = this.getIndexFromSublistIndex(subList, currentIndex);
+    } else {
+      previousIndex = previousIndex + this.state.currentSlice[0];
+      currentIndex = currentIndex + this.state.currentSlice[0];
+    }
+
+    this.state.currentAction = null;
+
+    if (previousIndex !== currentIndex) {
+      this.state.list.splice(
+        currentIndex,
+        0,
+        this.state.list.splice(previousIndex, 1)[0]
+      );
+      this.state.updateList();
+      this.sortType = ListSortType.UserDefined;
+      this.transmit();
+    }
+    this.cd.detectChanges();
+  }
+
   public addItem(): void {
-    if (this.currentAction === 'edit') {
+    if (this.state.currentAction === 'edit') {
       this.cancel('edit');
     }
-    this.ready = true;
-    this.currentItemIndex = null;
-    this.currentAction = 'add';
+    this.state.ready = true;
+    this.state.currentItemIndex = null;
+    this.state.currentAction = 'add';
     this.cd.detectChanges();
     this.addItemInput?.nativeElement.focus();
   }
 
   public addItemApply(): void {
-    const value = normalizeStringSpaces(this.listState.newItem.value);
-    const valueID = normalizeString(this.listState.newItem.value, true, true);
+    const value = normalizeStringSpaces(this.state.newItem.value);
+    const valueID = normalizeString(this.state.newItem.value, true, true);
 
     if (value) {
-      this.currentAction = null;
+      this.state.currentAction = null;
 
       if (this.deleted.has(valueID)) {
-        this.listState.list.splice(this.currentSlice[0], 0, {
+        this.state.list.splice(this.state.currentSlice[0], 0, {
           ...this.deleted.get(valueID),
           value,
         });
         this.deleted.delete(valueID);
       } else {
-        this.listState.list.splice(this.currentSlice[0], 0, {
+        this.state.list.splice(this.state.currentSlice[0], 0, {
           id: simpleUID('new--'),
           value,
         });
-        this.listState.create.push(value);
+        this.state.create.push(value);
       }
 
+      this.state.updateList();
       this.transmit();
 
       this.sortType = ListSortType.UserDefined;
-      this.listState.newItem.value = '';
+      this.state.newItem.value = '';
       this.cd.detectChanges();
       //
     } else {
@@ -134,48 +178,53 @@ export class EditableListComponent extends BaseEditableListElement {
   }
 
   public removeItem(item: SelectOption, index: number): void {
-    this.ready = true;
-    this.currentAction = 'remove';
-    this.currentItemIndex = index;
+    this.state.ready = true;
+    this.state.currentAction = 'remove';
+    this.state.currentItemIndex = index;
     this.cd.detectChanges();
   }
 
   public removeItemApply(item: SelectOption, index: number): void {
-    this.currentAction = null;
-    this.currentItemIndex = null;
+    this.state.currentAction = null;
+    this.state.currentItemIndex = null;
 
     if (!String(item.id).startsWith('new--')) {
       this.deleted.set(normalizeString(item.value, true, true), item);
     } else {
-      arrayRemoveItemMutate(this.listState.create, item.value);
+      arrayRemoveItemMutate(this.state.create, item.value);
     }
 
-    this.listState.list.splice(index, 1);
+    this.state.list.splice(index, 1);
+    this.state.updateList();
     this.transmit();
 
     this.cd.detectChanges();
   }
 
-  public editItem(item: SelectOption, index: number): void {
-    this.ready = true;
-    this.currentAction = 'edit';
-    this.currentItemIndex = index;
-    item.originalValue = normalizeStringSpaces(item.value);
+  public editItem(
+    item: SelectOption,
+    index: number,
+    viewListIndex: number
+  ): void {
+    this.state.ready = true;
+    this.state.currentAction = 'edit';
+    this.state.currentItemIndex = index;
+    this.state.saveItemPrevValue(item);
     this.cd.detectChanges();
 
     (isFunction(this.editItemInputs?.get)
-      ? this.editItemInputs?.get(index)
-      : this.editItemInputs?.toArray()[index]
+      ? this.editItemInputs?.get(viewListIndex)
+      : this.editItemInputs?.toArray()[viewListIndex]
     )?.nativeElement.focus();
   }
 
   public editItemApply(item: SelectOption, index: number): void {
     item.value = normalizeStringSpaces(item.value);
 
-    if (item.value && item.value !== item.originalValue) {
-      this.currentAction = null;
-      this.currentItemIndex = null;
-      delete item.originalValue;
+    if (item.value && item.value !== this.state.getItemPrevValue(item)) {
+      this.state.currentAction = null;
+      this.state.currentItemIndex = null;
+      this.state.clearItemPrevValue(item);
       this.transmit();
       this.cd.detectChanges();
     } else {
@@ -183,14 +232,15 @@ export class EditableListComponent extends BaseEditableListElement {
     }
   }
 
-  public cancel(action: ListActionType | 'all' = this.currentAction || 'all') {
+  public cancel(
+    action: ListActionType | 'all' = this.state.currentAction || 'all'
+  ) {
     if (action === 'edit') {
-      this.currentItem.value = this.currentItem.originalValue || '';
-      delete this.currentItem.originalValue;
+      this.state.restoreItemPrevValue(this.state.currentItem);
     }
-    this.currentAction = null;
-    this.currentItemIndex = null;
-    this.listState.newItem.value = '';
+    this.state.currentAction = null;
+    this.state.currentItemIndex = null;
+    this.state.newItem.value = '';
     this.cd.detectChanges();
   }
 }

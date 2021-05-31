@@ -1,5 +1,11 @@
-import { merge, Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { BehaviorSubject, merge, Observable, Subscription } from 'rxjs';
+import {
+  distinctUntilChanged,
+  filter,
+  map,
+  shareReplay,
+  tap,
+} from 'rxjs/operators';
 
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import {
@@ -8,104 +14,128 @@ import {
   ElementRef,
   EventEmitter,
   Input,
-  OnChanges,
   OnDestroy,
   OnInit,
   Output,
   QueryList,
-  SimpleChanges,
   ViewChild,
   ViewChildren,
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
-import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
+import { ButtonType } from '../../buttons/buttons.enum';
 import { Button } from '../../buttons/buttons.interface';
 import { Keys } from '../../enums';
 import { InputAutoCompleteOptions } from '../../form-elements/input/input.enum';
 import { Icons } from '../../icons/icons.enum';
 import { PagerComponent } from '../../navigation/pager/pager.component';
 import { PagerConfig } from '../../navigation/pager/pager.interface';
+import { pager } from '../../navigation/pager/pager.operator';
+import { CompactSearchComponent } from '../../search/compact-search/compact-search.component';
+import { CompactSearchConfig } from '../../search/compact-search/compact-search.interface';
+import { search } from '../../search/search/search.operator';
+import { HighlightPipe } from '../../services/filters/highlight.pipe';
+import { InputObservable } from '../../services/utils/decorators';
 import {
-  applyChanges,
-  cloneDeepSimpleObject,
   getEventPath,
   getMapValues,
-  hasChanges,
+  isArray,
   isFunction,
   isKey,
-  notFirstChanges,
   unsubscribeArray,
 } from '../../services/utils/functional-utils';
-import { filterByEventKey } from '../../services/utils/rxjs.operators';
+import { clone, filterByEventKey } from '../../services/utils/rxjs.operators';
 import { UtilsService } from '../../services/utils/utils.service';
-import { itemID, SelectOption } from '../list.interface';
+import { SelectOption } from '../list.interface';
 import {
   EDITABLE_LIST_ALLOWED_ACTIONS_DEF,
   EDITABLE_LIST_ITEMS_BEFORE_PAGER,
   EDITABLE_LIST_PAGER_SLICESIZE,
+  EDITABLE_LIST_SEARCH_MIN_LENGTH,
+  LIST_EDIT_BTN_BASE,
 } from './editable-list.const';
 import { ListActionType, ListSortType } from './editable-list.enum';
 import {
   EditableListActions,
   EditableListState,
-  EditableListStateLocal,
+  EditableListViewItem,
 } from './editable-list.interface';
-import { EditableListUtils } from './editable-list.static';
-
-const LIST_EDIT_BTN_BASE: Button = {
-  size: ButtonSize.small,
-  throttle: 150,
-  swallow: true,
-};
+import { EditableListUtils, EditListState } from './editable-list.static';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
-export abstract class BaseEditableListElement
-  implements OnChanges, OnInit, OnDestroy {
+export abstract class BaseEditableListElement implements OnInit, OnDestroy {
   constructor(
     protected cd: ChangeDetectorRef,
     protected translateService: TranslateService,
     protected utilsService: UtilsService
-  ) {}
+  ) {
+    this.state = new EditListState(
+      this.list$,
+      this.searchValue$,
+      this.currentSlice$
+    );
+  }
 
   @ViewChild('addItemInput') addItemInput: ElementRef<HTMLInputElement>;
   @ViewChildren('editItemInput') editItemInputs: QueryList<
     ElementRef<HTMLInputElement>
   >;
-  @ViewChild(PagerComponent) pager: PagerComponent;
+  @ViewChild(PagerComponent, { static: true }) pagerCmpnt: PagerComponent;
+  @ViewChild(CompactSearchComponent, { static: true })
+  searchCmpnt: CompactSearchComponent;
 
-  @Input() list: SelectOption[];
-  @Input() sortType: ListSortType;
-  @Input() allowedActions: EditableListActions = {
-    ...EDITABLE_LIST_ALLOWED_ACTIONS_DEF,
-  };
   @Input() maxChars = 100;
+
+  @Input('sortType') set setSortType(sortType: ListSortType) {
+    sortType &&
+      this.sortList(this.state.list, null, (this.sortType = sortType));
+  }
+  public sortType: ListSortType;
+
+  @Input('allowedActions') set setAllowedActions(
+    allowedActions: EditableListActions
+  ) {
+    this.allowedActions = {
+      ...EDITABLE_LIST_ALLOWED_ACTIONS_DEF,
+      ...allowedActions,
+    };
+  }
+  public allowedActions = { ...EDITABLE_LIST_ALLOWED_ACTIONS_DEF };
 
   @Output() changed: EventEmitter<EditableListState> = new EventEmitter();
 
-  public currentSlice = [0, EDITABLE_LIST_PAGER_SLICESIZE];
-  public currentAction: ListActionType;
-  public currentItemIndex: number = null;
-  public ready = false;
+  @InputObservable()
+  @Input('list')
+  listInput$: BehaviorSubject<SelectOption[]>;
+
+  readonly list$: BehaviorSubject<SelectOption[]> = new BehaviorSubject([]);
+  public viewList$: Observable<EditableListViewItem[]>;
+  readonly searchValue$: BehaviorSubject<string> = new BehaviorSubject('');
+  readonly currentSlice$: BehaviorSubject<
+    [number, number]
+  > = new BehaviorSubject([0, EDITABLE_LIST_PAGER_SLICESIZE]);
+
   readonly pagerMinItems = EDITABLE_LIST_ITEMS_BEFORE_PAGER;
-
-  public get currentItem() {
-    return this.listState.list[this.currentItemIndex] || this.listState.newItem;
-  }
-
-  protected deleted: Map<string, SelectOption> = new Map();
-  private subs: Subscription[] = [];
-
+  readonly emptyIterable = [];
   readonly order = ListSortType;
   readonly autoComplete = InputAutoCompleteOptions;
-  readonly itemsBeforePager = EDITABLE_LIST_ITEMS_BEFORE_PAGER;
 
+  protected deleted: Map<string, SelectOption> = new Map();
+  protected subs: Subscription[] = [];
+
+  readonly state: EditListState;
+
+  //#region config consts
   readonly pagerConfig: PagerConfig = {
     sliceStep: EDITABLE_LIST_PAGER_SLICESIZE,
     sliceMax: EDITABLE_LIST_PAGER_SLICESIZE,
     sliceSize: EDITABLE_LIST_PAGER_SLICESIZE,
     showSliceSizeSelect: false,
+  };
+  readonly searchConfig: CompactSearchConfig = {
+    debounceTime: 300,
+    openIfNotEmpty: true,
   };
 
   readonly addButton: Button = {
@@ -176,62 +206,92 @@ export abstract class BaseEditableListElement
       key: 'remove',
       label: this.translateService.instant('common.delete'),
     },
+    // {
+    //   key: 'moveToStart',
+    //   label: 'Move to beginning',
+    // },
+    // {
+    //   key: 'moveToEnd',
+    //   label: 'Move to end',
+    // },
   ];
-
-  readonly listState: EditableListStateLocal = {
-    list: [],
-    newItem: {
-      id: null,
-      value: '',
-    },
-    create: [],
-  };
-
-  ngOnChanges(changes: SimpleChanges): void {
-    applyChanges(
-      this,
-      changes,
-      {
-        list: [],
-        allowedActions: { ...EDITABLE_LIST_ALLOWED_ACTIONS_DEF },
-      },
-      [],
-      true
-    );
-
-    if (hasChanges(changes, ['list'])) {
-      this.listState.list = cloneDeepSimpleObject(this.list);
-
-      this.sortType = EditableListUtils.getListSortType(this.listState.list);
-    }
-
-    if (hasChanges(changes, ['sortType'], true)) {
-      this.sortList(this.listState.list, null, this.sortType);
-    }
-
-    if (notFirstChanges(changes) && !this.cd['destroyed']) {
-      this.cd.detectChanges();
-    }
-  }
+  //#endregion
 
   ngOnInit(): void {
+    //
+    this.viewList$ = this.list$.pipe(
+      search(this.searchCmpnt, 'value', EDITABLE_LIST_SEARCH_MIN_LENGTH),
+      pager(this.pagerCmpnt, EDITABLE_LIST_ITEMS_BEFORE_PAGER),
+      map((list) =>
+        list.map((item) => ({
+          index: this.getIndexByItem(item),
+          data: item,
+          highlightedValue:
+            this.state.searchValue &&
+            HighlightPipe.prototype.transform(
+              item.value,
+              this.state.searchValue,
+              true
+            ),
+        }))
+      ),
+      shareReplay(1)
+    );
+
     this.subs.push(
+      this.listInput$
+        .pipe(
+          filter(isArray),
+          distinctUntilChanged(),
+          clone(),
+          tap((list) => {
+            this.emptyIterable.length =
+              list.length > EDITABLE_LIST_ITEMS_BEFORE_PAGER
+                ? EDITABLE_LIST_PAGER_SLICESIZE
+                : EDITABLE_LIST_ITEMS_BEFORE_PAGER;
+            this.sortType = EditableListUtils.getListSortType(list);
+          })
+        )
+        .subscribe(this.list$),
+
+      this.searchCmpnt.searchChange
+        .pipe(
+          map(
+            (value) =>
+              (value?.trim().length >= EDITABLE_LIST_SEARCH_MIN_LENGTH &&
+                value?.trim()) ||
+              ''
+          ),
+          distinctUntilChanged()
+          // tap(() => {
+          //   this.pagerCmpnt.currentPage = 0;
+          // })
+        )
+        .subscribe(this.searchValue$),
+
+      this.pagerCmpnt.sliceChange
+        .pipe(filter(Boolean))
+        .subscribe(this.currentSlice$),
+
       merge(
         this.utilsService.getWindowKeydownEvent(true).pipe(
-          filter(() => this.currentAction && this.currentAction !== 'order'),
+          filter(
+            () =>
+              this.state.currentAction && this.state.currentAction !== 'order'
+          ),
           filterByEventKey(Keys.escape)
         ),
 
         this.utilsService.getWindowClickEvent(true).pipe(
           filter((event: MouseEvent) => {
-            if (!['add', 'remove', 'edit'].includes(this.currentAction)) {
+            if (!['add', 'remove', 'edit'].includes(this.state.currentAction)) {
               return false;
             }
             return !getEventPath(event).some(
               (el) =>
                 isFunction(el.matches) &&
                 el.matches(
-                  this.currentAction === 'add'
+                  this.state.currentAction === 'add'
                     ? '.bel-header-top'
                     : '.bel-item[cdkDrag].focused'
                 )
@@ -248,23 +308,23 @@ export abstract class BaseEditableListElement
           filter(
             (event: KeyboardEvent) =>
               isKey(event.key, Keys.enter) &&
-              ['add', 'remove', 'edit'].includes(this.currentAction)
+              ['add', 'remove', 'edit'].includes(this.state.currentAction)
           )
         )
         .subscribe(() => {
-          if (this.currentAction === 'add') {
+          if (this.state.currentAction === 'add') {
             this.addItemApply();
           }
-          if (this.currentAction === 'remove') {
+          if (this.state.currentAction === 'remove') {
             this.removeItemApply(
-              this.listState.list[this.currentItemIndex],
-              this.currentItemIndex
+              this.state.list[this.state.currentItemIndex],
+              this.state.currentItemIndex
             );
           }
-          if (this.currentAction === 'edit') {
+          if (this.state.currentAction === 'edit') {
             this.editItemApply(
-              this.listState.list[this.currentItemIndex],
-              this.currentItemIndex
+              this.state.list[this.state.currentItemIndex],
+              this.state.currentItemIndex
             );
           }
         })
@@ -275,64 +335,62 @@ export abstract class BaseEditableListElement
     unsubscribeArray(this.subs);
   }
 
+  public abstract sortList(
+    list: SelectOption[],
+    order: ListSortType,
+    currentOrder: ListSortType
+  ): void;
+  public abstract onDrop(
+    { item, previousIndex, currentIndex }: Partial<CdkDragDrop<any>>,
+    subList?: SelectOption[]
+  ): void;
   public abstract addItem(): void;
   public abstract addItemApply(): void;
   public abstract removeItem(item: SelectOption, index: number): void;
   public abstract removeItemApply(item: SelectOption, index: number): void;
-  public abstract editItem(item: SelectOption, index: number): void;
+  public abstract editItem(
+    item: SelectOption,
+    index: number,
+    viewListIndex: number
+  ): void;
   public abstract editItemApply(item: SelectOption, index: number): void;
   public abstract cancel(action?: ListActionType | 'all'): void;
 
   public onDragStart(): void {
     this.cancel();
-    this.currentAction = 'order';
+    this.state.currentAction = 'order';
     this.cd.detectChanges();
-  }
-
-  public onDrop({ previousIndex, currentIndex }: CdkDragDrop<any>): void {
-    previousIndex = previousIndex + this.currentSlice[0];
-    currentIndex = currentIndex + this.currentSlice[0];
-
-    this.currentAction = null;
-
-    if (previousIndex !== currentIndex) {
-      this.listState.list.splice(
-        currentIndex,
-        0,
-        this.listState.list.splice(previousIndex, 1)[0]
-      );
-      this.sortType = ListSortType.UserDefined;
-      this.transmit();
-    }
-    this.cd.detectChanges();
-  }
-
-  public sortList(
-    list: SelectOption[] = this.listState.list,
-    order: ListSortType = null,
-    currentOrder: ListSortType = this.sortType
-  ): void {
-    this.sortType = EditableListUtils.sortList(list, order, currentOrder);
-    this.transmit();
   }
 
   protected transmit(): void {
     this.changed.emit({
-      list: this.listState.list.map((item) => {
+      list: this.state.list.map((item) => {
         return String(item.id).startsWith('new--')
           ? ({ value: item.value } as SelectOption)
           : { ...item };
       }),
 
-      create: this.listState.create.slice(),
-      delete: getMapValues(this.deleted).map((o) => o.value),
-      deletedIDs: getMapValues(this.deleted).map((o) => o.id),
+      create: this.state.create.slice(),
+
+      ...getMapValues(this.deleted).reduce(
+        (acc, item) => {
+          acc.delete.push(this.state.getItemOrigValue(item));
+          acc.deletedIDs.push(item.id);
+          return acc;
+        },
+        { delete: [], deletedIDs: [] }
+      ),
     });
   }
 
-  public listTrackBy(index: number, item: SelectOption): itemID {
-    return (
-      (item.id !== undefined && item.id) || item.value || JSON.stringify(item)
-    );
+  public getIndexFromSublistIndex(
+    subList: SelectOption[],
+    subListIndex: number
+  ): number {
+    return this.state.list.findIndex((i) => i === subList[subListIndex]);
+  }
+
+  public getIndexByItem(item: SelectOption): number {
+    return this.state.list.findIndex((i) => i === item);
   }
 }

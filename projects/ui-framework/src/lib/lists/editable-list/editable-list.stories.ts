@@ -1,4 +1,5 @@
-import { cloneDeep } from 'lodash';
+import { of } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -7,29 +8,16 @@ import { boolean, number, select, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 
 import { ComponentGroupType } from '../../consts';
-import { mockAnimals, mockHobbies } from '../../mock.const';
-import {
-  makeArray,
-  randomFromArray,
-  randomNumber,
-  simpleUID,
-} from '../../services/utils/functional-utils';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { ListSortType } from './editable-list.enum';
 import { editableListMock } from './editable-list.mock';
 import { EditableListModule } from './editable-list.module';
-import { EditableListUtils } from './editable-list.static';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
 
 const componentTemplate1 = `
-<b-editable-list [list]="list === 'Ascending'
-                        ? listMockAsc
-                        : list === 'Descending'
-                        ? listMockDesc
-                        : listMock"
+<b-editable-list [list]="list$"
                  [sortType]="sortType !== 0 ? sortType : undefined"
                  [allowedActions]="{
                    sort: allowSort,
@@ -96,27 +84,7 @@ const note = `
 
 `;
 
-const prefixes = mockAnimals(15)
-  .filter((a) => a.split(' ').length === 1)
-  .slice(0, 10)
-  .map((a) => a.toUpperCase());
-const hobbies = mockHobbies().filter((a) => a.split(' ').length > 1);
-
-const listMock = makeArray(1000).map((_, index) => ({
-  id: simpleUID(),
-  value:
-    randomFromArray(prefixes, 1) +
-    ': ' +
-    hobbies[index % hobbies.length] +
-    ` (${index})`,
-  selected: randomNumber() > 90,
-  canBeDeleted: true,
-})); //cloneDeep(editableListMock);
-
-const listMockAsc = cloneDeep(editableListMock);
-const listMockDesc = cloneDeep(editableListMock);
-EditableListUtils.sortList(listMockAsc, ListSortType.Asc);
-EditableListUtils.sortList(listMockDesc, ListSortType.Desc);
+const listMock$ = of(editableListMock).pipe(delay(500));
 
 story.add(
   'Editable List',
@@ -124,16 +92,7 @@ story.add(
     return {
       template,
       props: {
-        listMock: listMock,
-        listMockAsc: listMockAsc,
-        listMockDesc: listMockDesc,
-
-        list: select(
-          'list',
-          ['Ascending', 'Descending', 'Custom order'],
-          'Custom order',
-          'Props'
-        ),
+        list$: editableListMock,
 
         sortType: select('sortType', [0, 'Asc', 'Desc'], 0, 'Props'),
         maxChars: number('maxChars', 50, {}, 'Props'),
