@@ -181,13 +181,13 @@ $betl-max-items: 15;
 
 :host ::ng-deep {
   .collapsed .betl-item-chevron {
-    @include b-icon(chevron-right, $size: null, $color: false, $hover: false) {
+    @include b-icon(arrow-drop-right, $size: null, $color: false, $hover: false) {
       display: flex;
     }
   }
 
   .expanded .betl-item-chevron {
-    @include b-icon(chevron-down, $size: null, $color: false, $hover: false) {
+    @include b-icon(arrow-drop-down, $size: null, $color: false, $hover: false) {
       display: flex;
     }
   }
