@@ -11,19 +11,19 @@
        [ngClass]="config?.sidebarClass"
        [ngStyle]="config?.sidebarStyle">
 
-    <div class="bel-navigation-container">
-      <div class="nav-button-container" >
+    <div class="bel-navigation-container" *ngIf="avatar">
+      <div class="nav-button-container">
         <b-round-button *ngIf="showPrev"
                         type="tertiary"
-                        [matTooltip]="config.prevTooltip"
+                        [matTooltip]="tooltipPrev"
+                        [matTooltipHideDelay]="10000000"
                         [disabled]="disablePrev"
                         (clicked)="prevClicked.emit($event)"
                         [icon]="icons.chevron_left">
         </b-round-button>
       </div>
 
-      <b-avatar *ngIf="avatar"
-                class="bel-avatar"
+      <b-avatar class="bel-avatar"
                 [avatar]="avatar"
                 [size]="avatarSize.medium"
                 [orientation]="avatarOrientation.vertical"></b-avatar>
@@ -31,8 +31,8 @@
       <div class="nav-button-container">
         <b-round-button *ngIf="showNext"
                         type="tertiary"
+                        [matTooltip]="tooltipNext"
                         [disabled]="disableNext"
-                        [matTooltip]="config.nextTooltip"
                         (clicked)="nextClicked.emit($event)"
                         [icon]="icons.chevron_right">
         </b-round-button>

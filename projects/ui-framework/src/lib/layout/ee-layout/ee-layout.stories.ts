@@ -1,6 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { boolean, object, select, withKnobs } from '@storybook/addon-knobs';
+import { boolean, object, select, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 
 import {
@@ -67,10 +67,12 @@ const template = `
 <b-ee-layout
       [type]="type === 'null' ? null : type"
       [config]="config"
-      [showNext]='showNext'
-      [showPrev]='showPrev'
-      [disableNext]='disableNext'
-      [disablePrev]='disablePrev'
+      [showNext]="showNext"
+      [showPrev]="showPrev"
+      [disableNext]="disableNext"
+      [disablePrev]="disablePrev"
+      [tooltipNext]="tooltipNext"
+      [tooltipPrev]="tooltipPrev"
       (nextClicked)="onNextClicked($event)"
       (prevClicked)="onPrevClicked($event)"
       [avatar]="avatars[avIndx]">
@@ -255,6 +257,12 @@ const note = `
   [type] | Types / null | style config preset
   [avatar] | Avatar | ee avatar config
   [config] | EELayoutConfig | layout style config
+  [showNext] | boolean | true will show the next button, false will hide it. The default is true.
+  [showPrev] | boolean | true will show the prev button, false will hide it. The default is true.
+  [disableNext] | boolean | true will disable the next button, false will enable it. The default is false.
+  [disablePrev] | boolean | true will disable the prev button, false will enable it. The default is false.
+  [tooltipNext] | string | The tooltip strings that will be added to the next button. There is no tooltip by default.
+  [tooltipPrev] | string | The tooltip strings that will be added to the previous buttons. There is no tooltip by default.
 
   #### interface: EELayoutConfig
   Name | Type | Description
@@ -262,7 +270,6 @@ const note = `
   headerClass, sidebarClass, sectionHeaderClass, contentHeaderClass, contentClass, contentFooterClass | string / string[] / object | custom layout parts classes - support what ngClass binding supports
   headerStyle, sidebarStyle, sectionHeaderStyle, contentHeaderStyle, contentStyle, contentFooterStyle | object | custom css styles - support what ngStyle supports
   [wideSidebar] | boolean | changes the width of the sidebar to a wider width. the default is false and results 180px width sidebar. 240px when set to true.
-  [nextTooltip], [prevTooltip] | string | The tooltip strings that will be added to the next and previos buttons.
 `;
 
 const storyTemplate = `
@@ -469,8 +476,12 @@ story.add(
 
         disablePrev: boolean('disablePrev', false),
         disableNext: boolean('disableNext', false),
-        onNextClicked: action('nextClicked'), // function() { console.log('navigation next button clicked'); },
-        onPrevClicked: action('prevClicked'), // function() { console.log('navigation prev button clicked'); },
+
+        tooltipNext: text('tooltipNext', 'this is the next button tooltip'),
+        tooltipPrev: text('tooltipPrev', 'this is the prev button tooltip'),
+
+        onNextClicked: action('nextClicked'),
+        onPrevClicked: action('prevClicked'),
 
         config: object('config', {
           headerClass: ['brd-b', 'pad-b-8', 'b-sticky'],
@@ -486,8 +497,6 @@ story.add(
           contentClass: ['row-gap'],
           sectionTitleClass: ['flx', 'flx-row-align-y'],
           wideSidebar: true,
-          prevTooltip: 'This is the previous button tooltip',
-          nextTooltip: 'This is the next button tooltip'
         }),
 
         zoom: false,

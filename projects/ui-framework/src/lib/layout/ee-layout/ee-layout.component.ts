@@ -51,10 +51,12 @@ export class EELayoutComponent implements OnChanges, AfterViewInit {
 
   @Input() avatar: Avatar;
 
-  @Input() showNext: boolean;
-  @Input() showPrev: boolean;
-  @Input() disableNext: boolean;
-  @Input() disablePrev: boolean;
+  @Input() showNext = true;
+  @Input() showPrev = true;
+  @Input() disableNext = false;
+  @Input() disablePrev = false;
+  @Input() tooltipNext: string;
+  @Input() tooltipPrev: string;
 
   @Output() nextClicked: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
   @Output() prevClicked: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();

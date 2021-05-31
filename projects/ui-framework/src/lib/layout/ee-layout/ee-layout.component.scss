@@ -1,8 +1,14 @@
 @import '../../style/common-imports';
 
 $ee-layout-sidebar-width: 180px;
-$ee-layout-wide-sidebar-width: 240px;
 $ee-layout-grid-gap: $b-grid-gap;
+
+:host[data-wide-sidebar='false'] {
+  --bel-sidebar-width: 180px;
+}
+:host[data-wide-sidebar='true'] {
+  --bel-sidebar-width: 240px;
+}
 
 :host {
   flex-grow: 1;
@@ -11,12 +17,8 @@ $ee-layout-grid-gap: $b-grid-gap;
   text-align: left;
 
   display: grid;
-  grid-template-columns: $ee-layout-sidebar-width 1fr;
+  grid-template-columns: var(--bel-sidebar-width, #{$ee-layout-sidebar-width}) 1fr;
   grid-gap: $ee-layout-grid-gap;
-
-  &[data-wide-sidebar=true] {
-    grid-template-columns: $ee-layout-wide-sidebar-width 1fr;
-  }
 }
 
 .bel-header {
@@ -35,7 +37,11 @@ $ee-layout-grid-gap: $b-grid-gap;
 
   b-round-button {
     position: relative;
+
+    // avatar height is 90, button height is 36
+    // offset to position button in the middle of the avatar: 90/2-36/2=27
     top: 27px;
+
     ::ng-deep button.tertiary{
       &:hover, &:focus {
         background-color: $color-option-hover;
@@ -66,16 +72,8 @@ $ee-layout-grid-gap: $b-grid-gap;
 
 .bel-sidebar {
   min-width: 0;
-  width: $ee-layout-sidebar-width;
-  grid-template-columns: $ee-layout-sidebar-width;
-}
-
-:host {
-  &[data-wide-sidebar=true] {
-    .bel-sidebar {
-      grid-template-columns: $ee-layout-wide-sidebar-width;
-    }
-  }
+  width: var(--bel-sidebar-width, #{$ee-layout-sidebar-width});
+  grid-template-columns: var(--bel-sidebar-width, #{$ee-layout-sidebar-width});
 }
 
 .bel-content-wrap {
