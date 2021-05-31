@@ -56,6 +56,7 @@ import { EditListState } from './editable-list.static';
 // tslint:disable-next-line: directive-class-suffix
 export abstract class BaseEditableListElement implements OnInit, OnDestroy {
   constructor(
+    protected hostElRef: ElementRef<HTMLElement>,
     protected zone: NgZone,
     protected cd: ChangeDetectorRef,
     protected translateService: TranslateService,
@@ -66,7 +67,6 @@ export abstract class BaseEditableListElement implements OnInit, OnDestroy {
 
   @ViewChild(CdkDropList, { static: true, read: ElementRef })
   itemListElRef: ElementRef<HTMLElement>;
-
   @ViewChild('addItemInput')
   addItemInput: ElementRef<HTMLInputElement>;
   @ViewChild('editItemInput') editItemInput: ElementRef<HTMLInputElement>;
@@ -92,9 +92,7 @@ export abstract class BaseEditableListElement implements OnInit, OnDestroy {
 
   @Output() changed: EventEmitter<EditableListState> = new EventEmitter();
 
-  @InputObservable()
-  @Input('list')
-  listInput$: Observable<SelectOption[]>;
+  @InputObservable() @Input('list') listInput$: Observable<SelectOption[]>;
 
   readonly pagerMinItems = EDITABLE_LIST_ITEMS_BEFORE_PAGER;
   readonly order = ListSortType;
@@ -183,20 +181,17 @@ export abstract class BaseEditableListElement implements OnInit, OnDestroy {
       key: 'remove',
       label: this.translateService.instant('common.delete'),
     },
-    // {
-    //   key: 'moveToStart',
-    //   label: 'Move to beginning',
-    // },
-    // {
-    //   key: 'moveToEnd',
-    //   label: 'Move to end',
-    // },
   ];
   //#endregion
 
   ngOnInit(): void {
     //
-    this.state.init(this.listInput$, this.searchCmpnt, this.pagerCmpnt);
+    this.state.init(
+      this.listInput$,
+      this.searchCmpnt,
+      this.pagerCmpnt,
+      this.hostElRef
+    );
 
     this.subs.push(
       //

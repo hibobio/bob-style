@@ -1,6 +1,8 @@
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, filter, map, tap } from 'rxjs/operators';
 
+import { ElementRef } from '@angular/core';
+
 import { PagerComponent } from '../../navigation/pager/pager.component';
 import { pager } from '../../navigation/pager/pager.operator';
 import { CompactSearchComponent } from '../../search/compact-search/compact-search.component';
@@ -157,7 +159,8 @@ export class EditListState {
   public init(
     listInput$: Observable<SelectOption[]>,
     searchCmpnt: CompactSearchComponent,
-    pagerCmpnt: PagerComponent
+    pagerCmpnt: PagerComponent,
+    hostElRef?: ElementRef<HTMLElement>
   ) {
     //
     if (this.subs.length) {
@@ -174,9 +177,19 @@ export class EditListState {
                 value?.trim()) ||
               ''
           ),
-          distinctUntilChanged()
+          distinctUntilChanged(),
+          tap(() => {
+            pagerCmpnt.setCurrentPage = 0;
+          })
         )
         .subscribe(this.searchValue$),
+
+      pagerCmpnt.pageChange.subscribe((page) => {
+        this.currentItemIndex = null;
+        this.hoverItemViewIndex = null;
+        this.currentAction = null;
+        hostElRef?.nativeElement.scrollIntoView();
+      }),
 
       pagerCmpnt.sliceChange
         .pipe(filter(Boolean))

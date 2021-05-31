@@ -10,6 +10,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ElementRef,
   NgZone,
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
@@ -71,12 +72,13 @@ import { EditableListUtils } from './editable-list.static';
 })
 export class EditableListComponent extends BaseEditableListElement {
   constructor(
+    protected hostElRef: ElementRef<HTMLElement>,
     protected zone: NgZone,
     protected cd: ChangeDetectorRef,
     protected translateService: TranslateService,
     protected utilsService: UtilsService
   ) {
-    super(zone, cd, translateService, utilsService);
+    super(hostElRef, zone, cd, translateService, utilsService);
   }
 
   debug = false;
