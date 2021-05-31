@@ -38,6 +38,11 @@ $bel-item-dragged-border-color: $grey-400;
 }
 
 .bel-item-list {
+  display: grid;
+  grid-template-rows: $bel-item-height;
+  grid-template-columns: 1fr;
+  row-gap: 8px;
+
   &.disabled {
     @include disabled-state;
   }
@@ -48,6 +53,7 @@ $bel-item-dragged-border-color: $grey-400;
   user-select: none;
   outline: 0;
   transition: box-shadow 0.2s;
+  grid-column: 1/2;
 
   &:before {
     margin-right: 12px;
@@ -81,6 +87,22 @@ $bel-item-dragged-border-color: $grey-400;
       display: flex;
     }
   }
+}
+
+.bel-item-edit {
+  position: relative;
+  // pointer-events: none;
+
+  // .bel-item-input,
+  // .bel-item-action-btn,
+  // .bel-item-menu-btn,
+  // .bel-item-confirm {
+  //   pointer-events: all;
+  // }
+}
+
+.bel-item-value {
+  pointer-events: none;
 }
 
 .bfe-input {
@@ -140,5 +162,6 @@ $bel-item-dragged-border-color: $grey-400;
 }
 
 [hidden] {
-  @include visually-hidden;
+  // @include visually-hidden;
+  display: none !important;
 }

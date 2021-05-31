@@ -6,7 +6,7 @@ import {
   simpleUID,
 } from '../../services/utils/functional-utils';
 
-const listItems = 1000;
+const listItems = 59;
 
 // export const editableListMock: SelectOption[] = mockHobbies()
 //   .filter((v) => v.split(' ').length > 1)

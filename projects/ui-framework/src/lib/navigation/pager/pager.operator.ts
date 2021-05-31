@@ -1,11 +1,5 @@
 import { combineLatest, defer, Observable, OperatorFunction } from 'rxjs';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  filter,
-  startWith,
-  tap,
-} from 'rxjs/operators';
+import { distinctUntilChanged, filter, startWith, tap } from 'rxjs/operators';
 
 import { isArray, isNumber } from '../../services/utils/functional-utils';
 import { PagerComponent } from './pager.component';
@@ -48,7 +42,7 @@ export function pager<T = any>(
           //
         ])
           .pipe(
-            debounceTime(3),
+            // debounceTime(3),
             distinctUntilChanged((prev, curr) => {
               return (
                 prev[0] === curr[0] &&

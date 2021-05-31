@@ -1,4 +1,10 @@
-import { BehaviorSubject, merge, Observable, Subscription } from 'rxjs';
+import {
+  BehaviorSubject,
+  fromEvent,
+  merge,
+  Observable,
+  Subscription,
+} from 'rxjs';
 import {
   distinctUntilChanged,
   filter,
@@ -7,13 +13,14 @@ import {
   tap,
 } from 'rxjs/operators';
 
-import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import {
   ChangeDetectorRef,
   Directive,
   ElementRef,
   EventEmitter,
   Input,
+  NgZone,
   OnDestroy,
   OnInit,
   Output,
@@ -44,7 +51,11 @@ import {
   isKey,
   unsubscribeArray,
 } from '../../services/utils/functional-utils';
-import { clone, filterByEventKey } from '../../services/utils/rxjs.operators';
+import {
+  clone,
+  filterByEventKey,
+  outsideZone,
+} from '../../services/utils/rxjs.operators';
 import { UtilsService } from '../../services/utils/utils.service';
 import { SelectOption } from '../list.interface';
 import {
@@ -66,6 +77,7 @@ import { EditableListUtils, EditListState } from './editable-list.static';
 // tslint:disable-next-line: directive-class-suffix
 export abstract class BaseEditableListElement implements OnInit, OnDestroy {
   constructor(
+    protected zone: NgZone,
     protected cd: ChangeDetectorRef,
     protected translateService: TranslateService,
     protected utilsService: UtilsService
@@ -77,7 +89,11 @@ export abstract class BaseEditableListElement implements OnInit, OnDestroy {
     );
   }
 
-  @ViewChild('addItemInput') addItemInput: ElementRef<HTMLInputElement>;
+  @ViewChild(CdkDropList, { static: true, read: ElementRef })
+  itemListElRef: ElementRef<HTMLElement>;
+
+  @ViewChild('addItemInput')
+  addItemInput: ElementRef<HTMLInputElement>;
   @ViewChildren('editItemInput') editItemInputs: QueryList<
     ElementRef<HTMLInputElement>
   >;
@@ -275,6 +291,12 @@ export abstract class BaseEditableListElement implements OnInit, OnDestroy {
         .pipe(filter(Boolean))
         .subscribe(this.currentSlice$),
 
+      fromEvent<MouseEvent>(this.itemListElRef.nativeElement, 'mouseover')
+        .pipe(outsideZone(this.zone))
+        .subscribe((event) => {
+          this.onMouseOver(event);
+        }),
+
       merge(
         this.utilsService.getWindowKeydownEvent(true).pipe(
           filter(
@@ -342,6 +364,7 @@ export abstract class BaseEditableListElement implements OnInit, OnDestroy {
     order: ListSortType,
     currentOrder: ListSortType
   ): void;
+  public abstract onMouseOver(event: MouseEvent): void;
   public abstract onDrop(
     { item, previousIndex, currentIndex }: Partial<CdkDragDrop<any>>,
     subList?: SelectOption[]
@@ -385,11 +408,11 @@ export abstract class BaseEditableListElement implements OnInit, OnDestroy {
     });
   }
 
-  public getIndexFromSublistIndex(
+  public getIndexFromViewListIndex(
     subList: SelectOption[],
     subListIndex: number
   ): number {
-    return this.state.list.findIndex((i) => i === subList[subListIndex]);
+    return this.state.list.findIndex((i) => i === subList[subListIndex].data);
   }
 
   public getIndexByItem(item: SelectOption): number {

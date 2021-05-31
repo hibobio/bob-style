@@ -10,12 +10,14 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  NgZone,
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 import {
   arrayRemoveItemMutate,
   isFunction,
+  isNumber,
   normalizeString,
   normalizeStringSpaces,
   simpleUID,
@@ -69,18 +71,19 @@ import { EditableListUtils } from './editable-list.static';
 })
 export class EditableListComponent extends BaseEditableListElement {
   constructor(
+    protected zone: NgZone,
     protected cd: ChangeDetectorRef,
     protected translateService: TranslateService,
     protected utilsService: UtilsService
   ) {
-    super(cd, translateService, utilsService);
+    super(zone, cd, translateService, utilsService);
   }
 
   public onMenuAction(
     action: ListActionType,
     item: SelectOption,
     index: number,
-    viewListIndex: number
+    viewListIndex?: number
   ): void {
     action === 'remove'
       ? this.removeItem(item, index)
@@ -94,6 +97,30 @@ export class EditableListComponent extends BaseEditableListElement {
           currentIndex: this.state.list.length,
         })
       : null;
+  }
+
+  public onMouseOver(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+
+    const hoverItemIndex = parseInt(target.dataset.itemViewIndex, 10);
+
+    if (
+      !isNumber(hoverItemIndex) &&
+      !target.matches('.bel-item-edit, .bel-item-edit *') &&
+      this.state.currentAction === null &&
+      this.state.hoverItemIndex !== null
+    ) {
+      this.state.hoverItemIndex = null;
+      this.cd.detectChanges();
+      console.log(this.state.hoverItemIndex);
+    } else if (
+      isNumber(hoverItemIndex) &&
+      this.state.hoverItemIndex !== hoverItemIndex
+    ) {
+      this.state.hoverItemIndex = hoverItemIndex;
+      this.cd.detectChanges();
+      console.log(this.state.hoverItemIndex);
+    }
   }
 
   public sortList(
@@ -111,12 +138,14 @@ export class EditableListComponent extends BaseEditableListElement {
     subList?: SelectOption[]
   ): void {
     if (subList) {
-      previousIndex = this.getIndexFromSublistIndex(subList, previousIndex);
-      currentIndex = this.getIndexFromSublistIndex(subList, currentIndex);
+      previousIndex = this.getIndexFromViewListIndex(subList, previousIndex);
+      currentIndex = this.getIndexFromViewListIndex(subList, currentIndex);
     } else {
       previousIndex = previousIndex + this.state.currentSlice[0];
       currentIndex = currentIndex + this.state.currentSlice[0];
     }
+
+    console.log('onDrop', item, subList, previousIndex, currentIndex);
 
     this.state.currentAction = null;
 
@@ -204,7 +233,7 @@ export class EditableListComponent extends BaseEditableListElement {
   public editItem(
     item: SelectOption,
     index: number,
-    viewListIndex: number
+    viewListIndex?: number
   ): void {
     this.state.ready = true;
     this.state.currentAction = 'edit';

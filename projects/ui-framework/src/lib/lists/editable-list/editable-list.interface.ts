@@ -24,6 +24,7 @@ export interface EditableListStateLocal
   list: SelectOption[];
   searchValue: string;
   currentItemIndex: number;
+  hoverItemIndex: number;
   currentItem: SelectOption;
   currentSlice: [number, number];
   currentAction: ListActionType;

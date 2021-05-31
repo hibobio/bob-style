@@ -25,6 +25,7 @@ export class EditListState implements EditableListStateLocal {
   readonly previousValues: GenericObject<string> = {};
 
   public currentItemIndex = null;
+  public hoverItemIndex = null;
   public currentAction = null;
   public ready = false;
   public size: number;
