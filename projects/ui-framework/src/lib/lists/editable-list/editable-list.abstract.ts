@@ -222,9 +222,11 @@ export abstract class BaseEditableListElement implements OnInit, OnDestroy {
     this.viewList$ = this.list$.pipe(
       search(this.searchCmpnt, 'value', EDITABLE_LIST_SEARCH_MIN_LENGTH),
       pager(this.pagerCmpnt, EDITABLE_LIST_ITEMS_BEFORE_PAGER),
+
       map((list) =>
-        list.map((item) => ({
+        list.map((item, viewIndex) => ({
           index: this.getIndexByItem(item),
+          viewIndex,
           data: item,
           highlightedValue:
             this.state.searchValue &&

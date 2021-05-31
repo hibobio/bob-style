@@ -35,5 +35,6 @@ export interface EditableListStateLocal
 export interface EditableListViewItem {
   data?: SelectOption;
   index?: number;
+  viewIndex?: number;
   highlightedValue?: string;
 }
