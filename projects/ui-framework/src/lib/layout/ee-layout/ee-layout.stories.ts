@@ -1,6 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { object, select, withKnobs } from '@storybook/addon-knobs';
+import { boolean, object, select, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 
 import {
@@ -48,6 +48,7 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { TypographyModule } from '../../typography/typography.module';
 import { EE_LAYOUT_CONFIG_BY_TYPE } from './ee-layout.const';
 import { EELayoutModule } from './ee-layout.module';
+import { action } from '@storybook/addon-actions';
 
 const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
   withKnobs
@@ -66,8 +67,13 @@ const template = `
 <b-ee-layout
       [type]="type === 'null' ? null : type"
       [config]="config"
+      [showNext]='showNext'
+      [showPrev]='showPrev'
+      [disableNext]='disableNext'
+      [disablePrev]='disablePrev'
+      (nextClicked)="onNextClicked($event)"
+      (prevClicked)="onPrevClicked($event)"
       [avatar]="avatars[avIndx]">
-
       <ng-container ee-layout-header>
 
         <b-menu [menu]="headerMenu">
@@ -255,6 +261,8 @@ const note = `
   --- | --- | ---
   headerClass, sidebarClass, sectionHeaderClass, contentHeaderClass, contentClass, contentFooterClass | string / string[] / object | custom layout parts classes - support what ngClass binding supports
   headerStyle, sidebarStyle, sectionHeaderStyle, contentHeaderStyle, contentStyle, contentFooterStyle | object | custom css styles - support what ngStyle supports
+  [wideSidebar] | boolean | changes the width of the sidebar to a wider width. the default is false and results 180px width sidebar. 240px when set to true.
+  [nextTooltip], [prevTooltip] | string | The tooltip strings that will be added to the next and previos buttons.
 `;
 
 const storyTemplate = `
@@ -456,6 +464,14 @@ story.add(
           'primary'
         ),
 
+        showNext: boolean('showNext', true),
+        showPrev: boolean('showPrev', true),
+
+        disablePrev: boolean('disablePrev', false),
+        disableNext: boolean('disableNext', false),
+        onNextClicked: action('nextClicked'), // function() { console.log('navigation next button clicked'); },
+        onPrevClicked: action('prevClicked'), // function() { console.log('navigation prev button clicked'); },
+
         config: object('config', {
           headerClass: ['brd-b', 'pad-b-8', 'b-sticky'],
           headerStyle: {
@@ -469,6 +485,9 @@ story.add(
           },
           contentClass: ['row-gap'],
           sectionTitleClass: ['flx', 'flx-row-align-y'],
+          wideSidebar: true,
+          prevTooltip: 'This is the previous button tooltip',
+          nextTooltip: 'This is the next button tooltip'
         }),
 
         zoom: false,

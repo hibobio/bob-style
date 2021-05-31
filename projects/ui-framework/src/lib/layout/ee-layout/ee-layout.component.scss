@@ -1,6 +1,7 @@
 @import '../../style/common-imports';
 
 $ee-layout-sidebar-width: 180px;
+$ee-layout-wide-sidebar-width: 240px;
 $ee-layout-grid-gap: $b-grid-gap;
 
 :host {
@@ -12,11 +13,35 @@ $ee-layout-grid-gap: $b-grid-gap;
   display: grid;
   grid-template-columns: $ee-layout-sidebar-width 1fr;
   grid-gap: $ee-layout-grid-gap;
+
+  &[data-wide-sidebar=true] {
+    grid-template-columns: $ee-layout-wide-sidebar-width 1fr;
+  }
 }
 
 .bel-header {
   width: 100%;
   grid-column: 1/3;
+}
+
+.bel-navigation-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  .nav-button-container {
+    min-width: $button-size-medium;
+  }
+
+  b-round-button {
+    position: relative;
+    top: 27px;
+    ::ng-deep button.tertiary{
+      &:hover, &:focus {
+        background-color: $color-option-hover;
+      }
+    }
+  }
 }
 
 :host::ng-deep .bel-sidebar ::ng-deep {
@@ -43,6 +68,14 @@ $ee-layout-grid-gap: $b-grid-gap;
   min-width: 0;
   width: $ee-layout-sidebar-width;
   grid-template-columns: $ee-layout-sidebar-width;
+}
+
+:host {
+  &[data-wide-sidebar=true] {
+    .bel-sidebar {
+      grid-template-columns: $ee-layout-wide-sidebar-width;
+    }
+  }
 }
 
 .bel-content-wrap {
