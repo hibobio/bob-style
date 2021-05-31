@@ -416,14 +416,14 @@ export const objectRemoveEntriesWithFalseyValue = <T = GenericObject>(
   config: { remove?: any | any[]; allow?: any | any[] } = {}
 ): T => {
   const allow = asArray(config?.allow, false);
-  const remove = asArray(config?.remove, false);
+  const rmv = asArray(config?.remove, false);
 
   return (
     object &&
     Object.keys(object)
       .filter((key) => {
-        return remove
-          ? !remove.includes(object[key])
+        return rmv
+          ? !rmv.includes(object[key])
           : allow
           ? Boolean(object[key]) || allow.includes(object[key])
           : Boolean(object[key]);
@@ -979,15 +979,15 @@ export type Func<A = any, B = A> = (val: A, ...args: any[]) => B;
 
 export const pass = <T = any>(a: T): T => a;
 
-export const chainCall = <A = any, B = A>(
-  funcs: Func<A | B, A | B>[],
+export const chainCall = <A = any, B = A, O = B>(
+  funcs: Func<A | B, A | B | O>[],
   value: A,
   ...args: any[]
-): B => {
+): O => {
   return funcs.reduce(
     (previousResult, fn) => fn(previousResult, ...args),
     value
-  ) as B;
+  ) as O;
 };
 
 export const pipe = <T = any>(...functions: ((val: T) => T)[]) => (

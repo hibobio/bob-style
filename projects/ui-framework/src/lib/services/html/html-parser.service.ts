@@ -58,15 +58,15 @@ export class HtmlParserHelpers {
       .trim();
   }
 
-  public enforceAttributes(
+  public enforceAttributes<R extends boolean>(
     value: string | HTMLElement,
     enforce: {
       [selector: string]: GenericObject;
     } = null,
-    returnDOM = false
-  ): string | HTMLElement {
+    returnDOM: R = false as any
+  ): R extends true ? HTMLElement : string {
     if (!value || isEmptyObject(enforce)) {
-      return value;
+      return value as any;
     }
 
     const elm: HTMLElement = isDomElement(value)
@@ -141,7 +141,7 @@ export class HtmlParserHelpers {
       );
     });
 
-    return returnDOM ? elm : this.DOMtoString(elm);
+    return (returnDOM ? elm : this.DOMtoString(elm)) as any;
   }
 
   public replaceElements(
