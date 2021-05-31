@@ -1,8 +1,25 @@
 @import '../../style/common-imports';
+@import '../../../../bob-rte/src/rte/rte.mixin';
 
 :host {
   display: block;
   min-width: 0;
+}
+
+:host::ng-deep .text-container {
+  span,
+  div,
+  a,
+  [style],
+  [class] {
+    font-size: inherit;
+  }
+
+  @include inline-html(false);
+
+  a {
+    @include b-link($color-link-primary);
+  }
 }
 
 .b-link {

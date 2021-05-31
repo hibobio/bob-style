@@ -18,8 +18,8 @@ import {
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { ReadMoreModule } from './read-more.module';
 
-const rteMockHtml =
-  'Imagine ' +
+const mockHtml =
+  '<ul><li>One</li><li>Two</li><li>Three</li></ul>... Imagine ' +
   makeArray(randomNumber(10, 15))
     .map((_) => mockText(randomNumber(12, 20)))
     .reduce((str, i: string, ind) => {
@@ -60,7 +60,7 @@ const template1 = `<p [readMore]="text" [maxLines]="maxLines" [linkText]="linkTe
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Read More'">
-<div style="max-width:300px; text-align: left;">
+<div style="max-width:600px; text-align: left;">
   ${template1}
 </div>
 </b-story-book-layout>
@@ -92,7 +92,7 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        text: text('text', mockText(50)),
+        text: mockHtml, // text('text', mockText(50)),
         maxLines: number('maxLines', 5),
         linkText: text('linkText', 'View More'),
       },

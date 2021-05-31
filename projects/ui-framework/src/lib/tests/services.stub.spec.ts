@@ -157,7 +157,7 @@ export const DOMhelpersProvideMock = (mock: Mock<DOMhelpers> = null) => ({
 
 export const getHtmlParserHelpersMock = () =>
   new Mock<HtmlParserHelpers>({
-    enforceAttributes: (v) => v,
+    enforceAttributes: (v) => v as any,
     replaceElements: (v) => v,
     unwrapDivElements: (v) => v,
     unwrapInlineElements: (v) => v,

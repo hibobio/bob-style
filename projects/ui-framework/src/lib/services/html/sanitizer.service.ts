@@ -1,6 +1,7 @@
 import * as xss from 'xss';
 
 import { Injectable } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 import { chainCall, isString } from '../utils/functional-utils';
 import { HtmlParserHelpers } from './html-parser.service';
@@ -107,7 +108,10 @@ export const SANITIZER_FILTER_XSS_OPTIONS: FilterXSSOptions = {
   providedIn: 'root',
 })
 export class SanitizerService {
-  constructor(private htmlParser: HtmlParserHelpers) {}
+  constructor(
+    private htmlParser: HtmlParserHelpers,
+    private ngSanitizer: DomSanitizer
+  ) {}
 
   private htmlSanitizer: xss.ICSSFilter;
 
@@ -138,7 +142,7 @@ export class SanitizerService {
           },
         },
         false
-      ) as string,
+      ),
 
     (value: string): string =>
       this.htmlParser.linkify(value, 'rel="noopener noreferrer"'),
@@ -169,5 +173,9 @@ export class SanitizerService {
     return !html || !isString(html)
       ? html
       : chainCall(this.htmlSanitizeChain, this.filterXSS(html, options));
+  }
+
+  public bypassSecurity(text: string): SafeHtml {
+    return this.ngSanitizer.bypassSecurityTrustHtml(text);
   }
 }
