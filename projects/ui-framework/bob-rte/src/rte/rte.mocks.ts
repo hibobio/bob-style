@@ -1,13 +1,14 @@
 import {
-  mockNames,
-  mockAvatar,
-  mockText,
   makeArray,
+  mockAvatar,
+  mockNames,
+  mockText,
   randomNumber,
-  simpleUID,
   SelectGroupOption,
   selectOptionsMock,
+  simpleUID,
 } from 'bob-style';
+
 import { RteMentionsOption } from './rte.interface';
 
 const separator = '##%%';
@@ -54,7 +55,7 @@ placeholderMock.splice(0, 0, {
       // prettier-ignore
       value: 'מספר רישיון עו\“ד',
       // prettier-ignore
-      id: 'employee##%%identification/custom/מספר רישיון עו\“ד_Tdncm'
+      id: 'employee##%%identification/custom/מספר רישיון עו\“ד_Tdncm',
     },
   ],
 });
@@ -83,7 +84,7 @@ export const mock1 = `<br><br> <br><br> <span> <br> </span> <div><br></div> <spa
 
 <ul>
   <li> <br> <br>
-  Watch artist <a style="font-size: 20px; font-weight: 600; text-decoration: underline; color: red;" href="https://www.youtube.com/watch?v=k2JPwJuM8fE" \
+  Watch <span style="font-size: 20px;">artist</span> <a style="font-size: 20px; font-weight: 600; text-decoration: underline; color: red;" href="https://www.youtube.com/watch?v=k2JPwJuM8fE" \
   mention-employee-id="777">@Jim lee</a> drawing \
   <span style="font-size: 18px;">🦇👨 & 🐱👩</span> from his studio
   <a href="https://www.youtube.com/watch?v=k2JPwJuM8fE" \

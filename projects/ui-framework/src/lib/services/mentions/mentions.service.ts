@@ -98,7 +98,7 @@ export class MentionsService {
               a: item.original.attributes,
             },
             false
-          ) as string;
+          );
         }
 
         return html;

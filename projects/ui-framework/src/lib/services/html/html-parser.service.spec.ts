@@ -1,7 +1,7 @@
-import { HtmlParserHelpers } from './html-parser.service';
-import { DOMhelpers } from './dom-helpers.service';
-import { WindowRef } from '../utils/window-ref.service';
 import { DocumentRef } from '../utils/document-ref.service';
+import { WindowRef } from '../utils/window-ref.service';
+import { DOMhelpers } from './dom-helpers.service';
+import { HtmlParserHelpers } from './html-parser.service';
 
 describe('HtmlParserHelpers', () => {
   const parser = new HtmlParserHelpers(

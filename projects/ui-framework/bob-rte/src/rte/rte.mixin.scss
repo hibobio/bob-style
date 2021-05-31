@@ -1,4 +1,4 @@
-@mixin inline-html {
+@mixin inline-html($margins: true) {
   br {
     display: none;
   }
@@ -7,7 +7,13 @@
   p,
   ul,
   ol,
-  li {
+  li,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     display: inline;
     min-width: none;
   }
@@ -29,12 +35,14 @@
     }
   }
 
-  div,
-  li,
-  ul,
-  ol {
-    &:not(:first-child) {
-      margin-left: 4px;
+  @if $margins {
+    div,
+    li,
+    ul,
+    ol {
+      &:not(:first-child) {
+        margin-left: 4px;
+      }
     }
   }
 }

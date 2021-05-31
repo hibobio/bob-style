@@ -20,20 +20,53 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
+import { SafeHtml } from '@angular/platform-browser';
 
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import { HtmlParserHelpers } from '../../services/html/html-parser.service';
+import {
+  FilterXSSOptions,
+  SANITIZER_ALLOWED_ATTRS,
+  SANITIZER_FILTER_XSS_OPTIONS,
+  SanitizerService,
+} from '../../services/html/sanitizer.service';
 import { InputObservable } from '../../services/utils/decorators';
+import {
+  chainCall,
+  objectRemoveKeys,
+} from '../../services/utils/functional-utils';
 import { MutationObservableService } from '../../services/utils/mutation-observable';
 import { insideZone } from '../../services/utils/rxjs.operators';
+
+export const READMORE_SANITIZER_OPTIONS: Partial<FilterXSSOptions> = {
+  whiteList: {
+    ...objectRemoveKeys(SANITIZER_FILTER_XSS_OPTIONS.whiteList, [
+      'div',
+      'p',
+      'br',
+    ]),
+    a: SANITIZER_ALLOWED_ATTRS.filter((a) => a !== 'style'),
+  },
+  css: {
+    whiteList: {
+      ...objectRemoveKeys(SANITIZER_FILTER_XSS_OPTIONS.css['whiteList'], [
+        'font-size',
+      ]),
+      'font-size': false,
+    },
+  },
+  stripIgnoreTagBody: false,
+};
 
 @Component({
   selector: 'b-read-more, [readMore]',
   template: `
     <div
       #textContainer
+      class="text-container"
       [attr.data-max-lines]="!(complete$ | async) && maxLines ? maxLines : null"
     >
-      <span *ngIf="text$ | async as text" [innerHTML]="text"></span>
+      <span *ngIf="textView$ | async as text" [innerHTML]="text"></span>
       <ng-content></ng-content>
     </div>
     <a
@@ -51,6 +84,8 @@ export class ReadMoreComponent implements OnInit, OnDestroy {
     private hostElRef: ElementRef<HTMLElement>,
     private mutationObservableService: MutationObservableService,
     private DOM: DOMhelpers,
+    private parser: HtmlParserHelpers,
+    private sanitizer: SanitizerService,
     private zone: NgZone,
     private cd: ChangeDetectorRef
   ) {}
@@ -67,6 +102,7 @@ export class ReadMoreComponent implements OnInit, OnDestroy {
 
   @Output() clicked = new EventEmitter<void>();
 
+  public textView$: Observable<SafeHtml>;
   readonly complete$ = new BehaviorSubject<boolean>(false);
   readonly hasReadMore$ = new BehaviorSubject<boolean>(true);
   public ready = false;
@@ -85,8 +121,41 @@ export class ReadMoreComponent implements OnInit, OnDestroy {
       this.textContainer.nativeElement
     );
 
+    this.textView$ = this.text$.pipe(
+      distinctUntilChanged(),
+      map(
+        (text): SafeHtml =>
+          chainCall(
+            [
+              (txt) => this.parser.cleanupHtml(txt),
+              (txt) => this.parser.linkify(txt, 'rel="noopener noreferrer"'),
+              (txt) =>
+                this.parser.enforceAttributes(
+                  txt,
+                  {
+                    a: {
+                      target: '_blank',
+                      rel: 'noopener noreferrer',
+                    },
+                    '[href*="/employee-profile/"]': {
+                      target: null,
+                      rel: null,
+                    },
+                  },
+                  false
+                ),
+              (txt) =>
+                this.sanitizer.filterXSS(txt, READMORE_SANITIZER_OPTIONS),
+              (txt) => this.sanitizer.bypassSecurity(txt),
+            ],
+            text
+          )
+      )
+    );
+
     merge(
       this.text$,
+
       this.mutationObservableService
         .getMutationObservable(this.textContainer.nativeElement, {
           attributes: false,
