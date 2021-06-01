@@ -6,7 +6,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ContentChildren,
   ElementRef,
   EventEmitter,
   Input,
@@ -14,8 +13,8 @@ import {
   OnChanges,
   OnDestroy,
   Output,
-  QueryList,
   SimpleChanges,
+  ViewChild,
 } from '@angular/core';
 
 import { ItemsInRowService } from '../../services/items-in-row/items-in-row.service';
@@ -25,13 +24,13 @@ import {
   unsubscribeArray,
 } from '../../services/utils/functional-utils';
 import { MediaEvent, MobileService } from '../../services/utils/mobile.service';
-import { BaseCardElement } from '../card/card.abstract';
 import { CardType } from '../cards.enum';
 import {
   CARD_TYPE_WIDTH,
   CARD_TYPE_WIDTH_MOBILE,
   GAP_SIZE,
 } from './cards-layout.const';
+import { MutationObservableService } from '../../services/utils/mutation-observable';
 
 @Component({
   selector: 'b-cards',
@@ -46,18 +45,20 @@ export class CardsLayoutComponent
     private zone: NgZone,
     private mobileService: MobileService,
     private cd: ChangeDetectorRef,
-    private itemsInRowService: ItemsInRowService
+    private itemsInRowService: ItemsInRowService,
+    private mutationObservableService: MutationObservableService
   ) {
     this.isMobile = this.mobileService.isMobile();
     this.setCardsInRow();
   }
 
-  @ContentChildren(BaseCardElement) public cards: QueryList<BaseCardElement>;
+  @ViewChild('cardsList', { static: true }) private cardsList: ElementRef;
 
   @Input() alignCenter: boolean | 'auto' = false;
   @Input() mobileSwiper = false;
   @Input() swiper: 'desktop' | 'mobile' | 'both' | boolean = false;
   @Input() type: CardType = CardType.regular;
+  @Input() cardWidth: number;
 
   @Output() cardsAmountChanged: EventEmitter<number> = new EventEmitter<
     number
@@ -114,7 +115,16 @@ export class CardsLayoutComponent
 
   ngAfterContentInit(): void {
     this.subs.push(
-      this.cards.changes.subscribe(() => {
+
+      this.mutationObservableService.getMutationObservable(this.cardsList.nativeElement, {
+        characterData: false,
+        attributes: false,
+        subtree: false,
+        childList: true,
+        removedElements: true,
+        outsideZone: true,
+        bufferTime: 200
+      }).subscribe(() => {
         if (!this.cd['destroyed']) {
           this.cd.detectChanges();
         }
@@ -127,12 +137,13 @@ export class CardsLayoutComponent
   }
 
   private getCardWidth(type = this.type, isMobile = this.isMobile): number {
-    return !isMobile ? CARD_TYPE_WIDTH[type] : CARD_TYPE_WIDTH_MOBILE[type];
+    return this.cardWidth || (!isMobile ? CARD_TYPE_WIDTH[type] : CARD_TYPE_WIDTH_MOBILE[type]);
   }
 
   public hasEnoughCards() {
+    const childCount = this.cardsList.nativeElement.childElementCount;
     return (
-      this.cards && this.cardsInRow < this.cards.length && this.cards.length > 1
+      this.cardsInRow < childCount && childCount > 1
     );
   }
 
