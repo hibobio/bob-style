@@ -9,12 +9,14 @@ import { TranslateModule } from '@ngx-translate/core';
 import { TrackByPropModule } from '../../services/filters/trackByProp.pipe';
 import { HorizontalLayoutComponent } from './horizontal-layout/horizontal-layout.component';
 import { CardsModule } from '../../cards/cards.module';
+import { WidgetBoxExpandComponent } from './expand/widget-box-expand.component';
 
 @NgModule({
   declarations: [
     WidgetBoxComponent,
     ListLayoutComponent,
     HorizontalLayoutComponent,
+    WidgetBoxExpandComponent
   ],
   imports: [
     CommonModule,

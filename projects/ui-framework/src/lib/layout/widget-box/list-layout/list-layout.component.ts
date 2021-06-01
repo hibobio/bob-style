@@ -38,7 +38,11 @@ export class ListLayoutComponent extends ContentTemplateConsumer {
       });
   }
 
-  public hasScroll(): boolean {
+  toggleShowAll(showAll: boolean): void {
+    this.showAll = showAll;
+  }
+
+  hasScroll(): boolean {
     return !!(this.showAll && (this.items?.length > this.numberOfItemsBeforeScroll))
   }
 

@@ -50,6 +50,11 @@ export class HorizontalLayoutComponent extends ContentTemplateConsumer implement
       });
   }
 
+  toggleShowAll(showAll: boolean): void {
+    this.showAll = showAll;
+    this.cdr.detectChanges();
+  }
+
   private setItemsPerRow(): void {
     this.cardsLayout.getCardsInRow$()
     .pipe(takeUntil(this.onDestroyNotifier$))
