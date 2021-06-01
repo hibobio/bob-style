@@ -1,0 +1,19 @@
+<b-cards class="pad-x-16 pad-b-16 scroll-visible-alt" [type]="cardType" [swiper]="false" [attr.data-scroll]="hasScroll()">
+  <!-- <input type="button" value="scroll x" (click)="scroll()" style="position: absolute; right: 0; z-index: 999" /> -->
+  <ng-content></ng-content>
+  <div *ngFor="let item of (showAll ? items : (items | slice:0:itemsPerRow));
+    let i = index; trackBy: '$index' | trackByProp" #listItem>
+    <ng-container *ngTemplateOutlet="contentTemplate; context: { item: item, index: i }">
+    </ng-container>
+  </div>
+</b-cards>
+
+
+<footer *ngIf="items?.length > itemsPerRow" class="flx-col brd-t pad-4">
+  <b-button class="clr-grey-700"
+    [type]="buttonType.tertiary"
+    [size]="buttonSize.small"
+    [text]="showAll ? ('common.view-less' | translate) : ('common.view-all' | translate)"
+    (clicked)="showAll = !showAll">
+  </b-button>
+</footer>
