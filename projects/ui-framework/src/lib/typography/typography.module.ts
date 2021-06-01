@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 
 import { BigBodyComponent } from './big-body/big-body.component';
 import { BodyComponent } from './body/body.component';
@@ -37,6 +37,5 @@ import { SubHeadingComponent } from './subheading/subheading.component';
     BoldBodyComponent,
     BodyComponent,
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class TypographyModule {}
