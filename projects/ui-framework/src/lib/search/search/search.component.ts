@@ -27,6 +27,7 @@ import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { simpleUID } from '../../services/utils/functional-utils';
 import { insideZone } from '../../services/utils/rxjs.operators';
 import { DOMInputEvent } from '../../types';
+import { SearchConfig } from './search.interface';
 
 @Component({
   selector: 'b-search',
@@ -44,9 +45,13 @@ export class SearchComponent implements OnChanges, OnInit, OnDestroy {
   @Input() value = '';
   @Input() label: string;
   @Input() placeholder: string;
+
+  @Input() config: SearchConfig;
+
   @Input() hideLabelOnFocus = true;
   @Input() enableBrowserAutoComplete: InputAutoCompleteOptions =
     InputAutoCompleteOptions.off;
+
   @Input() id = simpleUID('bsrch');
 
   @HostBinding('attr.data-size') @Input() size = FormElementSize.regular;
@@ -81,7 +86,10 @@ export class SearchComponent implements OnChanges, OnInit, OnDestroy {
       this.sub = fromEvent(this.input.nativeElement, 'input', {
         passive: true,
       })
-        .pipe(debounceTime(150), insideZone(this.zone))
+        .pipe(
+          debounceTime(this.config?.debounceTime || 150),
+          insideZone(this.zone)
+        )
         .subscribe((inputEvent: DOMInputEvent) => {
           this.onInput(inputEvent);
         });

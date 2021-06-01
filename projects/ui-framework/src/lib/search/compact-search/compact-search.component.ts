@@ -8,6 +8,7 @@ import {
 
 import { FormElementSize } from '../../form-elements/form-elements.enum';
 import { SearchComponent } from '../search/search.component';
+import { CompactSearchConfig } from './compact-search.interface';
 
 @Component({
   selector: 'b-compact-search',
@@ -20,14 +21,21 @@ export class CompactSearchComponent {
   @Input() value = '';
   @Input() placeholder: string;
 
+  @Input() config: CompactSearchConfig;
+
   @Output() searchChange: EventEmitter<string> = new EventEmitter<string>();
   @Output() searchFocus: EventEmitter<string> = new EventEmitter<string>();
 
   readonly formElementSize = FormElementSize;
   public open = false;
+  public empty = true;
 
   public onSearchOpen(): void {
     !this.open && (this.open = true);
+  }
+
+  public isOpen(): boolean {
+    return Boolean(this.open || (this.config?.openIfNotEmpty && !this.empty));
   }
 
   public onSearchClose(event: FocusEvent): void {
@@ -42,6 +50,7 @@ export class CompactSearchComponent {
   }
 
   public onSearchChange(event: string): void {
+    this.empty = !event?.trim();
     this.searchChange.emit(event);
   }
 
