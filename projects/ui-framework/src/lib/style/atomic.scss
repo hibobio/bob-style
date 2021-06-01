@@ -47,61 +47,98 @@ $acss-dirs: top right bottom left;
 
 // Typography
 
-.b-body {
+b-body,
+b-big-body,
+b-bold-body,
+b-caption,
+b-display-1,
+b-display-2,
+b-display-3,
+b-display-4,
+b-heading,
+b-subheading {
+  display: block;
+}
+
+.b-body,
+b-body,
+[b-body] {
   @include b-body($weight: null, $addCssVars: true) {
     margin: 0;
   }
 }
 
-.b-big-body {
+big,
+.b-big-body,
+b-big-body,
+[b-big-body] {
   @include b-big-body($weight: null, $addCssVars: true) {
     margin: 0;
   }
 }
 
-.b-bold-body {
+strong,
+.b-bold-body,
+b-bold-body,
+[b-bold-body],
+b {
   @include b-bold-body($size: null, $addCssVars: true) {
     margin: 0;
   }
 }
 
-.b-caption {
+small,
+.b-caption,
+b-caption,
+[b-caption] {
   @include b-caption($color: $caption-text-color, $addCssVars: true) {
     margin: 0;
   }
 }
 
-.b-display-1 {
+.b-display-1,
+b-display-1,
+[b-display-1] {
   @include b-display-1($addCssVars: true) {
     margin: 0;
   }
 }
 
-.b-display-2 {
+.b-display-2,
+b-display-2,
+[b-display-2] {
   @include b-display-2($addCssVars: true) {
     margin: 0;
   }
 }
 
-.b-display-3 {
+.b-display-3,
+b-display-3,
+[b-display-3] {
   @include b-display-3($addCssVars: true) {
     margin: 0;
   }
 }
 
-.b-display-4 {
+.b-display-4,
+b-display-4,
+[b-display-4] {
   @include b-display-4($addCssVars: true) {
     margin: 0;
   }
 }
 
-.b-heading {
+.b-heading,
+b-heading,
+[b-heading] {
   @include b-heading($addCssVars: true) {
     margin: 0;
   }
 }
 
-.b-subheading {
+.b-subheading,
+b-subheading,
+[b-subheading] {
   @include b-subheading($addCssVars: true) {
     margin: 0;
   }
@@ -128,6 +165,10 @@ $acss-dirs: top right bottom left;
 
 .capitalize-all {
   text-transform: capitalize;
+}
+
+.text-left {
+  text-align: left;
 }
 
 .text-center {
