@@ -1,7 +1,17 @@
 @import '../../style/common-imports';
+@import '../../avatar/avatar/avatar.mixin';
 
 $ee-layout-sidebar-width: 180px;
 $ee-layout-grid-gap: $b-grid-gap;
+$ee-layout-nav-button-offset: #{map-get($avatarSizes, medium)/2 - $button-size-medium/2};
+$ee-layout-nav-button-size: $button-size-medium;
+
+:host[data-wide-sidebar='false'] {
+  --bel-sidebar-width: 180px;
+}
+:host[data-wide-sidebar='true'] {
+  --bel-sidebar-width: 240px;
+}
 
 :host {
   flex-grow: 1;
@@ -10,7 +20,7 @@ $ee-layout-grid-gap: $b-grid-gap;
   text-align: left;
 
   display: grid;
-  grid-template-columns: $ee-layout-sidebar-width 1fr;
+  grid-template-columns: var(--bel-sidebar-width, #{$ee-layout-sidebar-width}) 1fr;
   grid-gap: $ee-layout-grid-gap;
 }
 
@@ -18,6 +28,37 @@ $ee-layout-grid-gap: $b-grid-gap;
   width: 100%;
   grid-column: 1/3;
 }
+
+.bel-navigation-container {
+  display: grid;
+  grid-template-columns: $ee-layout-nav-button-size 1fr $ee-layout-nav-button-size;
+  grid-template-rows: $ee-layout-nav-button-offset $ee-layout-nav-button-size 1fr;
+  align-items: start;
+}
+
+.bel-nav-button-prev {
+  grid-column: 1/2;
+  grid-row: 2/3;
+}
+
+.bel-nav-button-next {
+  grid-column: 3/4;
+  grid-row: 2/3;
+}
+
+.bel-avatar {
+  grid-column: 2/3;
+  grid-row: 1/4;
+}
+
+b-round-button {
+  ::ng-deep button.tertiary{
+    &:hover, &:focus {
+      background-color: $color-option-hover;
+    }
+  }
+}
+
 
 :host::ng-deep .bel-sidebar ::ng-deep {
   b-side-menu,
@@ -41,8 +82,8 @@ $ee-layout-grid-gap: $b-grid-gap;
 
 .bel-sidebar {
   min-width: 0;
-  width: $ee-layout-sidebar-width;
-  grid-template-columns: $ee-layout-sidebar-width;
+  width: var(--bel-sidebar-width, #{$ee-layout-sidebar-width});
+  grid-template-columns: var(--bel-sidebar-width, #{$ee-layout-sidebar-width});
 }
 
 .bel-content-wrap {

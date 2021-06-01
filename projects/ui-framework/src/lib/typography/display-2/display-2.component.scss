@@ -1,7 +1,0 @@
-@import '../../style/common-imports';
-
-:host {
-  @include b-display-2($addCssVars: false) {
-    display: block;
-  }
-}
