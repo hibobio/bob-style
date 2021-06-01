@@ -43,13 +43,14 @@
     </span>
 
     <b-compact-search class="mrg-l-auto"
-                      [hidden]="state.size<=pagerMinItems"
+                      [hidden]="allowedActions.search===false || state.size
+                      <=pagerMinItems"
                       [config]="searchConfig">
     </b-compact-search>
 
     <b-button *ngIf="allowedActions.sort"
               class="bel-sort-button"
-              [class.mrg-l-auto]="state.size<=pagerMinItems"
+              [class.mrg-l-auto]="allowedActions.search===false || state.size<=pagerMinItems"
               [ngClass]="state.sortType===order.UserDefined?'clr-grey-700':'clr-grey-600'"
               [attr.data-sorting]="state.sortType"
               [button]="sortButton"
@@ -63,52 +64,6 @@
 
 </header>
 
-<table *ngIf="debug"
-       class="mrg-y-24"
-       style="white-space: nowrap;width: 100%;line-height: 1;font-size:10px;">
-  <tr style="font-weight: 700;">
-    <td>currItm</td>
-    <td>currItmInd</td>
-    <td>currItmViewInd</td>
-  </tr>
-  <tr style="height:15px">
-    <td>{{''+state.currentItem?.value?.split('(')[1]?.split(')')[0]}}</td>
-    <td>{{''+state.currentItemIndex}}</td>
-    <td>{{''+state.currentItemViewIndex}}</td>
-  </tr>
-  <tr style="font-weight: 700;">
-    <td>hoverItm</td>
-    <td>hoverItmInd</td>
-    <td>hoverItmViewInd</td>
-  </tr>
-  <tr style="height:15px">
-    <td>{{''+state.hoverItem?.value?.split('(')[1]?.split(')')[0]}}</td>
-    <td>{{''+state.hoverItemIndex}}</td>
-    <td>{{''+state.hoverItemViewIndex}}</td>
-  </tr>
-  <tr style="font-weight: 700;">
-    <td>currSlice</td>
-    <td>currAction</td>
-    <td>searchValue</td>
-  </tr>
-  <tr style="height:15px">
-    <td>{{''+state.currentSlice.join(',')}}</td>
-    <td>{{''+state.currentAction}}</td>
-    <td>{{''+state.searchValue}}</td>
-  </tr>
-  <tr style="font-weight: 700;">
-    <td>ready</td>
-    <td>sortType</td>
-    <td>size</td>
-  </tr>
-  <tr style="height:15px">
-    <td>{{''+state.ready}}</td>
-    <td>{{''+state.sortType}}</td>
-    <td>{{''+state.size}} / {{''+state.viewList.length}} /
-      {{''+state.emptyIterable.length}}</td>
-  </tr>
-</table>
-
 <div class="bel-item-list"
      cdkDropList
      [cdkDropListDisabled]="allowedActions.order ===
@@ -121,8 +76,6 @@
            class="bel-item flx flx-row-align-y b-body pad-x-16 bg-white rounded"
            [style.grid-row]="getGridRowFromIndex(viewIndex)"
            [hidden]="!viewList[viewIndex]"
-           [@zoomInOut]
-           [@.disabled]="!state.ready||(state.currentAction==='remove'&&!viewIndex)"
            cdkDrag
            cdkDragLockAxis="y"
            [cdkDragData]="item"
@@ -150,11 +103,12 @@
   <div *ngLet="(state.currentItem||{}) as item"
        [style.grid-row]="getGridRowFromIndex(state.currentItemViewIndex)"
        [hidden]="!state.currentItem||(state.currentAction!=='edit'&&state.currentAction!=='remove')"
-       class="bel-item bel-item-edit flx flx-row-align-y b-body pad-r-16">
+       class="bel-item bel-item-edit flx flx-row-align-y b-body pad-x-16">
 
     <input #editItemInput
            type="text"
-           class="bfe-input bel-item-input edit-input pad-l-40"
+           class="bfe-input bel-item-input edit-input bg-white pad-0"
+           [class.pad-l-24]="allowedActions.order!==false && !state.searchValue"
            [(ngModel)]="item.value"
            [attr.autocomplete]="autoComplete.off"
            [attr.maxlength]="maxChars || null">

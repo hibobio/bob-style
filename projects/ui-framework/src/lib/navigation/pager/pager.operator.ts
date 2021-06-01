@@ -1,4 +1,4 @@
-import { combineLatest, defer, Observable, OperatorFunction } from 'rxjs';
+import { combineLatest, defer, Observable, of, OperatorFunction } from 'rxjs';
 import { distinctUntilChanged, filter, startWith, tap } from 'rxjs/operators';
 
 import { isArray, isNumber } from '../../services/utils/functional-utils';
@@ -18,6 +18,10 @@ export function pager<T = any>(
           items$.pipe(
             filter(isArray),
             tap((itms) => {
+              if (!pagerCmpnt) {
+                hidePager = true;
+                return;
+              }
               if (
                 !pagerCmpnt.items ||
                 (isNumber(pagerCmpnt.items) && pagerCmpnt.items !== itms.length)
@@ -35,14 +39,13 @@ export function pager<T = any>(
             })
           ),
 
-          (pagerCmpnt.sliceChange as Observable<number[]>).pipe(
+          (pagerCmpnt?.sliceChange as Observable<number[]>).pipe(
             filter(isArray),
             startWith([0, minItems])
-          ),
+          ) || of([undefined, undefined]),
           //
         ])
           .pipe(
-            // debounceTime(3),
             distinctUntilChanged((prev, curr) => {
               return (
                 prev[0] === curr[0] &&

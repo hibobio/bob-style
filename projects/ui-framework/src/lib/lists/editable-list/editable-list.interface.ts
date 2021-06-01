@@ -6,6 +6,7 @@ export interface EditableListActions {
   remove?: boolean;
   order?: boolean;
   edit?: boolean;
+  search?: boolean;
 }
 
 export interface EditableListState {

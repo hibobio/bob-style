@@ -77,7 +77,7 @@ export abstract class BaseEditableListElement implements OnInit, OnDestroy {
   @Input() maxChars = 100;
 
   @Input('sortType') set setSortType(sortType: ListSortType) {
-    sortType && this.sortList(null, (this.state.sortType = sortType));
+    sortType && this.sortList(sortType, this.state.sortType);
   }
 
   @Input('allowedActions') set setAllowedActions(

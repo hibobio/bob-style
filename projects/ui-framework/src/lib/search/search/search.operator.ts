@@ -1,4 +1,4 @@
-import { combineLatest, defer, Observable, OperatorFunction } from 'rxjs';
+import { combineLatest, defer, Observable, of, OperatorFunction } from 'rxjs';
 import { distinctUntilChanged, filter, map, startWith } from 'rxjs/operators';
 
 import {
@@ -25,7 +25,7 @@ export function search<T = any>(
         return combineLatest([
           items$.pipe(filter(isArray)),
 
-          searchCmpnt.searchChange.pipe(
+          searchCmpnt?.searchChange.pipe(
             startWith(''),
             distinctUntilChanged(),
             map(
@@ -33,7 +33,7 @@ export function search<T = any>(
                 searchStr?.length >= (minLength || 2) &&
                 getFuzzyMatcher(searchStr)
             )
-          ),
+          ) || of(null),
           //
         ]).subscribe({
           next: ([itms, matcher]: [T[], RegExpWrapper]) => {

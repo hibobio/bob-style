@@ -1,10 +1,3 @@
-import {
-  animate,
-  keyframes,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import {
   ChangeDetectionStrategy,
@@ -34,41 +27,6 @@ import { EditableListUtils } from './editable-list.static';
   templateUrl: './editable-list.component.html',
   styleUrls: ['./editable-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-
-  animations: [
-    trigger('zoomInOut', [
-      transition(':enter', [
-        animate(
-          '150ms',
-          keyframes([
-            style({
-              transform: 'scaleY(0.95) scaleX(0.99) translateY(-10px)',
-              opacity: 0,
-            }),
-            style({
-              transform: 'scaleY(1) scaleX(1) translateY(0)',
-              opacity: 1,
-            }),
-          ])
-        ),
-      ]),
-      transition(':leave', [
-        animate(
-          '150ms',
-          keyframes([
-            style({
-              transform: 'scaleY(1) scaleX(1) translateY(0)',
-              opacity: 1,
-            }),
-            style({
-              transform: 'scaleY(0.9) scaleX(0.95) translateY(-5px)',
-              opacity: 0,
-            }),
-          ])
-        ),
-      ]),
-    ]),
-  ],
 })
 export class EditableListComponent extends BaseEditableListElement {
   constructor(
@@ -80,8 +38,6 @@ export class EditableListComponent extends BaseEditableListElement {
   ) {
     super(hostElRef, zone, cd, translateService, utilsService);
   }
-
-  debug = false;
 
   public onMenuAction(
     action: ListActionType,
@@ -248,6 +204,7 @@ export class EditableListComponent extends BaseEditableListElement {
       this.state.currentAction = null;
       this.state.currentItemIndex = null;
       this.state.clearItemPrevValue(item);
+      this.state.updateList();
       this.transmit();
       this.cd.detectChanges();
     } else {

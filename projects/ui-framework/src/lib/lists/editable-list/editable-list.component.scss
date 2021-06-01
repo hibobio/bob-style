@@ -21,6 +21,10 @@ $bel-item-dragged-border-color: $grey-400;
   min-height: $bel-item-height;
 }
 
+.bel-header-bottom {
+  min-height: $button-size-medium;
+}
+
 :host .bel-sort-button {
   ::ng-deep button.tertiary {
     @include button-icon-right;

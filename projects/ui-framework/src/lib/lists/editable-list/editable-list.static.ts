@@ -169,7 +169,7 @@ export class EditListState {
     }
     this.subs.push(
       //
-      searchCmpnt.searchChange
+      searchCmpnt?.searchChange
         .pipe(
           map(
             (value) =>
@@ -184,14 +184,14 @@ export class EditListState {
         )
         .subscribe(this.searchValue$),
 
-      pagerCmpnt.pageChange.subscribe((page) => {
+      pagerCmpnt?.pageChange.subscribe((page) => {
         this.currentItemIndex = null;
         this.hoverItemViewIndex = null;
         this.currentAction = null;
         hostElRef?.nativeElement.scrollIntoView();
       }),
 
-      pagerCmpnt.sliceChange
+      pagerCmpnt?.sliceChange
         .pipe(filter(Boolean))
         .subscribe(this.currentSlice$),
 
