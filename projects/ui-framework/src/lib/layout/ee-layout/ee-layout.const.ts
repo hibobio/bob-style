@@ -14,5 +14,6 @@ export const EE_LAYOUT_CONFIG_BY_TYPE: Partial<
     contentFooterStyle: {
       'min-height': '70px',
     },
+    wideSidebar: false,
   },
 };
