@@ -12,30 +12,28 @@
        [ngStyle]="config?.sidebarStyle">
 
     <div class="bel-navigation-container" *ngIf="avatar">
-      <div class="nav-button-container">
-        <b-round-button *ngIf="showPrev"
-                        type="tertiary"
-                        [matTooltip]="tooltipPrev"
-                        [disabled]="disablePrev"
-                        (clicked)="prevClicked.emit($event)"
-                        [icon]="icons.chevron_left">
-        </b-round-button>
-      </div>
+      <b-round-button *ngIf="showPrev"
+                      class="bel-nav-button-prev"
+                      type="tertiary"
+                      [matTooltip]="tooltipPrev"
+                      [disabled]="disablePrev"
+                      (clicked)="prevClicked.emit($event)"
+                      [icon]="icons.chevron_left">
+      </b-round-button>
 
       <b-avatar class="bel-avatar"
                 [avatar]="avatar"
                 [size]="avatarSize.medium"
                 [orientation]="avatarOrientation.vertical"></b-avatar>
 
-      <div class="nav-button-container">
-        <b-round-button *ngIf="showNext"
-                        type="tertiary"
-                        [matTooltip]="tooltipNext"
-                        [disabled]="disableNext"
-                        (clicked)="nextClicked.emit($event)"
-                        [icon]="icons.chevron_right">
-        </b-round-button>
-      </div>
+      <b-round-button *ngIf="showNext"
+                      class="bel-nav-button-next"
+                      type="tertiary"
+                      [matTooltip]="tooltipNext"
+                      [disabled]="disableNext"
+                      (clicked)="nextClicked.emit($event)"
+                      [icon]="icons.chevron_right">
+      </b-round-button>
     </div>
 
     <ng-content select="[ee-layout-sidebar]"></ng-content>

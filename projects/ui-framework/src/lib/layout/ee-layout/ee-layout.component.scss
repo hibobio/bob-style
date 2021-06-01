@@ -1,4 +1,5 @@
 @import '../../style/common-imports';
+@import '../../avatar/avatar/avatar.mixin';
 
 $ee-layout-sidebar-width: 180px;
 $ee-layout-grid-gap: $b-grid-gap;
@@ -27,21 +28,34 @@ $ee-layout-grid-gap: $b-grid-gap;
 }
 
 .bel-navigation-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  $bel-nav-buttons-height-offset: #{map-get($avatarSizes, medium)/2 - $button-size-medium/2};
+  $bel-nav-buttons-column-size: $button-size-medium;
+
+  display: grid;
+  grid-template-columns: $bel-nav-buttons-column-size 1fr $bel-nav-buttons-column-size;
+  grid-template-rows: $bel-nav-buttons-height-offset $bel-nav-buttons-column-size 1fr;
+  align-items: start;
+
+  .bel-nav-button-prev {
+    grid-column: 1/2;
+    grid-row: 2/3;
+  }
+
+  .bel-nav-button-next {
+    grid-column: 3/4;
+    grid-row: 2/3;
+  }
+
+  .bel-avatar {
+    grid-column: 2/3;
+    grid-row: 1/4;
+  }
 
   .nav-button-container {
     min-width: $button-size-medium;
   }
 
   b-round-button {
-    position: relative;
-
-    // avatar height is 90, button height is 36
-    // offset to position button in the middle of the avatar: 90/2-36/2=27
-    top: 27px;
-
     ::ng-deep button.tertiary{
       &:hover, &:focus {
         background-color: $color-option-hover;
