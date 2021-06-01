@@ -3,6 +3,8 @@
 
 $ee-layout-sidebar-width: 180px;
 $ee-layout-grid-gap: $b-grid-gap;
+$ee-layout-nav-button-offset: #{map-get($avatarSizes, medium)/2 - $button-size-medium/2};
+$ee-layout-nav-button-size: $button-size-medium;
 
 :host[data-wide-sidebar='false'] {
   --bel-sidebar-width: 180px;
@@ -28,41 +30,35 @@ $ee-layout-grid-gap: $b-grid-gap;
 }
 
 .bel-navigation-container {
-  $bel-nav-buttons-height-offset: #{map-get($avatarSizes, medium)/2 - $button-size-medium/2};
-  $bel-nav-buttons-column-size: $button-size-medium;
-
   display: grid;
-  grid-template-columns: $bel-nav-buttons-column-size 1fr $bel-nav-buttons-column-size;
-  grid-template-rows: $bel-nav-buttons-height-offset $bel-nav-buttons-column-size 1fr;
+  grid-template-columns: $ee-layout-nav-button-size 1fr $ee-layout-nav-button-size;
+  grid-template-rows: $ee-layout-nav-button-offset $ee-layout-nav-button-size 1fr;
   align-items: start;
+}
 
-  .bel-nav-button-prev {
-    grid-column: 1/2;
-    grid-row: 2/3;
-  }
+.bel-nav-button-prev {
+  grid-column: 1/2;
+  grid-row: 2/3;
+}
 
-  .bel-nav-button-next {
-    grid-column: 3/4;
-    grid-row: 2/3;
-  }
+.bel-nav-button-next {
+  grid-column: 3/4;
+  grid-row: 2/3;
+}
 
-  .bel-avatar {
-    grid-column: 2/3;
-    grid-row: 1/4;
-  }
+.bel-avatar {
+  grid-column: 2/3;
+  grid-row: 1/4;
+}
 
-  .nav-button-container {
-    min-width: $button-size-medium;
-  }
-
-  b-round-button {
-    ::ng-deep button.tertiary{
-      &:hover, &:focus {
-        background-color: $color-option-hover;
-      }
+b-round-button {
+  ::ng-deep button.tertiary{
+    &:hover, &:focus {
+      background-color: $color-option-hover;
     }
   }
 }
+
 
 :host::ng-deep .bel-sidebar ::ng-deep {
   b-side-menu,
