@@ -1,5 +1,0 @@
-@import '../../style/common-imports';
-
-:host {
-  @include b-caption($color: $caption-text-color, $addCssVars: false);
-}
