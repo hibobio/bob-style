@@ -19,4 +19,6 @@ export interface EELayoutConfig {
 
   contentFooterClass?: string | string[] | NgClass;
   contentFooterStyle?: GenericObject<string>;
+
+  wideSidebar?: boolean;
 }

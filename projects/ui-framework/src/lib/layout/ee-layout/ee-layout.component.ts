@@ -2,11 +2,11 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
-  ElementRef,
+  ElementRef, EventEmitter,
   HostBinding,
   Input,
   NgZone,
-  OnChanges,
+  OnChanges, Output,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
@@ -21,6 +21,8 @@ import {
 } from '../../services/utils/functional-utils';
 import { EE_LAYOUT_CONFIG_BY_TYPE } from './ee-layout.const';
 import { EELayoutConfig } from './ee-layout.interface';
+import { Icons } from '../../icons/icons.enum';
+import { ButtonSize } from '../../buttons/buttons.enum';
 
 @Component({
   selector: 'b-ee-layout, [b-ee-layout]',
@@ -41,9 +43,26 @@ export class EELayoutComponent implements OnChanges, AfterViewInit {
 
   @HostBinding('attr.data-type') @Input() type: Types;
 
+  @HostBinding('attr.data-wide-sidebar') get isWideSidebar() {
+    return String(this.config?.wideSidebar || false);
+  }
+
   @Input() config: EELayoutConfig;
 
   @Input() avatar: Avatar;
+
+  @Input() showNext: boolean;
+  @Input() showPrev: boolean;
+  @Input() disableNext: boolean;
+  @Input() disablePrev: boolean;
+  @Input() tooltipNext: string;
+  @Input() tooltipPrev: string;
+
+  @Output() nextClicked: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
+  @Output() prevClicked: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
+
+  readonly icons = Icons;
+  readonly buttonSize = ButtonSize;
 
   public hasHeader = true;
   public hasSectionHeader = true;
