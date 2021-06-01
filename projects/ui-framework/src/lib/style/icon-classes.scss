@@ -14,6 +14,8 @@
   .b-icon-#{$sizeKey} {
     @include icon-size($sizeKey);
   }
+  .b-icon-#{$sizeKey} [data-icon-before]:before,
+  .b-icon-#{$sizeKey} [data-icon-after]:after,
   [data-icon-before-size='#{$sizeKey}']:before,
   [data-icon-after-size='#{$sizeKey}']:after {
     @include icon-size($sizeKey, $elem: '&');
@@ -38,9 +40,11 @@
     .b-icon-#{'' + $colorKey} {
       @include icon-color($colorKey, true);
     }
+    .b-icon-#{'' + $colorKey} [data-icon-before],
     [data-icon-before-color='#{$colorKey}'] {
       @include icon-color($colorKey, true, $elem: '&:before');
     }
+    .b-icon-#{'' + $colorKey} [data-icon-after],
     [data-icon-after-color='#{$colorKey}'] {
       @include icon-color($colorKey, true, $elem: '&:after');
     }
