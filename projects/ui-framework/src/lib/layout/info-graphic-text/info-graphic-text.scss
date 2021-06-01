@@ -1,0 +1,23 @@
+@import '../../style/common-imports';
+
+:host {
+  display: block;
+  background-color: rgba(red($negative-500), green($negative-500), blue($negative-500), 0.05);
+  border-radius: 8px;
+  padding: times8(4) times8(6);
+}
+
+b-display-2, b-display-4 {
+  color: $negative-500;
+}
+
+.items-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+:host ::ng-deep {
+  b-display-4 b {
+    font-weight: 800;
+  }
+}

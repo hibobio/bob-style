@@ -1,0 +1,10 @@
+<b-display-2 class="text-center mrg-b-16">{{title}}</b-display-2>
+<div class="items-container">
+  <b-display-4 class="mrg-r-16" *ngFor="let item of items" [innerHTML]="item"></b-display-4>
+</div>
+
+<div class="flx flx-row-align-x mrg-t-24">
+  <b-text-button [button]="buttonConfig">
+    <b-icon [config]="linkIconConfig"></b-icon>
+  </b-text-button>
+</div>

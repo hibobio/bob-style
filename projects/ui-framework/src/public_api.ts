@@ -599,6 +599,9 @@ export * from './lib/table/card-table/card-table.interface';
 // Widget Box
 export { WidgetBoxModule } from './lib/layout/widget-box/widget-box.module';
 
+// Info Graphic Text
+export { InfoGraphicTextModule } from './lib/layout/info-graphic-text/info-graphic-text.module';
+
 /*
  * Misc
  */
