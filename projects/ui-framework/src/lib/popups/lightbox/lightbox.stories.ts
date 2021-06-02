@@ -17,6 +17,7 @@ const storyTemplate = `<b-story-book-layout [title]="'Lightbox'">
                   [showInLightbox]="showInLightbox"
                   [fillScreen]="fillScreen"
                   [disableClose]="disableClose"
+                  [disableCloseButton]="disableCloseButton"
                   [closeOnBackdropClick]="closeOnBackdropClick">
                 </b-lightbox-example>
 </b-story-book-layout>`;
@@ -98,6 +99,7 @@ story.add(
         ),
         fillScreen: boolean('fillScreen', false),
         disableClose: boolean('disableClose', false),
+        disableCloseButton: boolean('disableCloseButton', false),
         closeOnBackdropClick: boolean('closeOnBackdropClick', false),
       },
       moduleMetadata: {

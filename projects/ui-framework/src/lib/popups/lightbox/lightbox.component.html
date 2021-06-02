@@ -1,4 +1,5 @@
-<b-square-button (clicked)="closeLightbox()"
+<b-square-button *ngIf="!config.disableCloseButton"
+                 (clicked)="closeLightbox()"
                  [type]="buttons.tertiary"
                  [icon]="icons.close"
                  [color]="iconColor.white"
