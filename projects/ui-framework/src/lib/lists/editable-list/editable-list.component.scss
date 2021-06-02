@@ -13,8 +13,16 @@ $bel-item-dragged-border-color: $grey-400;
   position: relative;
 }
 
+.bel-header {
+  user-select: none;
+}
+
 .bel-header-top {
   min-height: $bel-item-height;
+}
+
+.bel-header-bottom {
+  min-height: $button-size-medium;
 }
 
 :host .bel-sort-button {
@@ -33,11 +41,23 @@ $bel-item-dragged-border-color: $grey-400;
   }
 }
 
+.bel-item-list {
+  display: grid;
+  grid-template-rows: $bel-item-height;
+  grid-template-columns: 1fr;
+  row-gap: 8px;
+
+  &.disabled {
+    @include disabled-state;
+  }
+}
+
 .bel-item {
   height: $bel-item-height;
   user-select: none;
   outline: 0;
   transition: box-shadow 0.2s;
+  grid-column: 1/2;
 
   &:before {
     margin-right: 12px;
@@ -73,8 +93,31 @@ $bel-item-dragged-border-color: $grey-400;
   }
 }
 
+.bel-item-ghost,
+.bel-item-edit {
+  box-shadow: none !important;
+  transition: none;
+}
+
+.bel-item-ghost {
+  pointer-events: none;
+
+  .bel-item-action-btn,
+  .bel-item-menu-btn {
+    pointer-events: all;
+  }
+}
+
+.bel-item-edit {
+  cursor: default;
+}
+
+.bel-item-value {
+  pointer-events: none;
+}
+
 .bfe-input {
-  @include input-basics($padding: 0, $height: $bel-item-height);
+  @include input-basics($padding: null, $height: $bel-item-height);
 }
 
 .bel-item-action-btn,
@@ -111,24 +154,18 @@ $bel-item-dragged-border-color: $grey-400;
   }
 
   .bel-item-action-btn,
-  .bel-item-menu-btn,
-  .cdk-drop-list-dragging .bel-item:hover .bel-item-action-btn,
-  .cdk-drop-list-dragging .bel-item:hover .bel-item-menu-btn {
+  .bel-item-menu-btn {
     opacity: 0;
     transition-delay: 0.07s;
   }
   .bel-item:hover .bel-item-action-btn,
   .bel-item:hover .bel-item-menu-btn,
-  .bel-item-dragged .bel-item-action-btn,
-  .bel-item-dragged .bel-item-menu-btn {
+  .bel-item:hover ~ .bel-item .bel-item-action-btn,
+  .bel-item:hover ~ .bel-item .bel-item-menu-btn {
     opacity: 1;
-  }
-  .bel-item:not(:hover):not(.bel-item-dragged) .bel-item-action-btn,
-  .bel-item:not(:hover):not(.bel-item-dragged) .bel-item-menu-btn {
-    transition: opacity 0.15s;
   }
 }
 
 [hidden] {
-  @include visually-hidden;
+  display: none !important;
 }

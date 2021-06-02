@@ -1,9 +1,14 @@
+import { of } from 'rxjs';
+import { delay } from 'rxjs/operators';
+
+import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { action } from '@storybook/addon-actions';
 import { boolean, number, object, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 
 import { ComponentGroupType } from '../../consts';
+import { mockThings } from '../../mock.const';
 import { arrayOfNumbers } from '../../services/utils/functional-utils';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { PagerModule } from './pager.module';
@@ -12,7 +17,7 @@ const story = storiesOf(ComponentGroupType.Navigation, module).addDecorator(
   withKnobs
 );
 
-const template = `<b-pager  [items]="items"
+const templateForNotes = `<b-pager  [items]="items"
             [currentPage]="currentPage"
             [config]="config"
             (pageChange)="onPageChange($event)"
@@ -22,18 +27,28 @@ const template = `<b-pager  [items]="items"
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Pager'">
-    <b-pager  [items]="items"
-            [currentPage]="currentPage"
-            [config]="{
-              sliceStep: config.sliceStep,
-              sliceMax: config.sliceMax,
-              sliceSize: config.sliceSize,
-              showSliceSizeSelect: showSliceSizeSelect
-            }"
-            (pageChange)="onPageChange($event)"
-            (sliceChange)="onSliceChange($event)"
-            (sliceSizeChange)="onSliceSizeChange($event)">
-</b-pager>
+  <div>
+
+    <div class="mrg-b-24" style="min-height:130px;">
+      <ul class="reset-list flx flx-wrap" style="font-size:8px; line-height:1;">
+        <li class="brd rounded" style="padding: 1px 2px; margin: 2px;" *ngFor="let item of (items$ | pager:pager)">
+          {{item}}
+        </li>
+      </ul>
+    </div>
+
+        <b-pager #pager
+                [config]="{
+                  sliceStep: config.sliceStep,
+                  sliceMax: config.sliceMax,
+                  sliceSize: config.sliceSize,
+                  showSliceSizeSelect: showSliceSizeSelect
+                }"
+                (pageChange)="onPageChange($event)"
+                (sliceChange)="onSliceChange($event)"
+                (sliceSizeChange)="onSliceSizeChange($event)">
+    </b-pager>
+  </div>
 </b-story-book-layout>
 `;
 
@@ -44,7 +59,7 @@ const note = `
   *PagerModule*
 
   ~~~
-  ${template}
+  ${templateForNotes}
   ~~~
 
   #### Properties
@@ -59,25 +74,45 @@ const note = `
   if you provided your data array as [items], the output emits a slice of your data array ('current page items') | &nbsp;
   (sliceSizeChange) | number | emits on slice size change (from the Select) | &nbsp;
 
-  #### Usage examples
+  --------------------------------
+
+  ### Usage examples
+
+
+  #### Connect everything automatically with PagerPipe
+
+  ~~~
+  public pager: PagerComponent;
+
+      /* ! items can also be observable items$ ! */
+  <ng-container *ngFor="let item of items | pager:pager">
+    <some-component [item]="item"></some-component>
+  </ng-container>
+
+  <b-pager #pager [config]="pagerConfig"></b-pager>
+  ~~~
+
+  #### Manual connections
 
   ~~~
   <ng-container *ngFor="let item of itemsSlice">
-    <item-component [item]="item"></item-component>
+    <some-component [item]="item"></some-component>
   </ng-container>
 
-  <b-pager [items]="itemsDataArray" (sliceChange)="itemsSlice = $event"></b-pager>
+  <b-pager [items]="itemsDataArray" [config]="pagerConfig"
+        (sliceChange)="itemsSlice = $event"></b-pager>
   ~~~
-
   ~~~
   <ng-container *ngIf="currentSlice">
     <ng-container *ngFor="let item of itemsDataArray | slice : currentSlice[0] : currentSlice[1]">
-      <item-component [item]="item"></item-component>
+      <some-component [item]="item"></some-component>
     </ng-container>
   </ng-container>
 
-  <b-pager [items]="itemsDataArray.length" (sliceChange)="currentSlice = $event"></b-pager>
+  <b-pager [items]="itemsDataArray.length" [config]="pagerConfig"
+        (sliceChange)="currentSlice = $event"></b-pager>
   ~~~
+
 
   #### interface: PagerConfig
   Name | Type | Description
@@ -99,7 +134,29 @@ const note = `
 `;
 
 const itemsNumber = 145;
-const itemsMock: number[] = arrayOfNumbers(itemsNumber) as number[];
+const things = mockThings();
+const itemsMock = arrayOfNumbers(itemsNumber).map((_, n) => {
+  const item = things[n % things.length].toLowerCase();
+  return (
+    n +
+    1 +
+    ' ' +
+    (n === 0 && item.endsWith('s')
+      ? things
+          .slice()
+          .reverse()
+          .find((i) => !i.endsWith('s'))
+          .toLowerCase()
+      : item) +
+    (n !== 0 && ['h', 'x', 'ss'].some((e) => item.endsWith(e))
+      ? 'es'
+      : n !== 0 && !item.endsWith('s')
+      ? 's'
+      : '')
+  );
+});
+
+const itemsMock$ = of(itemsMock).pipe(delay(500));
 
 story.add(
   'Pager',
@@ -108,7 +165,8 @@ story.add(
       template: storyTemplate,
       props: {
         currentPage: number('currentPage', 2),
-        items: object('items', itemsMock),
+        itemsNotes: object('items', itemsMock),
+        items$: itemsMock$,
         config: object('config', {
           sliceStep: 25,
           sliceMax: 100,
@@ -122,7 +180,12 @@ story.add(
         onSliceSizeChange: action('sliceSizeChange'),
       },
       moduleMetadata: {
-        imports: [StoryBookLayoutModule, BrowserAnimationsModule, PagerModule],
+        imports: [
+          CommonModule,
+          BrowserAnimationsModule,
+          StoryBookLayoutModule,
+          PagerModule,
+        ],
       },
     };
   },

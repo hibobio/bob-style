@@ -11,6 +11,7 @@ import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import {
   arrayFlatten,
   getFuzzyMatcher,
+  getSearchableValue,
   hasProp,
   isArray,
   isBoolean,
@@ -212,9 +213,7 @@ export class ListModelService {
           .map((group: SelectGroupOption) =>
             Object.assign({}, group, {
               options: group.options.filter((option: SelectOption) => {
-                const searcheableValue = option.value
-                  .split(/^<[^>]+>|</)
-                  .filter(Boolean)[0];
+                const searcheableValue = getSearchableValue(option.value);
                 return (
                   matcher.test(searcheableValue) ||
                   matcher.test(group.groupName)

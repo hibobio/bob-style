@@ -1,7 +1,8 @@
 <b-search class="search has-hover"
           (click)="$event.stopPropagation(); onSearchOpen()"
           [size]="formElementSize.smaller"
+          [config]="config"
           (searchBlur)="onSearchClose($event)"
           (searchChange)="onSearchChange($event)"
-          [ngClass]="{'open': open, 'as-icon': !open}">
+          [attr.data-open]="isOpen()">
 </b-search>

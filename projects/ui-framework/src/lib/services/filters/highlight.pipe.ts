@@ -4,6 +4,7 @@ import { FUZZY_SRCH_MIN_LENGTH } from '../../consts';
 import {
   getFuzzyMatcher,
   getMatcher,
+  getSearchableValue,
   normalizeString,
   normalizeStringSpaces,
 } from '../utils/functional-utils';
@@ -20,10 +21,7 @@ export class HighlightPipe implements PipeTransform {
     }
 
     // if string contains html or line break (\n), search only first half
-    const searcheableValue = value
-      .trim()
-      .split(/<[^>]+>|\n/)
-      .filter(Boolean)[0];
+    const searcheableValue = getSearchableValue(value);
     // remove weird spaces
     const searcheableValueNorm = normalizeStringSpaces(searcheableValue);
     // normalize Crème Brûlée

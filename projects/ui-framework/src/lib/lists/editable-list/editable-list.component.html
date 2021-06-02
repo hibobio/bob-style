@@ -1,22 +1,22 @@
-<header *ngIf="allowedActions.add || allowedActions.sort"
-        class="bel-header mrg-b-4">
+<header class="bel-header mrg-b-4">
 
   <div class="bel-header-top flx flx-row-align-y flx-wrap"
        *ngIf="allowedActions.add">
 
     <b-button class="bel-plus-button"
               [button]="addButton"
-              [hidden]="currentAction === 'add'"
+              [hidden]="state.currentAction === 'add'"
+              [disabled]="state.searchValue"
               (clicked)="addItem()">
     </b-button>
 
     <div class="bel-item flx flx-row-align-y flx-grow b-body pad-x-16 bg-white rounded focused"
-         [hidden]="currentAction !== 'add'">
+         [hidden]="state.currentAction !== 'add'">
 
       <input #addItemInput
              type="text"
              class="bfe-input bel-item-input flex-grow"
-             [(ngModel)]="listState.newItem.value"
+             [(ngModel)]="state.newItem.value"
              [attr.autocomplete]="autoComplete.off"
              [attr.maxlength]="maxChars || null">
 
@@ -35,20 +35,28 @@
     </div>
   </div>
 
-  <div class="bel-header-bottom flx flx-row-align-y mrg-t-4"
-       [hidden]="!listState.list.length">
+  <div class="bel-header-bottom flx flx-row-align-y mrg-t-4 mrg-b-8"
+       [hidden]="!state.size">
 
-    <span class="bel-total">
-      {{('common.total' | translate)}}: {{listState.list.length || 0}}
+    <span class="bel-total mrg-r-8">
+      {{('common.total' | translate)}}: {{state.size || 0}}
     </span>
 
+    <b-compact-search class="mrg-l-auto"
+                      [hidden]="allowedActions.search===false || state.size
+                      <=pagerMinItems"
+                      [config]="searchConfig">
+    </b-compact-search>
+
     <b-button *ngIf="allowedActions.sort"
-              class="bel-sort-button mrg-l-auto"
-              [ngClass]="sortType===order.UserDefined?'clr-grey-700':'clr-grey-600'"
-              [attr.data-sorting]="sortType"
+              class="bel-sort-button"
+              [class.mrg-l-auto]="allowedActions.search===false || state.size<=pagerMinItems"
+              [ngClass]="state.sortType===order.UserDefined?'clr-grey-700':'clr-grey-600'"
+              [attr.data-sorting]="state.sortType"
               [button]="sortButton"
-              [icon]="sortButton['icons'][sortType]"
-              [text]="sortButton['texts'][sortType]"
+              [icon]="sortButton['icons'][state.sortType]"
+              [text]="sortButton['texts'][state.sortType]"
+              [disabled]="state.searchValue"
               (clicked)="sortList()">
     </b-button>
 
@@ -56,68 +64,59 @@
 
 </header>
 
-<div cdkDropList
-     [cdkDropListDisabled]="allowedActions.order === false"
-     (cdkDropListDropped)="onDrop($event)">
+<div class="bel-item-list"
+     cdkDropList
+     [cdkDropListDisabled]="allowedActions.order ===
+       false||!!state.searchValue">
 
-  <div *ngFor="let item of listState.list; let index = index; trackBy: listTrackBy"
-       class="bel-item flx flx-row-align-y b-body pad-x-16 mrg-y-4 bg-white rounded has-hover"
-       [@zoomInOut]
-       [@.disabled]="!ready||(currentAction === 'remove'&&!index)"
-       cdkDrag
-       cdkDragLockAxis="y"
-       [cdkDragData]="item"
-       (cdkDragStarted)="onDragStart()"
-       data-icon-before-size="medium"
-       data-icon-before-color="light"
-       [attr.data-icon-before]="allowedActions.order !== false ? 'drag-alt' : null"
-       [attr.data-item-id]="item.id"
-       [class.focused]="currentAction!=='order' && currentItemIndex === index">
+  <ng-container *ngIf="state.viewList$|async as viewList">
+    <ng-container *ngFor="let e of state.emptyIterable;
+                        let viewIndex = index; trackBy: '$index'|trackByProp">
+      <div *ngLet="(viewList[viewIndex]||{data:{}}) as item"
+           class="bel-item flx flx-row-align-y b-body pad-x-16 bg-white rounded"
+           [style.grid-row]="getGridRowFromIndex(viewIndex)"
+           [hidden]="!viewList[viewIndex]"
+           cdkDrag
+           cdkDragLockAxis="y"
+           [cdkDragData]="item"
+           [cdkDragDisabled]="!viewList[viewIndex]"
+           (cdkDragStarted)="onDragStart()"
+           (cdkDragDropped)="onDrop($event)"
+           data-icon-before-size="medium"
+           data-icon-before-color="light"
+           [attr.data-icon-before]="allowedActions.order!==false &&
+             !state.searchValue ? 'drag-alt' : null"
+           [attr.data-item-id]="item.data.id"
+           [attr.data-item-index]="item.index"
+           [attr.data-item-view-index]="viewIndex"
+           [class.has-hover]="state.currentItemIndex!==item.index"
+           [class.focused]="state.currentAction!=='order' && state.currentItemIndex===item.index">
+        <span class="bel-item-value flx-grow"
+              [hidden]="state.currentAction==='edit' && state.currentItemIndex===item.index"
+              data-max-lines="2"
+              [innerHTML]="item.highlightedValue||item.data.value">
+        </span>
+      </div>
+    </ng-container>
+  </ng-container>
 
-    <span class="bel-item-value flx-grow"
-          [hidden]="currentAction === 'edit' && currentItemIndex === index"
-          data-max-lines="2">
-      {{ item.value }}
-    </span>
+  <div *ngLet="(state.currentItem||{}) as item"
+       [style.grid-row]="getGridRowFromIndex(state.currentItemViewIndex)"
+       [hidden]="!state.currentItem||(state.currentAction!=='edit'&&state.currentAction!=='remove')"
+       class="bel-item bel-item-edit flx flx-row-align-y b-body pad-x-16">
 
     <input #editItemInput
            type="text"
-           class="bfe-input bel-item-input edit-input flex-grow"
+           class="bfe-input bel-item-input edit-input bg-white pad-0"
+           [class.pad-l-24]="allowedActions.order!==false && !state.searchValue"
            [(ngModel)]="item.value"
-           [hidden]="currentAction !== 'edit' || currentItemIndex !== index"
            [attr.autocomplete]="autoComplete.off"
            [attr.maxlength]="maxChars || null">
 
-    <ng-container *ngIf="!allowedActions.remove || !allowedActions.edit">
-      <b-square-button *ngIf="allowedActions.remove && item.canBeDeleted!==false"
-                       class="bel-item-action-btn mrg-l-auto"
-                       [button]="deleteButton"
-                       [hidden]="currentItemIndex===index"
-                       (clicked)="removeItem(item, index)">
-      </b-square-button>
-
-      <b-square-button *ngIf="allowedActions.edit"
-                       class="bel-item-action-btn mrg-l-auto"
-                       [button]="editButton"
-                       [hidden]="currentItemIndex===index"
-                       (clicked)="editItem(item, index)">
-      </b-square-button>
-    </ng-container>
-
-    <b-action-menu-button *ngIf="allowedActions.remove && allowedActions.edit"
-                          class="bel-item-menu-btn"
-                          [id]="(item.id||item.value)+'-menu'"
-                          [swallow]="true"
-                          [menuItems]="item.canBeDeleted!==false?menuItems:[menuItems[1]]"
-                          [hidden]="currentItemIndex===index"
-                          (openMenu)="cancel()"
-                          (actionClick)="onMenuAction($event.key,item,index)">
-    </b-action-menu-button>
-
     <div *ngIf="allowedActions.remove || allowedActions.edit"
          class="bel-item-confirm flx flx-row-align-y"
-         tabindex="0"
-         [hidden]="currentAction==='order' || currentItemIndex !== index">
+         tabitem.index="0"
+         [hidden]="state.currentAction==='order'">
 
       <b-button class="bel-cancel-button"
                 [button]="cancelButton"
@@ -126,32 +125,57 @@
 
       <b-button class="bel-remove-button"
                 [button]="removeButton"
-                [hidden]="currentAction!=='remove'"
-                (clicked)="removeItemApply(item, index)">
+                [hidden]="state.currentAction!=='remove'"
+                (clicked)="removeItemApply(item, state.currentItemIndex)">
       </b-button>
 
       <b-button class="bel-done-button"
                 [button]="doneButton"
-                [hidden]="currentAction!=='edit'"
-                (clicked)="editItemApply(item, index)">
+                [hidden]="state.currentAction!=='edit'"
+                (clicked)="editItemApply(item,
+                state.currentItemIndex)">
       </b-button>
 
     </div>
 
-    <ng-template cdkDragPreview
-                 [data]="item"
-                 [matchSize]="true">
-      <div class="bel-item flx flx-row-align-y b-body pad-x-16 mrg-y-4 bg-white rounded bel-item-dragged"
-           data-icon-before="drag-alt"
-           data-icon-before-size="medium"
-           data-icon-before-color="dark">
-        <span class="bel-item-value flx-grow"
-              data-max-lines="2">
-          {{ item.value }}
-        </span>
-      </div>
-    </ng-template>
+  </div>
+
+  <div *ngLet="(state.hoverItem||{}) as item"
+       [style.grid-row]="getGridRowFromIndex(state.hoverItemViewIndex)"
+       [hidden]="state.hoverItemViewIndex===null
+        ||state.currentAction==='order'
+        ||state.currentItemIndex===state.hoverItemIndex"
+       class="bel-item bel-item-ghost flx flx-row-align-y pad-l-40 pad-r-16">
+
+    <ng-container *ngIf="!allowedActions.remove || !allowedActions.edit">
+      <b-square-button *ngIf="allowedActions.remove && item.canBeDeleted!==false"
+                       class="bel-item-action-btn mrg-l-auto"
+                       [button]="deleteButton"
+                       (clicked)="removeItem(item,state.hoverItemIndex)">
+      </b-square-button>
+
+      <b-square-button *ngIf="allowedActions.edit"
+                       class="bel-item-action-btn mrg-l-auto"
+                       [button]="editButton"
+                       (clicked)="editItem(item,state.hoverItemIndex)">
+      </b-square-button>
+    </ng-container>
+
+    <b-action-menu-button *ngIf="allowedActions.remove && allowedActions.edit"
+                          class="bel-item-menu-btn mrg-l-auto"
+                          [id]="(item.id||item.value)+'-menu'"
+                          [swallow]="true"
+                          [menuItems]="item.canBeDeleted!==false?menuItems:menuItems.slice(1)"
+                          (openMenu)="cancel()"
+                          (actionClick)="onMenuAction($event.key,item,
+                          state.hoverItemIndex)">
+    </b-action-menu-button>
 
   </div>
 
 </div>
+
+
+<b-pager class="mrg-t-16"
+         [hidden]="state.size<=pagerMinItems"
+         [config]="pagerConfig"></b-pager>

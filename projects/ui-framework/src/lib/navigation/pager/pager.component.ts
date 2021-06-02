@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   HostBinding,
@@ -29,7 +30,11 @@ import { PagerService } from './pager.service';
   providers: [PagerService],
 })
 export class PagerComponent<T = any> implements OnInit {
-  constructor(private zone: NgZone, private pagerService: PagerService) {}
+  constructor(
+    public cd: ChangeDetectorRef,
+    private zone: NgZone,
+    private pagerService: PagerService
+  ) {}
 
   @Input('config') set setConfig(config: PagerConfig) {
     this.initSliceConfigAndOptions(config);
@@ -57,7 +62,7 @@ export class PagerComponent<T = any> implements OnInit {
       }
     }
   }
-  private items: number | T[];
+  public items: number | T[];
 
   @Input('currentPage') set setCurrentPage(newPage: number) {
     if (newPage !== this.currentPage) {
@@ -68,6 +73,11 @@ export class PagerComponent<T = any> implements OnInit {
 
   @HostBinding('attr.data-show-slice-select') get showSliceSelect() {
     return Boolean((this.config || PAGER_CONFIG_DEF).showSliceSizeSelect);
+  }
+
+  @Input() hidden: boolean;
+  @HostBinding('attr.hidden') get isHidden() {
+    return this.hidden || null;
   }
 
   @Output() sliceChange: EventEmitter<number[] | T[]> = new EventEmitter<

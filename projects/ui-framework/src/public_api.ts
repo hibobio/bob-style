@@ -384,6 +384,9 @@ export { ColorPickerComponent } from './lib/form-elements/color-picker/color-pic
 // Search
 export { SearchModule } from './lib/search/search/search.module';
 export { SearchComponent } from './lib/search/search/search.component';
+export * from './lib/search/search/search.interface';
+export { search } from './lib/search/search/search.operator';
+export { SearchPipe } from './lib/search/search/search.pipe';
 // Auto complete Module
 export {
   AutoCompleteModule
@@ -412,6 +415,8 @@ export { MultiSearchComponent } from './lib/search/multi-search/multi-search.com
 // Compact Search
 export { CompactSearchModule } from './lib/search/compact-search/compact-search.module';
 export { CompactSearchComponent } from './lib/search/compact-search/compact-search.component';
+export *  from './lib/search/compact-search/compact-search.interface';
+
 
 /*
  * Navigation
@@ -450,6 +455,8 @@ export * from './lib/navigation/pager/pager.interface';
 export * from './lib/navigation/pager/pager.const';
 export { PagerModule } from './lib/navigation/pager/pager.module';
 export { PagerComponent } from './lib/navigation/pager/pager.component';
+export { PagerPipe } from './lib/navigation/pager/pager.pipe';
+export { pager } from './lib/navigation/pager/pager.operator';
 
 /*
  * Overlays & Popups

@@ -1,4 +1,4 @@
-import { of, Subject } from 'rxjs';
+import { BehaviorSubject, of, Subject } from 'rxjs';
 
 import { CommonModule } from '@angular/common';
 import { Component, NgModule } from '@angular/core';
@@ -16,6 +16,7 @@ const story = storiesOf(ComponentGroupType.Services, module).addDecorator(
 
 const code1 = `prev$ = new Subject();
 next$ = new Subject();
+sliceState$ = new BehaviorSubject(null);
 
 items$ = of( arrayOfNumbers(10,1) ).pipe(
     slicer(3, this.next$, this.prev$, {
@@ -27,8 +28,9 @@ items$ = of( arrayOfNumbers(10,1) ).pipe(
     {{ itm }}
 </ng-container>
 
-<button (click)="prev$.next()">prev</button>
-<button (click)="next$.next()">next</button>`;
+<button (click)="prev$.next()" [disabled]="(sliceState$|async)==='first'">prev</button>
+
+<button (click)="next$.next()" [disabled]="(sliceState$|async)==='last'">next</button>`;
 
 const code2 = `items$ = of(arrayOfNumbers(27, 1)).pipe(
     timedSlice(6, 1000, {
@@ -50,31 +52,71 @@ const code2 = `items$ = of(arrayOfNumbers(27, 1)).pipe(
           <h3 class="mrg-t-0 mrg-b-24">slicer</h3>
 
           <div class="flx flx-center">
-            <button (click)="prev1$.next()">&lt; prev</button>
-            <h4
-              class="brd pad-16 mrg-8"
-              style="width: 120px; text-align: center;"
+            <button
+              (click)="prev1$.next()"
+              [disabled]="(sliceState1$ | async) === 'first'"
             >
-              <ng-container *ngFor="let itm of itemsSliced$ | async">
-                {{ itm }}
-              </ng-container>
-            </h4>
-            <button (click)="next1$.next()">next &gt;</button>
+              &lt; prev
+            </button>
+            <div>
+              <h4
+                class="brd pad-16 mrg-8"
+                style="width: 120px; text-align: center;"
+              >
+                <ng-container *ngFor="let itm of itemsSliced$ | async">
+                  {{ itm }}
+                </ng-container>
+              </h4>
+              <span *ngIf="sliceState1$ | async as sliceState1">
+                current slice:
+                {{
+                  sliceState1 === 'first' || sliceState1 === 'last'
+                    ? sliceState1
+                    : '[' + sliceState1.join(', ') + ']'
+                }}
+              </span>
+            </div>
+            <button
+              (click)="next1$.next()"
+              [disabled]="(sliceState1$ | async) === 'last'"
+            >
+              next &gt;
+            </button>
           </div>
 
           <h3 class="mrg-t-16">slicer (loop: true)</h3>
 
           <div class="flx flx-center">
-            <button (click)="prev2$.next()">&lt; prev</button>
-            <h4
-              class="brd pad-16 mrg-8"
-              style="width: 120px; text-align: center;"
+            <button
+              (click)="prev2$.next()"
+              [disabled]="(sliceState2$ | async) === 'first'"
             >
-              <ng-container *ngFor="let itm of itemsSlicedLooped$ | async">
-                {{ itm }}
-              </ng-container>
-            </h4>
-            <button (click)="next2$.next()">next &gt;</button>
+              &lt; prev
+            </button>
+            <div>
+              <h4
+                class="brd pad-16 mrg-8"
+                style="width: 120px; text-align: center;"
+              >
+                <ng-container *ngFor="let itm of itemsSlicedLooped$ | async">
+                  {{ itm }}
+                </ng-container>
+              </h4>
+              <span *ngIf="sliceState2$ | async as sliceState2">
+                current slice:
+                {{
+                  sliceState2 === 'first' || sliceState2 === 'last'
+                    ? sliceState2
+                    : '[' + sliceState2.join(', ') + ']'
+                }}
+              </span>
+            </div>
+            <button
+              (click)="next2$.next()"
+              [disabled]="(sliceState2$ | async) === 'last'"
+            >
+              next &gt;
+            </button>
           </div>
         </div>
 
@@ -131,17 +173,20 @@ export class RxjsOperatorsComponent {
 
   prev1$ = new Subject();
   next1$ = new Subject();
+  sliceState1$ = new BehaviorSubject(null);
 
   prev2$ = new Subject();
   next2$ = new Subject();
+  sliceState2$ = new BehaviorSubject(null);
 
   itemsSliced$ = of(arrayOfNumbers(10, 1)).pipe(
-    slicer(3, this.next1$, this.prev1$)
+    slicer(3, this.next1$, this.prev1$, { state$: this.sliceState1$ })
   );
 
   itemsSlicedLooped$ = of(arrayOfNumbers(10, 1)).pipe(
     slicer(3, this.next2$, this.prev2$, {
       loop: true,
+      state$: this.sliceState2$,
     })
   );
 

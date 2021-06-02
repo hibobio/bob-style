@@ -868,6 +868,38 @@ export const stringify = (smth: any, limit = 300, limitKeys = null): string => {
     : stringified;
 };
 
+/**
+ * Given an object or an array, will return a string containing just the values, with non-word characters removed
+ * @param smth any object or array, of any levels deep;
+ * the deepest values are assumed to be stringifiable primitives
+ * @returns string representing all stringifiable values, in order
+ * of appearance
+ */
+export const stringifyValue = (smth: any): string => {
+  let parts: string[], result: string;
+
+  try {
+    if (isObject(smth)) {
+      parts = Object.values(smth).map((v) => stringifyValue(v));
+    } else if (isArray(smth)) {
+      parts = smth.map(stringifyValue);
+    } else if (isMap(smth)) {
+      parts = Array.from(smth.values()).map(stringifyValue);
+    } else if (isSet(smth)) {
+      parts = Array.from(smth).map(stringifyValue);
+    } else if (!isPrimitive(smth)) {
+      parts = [smth.toString()];
+    } else {
+      parts = [String(smth)];
+    }
+    result = normalizeStringSpaces(removePunctuation(parts.join(' '), ' '));
+  } catch (e) {
+    log.err(e, 'stringifyValue');
+  }
+
+  return result;
+};
+
 export const capitalize = (smth: string): string => {
   if (!isString(smth)) {
     return smth;
@@ -911,8 +943,8 @@ export const sameStringsDifferentCase = (a: string, b: string): boolean => {
   );
 };
 
-export const removePunctuation = (val: string): string =>
-  val?.replace(/[\.,-\/\\#!$%\^&\*;:{}=\-_`~()@\+\?><\[\]\+]/g, '');
+export const removePunctuation = (val: string, replaceChar = ''): string =>
+  val?.replace(/[\.,-\/\\#!$%\^&\*;:{}=\-_`~()@\+\?><\[\]\+]/g, replaceChar);
 
 export const normalizeStringSpaces = (
   value: string,
@@ -1187,6 +1219,15 @@ export const timeDifferenceHHmm = <R extends boolean>(
 // REGEX
 // ----------------------
 
+/**
+ *
+ * @param regExp the regular expression to wrap
+ * @param normalizeStr if search values should be normalized
+ * (spaces, Crème Brulée, etc)
+ * @returns a wrapper around the RegExp object, where exec and test
+ * will reset RegExp lastIndex state to 0 on each call and additionaly
+ * can normalize the search values
+ */
 export const wrapRegExp = (
   regExp: RegExp,
   normalizeStr = false
@@ -1229,6 +1270,22 @@ export const getFuzzyMatcher = (searchStr: string): RegExpWrapper => {
     : '';
   return wrapRegExp(new RegExp(ptrn, 'gi'), true);
 };
+
+// SEARCH
+
+/**
+ *
+ * @param value string that will be searched
+ * @returns if value has html tags or line break (\n), will
+ * return substring before the first tag or line break,
+ * or the content of the first tag; otherwise
+ * will return full string
+ */
+export const getSearchableValue = (value: string): string =>
+  value
+    ?.trim()
+    .split(/^<[^>]+>|<|\n/)
+    .filter(Boolean)[0];
 
 // ----------------------
 // RANDOMIZERS
