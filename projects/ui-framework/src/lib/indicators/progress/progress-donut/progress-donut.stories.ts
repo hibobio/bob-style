@@ -34,9 +34,9 @@ const template = `<b-progress-donut
                     headerTextSecondary: headerTextSecondary
                   }"
                   [config]="{
-                    disableAnimation: disableAnimation,
                     hideValue: hideValue,
-                    showValueInCenter: showValueInCenter
+                    showValueInCenter: showValueInCenter,
+                    disableAnimation: disableAnimation
                   }">
   </b-progress-donut>`;
 
@@ -130,6 +130,11 @@ const storyTemplate = `
 </b-story-book-layout>
 `;
 
+/*
+\`\`\`animateOnEveryInView: boolean\`\`\` - if true, will animate on every element in view event, defaults \
+  to false, which will animate only first appearance;<br>\
+*/
+
 const note = `
   ## Progress Donut
   #### Module
@@ -159,7 +164,7 @@ const note = `
    text for the bottom line of the header (smaller font-size &amp; lighter grey color)<br><br>\
    **Note**: If \`headerTextPrimary\` is not provided (set to falsy value), value (in %) will be put in its place. \
    To hide primary text slot completely, also set \`hideValue\` to true in \`config\` |  &nbsp;
-  [config] | ProgressDonutConfig | \`\`\`disableAnimation: boolean\`\`\` - disables animation <br>\
+  [config] | ProgressDonutConfig | \`\`\`disableAnimation: boolean\`\`\` - disables animation; <br>\
   \`\`\`hideValue: boolean\`\`\` - hides value text<br>\
   \`\`\`showValueInCenter: boolean\`\`\` - puts value in the donut center |  &nbsp;
 

@@ -134,4 +134,4 @@ export const emptyPixel =
 export const INVISIBLE_CHARACTER = '\u200E';
 export const NBSP_CHARACTER = '\u00A0';
 
-export const EMAIL_VALIDATION_REGEX = /^\s*[\w.\-\+]+@[\w.\-]+\.[\w]{2,6}\s*$/;
+export const EMAIL_VALIDATION_REGEX = /^\s*[\w.\-\+]+@[\w.\-]+\.[\w]{2,8}\s*$/;

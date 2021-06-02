@@ -1,3 +1,5 @@
+import { Subscription } from 'rxjs';
+
 import {
   ChangeDetectorRef,
   Directive,
@@ -7,6 +9,7 @@ import {
   Input,
   NgZone,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
@@ -18,16 +21,17 @@ import {
   isObject,
   notFirstChanges,
   numberMinMax,
+  unsubscribeArray,
 } from '../../services/utils/functional-utils';
 import { MutationObservableService } from '../../services/utils/mutation-observable';
-import { outsideZone } from '../../services/utils/rxjs.operators';
 import { valueAsNumber } from '../../services/utils/transformers';
 import { ProgressSize, ProgressType } from './progress.enum';
 import { ProgressConfig, ProgressData } from './progress.interface';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
-export abstract class BaseProgressElement implements OnChanges, OnInit {
+export abstract class BaseProgressElement
+  implements OnChanges, OnInit, OnDestroy {
   constructor(
     protected host: ElementRef,
     protected DOM: DOMhelpers,
@@ -48,6 +52,7 @@ export abstract class BaseProgressElement implements OnChanges, OnInit {
   readonly progressType = ProgressType;
   protected wasInView = false;
   protected dataDef: ProgressData | ProgressData[] = {} as ProgressData;
+  protected subs: Subscription[] = [];
 
   @HostBinding('attr.data-size') @Input() size: ProgressSize =
     ProgressSize.medium;
@@ -67,6 +72,7 @@ export abstract class BaseProgressElement implements OnChanges, OnInit {
 
   protected onNgChanges(changes: SimpleChanges): void {}
   protected abstract setCssProps(): void;
+  protected abstract removeCssProps(): void;
 
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(
@@ -103,17 +109,31 @@ export abstract class BaseProgressElement implements OnChanges, OnInit {
 
   ngOnInit(): void {
     if (!this.config.disableAnimation) {
-      this.mutationObservableService
-        .getElementFirstInViewEvent(this.host.nativeElement, {
+      this.subs.push(
+        this.mutationObservableService[
+          this.config.animateOnEveryInView
+            ? 'getElementInViewEvent'
+            : 'getElementFirstInViewEvent'
+        ](this.host.nativeElement, {
           outsideZone: true,
+        }).subscribe((inView) => {
+          if (inView || !this.config.animateOnEveryInView) {
+            this.wasInView = true;
+            this.setCssProps();
+          }
+          if (!inView && this.config.animateOnEveryInView) {
+            this.wasInView = false;
+            this.removeCssProps();
+          }
         })
-        .subscribe(() => {
-          this.wasInView = true;
-          this.setCssProps();
-        });
+      );
     } else {
       this.setCssProps();
     }
+  }
+
+  ngOnDestroy() {
+    unsubscribeArray(this.subs);
   }
 
   public onClick(): void {
