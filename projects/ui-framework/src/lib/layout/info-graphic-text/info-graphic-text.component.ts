@@ -1,5 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ButtonConfig, ButtonType, Icon, IconColor, Icons, IconSize } from 'bob-style';
+import { ButtonConfig } from '../../buttons/buttons.interface';
+import { ButtonType } from '../../buttons/buttons.enum';
+import { Icon } from '../../icons/icon.interface';
+import { Icons, IconColor, IconSize } from '../../icons/icons.enum';
 
 
 @Component({
