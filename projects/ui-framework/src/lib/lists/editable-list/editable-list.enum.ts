@@ -4,4 +4,10 @@ export enum ListSortType {
   Desc = 'Desc',
 }
 
-export type ListActionType = 'add' | 'remove' | 'order' | 'edit';
+export type ListActionType =
+  | 'add'
+  | 'remove'
+  | 'order'
+  | 'edit'
+  | 'moveToStart'
+  | 'moveToEnd';

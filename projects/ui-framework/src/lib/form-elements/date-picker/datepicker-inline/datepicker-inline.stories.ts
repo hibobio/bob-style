@@ -1,19 +1,16 @@
-import { storiesOf } from '@storybook/angular';
-import { select, withKnobs } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
-import { ComponentGroupType } from '../../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
-import { thisMonth, thisYear } from '../../../services/utils/functional-utils';
-import { DatepickerType } from '../datepicker.enum';
-import { BDateAdapterMock, UserLocaleServiceMock } from '../dateadapter.mock';
-import { DatepickerInlineModule } from './datepicker-inline.module';
+import { action } from '@storybook/addon-actions';
+import { select, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
 
-// @ts-ignore: md file and not a module
-import formElemsPropsDoc from '../../form-elements.properties.md';
+import { ComponentGroupType } from '../../../consts';
+import { thisMonth, thisYear } from '../../../services/utils/functional-utils';
+import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
+import { BDateAdapterMock, UserLocaleServiceMock } from '../dateadapter.mock';
+import { DatepickerType } from '../datepicker.enum';
 // @ts-ignore: md file and not a module
 import datepickerPropsDoc from '../datepicker.properties.md';
-import { FormElementsCommonProps } from '../../form-elements.stories.common';
+import { DatepickerInlineModule } from './datepicker-inline.module';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -35,7 +32,7 @@ const template = `
               [required]="required"
               [readonly]="readonly"
               [focusOnInit]="focusOnInit"
-              (dateChange)="dateChange($event)">
+              (changed)="dateChange($event)">
 </b-datepicker-inline>
 `;
 

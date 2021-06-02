@@ -1,23 +1,21 @@
-import { storiesOf } from '@storybook/angular';
-import { boolean, text, withKnobs } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
-import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CheckboxModule } from './checkbox.module';
+import { action } from '@storybook/addon-actions';
+import { boolean, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { mockText } from '../../mock.const';
-
-import { FormElementsCommonProps } from '../form-elements.stories.common';
-
 // @ts-ignore: md file and not a module
 import formElemsPropsDoc from '../form-elements.properties.md';
+import { FormElementsCommonProps } from '../form-elements.stories.common';
+import { CheckboxModule } from './checkbox.module';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
 );
 
 const template = `
-<b-checkbox (checkboxChange)="checkboxChange($event)"
+<b-checkbox (changed)="checkboxChange($event)"
             [value]="value"
             [label]="label"
             [placeholder]="placeholder"
@@ -45,7 +43,14 @@ const note = `
   *CheckboxModule* or *FormElementsModule*
 
   ~~~
-  ${template}
+<b-checkbox [value]="value"
+            [label]="label"
+            [placeholder]="placeholder"
+            [indeterminate]="indeterminate"
+            [disabled]="disabled"
+            [errorMessage]="errorMessage"
+            (changed)="checkboxChange($event)">
+</b-checkbox>
   ~~~
 
   #### Properties
@@ -53,7 +58,7 @@ const note = `
   --- | --- | ---
   [value] | boolean | start checkbox state
   [indeterminate] | boolean | indeterminate state
-  (checkboxChange) | EventEmitter<wbr>&lt;InputEvent&gt; | checkboxChange emitter
+  (changed) <s>(checkboxChange)</s> | EventEmitter<wbr>&lt;InputEvent&gt; | checkboxChange emitter
 
   ${formElemsPropsDoc}
 

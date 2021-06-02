@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
+
 import { SelectGroupOption } from '../../lists/list.interface';
 import {
-  makeArray,
-  isInteger,
   arrayOfNumbers,
   dedupeArray,
+  isInteger,
+  makeArray,
 } from '../../services/utils/functional-utils';
-import { PagerConfig } from './pager.interface';
 import { PAGER_CONFIG_DEF } from './pager.const';
-import { TranslateService } from '@ngx-translate/core';
+import { PagerConfig } from './pager.interface';
 
 @Injectable()
 export class PagerService {
-  constructor(private translate: TranslateService) {}
+  constructor() {}
 
   verifySliceConfig(config: PagerConfig = null): PagerConfig {
     config = { ...PAGER_CONFIG_DEF, ...(config || {}) };

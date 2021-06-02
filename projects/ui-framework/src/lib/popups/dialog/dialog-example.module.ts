@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, Inject, Input, NgModule, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  Input,
+  NgModule,
+  OnInit,
+} from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { ButtonType } from '../../buttons/buttons.enum';
@@ -17,7 +24,9 @@ import { DialogModule } from './dialog.module';
 @Component({
   selector: 'b-dialog-example',
   template: `
-    <b-button (clicked)="openDialog1()" style="margin: 5px;">Time Off Policies info </b-button>
+    <b-button (clicked)="openDialog1()" style="margin: 5px;"
+      >Time Off Policies info
+    </b-button>
     <b-button (clicked)="openDialog2()" style="margin: 5px;">Success</b-button>
     <b-button (clicked)="openDialog3()" style="margin: 5px;">$$$</b-button>
   `,
@@ -34,7 +43,8 @@ a note on what types are.`,
 
   @Input() size: DialogSize;
   @Input() disableClose = false;
-  @Input() closeOnBackdropClick = false;
+  @Input() closeOnBackdropClick = true;
+  @Input() closeOnNavigation = true;
 
   constructor(private dialogService: DialogService) {}
 
@@ -48,6 +58,7 @@ a note on what types are.`,
         data: this.dataMock,
         disableClose: this.disableClose,
         closeOnBackdropClick: this.closeOnBackdropClick,
+        closeOnNavigation: this.closeOnNavigation,
       }
     );
 
@@ -66,6 +77,7 @@ a note on what types are.`,
         data: {},
         disableClose: this.disableClose,
         closeOnBackdropClick: this.closeOnBackdropClick,
+        closeOnNavigation: this.closeOnNavigation,
       }
     );
   }
@@ -82,6 +94,7 @@ a note on what types are.`,
         },
         disableClose: this.disableClose,
         closeOnBackdropClick: this.closeOnBackdropClick,
+        closeOnNavigation: this.closeOnNavigation,
       }
     );
   }
@@ -90,9 +103,14 @@ a note on what types are.`,
 @Component({
   selector: 'b-example-dialog-1',
   template: `
-    <b-dialog dialogTitle="{{ data.title }}" [dialogButtons]="dialogButtonConfig">
+    <b-dialog
+      dialogTitle="{{ data.title }}"
+      [dialogButtons]="dialogButtonConfig"
+    >
       <div b-dialog-sub-title>
-        <b-subheading style="display:inline;"> The article id is {{ data.id }} </b-subheading>
+        <b-subheading style="display:inline;">
+          The article id is {{ data.id }}
+        </b-subheading>
       </div>
       <div b-dialog-content>
         <b-textarea
@@ -102,13 +120,22 @@ a note on what types are.`,
           (inputEvents)="onTextEdit($event)"
         >
         </b-textarea>
-        <article style="padding:20px; background-color:#f8f7f7; margin: 20px auto;">
+        <article
+          style="padding:20px; background-color:#f8f7f7; margin: 20px auto;"
+        >
           <b-big-body>"{{ editedText }}"</b-big-body>
         </article>
-        <b-single-select [options]="selectOptions" style="width: 100%;" label="was this article helpful">
+        <b-single-select
+          [options]="selectOptions"
+          style="width: 100%;"
+          label="was this article helpful"
+        >
         </b-single-select>
       </div>
-      <b-checkbox mat-dialog-footer-left label="Auto approve on request"></b-checkbox>
+      <b-checkbox
+        mat-dialog-footer-left
+        label="Auto approve on request"
+      ></b-checkbox>
       <div b-dialog-confirmation>*here you can add confirmation template*</div>
     </b-dialog>
   `,
@@ -168,12 +195,16 @@ export class ExampleDialog1Component implements OnInit {
 @Component({
   selector: 'b-example-dialog-2',
   template: `
-    <b-dialog dialogTitle="congratulations" [dialogButtons]="dialogButtonConfig">
+    <b-dialog
+      dialogTitle="congratulations"
+      [dialogButtons]="dialogButtonConfig"
+    >
       <div b-dialog-above-header>
         <div class="success-icon b-icon-success-alt"></div>
       </div>
       <div b-dialog-content>
-        Alan Tulin has been successfully added to your company, check out his profile
+        Alan Tulin has been successfully added to your company, check out his
+        profile
       </div>
     </b-dialog>
   `,
@@ -232,9 +263,15 @@ const bgsvg = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
       <div b-dialog-confirmation>
         You can: <br />
         <b-button size="small" type="primary" (clicked)="obey()">Obey</b-button>
-        <b-button size="small" type="negative" (clicked)="resist()">Resist</b-button>
+        <b-button size="small" type="negative" (clicked)="resist()"
+          >Resist</b-button
+        >
       </div>
-      <div class="b-display-4" b-dialog-preloader-message [innerHTML]="preloaderMessage"></div>
+      <div
+        class="b-display-4"
+        b-dialog-preloader-message
+        [innerHTML]="preloaderMessage"
+      ></div>
     </b-dialog>
   `,
   styles: [
@@ -264,7 +301,17 @@ const bgsvg = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
       }
 
       .magic2 {
-        background: linear-gradient(124deg, #490f2d, #470f7f, #714467, #bf208e, #76003d, #12005f, #d3004e, #192114);
+        background: linear-gradient(
+          124deg,
+          #490f2d,
+          #470f7f,
+          #714467,
+          #bf208e,
+          #76003d,
+          #12005f,
+          #d3004e,
+          #192114
+        );
         background-size: 1800% 1800%;
         animation: rainbow 10s ease infinite;
         mask-image: ${bgsvg};
@@ -288,7 +335,10 @@ const bgsvg = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
   ],
 })
 export class ExampleDialog3Component implements OnInit {
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private cd: ChangeDetectorRef) {}
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private cd: ChangeDetectorRef
+  ) {}
 
   public dialogButtonConfig: DialogButtons;
 
@@ -354,10 +404,25 @@ export class ExampleDialog3Component implements OnInit {
 }
 
 @NgModule({
-  declarations: [DialogExampleComponent, ExampleDialog1Component, ExampleDialog2Component, ExampleDialog3Component],
-  imports: [CommonModule, DialogModule, TypographyModule, ButtonsModule, FormElementsModule],
+  declarations: [
+    DialogExampleComponent,
+    ExampleDialog1Component,
+    ExampleDialog2Component,
+    ExampleDialog3Component,
+  ],
+  imports: [
+    CommonModule,
+    DialogModule,
+    TypographyModule,
+    ButtonsModule,
+    FormElementsModule,
+  ],
   exports: [DialogExampleComponent],
-  entryComponents: [ExampleDialog1Component, ExampleDialog2Component, ExampleDialog3Component],
+  entryComponents: [
+    ExampleDialog1Component,
+    ExampleDialog2Component,
+    ExampleDialog3Component,
+  ],
   providers: [DialogService],
 })
 export class DialogExampleModule {}

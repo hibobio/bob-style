@@ -6,6 +6,7 @@ export interface EditableListActions {
   remove?: boolean;
   order?: boolean;
   edit?: boolean;
+  search?: boolean;
 }
 
 export interface EditableListState {
@@ -15,6 +16,9 @@ export interface EditableListState {
   deletedIDs?: itemID[];
 }
 
-export interface EditableListStateLocal extends EditableListState {
-  newItem: SelectOption;
+export interface EditableListViewItem {
+  data?: SelectOption;
+  index?: number;
+  viewIndex?: number;
+  highlightedValue?: string;
 }

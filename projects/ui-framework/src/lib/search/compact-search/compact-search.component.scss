@@ -29,7 +29,7 @@ $transitionDuration: 0.3s;
     }
   }
 
-  &.as-icon ::ng-deep {
+  &[data-open='false']::ng-deep {
     .bfe-wrap {
       cursor: pointer;
       border-color: transparent;
@@ -45,7 +45,7 @@ $transitionDuration: 0.3s;
     }
   }
 
-  &.open {
+  &[data-open='true'] {
     width: 280px;
 
     ::ng-deep {

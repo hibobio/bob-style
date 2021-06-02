@@ -1,5 +1,6 @@
-import { defer, Observable, OperatorFunction, Subscription } from 'rxjs';
+import { defer, merge, Observable, OperatorFunction, Subscription } from 'rxjs';
 import {
+  delay,
   distinctUntilChanged,
   filter,
   finalize,
@@ -294,6 +295,31 @@ export function collectToArray<T = unknown>(
             collection.add(value);
           }
           subscriber.next(Array.from(collection));
+        },
+        complete: () => {
+          subscriber.complete();
+        },
+        error: (error) => {
+          subscriber.error(error);
+        },
+      });
+    });
+  };
+}
+
+/**
+ * For every incoming value, repeat the same value after specified delay time, once.
+ * @param delayTime time before repeated emission
+ */
+export function repeatAfter<T = unknown>(
+  delayTime: number
+): OperatorFunction<T, T> {
+  return function (source: Observable<T>): Observable<T> {
+    //
+    return new Observable<T>((subscriber) => {
+      return merge(source, source.pipe(delay(delayTime))).subscribe({
+        next: (value: T) => {
+          subscriber.next(value);
         },
         complete: () => {
           subscriber.complete();

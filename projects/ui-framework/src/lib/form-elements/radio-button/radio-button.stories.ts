@@ -28,7 +28,7 @@ const template = `
                 [warnMessage]="warnMessage"
                 [errorMessage]="errorMessage"
                 [focusOnInit]="focusOnInit"
-                (radioChange)="radioChange($event)">
+                (changed)="radioChange($event)">
 </b-radio-button>
 `;
 
@@ -52,7 +52,7 @@ const note = `
   [radioConfig] | RadioConfig[] | list of RadioConfig ({id, label}) objects
   [value] | RadioConfig | selected option
   [direction] | RadioDirection | column or row, default=row
-  (radioChange) | EventEmitter<wbr>&lt;string/number&gt; | fired on radio change, returns option ID
+  (changed) <s>(radioChange)</s> | EventEmitter<wbr>&lt;string/number&gt; | fired on radio change, returns option ID
 
   #### interface RadioConfig
   Name | Type | Description

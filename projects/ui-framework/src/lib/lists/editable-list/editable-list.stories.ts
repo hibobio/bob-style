@@ -1,40 +1,34 @@
-import { storiesOf } from '@storybook/angular';
-import { withKnobs, boolean, select, number, object } from '@storybook/addon-knobs';
-import { ComponentGroupType } from '../../consts';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { cloneDeep } from 'lodash';
-import { EditableListModule } from './editable-list.module';
-import { editableListMock } from './editable-list.mock';
-import { action } from '@storybook/addon-actions';
-import { ListSortType } from './editable-list.enum';
+import { of } from 'rxjs';
+import { delay } from 'rxjs/operators';
+
 import { CommonModule } from '@angular/common';
-import { EditableListUtils } from './editable-list.static';
-import { EditableListActions } from './editable-list.interface';
-import { EDITABLE_LIST_ALLOWED_ACTIONS_DEF } from './editable-list.const';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { action } from '@storybook/addon-actions';
+import { boolean, number, select, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ComponentGroupType } from '../../consts';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { editableListMock } from './editable-list.mock';
+import { EditableListModule } from './editable-list.module';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
 
 const componentTemplate1 = `
-<b-editable-list [list]="list === 'Ascending'
-                        ? listMockAsc
-                        : list === 'Descending'
-                        ? listMockDesc
-                        : listMock"
+<b-editable-list [list]="list$"
                  [sortType]="sortType !== 0 ? sortType : undefined"
                  [allowedActions]="{
                    sort: allowSort,
                    add: allowAdd,
                    remove: allowRemove,
                    order: allowOrder,
-                   edit: allowEdit
+                   edit: allowEdit,
+                   search: allowSearch
                  }"
                  [maxChars]="maxChars"
-                 (changed)="onListUpdate($event)"
-                 (inputChanged)="onInputChange($event)"
-                 >
+                 (changed)="onListUpdate($event)">
 </b-editable-list>
 `;
 
@@ -52,6 +46,13 @@ const note = `
   #### Module
   *EditableListModule*
 
+  <mark>
+    **Note:**<br>
+    For performance reasons, if there are more than 60 items in the list, pagination and search will be shown. This has following limitations:<br>
+    — it's currently not possible to drag-n-drop items between pages;<br>
+    — it's currently not possible to drag-n-drop or add itmes when searching (only edit/remove is available)
+  </mark>
+
   #### Properties
   Name | Type | Description | Default value
   --- | --- | --- | ---
@@ -64,52 +65,40 @@ const note = `
    it checks sorting automatically. | &nbsp;
   [maxChars] | number | Maximum length of text for option input | 100
   (changed) | EventEmitter<wbr>&lt;EditableListState&gt; | emits updated list | &nbsp;
-  (inputChanged) | EventEmitter&lt;string&gt; | Outputs input value \
-  (for external validation) | &nbsp;
+  <s>(inputChanged)</s> | <s>EventEmitter&lt;string&gt;</s> | <s>Outputs input value</s> (deprecated, no longer present)  | &nbsp;
 
 
   ~~~
 <b-editable-list [list]="list"
                  [sortType]="sortType"
                  [allowedActions]="allowedActions"
-                 (changed)="onListUpdate($event)"
-                 (inputChanged)="onInputChange($event)>
+                 (changed)="onListUpdate($event)">
 </b-editable-list>
   ~~~
 
   #### interface EditableListState
   Name | Type | Description
   --- | --- | ---
-  delete | string[] | array of removed items
-  create | string[] | array of added items
-  sortType | ListSortType | list sorting (Asc/Desc/UserDefined)
-  order | string[] | array of item values, representing item order (including new items)
-  list | SelectOption[] | current list of {id,value} \
-  items (including new items, which will have generated ids that start with 'new-')
+  <b><u>list</u></b> | SelectOption[] | current list of {id,value} \
+  items (including new items, which will have <b>not</b> have id). This is the main "source of truth" for the current list state
+  delete | string[] | array of removed item values
+  deletedIDs | itemID[] | array of removed item ids
+  create | string[] | array of added item values
+  <s>sortType</s> | <s>ListSortType</s> | <s>list sorting (Asc/Desc/UserDefined)</s> (deprecated, no longer present)
+  <s>order</s> | <s>string[]</s> | <s>array of item values, representing item order (including new items)</s> (deprecated, no longer present)
+
 
 `;
 
-const listMock = cloneDeep(editableListMock);
-const listMockAsc = cloneDeep(editableListMock);
-const listMockDesc = cloneDeep(editableListMock);
-EditableListUtils.sortList(listMockAsc, ListSortType.Asc);
-EditableListUtils.sortList(listMockDesc, ListSortType.Desc);
+const listMock$ = of(editableListMock).pipe(delay(500));
+
 story.add(
   'Editable List',
   () => {
     return {
       template,
       props: {
-        listMock: listMock,
-        listMockAsc: listMockAsc,
-        listMockDesc: listMockDesc,
-
-        list: select(
-          'list',
-          ['Ascending', 'Descending', 'Custom order'],
-          'Custom order',
-          'Props'
-        ),
+        list$: editableListMock,
 
         sortType: select('sortType', [0, 'Asc', 'Desc'], 0, 'Props'),
         maxChars: number('maxChars', 50, {}, 'Props'),
@@ -118,9 +107,9 @@ story.add(
         allowRemove: boolean('allowRemove', true, 'Props'),
         allowOrder: boolean('allowOrder', true, 'Props'),
         allowEdit: boolean('allowEdit', true, 'Props'),
+        allowSearch: boolean('allowSearch', true, 'Props'),
         allowActions: select('sortType', [0, 'Asc', 'Desc'], 0, 'Props'),
-        onListUpdate: action('onListUpdate'),
-        onInputChange: action('onInputChange'),
+        onListUpdate: action('list updated'),
       },
       moduleMetadata: {
         imports: [

@@ -26,6 +26,7 @@
 
 .bsi-item b-progress-bar {
   row-gap: 0;
+  min-width: 120px;
 
   ::ng-deep .bpb-value {
     @include mobile($breakpoint-device-lg) {
