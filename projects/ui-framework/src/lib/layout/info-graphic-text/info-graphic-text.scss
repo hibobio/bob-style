@@ -1,0 +1,14 @@
+@import '../../style/common-imports';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba($negative-500, 0.05);
+  border-radius: 8px;
+  padding: times8(5);
+}
+
+.b-display-4 b {
+  font-weight: 800;
+}

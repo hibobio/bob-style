@@ -1,0 +1,8 @@
+<div class="b-display-2 clr-negative-500 text-center mrg-b-16">{{title}}</div>
+<div class="flx flx-wrap">
+  <span class="b-display-4 clr-negative-500 mrg-x-8" *ngFor="let item of items" [innerHTML]="item"></span>
+</div>
+
+<b-text-button class="text-center mrg-t-24" [button]="buttonConfig">
+    <b-icon [config]="linkIconConfig"></b-icon>
+</b-text-button>
