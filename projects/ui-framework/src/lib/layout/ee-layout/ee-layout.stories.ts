@@ -263,6 +263,8 @@ const note = `
   [disablePrev] | boolean | true will disable the prev button, false will enable it. The default is false.
   [tooltipNext] | string | The tooltip strings that will be added to the next button. There is no tooltip by default.
   [tooltipPrev] | string | The tooltip strings that will be added to the previous buttons. There is no tooltip by default.
+  (prevClicked) | EventEmitter<MouseEvent> | event that is fired when clicking the prev button.
+  (nextClicked) | EventEmitter<MouseEvent> | event that is fired when clicking the next button.
 
   #### interface: EELayoutConfig
   Name | Type | Description

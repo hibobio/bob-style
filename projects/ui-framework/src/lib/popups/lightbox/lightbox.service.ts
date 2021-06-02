@@ -99,13 +99,11 @@ export class LightboxService {
 
       this.subs.push(
         merge(
-          config.closeOnBackdropClick === true &&
-            config.disableClose !== true &&
-            config.disableCloseButton !== true
+          config.closeOnBackdropClick === true && config.disableClose !== true
             ? fromEvent(this.lightbox.overlayRef.overlayElement, 'click')
             : EMPTY,
 
-          config.disableClose !== true && config.disableCloseButton !== true
+          config.disableClose !== true
             ? this.utilsService
                 .getWindowKeydownEvent(true)
                 .pipe(filterKey(Keys.escape), insideZone(this.zone))
