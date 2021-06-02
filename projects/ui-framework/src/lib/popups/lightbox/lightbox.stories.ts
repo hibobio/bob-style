@@ -17,6 +17,7 @@ const storyTemplate = `<b-story-book-layout [title]="'Lightbox'">
                   [showInLightbox]="showInLightbox"
                   [fillScreen]="fillScreen"
                   [disableClose]="disableClose"
+                  [disableCloseButton]="disableCloseButton"
                   [closeOnBackdropClick]="closeOnBackdropClick">
                 </b-lightbox-example>
 </b-story-book-layout>`;
@@ -36,6 +37,7 @@ const note = `
   video | string | embedable youtube or vimeo link to show in lightbox (other URLs will throw error)
   fillScreen | boolean | if content should fill most of the screen (may be important for components)
   disableClose | boolean | if true, closing via Escape key and backdrop click will be disabled (only closing via X button is enabled) | false
+  disableCloseButton | boolean | if true removes the close button at the top right | false
   closeOnBackdropClick | boolean | if backdrop click should close lightbox | false
 
   #### Returned object properties
@@ -98,6 +100,7 @@ story.add(
         ),
         fillScreen: boolean('fillScreen', false),
         disableClose: boolean('disableClose', false),
+        disableCloseButton: boolean('disableCloseButton', false),
         closeOnBackdropClick: boolean('closeOnBackdropClick', false),
       },
       moduleMetadata: {

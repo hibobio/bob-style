@@ -12,6 +12,7 @@ export interface LightboxConfig {
   iframe?: string | SafeResourceUrl;
   fillScreen?: boolean;
   disableClose?: boolean;
+  disableCloseButton?: boolean;
   closeOnBackdropClick?: boolean;
 }
 

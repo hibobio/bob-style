@@ -25,6 +25,7 @@ export class LightboxExampleComponent implements OnDestroy {
   @Input() fillScreen = false;
   @Input() closeOnBackdropClick = false;
   @Input() disableClose = false;
+  @Input() disableCloseButton = false;
 
   private lightbox: LightboxData;
 
@@ -33,6 +34,7 @@ export class LightboxExampleComponent implements OnDestroy {
       fillScreen: this.fillScreen,
       closeOnBackdropClick: this.closeOnBackdropClick,
       disableClose: this.disableClose,
+      disableCloseButton: this.disableCloseButton,
 
       ...(this.showInLightbox === 'image' &&
         this.imageLink && {

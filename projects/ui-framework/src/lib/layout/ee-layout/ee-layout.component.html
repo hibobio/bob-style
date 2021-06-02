@@ -13,7 +13,7 @@
 
     <div class="bel-navigation-container" *ngIf="avatar">
       <b-round-button *ngIf="showPrev"
-                      class="bel-nav-button-prev"
+                      class="bel-nav-button bel-nav-button-prev"
                       type="tertiary"
                       [matTooltip]="tooltipPrev"
                       [disabled]="disablePrev"
@@ -27,7 +27,7 @@
                 [orientation]="avatarOrientation.vertical"></b-avatar>
 
       <b-round-button *ngIf="showNext"
-                      class="bel-nav-button-next"
+                      class="bel-nav-button bel-nav-button-next"
                       type="tertiary"
                       [matTooltip]="tooltipNext"
                       [disabled]="disableNext"

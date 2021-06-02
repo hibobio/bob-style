@@ -36,6 +36,11 @@ $ee-layout-nav-button-size: $button-size-medium;
   align-items: start;
 }
 
+.bel-nav-button {
+  // stack it on top of the avatar just in case as they overlap on the grid cells
+  position: relative;
+}
+
 .bel-nav-button-prev {
   grid-column: 1/2;
   grid-row: 2/3;
@@ -47,7 +52,7 @@ $ee-layout-nav-button-size: $button-size-medium;
 }
 
 .bel-avatar {
-  grid-column: 2/3;
+  grid-column: 1/4;
   grid-row: 1/4;
 }
 
