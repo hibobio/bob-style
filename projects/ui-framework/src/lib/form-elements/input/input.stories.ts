@@ -53,7 +53,7 @@ const template2 = `<b-input  [value]="(inputType === inputTypes.number ? valueNu
             focusOnInit: focusOnInit
           }"
            [allowedChars]="allowedChars"
-            (inputEvents)="inputEvents($event)">
+            (changed)="inputEvents($event)">
 </b-input>`;
 
 const template = `<b-input    [inputType]="inputType"
@@ -79,7 +79,7 @@ const template = `<b-input    [inputType]="inputType"
             [errorMessage]="errorMessage"
             [size]="size"
             [allowedChars]="allowedChars"
-            (inputEvents)="inputEvents($event)">
+            (changed)="inputEvents($event)">
 </b-input>`;
 
 const templateForNotes = `<b-input    [inputType]="inputType"
@@ -87,22 +87,17 @@ const templateForNotes = `<b-input    [inputType]="inputType"
             [label]="label"
             [description]="description"
             [placeholder]="placeholder"
-            [hideLabelOnFocus]="hideLabelOnFocus"
-            [minChars]="minChars"
             [maxChars]="maxChars"
-            [showCharCounter]="showCharCounter"
             [step]="step"
             [min]="min"
             [max]="max"
             [numberFormat]="numberFormat"
             [onlyIntegers]="onlyIntegers"
-            [readonly]="readonly"
             [disabled]="disabled"
             [required]="required"
             [hintMessage]="hintMessage"
-            [warnMessage]="warnMessage"
             [errorMessage]="errorMessage"
-            (inputEvents)="inputEvents($event)">
+            (changed)="inputEvents($event)">
 </b-input>`;
 
 const storyTemplate = `

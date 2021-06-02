@@ -1,16 +1,16 @@
-import { storiesOf } from '@storybook/angular';
-import { select, withKnobs, text, boolean } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
-import { ComponentGroupType } from '../../consts';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { SocialModule } from './social.module';
-import { SearchModule } from '../../search/search/search.module';
-import { Social } from './social.enum';
+import { action } from '@storybook/addon-actions';
+import { select, text, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
 
+import { ComponentGroupType } from '../../consts';
+import { SearchModule } from '../../search/search/search.module';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 // @ts-ignore: md file and not a module
 import formElemsPropsDoc from '../form-elements.properties.md';
 import { FormElementsCommonProps } from '../form-elements.stories.common';
+import { Social } from './social.enum';
+import { SocialModule } from './social.module';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -28,7 +28,8 @@ const template = `
           [warnMessage]="warnMessage"
           [errorMessage]="errorMessage"
           [focusOnInit]="focusOnInit"
-          (socialInputChange)="socialInputChange($event)">
+          [hideLabelOnFocus]="hideLabelOnFocus"
+          (changed)="socialInputChange($event)">
 </b-social>
 `;
 
@@ -47,7 +48,14 @@ const note = `
   *SocialModule*
 
   ~~~
-  ${template}
+  <b-social [value]="value"
+          [type]="type"
+          [label]="label"
+          [placeholder]="placeholder"
+          [disabled]="disabled"
+          [errorMessage]="errorMessage"
+          (changed)="socialInputChange($event)">
+</b-social>
   ~~~
 
   #### Properties
@@ -59,7 +67,7 @@ const note = `
   but if [label] is passed, it will be displayed instead, \
   and the Social icon will be placed in placeholder (inside input) | &nbsp;
   [placeholder] | string | placeholder text (inside input) | 'username'
-  (socialInputChange) |  EventEmitter<wbr>&lt;InputEvent&gt; | input events emitter | &nbsp;
+  (changed) <s>(socialInputChange)</s> |  EventEmitter<wbr>&lt;InputEvent&gt; | input events emitter | &nbsp;
 
   ${formElemsPropsDoc}
 

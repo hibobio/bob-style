@@ -1,18 +1,17 @@
-import { storiesOf } from '@storybook/angular';
-import { text, boolean, withKnobs, number } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
-import { TextareaModule } from './textarea.module';
-import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { mockText } from '../../mock.const';
+import { action } from '@storybook/addon-actions';
+import { boolean, number, text, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
 
+import { rteMockHtml } from '../../../../bob-rte/src/rte/rte.mocks';
+import { ComponentGroupType } from '../../consts';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 // @ts-ignore: md file and not a module
 import formElemsPropsDoc from '../form-elements.properties.md';
+import { FormElementsCommonProps } from '../form-elements.stories.common';
 // @ts-ignore: md file and not a module
 import inputElemsPropsDoc from '../input.properties.md';
-import { FormElementsCommonProps } from '../form-elements.stories.common';
-import { rteMockHtml } from '../../../../bob-rte/src/rte/rte.mocks';
+import { TextareaModule } from './textarea.module';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -33,7 +32,7 @@ const template = `
             [warnMessage]="warnMessage"
             [errorMessage]="errorMessage"
             [focusOnInit]="focusOnInit"
-            (inputEvents)="inputEvents($event)">
+            (changed)="inputEvents($event)">
 </b-textarea>
 `;
 

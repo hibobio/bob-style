@@ -1,6 +1,7 @@
-import { DialogSize } from './dialog.enum';
-import { ButtonType } from '../../buttons/buttons.enum';
 import { MatDialogConfig } from '@angular/material/dialog';
+
+import { ButtonType } from '../../buttons/buttons.enum';
+import { DialogSize } from './dialog.enum';
 
 export interface DialogConfig extends MatDialogConfig {
   size?: DialogSize;
@@ -8,6 +9,7 @@ export interface DialogConfig extends MatDialogConfig {
   data: any;
   disableClose?: boolean;
   closeOnBackdropClick?: boolean;
+  closeOnNavigation?: boolean;
 }
 
 export interface DialogButtons {
