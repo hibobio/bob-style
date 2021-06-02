@@ -37,7 +37,7 @@ $ee-layout-nav-button-size: $button-size-medium;
 }
 
 .bel-nav-button {
-  // stack it on top of the avatar just case as they overlap on the grid cells
+  // stack it on top of the avatar just in case as they overlap on the grid cells
   position: relative;
 }
 
