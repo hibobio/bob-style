@@ -1,21 +1,21 @@
-import { storiesOf } from '@storybook/angular';
-import { boolean, select, text, withKnobs } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
-import { ComponentGroupType } from '../../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
-import { DateRangePickerModule } from './date-range-picker.module';
-import { thisMonth, thisYear } from '../../../services/utils/functional-utils';
-import { DatepickerType } from '../datepicker.enum';
-import { BDateAdapterMock, UserLocaleServiceMock } from '../dateadapter.mock';
+import { action } from '@storybook/addon-actions';
+import { select, text, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
 
+import { ComponentGroupType } from '../../../consts';
+import { thisMonth, thisYear } from '../../../services/utils/functional-utils';
+import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 // @ts-ignore: md file and not a module
 import formElemsPropsDoc from '../../form-elements.properties.md';
-// @ts-ignore: md file and not a module
-import datepickerPropsDoc from '../datepicker.properties.md';
+import { FormElementsCommonProps } from '../../form-elements.stories.common';
+import { BDateAdapterMock, UserLocaleServiceMock } from '../dateadapter.mock';
+import { DatepickerType } from '../datepicker.enum';
 // @ts-ignore: md file and not a module
 import datepickerInterfaceDoc from '../datepicker.interface.md';
-import { FormElementsCommonProps } from '../../form-elements.stories.common';
+// @ts-ignore: md file and not a module
+import datepickerPropsDoc from '../datepicker.properties.md';
+import { DateRangePickerModule } from './date-range-picker.module';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -38,8 +38,8 @@ const template = `
               [required]="required"
               [readonly]="readonly"
               [focusOnInit]="focusOnInit"
-              (dateChange)="dateChange($event)">
-              </b-date-range-picker>
+              (changed)="dateChange($event)">
+</b-date-range-picker>
 `;
 
 const storyTemplate = `
@@ -64,7 +64,17 @@ const note = `
   \`\`\`
 
   ~~~
-  ${template}
+<b-date-range-picker [type]="pickerType"
+              [value]="value"
+              [minDate]="minDate"
+              [maxDate]="maxDate"
+              [startDateLabel]="startDateLabel"
+              [endDateLabel]="endDateLabel"
+              [hintMessage]="hintMessage"
+              [disabled]="disabled"
+              [required]="required"
+              (changed)="dateChange($event)">
+</b-date-range-picker>
   ~~~
 
   #### Properties

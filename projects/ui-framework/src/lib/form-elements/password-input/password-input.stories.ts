@@ -1,21 +1,20 @@
-import { storiesOf } from '@storybook/angular';
-import { boolean, number, text, withKnobs } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
-import { PasswordInputModule } from './password-input.module';
-import { ComponentGroupType } from '../../consts';
-
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { action } from '@storybook/addon-actions';
+import { number, text, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+// @ts-ignore: md file and not a module
+import formElemsPropsDoc from '../form-elements.properties.md';
+import { FormElementsCommonProps } from '../form-elements.stories.common';
+// @ts-ignore: md file and not a module
+import inputElemsPropsDoc from '../input.properties.md';
+import { PasswordInputModule } from './password-input.module';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
 );
-
-// @ts-ignore: md file and not a module
-import formElemsPropsDoc from '../form-elements.properties.md';
-// @ts-ignore: md file and not a module
-import inputElemsPropsDoc from '../input.properties.md';
-import { FormElementsCommonProps } from '../form-elements.stories.common';
 
 const template = `
 <b-password-input
@@ -33,7 +32,7 @@ const template = `
               [required]="required"
               [hideLabelOnFocus]="hideLabelOnFocus"
               [focusOnInit]="focusOnInit"
-              (inputEvents)="onChange($event)">
+              (changed)="onChange($event)">
 </b-password-input>
 `;
 

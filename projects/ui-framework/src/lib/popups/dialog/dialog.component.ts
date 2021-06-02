@@ -1,23 +1,3 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  Input,
-  OnDestroy,
-  Output,
-  EventEmitter,
-  OnInit,
-  HostListener,
-  ViewChild,
-} from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
-import { Icons } from '../../icons/icons.enum';
-import { DialogButton, DialogButtons } from './dialog.interface';
-import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
-import { transition, trigger, useAnimation } from '@angular/animations';
-import { SLIDE_UP_DOWN } from '../../style/animations';
-import { isBoolean, isFunction } from '../../services/utils/functional-utils';
-import { WindowRef } from '../../services/utils/window-ref.service';
-import { CdkScrollable } from '@angular/cdk/scrolling';
 import { Observable } from 'rxjs';
 import {
   distinctUntilChanged,
@@ -25,6 +5,28 @@ import {
   startWith,
   throttleTime,
 } from 'rxjs/operators';
+
+import { transition, trigger, useAnimation } from '@angular/animations';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
+
+import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
+import { Icons } from '../../icons/icons.enum';
+import { isBoolean, isFunction } from '../../services/utils/functional-utils';
+import { WindowRef } from '../../services/utils/window-ref.service';
+import { SLIDE_UP_DOWN } from '../../style/animations';
+import { DialogButton, DialogButtons } from './dialog.interface';
 
 @Component({
   selector: 'b-dialog',
@@ -93,13 +95,13 @@ export class DialogComponent implements OnInit, OnDestroy {
   public scrolled$: Observable<boolean>;
 
   @HostListener('window:popstate') closeModalOnHistoryBack() {
-    if (!this.isEmbedMode) {
+    if (!this.isEmbedMode && this.dialogRef['closeOnNavigation'] !== false) {
       this.closeDialog();
     }
   }
 
   ngOnInit(): void {
-    if (!this.isEmbedMode) {
+    if (!this.isEmbedMode && this.dialogRef['closeOnNavigation'] !== false) {
       this.windowRef.nativeWindow.history.pushState(
         {
           modal: true,
@@ -123,8 +125,12 @@ export class DialogComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (!this.isEmbedMode && this.windowRef.nativeWindow.history.state?.modal) {
-      this.windowRef.nativeWindow.history.back();
+    if (
+      !this.isEmbedMode &&
+      this.dialogRef['closeOnNavigation'] !== false &&
+      this.windowRef.nativeWindow.history.state?.modal
+    ) {
+      this.windowRef.nativeWindow.historyistory.back();
     }
     this.dialogRef.close();
   }

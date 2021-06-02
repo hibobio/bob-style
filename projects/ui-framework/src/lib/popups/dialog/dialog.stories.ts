@@ -1,12 +1,13 @@
-import { storiesOf } from '@storybook/angular';
-import { boolean, select, withKnobs } from '@storybook/addon-knobs';
-import { ComponentGroupType } from '../../consts';
-import { ButtonsModule } from '../../buttons/buttons.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DialogModule } from './dialog.module';
-import { DialogExampleModule } from './dialog-example.module';
+import { boolean, select, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ButtonsModule } from '../../buttons/buttons.module';
+import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { DialogExampleModule } from './dialog-example.module';
 import { DialogSize } from './dialog.enum';
+import { DialogModule } from './dialog.module';
 
 const story = storiesOf(ComponentGroupType.Popups, module).addDecorator(
   withKnobs
@@ -17,6 +18,7 @@ const template = `
 [size]="size"
 [disableClose]="disableClose"
 [closeOnBackdropClick]="closeOnBackdropClick"
+[closeOnNavigation]="closeOnNavigation"
 ></b-dialog-example>
 `;
 
@@ -190,6 +192,7 @@ export class YourDialogComponent implements OnInit {
   data | any | any data, to be injected into your dialog component via \`@Inject(MAT_DIALOG_DATA) public data: any\` | &nbsp;
   disableClose | boolean | if true, closing via Escape key and backdrop click will be disabled (only closing via X button is enabled) | false
   closeOnBackdropClick | boolean | if backdrop click should close dialog | false
+  closeOnNavigation | boolean | if dialog should close on browser back button click | true
 
 
   #### interface DialogButton
@@ -236,7 +239,8 @@ story.add(
     props: {
       size: select('size', [0, ...Object.values(DialogSize)], 0),
       disableClose: boolean('disableClose', false),
-      closeOnBackdropClick: boolean('closeOnBackdropClick', false),
+      closeOnBackdropClick: boolean('closeOnBackdropClick', true),
+      closeOnNavigation: boolean('closeOnNavigation', true),
     },
     moduleMetadata: {
       imports: [

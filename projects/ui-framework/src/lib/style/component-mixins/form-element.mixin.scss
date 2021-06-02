@@ -144,10 +144,10 @@ $input-focus-border-color: $grey-700;
     pointer-events: none;
   }
 
-  &:focus::placeholder,
-  &[data-placeholder]:focus:before {
-    opacity: 0;
-  }
+  // &:focus::placeholder,
+  // &[data-placeholder]:focus:before {
+  //   opacity: 0;
+  // }
 
   &[data-placeholder]:before {
     @include size;
@@ -236,10 +236,18 @@ $input-focus-border-color: $grey-700;
       border-color: $input-focus-border-color;
       box-shadow: none;
     }
+  }
 
+  #{$sel}.has-label {
     .bfe-wrap.focused {
       .bfe-input::placeholder,
       .bfe-input [data-placeholder]:before {
+        opacity: 0;
+      }
+    }
+    .bfe-input {
+      &:focus::placeholder,
+      &[data-placeholder]:focus:before {
         opacity: 0;
       }
     }

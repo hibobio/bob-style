@@ -30,7 +30,7 @@ const template = `
                              [required]="required"
                              [readonly]="readonly"
                              [focusOnInit]="focusOnInit"
-                             (elementChange)="elementChange($event)">
+                             (changed)="elementChange($event)">
 </b-split-input-single-select>
 `;
 
@@ -55,7 +55,7 @@ const note = `
   [value] | SplitInputSingleSelectValue | value of the input and select
   [selectOptions] | SelectGroupOption[] | the options model for the select element
   [selectDisabled] | boolean | disables the select (but not the input)
-  (elementChange) | EventEmitter<wbr>&lt;InputSingleSelectValue&gt; |  change emitter
+  (changed) <s>(elementChange)</s> | EventEmitter<wbr>&lt;InputSingleSelectValue&gt; |  change emitter
 
   #### Note:
 
