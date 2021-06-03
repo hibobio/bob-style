@@ -2,7 +2,7 @@
   <!-- <input type="button" value="scroll x" (click)="scroll()" style="position: absolute; right: 0; z-index: 999" /> -->
   <ng-content></ng-content>
   <div *ngFor="let item of (showAll ? items : (items | slice:0:itemsPerRow));
-    let i = index; trackBy: '$index' | trackByProp" #listItem>
+    let i = index; trackBy: '$index' | trackByProp">
     <ng-container *ngTemplateOutlet="contentTemplate; context: { item: item, index: i }">
     </ng-container>
   </div>

@@ -18,7 +18,7 @@ export class ListLayoutComponent extends ContentTemplateConsumer {
   readonly defaultNumOfItems = 3;
   readonly numberOfItemsBeforeScroll = 6;
   
-  @ViewChildren("listItem") private listItems: QueryList<ElementRef<HTMLElement>>;
+  @ViewChildren('listItem') private listItems: QueryList<ElementRef<HTMLElement>>;
 
   constructor(private elRef: ElementRef, private DOM: DOMhelpers,) {
     super();

@@ -41,7 +41,7 @@ import { MutationObservableService } from '../../services/utils/mutation-observa
 export class CardsLayoutComponent
   implements OnDestroy, OnChanges, AfterContentInit {
   constructor(
-    private hostRef: ElementRef,
+    public hostElRef: ElementRef,
     private zone: NgZone,
     private mobileService: MobileService,
     private cd: ChangeDetectorRef,
@@ -95,7 +95,7 @@ export class CardsLayoutComponent
   private setCardsInRow(): void {
     this.cardsInRow$ = this.itemsInRowService
       .getItemsInRow$({
-        hostElem: this.hostRef.nativeElement,
+        hostElem: this.hostElRef.nativeElement,
         elemWidth: this.getCardWidth(),
         gapSize: GAP_SIZE,
         minItems: 1,
@@ -109,6 +109,7 @@ export class CardsLayoutComponent
       .pipe(
         tap((cardsInRow) => {
           this.cardsInRow = cardsInRow;
+          this.cd.detectChanges();
         })
       );
   }
@@ -141,9 +142,8 @@ export class CardsLayoutComponent
   }
 
   public hasEnoughCards() {
-    const childCount = this.cardsList.nativeElement.childElementCount;
     return (
-      this.cardsInRow < childCount && childCount > 1
+      this.cardsInRow < this.cardsList.nativeElement.childElementCount && this.cardsList.nativeElement.childElementCount > 1
     );
   }
 
