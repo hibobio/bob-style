@@ -1,20 +1,21 @@
 import {
-  Component,
-  OnInit,
-  ElementRef,
-  NgZone,
-  OnChanges,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
+  Component,
+  ElementRef,
   Input,
+  NgZone,
+  OnChanges,
+  OnInit,
 } from '@angular/core';
-import {
-  simpleUID,
-  randomNumber,
-} from '../../../services/utils/functional-utils';
+
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
-import { BaseProgressElement } from '../progress-element.abstract';
+import {
+  randomNumber,
+  simpleUID,
+} from '../../../services/utils/functional-utils';
 import { MutationObservableService } from '../../../services/utils/mutation-observable';
+import { BaseProgressElement } from '../progress-element.abstract';
 import { ProgressBarConfig, ProgressBarData } from '../progress.interface';
 
 @Component({
@@ -23,7 +24,8 @@ import { ProgressBarConfig, ProgressBarData } from '../progress.interface';
   styleUrls: ['./progress-bar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProgressBarComponent extends BaseProgressElement
+export class ProgressBarComponent
+  extends BaseProgressElement
   implements OnChanges, OnInit {
   constructor(
     protected host: ElementRef,
@@ -56,6 +58,14 @@ export class ProgressBarComponent extends BaseProgressElement
       '--bpb-trans-delay': this.config?.disableAnimation
         ? '0s'
         : randomNumber(70, 250) + 'ms',
+    });
+  }
+
+  protected removeCssProps(): void {
+    this.DOM.setCssProps(this.host.nativeElement, {
+      '--bpb-value': null,
+      '--bpb-trans': null,
+      '--bpb-trans-delay': null,
     });
   }
 }

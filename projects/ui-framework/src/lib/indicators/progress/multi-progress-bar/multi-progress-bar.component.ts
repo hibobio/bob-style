@@ -1,33 +1,34 @@
 import {
-  Component,
-  OnInit,
-  ElementRef,
-  NgZone,
-  OnChanges,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Input,
-  SimpleChanges,
+  Component,
+  ElementRef,
   HostBinding,
   HostListener,
+  Input,
+  NgZone,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
 } from '@angular/core';
+
+import { ColorPaletteService } from '../../../services/color-service/color-palette.service';
+import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import {
-  simpleUID,
+  cloneDeepSimpleObject,
   hasChanges,
   isNotEmptyArray,
   isString,
   randomNumber,
-  cloneDeepSimpleObject,
+  simpleUID,
 } from '../../../services/utils/functional-utils';
-import { DOMhelpers } from '../../../services/html/dom-helpers.service';
-import { BaseProgressElement } from '../progress-element.abstract';
 import { MutationObservableService } from '../../../services/utils/mutation-observable';
+import { valueAsNumber } from '../../../services/utils/transformers';
+import { BaseProgressElement } from '../progress-element.abstract';
 import {
   MultiProgressBarConfig,
   MultiProgressBarData,
 } from '../progress.interface';
-import { valueAsNumber } from '../../../services/utils/transformers';
-import { ColorPaletteService } from '../../../services/color-service/color-palette.service';
 
 @Component({
   selector: 'b-multi-progress-bar',
@@ -35,7 +36,8 @@ import { ColorPaletteService } from '../../../services/color-service/color-palet
   styleUrls: ['./multi-progress-bar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MultiProgressBarComponent extends BaseProgressElement
+export class MultiProgressBarComponent
+  extends BaseProgressElement
   implements OnChanges, OnInit {
   constructor(
     protected host: ElementRef,
@@ -136,6 +138,14 @@ export class MultiProgressBarComponent extends BaseProgressElement
       '--bmpb-trans-delay': this.config?.disableAnimation
         ? '0s'
         : randomNumber(70, 250) + 'ms',
+    });
+  }
+
+  protected removeCssProps(): void {
+    this.DOM.setCssProps(this.host.nativeElement, {
+      '--bmpb-img-size': null,
+      '--bmpb-trans': null,
+      '--bmpb-trans-delay': null,
     });
   }
 }

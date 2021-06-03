@@ -1,20 +1,22 @@
+import { MockComponent } from 'ng-mocks';
+
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { TimePickerComponent } from './timepicker.component';
+import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { InputMessageModule } from '../input-message/input-message.module';
-import { DateParseService } from '../date-picker/date-parse-service/date-parse.service';
-import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
+
+import { IconsModule } from '../../icons/icons.module';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
+import { simpleChange } from '../../services/utils/functional-utils';
 import {
   elementFromFixture,
   getPseudoContent,
-  inputValue,
+  inputValue as _inputValue,
 } from '../../services/utils/test-helpers';
-import { IconsModule } from '../../icons/icons.module';
-import { MockComponent } from 'ng-mocks';
+import { DateParseService } from '../date-picker/date-parse-service/date-parse.service';
 import { FormElementLabelComponent } from '../form-element-label/form-element-label.component';
-import { By } from '@angular/platform-browser';
-import { simpleChange } from '../../services/utils/functional-utils';
+import { InputMessageModule } from '../input-message/input-message.module';
+import { FormElementKeyboardCntrlService } from '../services/keyboard-cntrl.service';
+import { TimePickerComponent } from './timepicker.component';
 
 describe('TimePickerComponent', () => {
   let component: TimePickerComponent;
@@ -27,50 +29,72 @@ describe('TimePickerComponent', () => {
   let iconElem: HTMLElement;
   let messageElem: HTMLElement;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        TimePickerComponent,
-        MockComponent(FormElementLabelComponent),
-      ],
-      imports: [NoopAnimationsModule, InputMessageModule, IconsModule],
-      providers: [
-        DateParseService,
-        FormElementKeyboardCntrlService,
-        EventManagerPlugins[0],
-      ],
+  let inputValue: (input, value) => void;
+  let clickElement: (element) => void;
+
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [
+          TimePickerComponent,
+          MockComponent(FormElementLabelComponent),
+        ],
+        imports: [NoopAnimationsModule, InputMessageModule, IconsModule],
+        providers: [
+          DateParseService,
+          FormElementKeyboardCntrlService,
+          EventManagerPlugins[0],
+        ],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(TimePickerComponent);
+          component = fixture.componentInstance;
+          componentElem = fixture.nativeElement;
+
+          component.ignoreEvents = [];
+          component.label = 'Label';
+          component.hintMessage = 'Hint';
+          component.required = true;
+
+          fixture.detectChanges();
+
+          labelElem = elementFromFixture(fixture, '.bfe-label');
+          labelComp = fixture.debugElement.query(By.css('.bfe-label'))
+            .componentInstance;
+          hhInputElem = elementFromFixture(
+            fixture,
+            '.bfe-input-hours'
+          ) as HTMLInputElement;
+          mmInputElem = elementFromFixture(
+            fixture,
+            '.bfe-input-minutes'
+          ) as HTMLInputElement;
+          messageElem = elementFromFixture(fixture, '[b-input-message]');
+
+          inputValue = (input, value) => {
+            _inputValue(input, value, true, true);
+            component.onHostFocusOut({
+              target: input,
+              relatedTarget: null,
+              preventDefault: () => {},
+            } as any);
+          };
+
+          clickElement = (element) => {
+            element.click();
+            component.onHostClick({
+              target: iconElem,
+              preventDefault: () => {},
+            } as any);
+          };
+
+          spyOn(component.changed, 'emit');
+          component.changed.subscribe(() => {});
+          spyOn(component, 'propagateChange');
+        });
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(TimePickerComponent);
-        component = fixture.componentInstance;
-        componentElem = fixture.nativeElement;
-
-        component.ignoreEvents = [];
-        component.label = 'Label';
-        component.hintMessage = 'Hint';
-        component.required = true;
-
-        fixture.detectChanges();
-
-        labelElem = elementFromFixture(fixture, '.bfe-label');
-        labelComp = fixture.debugElement.query(By.css('.bfe-label'))
-          .componentInstance;
-        hhInputElem = elementFromFixture(
-          fixture,
-          '.bfe-input-hours'
-        ) as HTMLInputElement;
-        mmInputElem = elementFromFixture(
-          fixture,
-          '.bfe-input-minutes'
-        ) as HTMLInputElement;
-        messageElem = elementFromFixture(fixture, '[b-input-message]');
-
-        spyOn(component.changed, 'emit');
-        component.changed.subscribe(() => {});
-        spyOn(component, 'propagateChange');
-      });
-  }));
+  );
 
   afterEach(() => {
     component.changed.complete();
@@ -84,12 +108,6 @@ describe('TimePickerComponent', () => {
 
     it('should display hint message', () => {
       expect(messageElem.innerText).toContain('Hint');
-    });
-
-    it('should display time icon', () => {
-      iconElem = elementFromFixture(fixture, '.input-icon .b-icon');
-      expect(iconElem).toBeTruthy();
-      expect(iconElem.classList).toContain('b-icon-watch');
     });
 
     it('should not display clear icon, when component has no value', () => {
@@ -200,16 +218,13 @@ describe('TimePickerComponent', () => {
         })
       );
       fixture.detectChanges();
-      iconElem = elementFromFixture(fixture, '.clear-input .b-icon');
-    });
-
-    it('should display clear icon, when component has value', () => {
-      expect(iconElem.classList).toContain('b-icon-circle-cancel');
+      iconElem = elementFromFixture(fixture, '.clear-input');
     });
 
     it('should clear value when clear button is clicked', () => {
       expect(component.value).not.toBeNull();
-      iconElem.click();
+      clickElement(iconElem);
+
       fixture.detectChanges();
 
       expect(component.value).toBeNull();

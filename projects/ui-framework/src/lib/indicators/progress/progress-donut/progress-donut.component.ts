@@ -1,31 +1,32 @@
 import {
-  Component,
-  ElementRef,
-  NgZone,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  SimpleChanges,
-  OnInit,
-  Input,
+  Component,
+  ElementRef,
   HostBinding,
+  Input,
+  NgZone,
+  OnInit,
+  SimpleChanges,
 } from '@angular/core';
+
+import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import {
-  simpleUID,
-  randomNumber,
-  roundToDecimals,
-  hasChanges,
+  applyChanges,
   closestNumber,
   getKeyByValue,
-  applyChanges,
+  hasChanges,
+  randomNumber,
+  roundToDecimals,
+  simpleUID,
 } from '../../../services/utils/functional-utils';
-import { DOMhelpers } from '../../../services/html/dom-helpers.service';
+import { MutationObservableService } from '../../../services/utils/mutation-observable';
 import { BaseProgressElement } from '../progress-element.abstract';
 import {
   DONUT_SIZES,
   PROGRESS_DONUT_DIAMETER,
   PROGRESS_DONUT_STROKE,
 } from '../progress.const';
-import { MutationObservableService } from '../../../services/utils/mutation-observable';
 import { DonutSize, ProgressSize } from '../progress.enum';
 import { ProgressDonutConfig, ProgressDonutData } from '../progress.interface';
 
@@ -35,7 +36,8 @@ import { ProgressDonutConfig, ProgressDonutData } from '../progress.interface';
   styleUrls: ['./progress-donut.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProgressDonutComponent extends BaseProgressElement
+export class ProgressDonutComponent
+  extends BaseProgressElement
   implements OnInit {
   constructor(
     protected host: ElementRef,
@@ -83,6 +85,14 @@ export class ProgressDonutComponent extends BaseProgressElement
               )
             )
           : changes.size.currentValue;
+
+      if (
+        (this.size === ProgressSize.small ||
+          this.donutSize === DonutSize.small) &&
+        this.config.disableAnimation !== false
+      ) {
+        this.config.disableAnimation = true;
+      }
 
       this.setCircleLengths();
     }
@@ -136,6 +146,13 @@ export class ProgressDonutComponent extends BaseProgressElement
       '--bpd-trans-delay': this.config.disableAnimation
         ? '0s'
         : randomNumber(70, 250) + 'ms',
+    });
+  }
+  protected removeCssProps(): void {
+    this.DOM.setCssProps(this.host.nativeElement, {
+      '--bpd-value-multiplier': null,
+      '--bpd-trans': null,
+      '--bpd-trans-delay': null,
     });
   }
 }

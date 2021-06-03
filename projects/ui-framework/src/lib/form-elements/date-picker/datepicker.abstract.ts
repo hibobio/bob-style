@@ -102,6 +102,7 @@ export abstract class BaseDatepickerElement<
         DatepickerType.month
       ].format.replace(/y+/g, 'yyyy') as DateFormat;
       this.dateFormats[DatepickerType.month].length.year = 4;
+      //
     } else {
       this.dateFormats = {
         [DatepickerType.date]: this.dateParseSrvc.parseFormat(

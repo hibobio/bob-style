@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { controlKeys, Keys } from '../../enums';
 import {
-  eventHasCntrlKey,
+  eventKeyIsNavOrMeta,
   isNumber,
 } from '../../services/utils/functional-utils';
 
@@ -28,7 +28,7 @@ export class FormElementKeyboardCntrlService {
     event: KeyboardEvent,
     allowedKeys = /[0-9,\W]/i
   ): KeyboardEvent {
-    if (eventHasCntrlKey(event)) {
+    if (eventKeyIsNavOrMeta(event)) {
       return event;
     }
 
@@ -41,6 +41,8 @@ export class FormElementKeyboardCntrlService {
       event.preventDefault();
       return null;
     }
+
+    return event;
   }
 
   public insertNewLineAtCursor(

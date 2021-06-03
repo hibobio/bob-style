@@ -21,6 +21,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ButtonsModule } from '../../buttons/buttons.module';
 import { DateRangePickerModule } from '../../form-elements/date-picker/date-range-picker/date-range-picker.module';
+import { InputEventType } from '../../form-elements/form-elements.enum';
 import { InputModule } from '../../form-elements/input/input.module';
 import { SocialModule } from '../../form-elements/social/social.module';
 // tslint:disable-next-line: max-line-length
@@ -182,9 +183,8 @@ class TestComponent {
   public showDateRange = false;
   public showSplitInpSel = false;
 
-  @Output() filtersChange: EventEmitter<GenericObject> = new EventEmitter<
-    GenericObject
-  >();
+  @Output()
+  filtersChange: EventEmitter<GenericObject> = new EventEmitter<GenericObject>();
 
   public onFiltersChange($event) {}
 }
@@ -359,7 +359,12 @@ describe('QuickFilterLayoutComponent', () => {
       const minuteInput = elementFromFixture(fixture, '.bfe-input-minutes');
       const textInput = elementFromFixture(fixture, 'b-input .bfe-input');
 
+      const timeComp = fixture.debugElement.query(By.css('b-timepicker'))
+        .componentInstance;
+
       inputValue(hourInput, 22);
+      timeComp.valueHours = '22';
+      timeComp.transmit(InputEventType.onChange);
 
       tick(500);
 
@@ -372,6 +377,8 @@ describe('QuickFilterLayoutComponent', () => {
 
       inputValue(textInput, 'Some other text');
       inputValue(minuteInput, 30);
+      timeComp.valueMinutes = '30';
+      timeComp.transmit(InputEventType.onChange);
 
       tick(500);
 
@@ -391,9 +398,13 @@ describe('QuickFilterLayoutComponent', () => {
 
       const socialInput = elementFromFixture(fixture, 'b-social .bfe-input');
       const minuteInput = elementFromFixture(fixture, '.bfe-input-minutes');
+      const timeComp = fixture.debugElement.query(By.css('b-timepicker'))
+        .componentInstance;
 
       inputValue(socialInput, 'donald-trump');
       inputValue(minuteInput, 30);
+      timeComp.valueMinutes = '30';
+      timeComp.transmit(InputEventType.onChange);
 
       tick(500);
 

@@ -18,6 +18,9 @@ export interface ProgressData {
 
 export interface ProgressConfig {
   disableAnimation?: boolean;
+  animateOnEveryInView?:
+    | 'setting this to true may affect performance'
+    | boolean;
   hideValue?: boolean;
   clickable?: boolean;
   reverseTextLocation?: boolean;

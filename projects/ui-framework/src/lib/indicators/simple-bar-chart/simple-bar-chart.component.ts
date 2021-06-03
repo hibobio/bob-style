@@ -1,4 +1,4 @@
-
+import { Subscription } from 'rxjs';
 
 import {
   AfterViewInit,
@@ -11,6 +11,7 @@ import {
   Input,
   NgZone,
   OnChanges,
+  OnDestroy,
   Output,
   QueryList,
   SimpleChanges,
@@ -24,9 +25,9 @@ import {
   numberMinMax,
   randomNumber,
   simpleUID,
+  unsubscribeArray,
 } from '../../services/utils/functional-utils';
 import { MutationObservableService } from '../../services/utils/mutation-observable';
-import { outsideZone } from '../../services/utils/rxjs.operators';
 import { valueAsNumber } from '../../services/utils/transformers';
 import { ProgressSize } from '../progress/progress.enum';
 import { ProgressConfig } from '../progress/progress.interface';
@@ -38,7 +39,8 @@ import { SimpleBarChartItem } from './simple-bar-chart.interface';
   styleUrls: ['./simple-bar-chart.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SimpleBarChartComponent implements OnChanges, AfterViewInit {
+export class SimpleBarChartComponent
+  implements OnChanges, AfterViewInit, OnDestroy {
   constructor(
     private host: ElementRef,
     private DOM: DOMhelpers,
@@ -61,12 +63,12 @@ export class SimpleBarChartComponent implements OnChanges, AfterViewInit {
   @Input() data: SimpleBarChartItem[] = [];
   @Input() config: ProgressConfig = {};
 
-  @Output() clicked: EventEmitter<SimpleBarChartItem> = new EventEmitter<
-    SimpleBarChartItem
-  >();
+  @Output()
+  clicked: EventEmitter<SimpleBarChartItem> = new EventEmitter<SimpleBarChartItem>();
 
   private wasInView = false;
   readonly id = simpleUID('bsbc');
+  private subs: Subscription[] = [];
 
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(
@@ -103,17 +105,31 @@ export class SimpleBarChartComponent implements OnChanges, AfterViewInit {
 
   ngAfterViewInit() {
     if (!this.config.disableAnimation) {
-      this.mutationObservableService
-        .getElementFirstInViewEvent(this.host.nativeElement, {
+      this.subs.push(
+        this.mutationObservableService[
+          this.config.animateOnEveryInView
+            ? 'getElementInViewEvent'
+            : 'getElementFirstInViewEvent'
+        ](this.host.nativeElement, {
           outsideZone: true,
+        }).subscribe((inView) => {
+          if (inView || !this.config.animateOnEveryInView) {
+            this.wasInView = true;
+            this.setCssProps();
+          }
+          if (!inView && this.config.animateOnEveryInView) {
+            this.wasInView = false;
+            this.removeCssProps();
+          }
         })
-        .subscribe(() => {
-          this.wasInView = true;
-          this.setCssProps();
-        });
+      );
     } else {
       this.setCssProps();
     }
+  }
+
+  ngOnDestroy() {
+    unsubscribeArray(this.subs);
   }
 
   public onBarClick(event: MouseEvent): void {
@@ -130,13 +146,14 @@ export class SimpleBarChartComponent implements OnChanges, AfterViewInit {
   }
 
   private setCssProps(): void {
+    this.DOM.setCssProps(this.host.nativeElement, {
+      '--bsbc-item-count': this.data?.length || null,
+    });
+
     this.bars.toArray().forEach((bar: ElementRef, index: number) => {
       const barElmnt = bar.nativeElement as HTMLElement;
       const item: SimpleBarChartItem = this.data[index];
 
-      this.DOM.setCssProps(this.host.nativeElement, {
-        '--bsbc-item-count': this.data?.length || null,
-      });
       this.DOM.setCssProps(barElmnt, {
         '--bsbc-value':
           this.wasInView || this.config.disableAnimation
@@ -151,6 +168,16 @@ export class SimpleBarChartComponent implements OnChanges, AfterViewInit {
         '--bsbc-trans-delay': this.config.disableAnimation
           ? '0s'
           : randomNumber(50, 200) + 'ms',
+      });
+    });
+  }
+  protected removeCssProps(): void {
+    this.bars.toArray().forEach((bar: ElementRef, index: number) => {
+      const barElmnt = bar.nativeElement as HTMLElement;
+      this.DOM.setCssProps(barElmnt, {
+        '--bsbc-value': null,
+        '--bsbc-trans': null,
+        '--bsbc-trans-delay': null,
       });
     });
   }

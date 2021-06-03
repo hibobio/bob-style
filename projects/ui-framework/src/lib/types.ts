@@ -45,6 +45,11 @@ export interface DOMInputEvent extends UIEvent {
 
 // LOCALE DATES
 
+export enum TimeFormat {
+  Time12 = '12h',
+  Time24 = '24h',
+}
+
 export type DateFormat =
   | 'dd/MM'
   | 'MM/dd'
