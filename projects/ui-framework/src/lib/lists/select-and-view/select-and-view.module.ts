@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
 import { SelectAndViewComponent } from './select-and-view.component';
 import { SingleListModule } from '../single-list/single-list.module';
 import { CommonModule } from '@angular/common';
@@ -23,7 +24,8 @@ import { ButtonsModule } from '../../buttons/buttons.module';
     TranslateModule,
     FiltersModule,
     NgLetModule,
-    ButtonsModule
+    ButtonsModule,
+    TruncateTooltipModule
   ],
   exports: [SelectAndViewComponent]
 })

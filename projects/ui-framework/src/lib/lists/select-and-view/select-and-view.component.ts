@@ -1,3 +1,4 @@
+import { TruncateTooltipType } from 'bob-style';
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
@@ -78,6 +79,7 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
   public searchValue$: BehaviorSubject<string> = new BehaviorSubject('');
 
   private readonly subs: Subscription[] = [];
+  readonly tooltipType = TruncateTooltipType.material;
   readonly viewItemIconConfig: Icon = {
     size: IconSize.small,
     color: IconColor.light,
