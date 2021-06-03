@@ -1,0 +1,8 @@
+@import '../../../style/common-imports';
+
+b-button ::ng-deep button.small {
+  height: 27px;
+  &:hover {
+    background-color: $grey-200;
+  }
+}

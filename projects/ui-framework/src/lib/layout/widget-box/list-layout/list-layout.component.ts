@@ -18,7 +18,7 @@ export class ListLayoutComponent extends ContentTemplateConsumer {
   readonly defaultNumOfItems = 3;
   readonly numberOfItemsBeforeScroll = 6;
   
-  @ViewChildren("listItem") private listItems: QueryList<ElementRef<HTMLElement>>;
+  @ViewChildren('listItem') private listItems: QueryList<ElementRef<HTMLElement>>;
 
   constructor(private elRef: ElementRef, private DOM: DOMhelpers,) {
     super();
@@ -30,7 +30,7 @@ export class ListLayoutComponent extends ContentTemplateConsumer {
         take(1)
       )
       .subscribe((queryList) => {
-        const itemHeight = queryList.first.nativeElement.getBoundingClientRect().height;
+        const itemHeight = queryList.first.nativeElement.offsetHeight;
         this.DOM.setCssProps(this.elRef.nativeElement, {
           '--item-height': `${itemHeight}px`,
           '--container-max-height': `${itemHeight * this.numberOfItemsBeforeScroll}px`,
@@ -38,7 +38,11 @@ export class ListLayoutComponent extends ContentTemplateConsumer {
       });
   }
 
-  public hasScroll(): boolean {
+  toggleShowAll(showAll: boolean): void {
+    this.showAll = showAll;
+  }
+
+  hasScroll(): boolean {
     return !!(this.showAll && (this.items?.length > this.numberOfItemsBeforeScroll))
   }
 

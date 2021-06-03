@@ -1,0 +1,24 @@
+@import '../../../style/common-imports';
+
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
+b-cards {
+  &[data-scroll=true] {
+    max-height: var(--container-max-height);
+  }
+  
+  @include mobile($small-mobile-media-width) {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
+
+b-button ::ng-deep button.small {
+  height: 27px;
+  &:hover {
+    background-color: $grey-200;
+  }
+}
