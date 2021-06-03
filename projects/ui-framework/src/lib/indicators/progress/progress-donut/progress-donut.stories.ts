@@ -230,7 +230,7 @@ const toAdd = () => ({
 
     hideValue: boolean('hideValue', false),
     showValueInCenter: boolean('showValueInCenter', false),
-    disableAnimation: boolean('disableAnimation', false),
+    disableAnimation: boolean('disableAnimation', undefined),
   },
   moduleMetadata: {
     imports: [StoryBookLayoutModule, ProgressDonutModule, IconsModule],

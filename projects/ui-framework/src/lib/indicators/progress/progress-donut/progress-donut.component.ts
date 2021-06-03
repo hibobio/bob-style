@@ -86,6 +86,14 @@ export class ProgressDonutComponent
             )
           : changes.size.currentValue;
 
+      if (
+        (this.size === ProgressSize.small ||
+          this.donutSize === DonutSize.small) &&
+        this.config.disableAnimation !== false
+      ) {
+        this.config.disableAnimation = true;
+      }
+
       this.setCircleLengths();
     }
   }
