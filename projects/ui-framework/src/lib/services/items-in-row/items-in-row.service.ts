@@ -1,5 +1,5 @@
 import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
-import { distinctUntilChanged, map, tap } from 'rxjs/operators';
+import { distinctUntilChanged, map, startWith, tap } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 
@@ -82,11 +82,21 @@ export class ItemsInRowService {
         watch: 'width',
         threshold: elemWidth / 3,
       }),
+      this.mutationObservableService.getMutationObservable(hostElem, {
+        characterData: false,
+        attributes: false,
+        subtree: false,
+        childList: true,
+        removedElements: true,
+        outsideZone: true,
+        bufferTime: 200
+      }).pipe(startWith(null)),
     ]).pipe(
       map(
-        ([update, elemRect]: [
+        ([update, elemRect, cardsList]: [
           [HTMLElement, number, number],
-          DOMRectReadOnly
+          DOMRectReadOnly,
+          Set<HTMLElement>
         ]) => {
           return calcItemsFit(
             elemRect.width ||
