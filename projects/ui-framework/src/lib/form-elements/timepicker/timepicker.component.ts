@@ -244,10 +244,11 @@ export class TimePickerComponent extends BaseFormElement {
         this.switchInputs();
       }
     }
-    if (isKey(event.key, Keys.arrowleft)) {
+    if (isKey(event.key, Keys.arrowleft) || isKey(event.key, Keys.backspace)) {
       if (
         this.minutesFocused &&
-        this.inputMinutes.nativeElement.selectionStart === 0
+        this.inputMinutes.nativeElement.selectionStart === 0 &&
+        this.inputMinutes.nativeElement.selectionEnd === 0
       ) {
         event.preventDefault();
         this.switchInputs();
