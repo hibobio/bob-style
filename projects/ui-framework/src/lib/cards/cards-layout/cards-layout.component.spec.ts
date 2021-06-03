@@ -1,3 +1,5 @@
+
+
 import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   ComponentFixture,
@@ -68,7 +70,7 @@ describe('CardsLayoutComponent', () => {
 
           component = fixture.componentInstance;
 
-          cardsHostElement = fixture.debugElement.nativeElement;
+          cardsHostElement = fixture.debugElement.nativeElement.children[0];
           cardsHostElement.style.width = '950px';
 
           component.type = CardType.regular;

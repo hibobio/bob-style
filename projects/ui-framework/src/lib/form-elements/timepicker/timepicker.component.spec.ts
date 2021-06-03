@@ -111,7 +111,7 @@ describe('TimePickerComponent', () => {
     });
 
     it('should not display clear icon, when component has no value', () => {
-      iconElem = elementFromFixture(fixture, '.bfe-suffix');
+      iconElem = elementFromFixture(fixture, '.clear-input');
       expect(iconElem.hidden).toBeTruthy();
     });
   });
