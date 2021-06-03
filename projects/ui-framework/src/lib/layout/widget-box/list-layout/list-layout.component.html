@@ -6,11 +6,7 @@
   </li>
 </ul>
 
-<footer *ngIf="items?.length > defaultNumOfItems" class="flx-col brd-t pad-4">
-  <b-button class="clr-grey-700"
-    [type]="buttonType.tertiary"
-    [size]="buttonSize.small"
-    [text]="showAll ? ('common.view-less' | translate) : ('common.view-all' | translate)"
-    (clicked)="showAll = !showAll">
-  </b-button>
-</footer>
+<b-widget-box-expand  *ngIf="items?.length > defaultNumOfItems" 
+  class="flx-col brd-t pad-4" 
+  (clicked)="toggleShowAll($event)">
+</b-widget-box-expand>
