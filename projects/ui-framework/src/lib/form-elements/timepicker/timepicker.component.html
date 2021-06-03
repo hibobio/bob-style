@@ -50,9 +50,9 @@
   </span>
 
   <span *ngIf="!readonly"
-        [hidden]="isInputEmpty()"
         class="bfe-suffix">
-    <b-icon class="clear-input"
+    <b-icon [hidden]="isInputEmpty()"
+            class="clear-input"
             role="button"
             [config]="clearIcn">
     </b-icon>

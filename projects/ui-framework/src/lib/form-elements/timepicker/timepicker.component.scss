@@ -44,9 +44,9 @@
   }
 }
 
-.bfe-suffix[hidden] {
+.clear-input[hidden] {
   display: flex;
-  opacity: 0;
+  opacity: 0 !important;
   pointer-events: none;
 }
 
