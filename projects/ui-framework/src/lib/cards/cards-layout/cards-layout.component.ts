@@ -1,4 +1,4 @@
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
 import {
@@ -11,7 +11,6 @@ import {
   Input,
   NgZone,
   OnChanges,
-  OnDestroy,
   Output,
   SimpleChanges,
   ViewChild,
@@ -21,7 +20,6 @@ import { ItemsInRowService } from '../../services/items-in-row/items-in-row.serv
 import {
   applyChanges,
   notFirstChanges,
-  unsubscribeArray,
 } from '../../services/utils/functional-utils';
 import { MediaEvent, MobileService } from '../../services/utils/mobile.service';
 import { CardType } from '../cards.enum';
@@ -30,7 +28,6 @@ import {
   CARD_TYPE_WIDTH_MOBILE,
   GAP_SIZE,
 } from './cards-layout.const';
-import { MutationObservableService } from '../../services/utils/mutation-observable';
 
 @Component({
   selector: 'b-cards',
@@ -38,15 +35,13 @@ import { MutationObservableService } from '../../services/utils/mutation-observa
   styleUrls: ['./cards-layout.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CardsLayoutComponent
-  implements OnDestroy, OnChanges, AfterContentInit {
+export class CardsLayoutComponent implements OnChanges {
   constructor(
     public hostElRef: ElementRef,
     private zone: NgZone,
     private mobileService: MobileService,
     private cd: ChangeDetectorRef,
-    private itemsInRowService: ItemsInRowService,
-    private mutationObservableService: MutationObservableService
+    private itemsInRowService: ItemsInRowService
   ) {
     this.isMobile = this.mobileService.isMobile();
     this.setCardsInRow();
@@ -60,14 +55,12 @@ export class CardsLayoutComponent
   @Input() type: CardType = CardType.regular;
   @Input() cardWidth: number;
 
-  @Output() cardsAmountChanged: EventEmitter<number> = new EventEmitter<
-    number
-  >();
+  @Output()
+  cardsAmountChanged: EventEmitter<number> = new EventEmitter<number>();
 
   public cardsInRow$: Observable<number>;
   public cardsInRow = 1;
   public isMobile = false;
-  private readonly subs: Subscription[] = [];
 
   getCardsInRow$(): Observable<number> {
     return this.cardsInRow$;
@@ -114,36 +107,17 @@ export class CardsLayoutComponent
       );
   }
 
-  ngAfterContentInit(): void {
-    this.subs.push(
-
-      this.mutationObservableService.getMutationObservable(this.cardsList.nativeElement, {
-        characterData: false,
-        attributes: false,
-        subtree: false,
-        childList: true,
-        removedElements: true,
-        outsideZone: true,
-        bufferTime: 200
-      }).subscribe(() => {
-        if (!this.cd['destroyed']) {
-          this.cd.detectChanges();
-        }
-      })
-    );
-  }
-
-  ngOnDestroy(): void {
-    unsubscribeArray(this.subs);
-  }
-
   private getCardWidth(type = this.type, isMobile = this.isMobile): number {
-    return this.cardWidth || (!isMobile ? CARD_TYPE_WIDTH[type] : CARD_TYPE_WIDTH_MOBILE[type]);
+    return (
+      this.cardWidth ||
+      (!isMobile ? CARD_TYPE_WIDTH[type] : CARD_TYPE_WIDTH_MOBILE[type])
+    );
   }
 
   public hasEnoughCards() {
     return (
-      this.cardsInRow < this.cardsList.nativeElement.childElementCount && this.cardsList.nativeElement.childElementCount > 1
+      this.cardsInRow < this.cardsList.nativeElement.childElementCount &&
+      this.cardsList.nativeElement.childElementCount > 1
     );
   }
 
