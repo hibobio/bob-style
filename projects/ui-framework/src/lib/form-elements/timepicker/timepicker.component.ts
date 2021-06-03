@@ -227,9 +227,8 @@ export class TimePickerComponent extends BaseFormElement {
         ((valAsNumber[0] === 1 && cursorPos > 0 && keyAsNumber > 2) ||
           (valAsNumber[0] > 1 && !isNaN(keyAsNumber)))) ||
         (this.timeFormat === TimeFormat.Time24 &&
-          valAsNumber[0] === 2 &&
-          cursorPos > 0 &&
-          keyAsNumber > 3))
+          ((valAsNumber[0] === 2 && cursorPos > 0 && keyAsNumber > 3) ||
+            (valAsNumber[0] > 2 && cursorPos > 0 && !isNaN(keyAsNumber)))))
     ) {
       event.preventDefault();
       return;
