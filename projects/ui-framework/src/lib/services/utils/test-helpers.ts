@@ -1,15 +1,16 @@
+import { DebugElement } from '@angular/core';
 import {
   ComponentFixture,
+  discardPeriodicTasks,
   flush,
   flushMicrotasks,
-  discardPeriodicTasks,
 } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { DebugElement, Type } from '@angular/core';
+
 import {
-  NativeMouseEvents,
-  NativeKeyboardEvents,
   NativeEvents,
+  NativeKeyboardEvents,
+  NativeMouseEvents,
 } from '../../enums';
 
 export const emptyImg =
@@ -80,6 +81,7 @@ export const inputValue = (
     new Event('input', {
       target: inputElem,
       type: 'input',
+      bubbles: true,
     } as EventInit)
   );
   if (doBlur) {
@@ -87,6 +89,7 @@ export const inputValue = (
       new Event('blur', {
         target: inputElem,
         type: 'blur',
+        bubbles: true,
       } as EventInit)
     );
   }
@@ -95,6 +98,7 @@ export const inputValue = (
       new Event('change', {
         target: inputElem,
         type: 'change',
+        bubbles: true,
       } as EventInit)
     );
   }

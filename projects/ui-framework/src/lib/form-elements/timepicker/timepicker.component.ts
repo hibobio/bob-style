@@ -92,7 +92,7 @@ export class TimePickerComponent extends BaseFormElement {
         const { time, amPm } = this.adjustToFormat(
           value,
           TimeFormat.Time24,
-          this.timeFormat
+          this.timeFormat || TimeFormat.Time24
         );
         this.amPm =
           amPm || (this.timeFormat === TimeFormat.Time12 ? 'am' : null);
@@ -108,7 +108,7 @@ export class TimePickerComponent extends BaseFormElement {
       (value: string) => {
         return this.adjustToFormat(
           value,
-          this.timeFormat,
+          this.timeFormat || TimeFormat.Time24,
           TimeFormat.Time24,
           this.amPm
         ).time;
@@ -336,14 +336,14 @@ export class TimePickerComponent extends BaseFormElement {
 
   public onHoursFocus() {
     this.hoursFocused = true;
-    this.minutesFocused = false;
+    this.minutesFocused = this.buttonsFocused = false;
     this.cd.detectChanges();
     this.inputHours.nativeElement.select();
   }
 
   public onMinutesFocus() {
     this.minutesFocused = true;
-    this.hoursFocused = false;
+    this.hoursFocused = this.buttonsFocused = false;
     this.inputMinutes.nativeElement.select();
     this.cd.detectChanges();
   }
@@ -367,6 +367,9 @@ export class TimePickerComponent extends BaseFormElement {
       (event.target as HTMLInputElement).value,
       { ...this.parseConfig.minutes, def: '' }
     );
+    if (this.timeFormat === TimeFormat.Time12 && !this.amPm) {
+      this.amPm = 'am';
+    }
     this.cd.detectChanges();
     this.transmit(InputEventType.onBlur);
   }
@@ -388,6 +391,7 @@ export class TimePickerComponent extends BaseFormElement {
 
   private transmit(eventType = InputEventType.onChange) {
     const newValue = this.combineValue(this.valueHours, this.valueMinutes);
+
     if (this.value !== newValue) {
       this.value = newValue;
       this.transmitValue(this.value, { eventType: [eventType] });
