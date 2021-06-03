@@ -25,9 +25,12 @@
            class="viewItem grd brd-b">
         <b-icon class="mrg-l-8 mrg-r-16" [config]="viewItemIconConfig"></b-icon>
         <div class="mrg-y-auto">
-          <div [innerHTML]="item.value | highlight: data.searchValue:true"></div>
-          <div class="b-caption clr-grey-600"
-               [innerHTML]="item.groupName | highlight: data.searchValue:true"></div>
+          <b-truncate-tooltip [text]="item.value | highlight: data.searchValue:true"
+                              [maxLines]="1"
+                              [type]="tooltipType"></b-truncate-tooltip>
+          <b-truncate-tooltip class="b-caption clr-grey-600"
+                              [text]="item.groupName | highlight: data.searchValue:true"
+                              [maxLines]="1"></b-truncate-tooltip>
         </div>
         <b-icon class="remove-button mrg-l-16 mrg-r-8"
                 [config]="removeViewItemIconConfig"
