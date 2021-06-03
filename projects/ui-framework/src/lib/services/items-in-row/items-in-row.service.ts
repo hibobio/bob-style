@@ -4,11 +4,16 @@ import { distinctUntilChanged, map, startWith, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 
 import { DOMhelpers } from '../html/dom-helpers.service';
-import { isDomElement, isFunction, isNumber } from '../utils/functional-utils';
+import {
+  isDomElement,
+  isFunction,
+  isNumber,
+  pass,
+} from '../utils/functional-utils';
 import { log } from '../utils/logger';
 import { MutationObservableService } from '../utils/mutation-observable';
 
-export interface ItemsInRowConfig {
+export interface ItemsInRowConfig<R extends boolean> {
   hostElem: HTMLElement;
   elemWidth: number;
   gapSize?: number;
@@ -22,6 +27,7 @@ export interface ItemsInRowConfig {
     itemsGap: number,
     minItems: number
   ) => number;
+  extended?: R;
 }
 
 @Injectable({
@@ -44,14 +50,17 @@ export class ItemsInRowService {
     return Math.max(fullRow, minItems);
   }
 
-  getItemsInRow$({
+  getItemsInRow$<R extends boolean>({
     hostElem,
     elemWidth,
     gapSize = 0,
     minItems = 1,
     update$ = new BehaviorSubject([] as any),
     calcItemsFit = this.calcItemsFit,
-  }: ItemsInRowConfig): Observable<number> {
+    extended = false as any,
+  }: ItemsInRowConfig<R>): Observable<
+    R extends true ? { itemsInRow: number; childCount?: number } : number
+  > {
     //
     calcItemsFit = isFunction(calcItemsFit) ? calcItemsFit : this.calcItemsFit;
 
@@ -61,7 +70,7 @@ export class ItemsInRowService {
         'ItemsInRowService.getItemsInRow$'
       );
       this.setCssProps(hostElem, elemWidth, gapSize, 1);
-      return of(minItems);
+      return of(extended ? { itemsInRow: minItems } : minItems) as any;
     }
 
     return combineLatest([
@@ -82,35 +91,46 @@ export class ItemsInRowService {
         watch: 'width',
         threshold: elemWidth / 3,
       }),
-      this.mutationObservableService.getMutationObservable(hostElem, {
-        characterData: false,
-        attributes: false,
-        subtree: false,
-        childList: true,
-        removedElements: true,
-        outsideZone: true,
-        bufferTime: 200
-      }).pipe(startWith(null)),
+      this.mutationObservableService
+        .getMutationObservable(hostElem, {
+          characterData: false,
+          attributes: false,
+          subtree: false,
+          childList: true,
+          removedElements: true,
+          outsideZone: true,
+          bufferTime: 200,
+        })
+        .pipe(startWith(1)),
     ]).pipe(
       map(
-        ([update, elemRect, cardsList]: [
-          [HTMLElement, number, number],
+        ([update, elemRect]: [
+          [newHostEl: HTMLElement, newElemWidth: number, newGapSize: number],
           DOMRectReadOnly,
           Set<HTMLElement>
         ]) => {
-          return calcItemsFit(
-            elemRect.width ||
-              this.DOM.getClosest(hostElem, this.DOM.getInnerWidth, 'result'),
-            elemWidth,
-            gapSize,
-            minItems
-          );
+          return {
+            itemsInRow: calcItemsFit(
+              elemRect.width ||
+                this.DOM.getClosest(hostElem, this.DOM.getInnerWidth, 'result'),
+              elemWidth,
+              gapSize,
+              minItems
+            ),
+            childCount: (update[0] || hostElem).childElementCount,
+          };
         }
       ),
-      distinctUntilChanged(),
-      tap((itemsInRow: number) => {
+      distinctUntilChanged((prev, curr) => {
+        return (
+          prev.itemsInRow === curr.itemsInRow &&
+          prev.childCount === curr.childCount
+        );
+      }),
+      tap(({ itemsInRow }) => {
         this.setCssProps(hostElem, elemWidth, gapSize, itemsInRow);
-      })
+      }),
+      !extended ? map(({ itemsInRow }) => itemsInRow as any) : pass
     );
   }
 

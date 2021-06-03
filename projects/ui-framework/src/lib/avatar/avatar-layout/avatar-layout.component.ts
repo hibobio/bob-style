@@ -1,3 +1,5 @@
+import { Observable, Subscription } from 'rxjs';
+
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -8,7 +10,7 @@ import {
   OnDestroy,
   Output,
 } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+
 import { ItemsInRowService } from '../../services/items-in-row/items-in-row.service';
 
 @Component({
@@ -39,6 +41,7 @@ export class AvatarLayoutComponent implements AfterViewInit, OnDestroy {
       elemWidth: this.elemWidth,
       gapSize: this.gapSize,
       minItems: this.minItemsFallback,
+      extended: false,
     });
 
     if (this.itemsInRowChange.observers.length > 0) {

@@ -2,15 +2,14 @@ import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
 import {
-  AfterContentInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
   Input,
-  NgZone,
   OnChanges,
+  OnInit,
   Output,
   SimpleChanges,
   ViewChild,
@@ -35,16 +34,14 @@ import {
   styleUrls: ['./cards-layout.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CardsLayoutComponent implements OnChanges {
+export class CardsLayoutComponent implements OnChanges, OnInit {
   constructor(
     public hostElRef: ElementRef,
-    private zone: NgZone,
     private mobileService: MobileService,
     private cd: ChangeDetectorRef,
     private itemsInRowService: ItemsInRowService
   ) {
     this.isMobile = this.mobileService.isMobile();
-    this.setCardsInRow();
   }
 
   @ViewChild('cardsList', { static: true }) private cardsList: ElementRef;
@@ -85,10 +82,14 @@ export class CardsLayoutComponent implements OnChanges {
     }
   }
 
+  ngOnInit(): void {
+    this.setCardsInRow();
+  }
+
   private setCardsInRow(): void {
     this.cardsInRow$ = this.itemsInRowService
       .getItemsInRow$({
-        hostElem: this.hostElRef.nativeElement,
+        hostElem: this.cardsList.nativeElement,
         elemWidth: this.getCardWidth(),
         gapSize: GAP_SIZE,
         minItems: 1,
@@ -98,6 +99,7 @@ export class CardsLayoutComponent implements OnChanges {
           }),
           map(() => [null, this.getCardWidth(), null])
         ),
+        extended: false,
       })
       .pipe(
         tap((cardsInRow) => {
