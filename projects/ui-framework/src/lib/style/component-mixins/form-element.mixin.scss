@@ -340,3 +340,80 @@ $input-focus-border-color: $grey-700;
     display: none;
   }
 }
+
+@mixin bfe-input-buttons {
+  .bfe-buttons-wrap {
+    border-left: 1px solid $input-border-color;
+    background-image: linear-gradient($input-border-color, $input-border-color);
+    background-size: 100% 1px;
+    background-position: center;
+
+    min-height: $input-height;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 24px;
+
+    .bfe-input-button:nth-child(1) {
+      border-top-right-radius: $border-radius;
+    }
+
+    .bfe-input-button:nth-child(2) {
+      border-bottom-right-radius: $border-radius;
+    }
+  }
+
+  .bfe-input-button {
+    background-color: transparent;
+    border: 0;
+    padding: 0;
+    flex-grow: 1;
+    width: 100%;
+    font-weight: 500;
+    color: $grey-600;
+
+    &:focus {
+      outline: 0;
+    }
+
+    &:before {
+      height: ($input-height / 2);
+      line-height: ($input-height / 2);
+    }
+
+    &.has-hover {
+      &:hover,
+      &:focus {
+        color: $grey-700;
+      }
+    }
+
+    &[disabled] {
+      @include disabled-state;
+    }
+  }
+
+  .focused {
+    .bfe-buttons-wrap {
+      border-left-color: $input-focus-border-color;
+      background-image: linear-gradient(
+        $input-focus-border-color,
+        $input-focus-border-color
+      );
+    }
+  }
+
+  // Options
+
+  :host[data-size='smaller'] ::ng-deep {
+    .bfe-buttons-wrap {
+      min-height: $input-height-smaller;
+    }
+    .bfe-input-button {
+      &:before {
+        height: ($input-height-smaller / 2);
+        line-height: ($input-height-smaller / 2);
+      }
+    }
+  }
+}

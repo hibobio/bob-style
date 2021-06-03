@@ -9,7 +9,6 @@
 .bfe-input-hours,
 .bfe-input-minutes {
   @include input-basics;
-  flex: 0;
   padding: 0;
   min-width: 2em;
   text-align: center;
@@ -22,6 +21,50 @@
 .separator {
   pointer-events: none;
   user-select: none;
+  max-width: 30px;
+}
+
+.bfe-prefix {
+  padding-left: 13px;
+}
+
+.bfe-prefix,
+.bfe-suffix {
+  min-height: $input-height;
+
+  ::ng-deep .b-icon {
+    pointer-events: none;
+  }
+}
+
+:host[data-size='smaller'] ::ng-deep {
+  .bfe-prefix,
+  .bfe-suffix {
+    min-height: $input-height-smaller;
+  }
+}
+
+.bfe-suffix[hidden] {
+  display: flex;
+  opacity: 0;
+  pointer-events: none;
 }
 
 @include clear-input-suffix;
+@include bfe-input-buttons;
+
+.bfe-buttons-wrap {
+  min-width: 36px;
+}
+
+.bfe-input-button.active {
+  font-weight: 700;
+  color: $grey-800;
+  background-color: $grey-200;
+
+  &:nth-child(2) {
+    background-image: inherit;
+    background-size: 100% 1px;
+    background-position: center top;
+  }
+}

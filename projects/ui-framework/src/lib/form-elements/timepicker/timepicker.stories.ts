@@ -1,15 +1,15 @@
-import { storiesOf } from '@storybook/angular';
-import { text, boolean, withKnobs } from '@storybook/addon-knobs';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { action } from '@storybook/addon-actions';
-import { TimePickerModule } from './timepicker.module';
+import { select, text, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
 
 import { ComponentGroupType } from '../../consts';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-
+import { TimeFormat } from '../../types';
 // @ts-ignore: md file and not a module
 import formElemsPropsDoc from '../form-elements.properties.md';
 import { FormElementsCommonProps } from '../form-elements.stories.common';
+import { TimePickerModule } from './timepicker.module';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -17,6 +17,7 @@ const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
 
 const template = `
 <b-timepicker
+        [timeFormat]="formats[format]"
         [value]="value"
         [label]="label"
         [description]="description"
@@ -52,6 +53,7 @@ const note = `
   Name | Type | Description
   --- | --- | ---
   [value] | string | value of input field ('HH:MM')
+  [timeFormat] | TimeFormat | 12 or 24 hours
   (changed) | BInputEvent | change emitter
 
   ${formElemsPropsDoc}
@@ -65,6 +67,9 @@ story.add(
         onChange: action('Time changed'),
 
         value: text('value', '4:20'),
+
+        format: select('timeFormat', ['Time12', 'Time24'], 'Time24'),
+        formats: TimeFormat,
 
         ...FormElementsCommonProps('Time is', '', ''),
       },

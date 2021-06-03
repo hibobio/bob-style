@@ -1612,6 +1612,9 @@ export const isMetaKey = (key: string): boolean =>
 export const eventHasCntrlKey = (event: KeyboardEvent | MouseEvent): boolean =>
   event.metaKey || event.ctrlKey;
 
+export const eventKeyIsNavOrMeta = (event: KeyboardEvent): boolean =>
+  controlKeys.includes(event.key as any);
+
 export const eventHasShiftlKey = (event: KeyboardEvent | MouseEvent): boolean =>
   event.shiftKey;
 

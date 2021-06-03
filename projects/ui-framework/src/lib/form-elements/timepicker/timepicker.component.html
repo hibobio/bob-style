@@ -7,22 +7,21 @@
 
 <div class="bfe-wrap has-prefix"
      [ngClass]="{
-        focused: hoursFocused || minutesFocused,
-        'has-suffix': !isInputEmpty() && !readonly
-     }"
-     (click.outside-zone)="inputHours.focus()">
+        focused: hoursFocused || minutesFocused || buttonsFocused,
+        'has-suffix':  !readonly
+     }">
 
-  <b-icon class="bfe-prefix input-icon"
+  <b-icon class="bfe-prefix"
           [config]="timeIcn"
-          [color]="(hoursFocused || minutesFocused) ? iconColor.dark : iconColor.normal">
+          [color]="(hoursFocused || minutesFocused || buttonsFocused) ?
+          iconColor.dark : iconColor.normal">
   </b-icon>
 
   <span class="bfe-input"
         [attr.id]="id">
-
     <input #inputHours
            #input
-           class="bfe-input-hours"
+           class="bfe-input-hours flx-grow"
            type="tel"
            [attr.autocomplete]="autoComplete.off"
            maxlength="2"
@@ -31,16 +30,12 @@
            [attr.disabled]="disabled || readonly || null"
            [required]="required"
            [readonly]="readonly"
-           (blur)="onHoursBlur($event)"
            (keydown.outside-zone)="onInputKeydown($event)"
            (input.outside-zone)="onHoursChange($event)"
-           (focus.outside-zone)="onHoursFocus()"
-           (click.outside-zone)="$event.stopPropagation(); inputHours.select();">
-
-    <span class="separator">:</span>
-
+           (focus.outside-zone)="onHoursFocus()">
+    <span class="separator text-center">:</span>
     <input #inputMinutes
-           class="bfe-input-minutes"
+           class="bfe-input-minutes flx-grow"
            type="tel"
            [attr.autocomplete]="autoComplete.off"
            maxlength="2"
@@ -49,22 +44,29 @@
            [attr.disabled]="disabled || readonly || null"
            [required]="required"
            [readonly]="readonly"
-           (blur)="onMinutesBlur($event);"
            (keydown.outside-zone)="onInputKeydown($event)"
            (input.outside-zone)="onMinutesChange($event)"
-           (focus.outside-zone)="onMinutesFocus();"
-           (click.outside-zone)="$event.stopPropagation(); inputMinutes.select();">
-
+           (focus.outside-zone)="onMinutesFocus();">
   </span>
 
-  <span [hidden]="isInputEmpty() || readonly"
+  <span *ngIf="!readonly"
+        [hidden]="isInputEmpty()"
         class="bfe-suffix">
     <b-icon class="clear-input"
             role="button"
-            [config]="clearIcn"
-            (click)="$event.stopPropagation(); clearInput()">
+            [config]="clearIcn">
     </b-icon>
   </span>
+
+  <div *ngIf="timeFormat===timeFormats.Time12"
+       class="bfe-buttons-wrap">
+    <button type="button"
+            class="bfe-input-button am has-hover"
+            [class.active]="amPm==='am'">AM</button>
+    <button type="button"
+            class="bfe-input-button pm has-hover"
+            [class.active]="amPm==='pm'">PM</button>
+  </div>
 </div>
 
 <p b-input-message
