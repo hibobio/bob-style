@@ -22,7 +22,7 @@
 }
 
 .viewItem {
-  grid-template-columns: 40px auto 40px;
+  grid-template-columns: 40px calc(100% - 80px) 40px;
   height: $wrap-height;
   text-align: left;
 

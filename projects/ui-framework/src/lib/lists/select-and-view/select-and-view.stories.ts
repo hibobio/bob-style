@@ -2,6 +2,7 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { storiesOf } from '@storybook/angular';
 import { ComponentGroupType } from '../../consts';
 import { withKnobs } from '@storybook/addon-knobs';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { SelectAndViewModule } from './select-and-view.module';
 import { optionsMock } from './select-and-view.mock';
@@ -55,6 +56,7 @@ story.add(
       imports: [
         StoryBookLayoutModule,
         SelectAndViewModule,
+        BrowserAnimationsModule
       ]
     }
   }),
