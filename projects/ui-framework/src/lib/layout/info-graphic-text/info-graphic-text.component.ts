@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ColorTextItem } from '../../eye-candy/text-colored-links/text-colored-links.interface';
 import { ButtonConfig } from '../../buttons/buttons.interface';
 import { ButtonType } from '../../buttons/buttons.enum';
 import { Icon } from '../../icons/icon.interface';
@@ -12,7 +13,7 @@ import { Icons, IconColor, IconSize } from '../../icons/icons.enum';
 })
 export class InfoGraphicTextComponent {
 
-  @Input() items: string[];
+  @Input() items: ColorTextItem[];
   @Input() title: string;
   @Input() set buttonText(value: string) {
     this.buttonConfig.text = value || '';
