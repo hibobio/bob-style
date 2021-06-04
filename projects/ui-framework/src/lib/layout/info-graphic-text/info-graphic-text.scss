@@ -9,6 +9,24 @@
   padding: times8(5);
 }
 
-.b-display-4 b {
-  font-weight: 800;
+.flx.flx-wrap .b-display-4 {
+  position: relative;
+
+  &.clickable:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  &::after {
+    content: '\2219';
+    position: absolute;
+    right: -10px;
+    top: 1px;
+  }
+}
+
+:host ::ng-deep {
+  .b-display-4 > span {
+    font-weight: 800;
+  }
 }
