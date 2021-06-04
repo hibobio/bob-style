@@ -1,20 +1,22 @@
-import { Injectable, NgZone, SimpleChange } from '@angular/core';
-import { LightboxConfig, LightboxData } from './lightbox.interface';
-import { LightboxComponent } from './lightbox.component';
+import { EMPTY, fromEvent, merge, Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
+
 import { Overlay, OverlayConfig } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-import { URLutils } from '../../services/url/url-utils.service';
-import { take } from 'rxjs/operators';
-import { EMPTY, fromEvent, merge, Subscription } from 'rxjs';
-import { WindowRef } from '../../services/utils/window-ref.service';
-import { UtilsService } from '../../services/utils/utils.service';
+import { Injectable, NgZone, SimpleChange } from '@angular/core';
+
 import { Keys } from '../../enums';
-import { filterKey, insideZone } from '../../services/utils/rxjs.operators';
+import { URLutils } from '../../services/url/url-utils.service';
 import {
   isSafeUrl,
   unsubscribeArray,
 } from '../../services/utils/functional-utils';
+import { filterKey, insideZone } from '../../services/utils/rxjs.operators';
+import { UtilsService } from '../../services/utils/utils.service';
+import { WindowRef } from '../../services/utils/window-ref.service';
 import { AlertService } from '../alert/alert-service/alert.service';
+import { LightboxComponent } from './lightbox.component';
+import { LightboxConfig, LightboxData } from './lightbox.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -97,9 +99,15 @@ export class LightboxService {
           null
         );
 
+      const closeOnBackdropClick =
+        config.disableClose !== true &&
+        (config.closeOnBackdropClick === true ||
+          (config.closeOnBackdropClick === undefined &&
+            (config.video || config.image)));
+
       this.subs.push(
         merge(
-          config.closeOnBackdropClick === true && config.disableClose !== true
+          closeOnBackdropClick
             ? fromEvent(this.lightbox.overlayRef.overlayElement, 'click')
             : EMPTY,
 
