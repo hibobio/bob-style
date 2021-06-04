@@ -1,25 +1,27 @@
-import { Injectable } from '@angular/core';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { stringify } from '../utils/functional-utils';
-import {
-  allowedDomainsTest,
-  naiveLinkTest,
-  imageLinkTest,
-  base64imageTest,
-  filestackTest,
-} from './url.const';
-import { MediaData, VideoData } from './url.interface';
-import { URLtype } from './url.enum';
 import { Observable, of } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
 import { catchError, map, switchMap } from 'rxjs/operators';
-import { log } from '../utils/logger';
+
+import { Injectable } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+
 import { MediaType } from '../../popups/lightbox/media-embed/media-embed.enum';
 import { GenericObject } from '../../types';
+import { stringify } from '../utils/functional-utils';
 import {
   ImageDimensionsService,
   ImageDims,
 } from '../utils/image-dimensions.service';
+import { log } from '../utils/logger';
+import {
+  allowedDomainsTest,
+  base64imageTest,
+  filestackTest,
+  imageLinkTest,
+  naiveLinkTest,
+} from './url.const';
+import { URLtype } from './url.enum';
+import { MediaData, VideoData } from './url.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -98,6 +100,7 @@ export class URLutils {
 
     if (urlData.hostname.includes('vimeo')) {
       const id = this.getVimeoVideoID(urlData.href);
+
       return {
         type: URLtype.vimeo,
         id,
@@ -178,22 +181,25 @@ export class URLutils {
     return of(mediaData).pipe(
       //
       map(() => {
-        if (mediaData.mediaType === MediaType.image) {
-          mediaData.safeUrl = this.validateImgUrl(mediaData.url);
+        try {
+          if (mediaData.mediaType === MediaType.image) {
+            mediaData.safeUrl = this.validateImgUrl(mediaData.url);
+          }
+
+          if (mediaData.mediaType === MediaType.video) {
+            const videoData = this.parseVideoURL(mediaData.url, autoplay);
+            const safeUrl = this.validateVideoUrl(
+              videoData?.url || mediaData.url
+            );
+
+            Object.assign(mediaData, videoData, {
+              url: mediaData.url,
+              safeUrl,
+            });
+          }
+        } catch (error) {
+          log.err(error, 'URLutils.getMediaData$');
         }
-
-        if (mediaData.mediaType === MediaType.video) {
-          const videoData = this.parseVideoURL(mediaData.url, autoplay);
-          const safeUrl = this.validateVideoUrl(
-            videoData?.url || mediaData.url
-          );
-
-          Object.assign(mediaData, videoData, {
-            url: mediaData.url,
-            safeUrl,
-          });
-        }
-
         return mediaData;
       }),
 
@@ -204,20 +210,41 @@ export class URLutils {
             fromFetch(
               `https://vimeo.com/api/v2/video/${mediaData.id}.json`
             ).pipe(
+              //
               switchMap((response: Response) => {
+                //
                 if (response.ok) {
                   return response.json();
+                  //
                 } else {
-                  throw new Error(
-                    `Vimeo API Error ${response.status}: ${response.statusText}`
+                  // vimeo api error usually means the video is private
+                  log.err(
+                    `\n
+Vimeo API Error ${response.status}: ${response.statusText}
+>>> Check if video is public and can be shared <<<
+
+`,
+                    'URLutils.getMediaData$'
                   );
+
+                  return of([
+                    {
+                      status: response.status,
+                      error: response.statusText,
+                    },
+                  ]);
                 }
               }),
-              map((videoMeta: GenericObject) => {
-                const thumb =
-                  videoMeta && videoMeta[0]?.thumbnail_large?.split('_640')[0];
+              //
+              map(([videoMeta]: GenericObject[]) => {
+                const thumb = videoMeta?.thumbnail_large?.split('_640')[0];
                 mediaData.thumb =
-                  (thumb && thumb + '_1280x720.jpg') || mediaData.thumb;
+                  videoMeta?.error || (!thumb && !mediaData.thumb)
+                    ? 'http://images.hibob.com/background-images/notFound.jpg'
+                    : thumb
+                    ? thumb + '_1280x720.jpg'
+                    : mediaData.thumb;
+
                 return mediaData;
               })
             )
