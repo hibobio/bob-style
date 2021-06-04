@@ -1,4 +1,4 @@
-import { TruncateTooltipType } from 'bob-style';
+import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
