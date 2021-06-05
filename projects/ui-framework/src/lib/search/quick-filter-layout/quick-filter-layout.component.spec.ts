@@ -355,8 +355,8 @@ describe('QuickFilterLayoutComponent', () => {
     });
 
     it('Should emit  aggregated value when one of the form elements is changed', fakeAsync(() => {
-      const hourInput = elementFromFixture(fixture, '.bfe-input-hours');
-      const minuteInput = elementFromFixture(fixture, '.bfe-input-minutes');
+      const hourInput = elementFromFixture(fixture, '.btmpckr-input-hours');
+      const minuteInput = elementFromFixture(fixture, '.btmpckr-input-minutes');
       const textInput = elementFromFixture(fixture, 'b-input .bfe-input');
 
       const timeComp = fixture.debugElement.query(By.css('b-timepicker'))
@@ -397,7 +397,7 @@ describe('QuickFilterLayoutComponent', () => {
       fixture.detectChanges();
 
       const socialInput = elementFromFixture(fixture, 'b-social .bfe-input');
-      const minuteInput = elementFromFixture(fixture, '.bfe-input-minutes');
+      const minuteInput = elementFromFixture(fixture, '.btmpckr-input-minutes');
       const timeComp = fixture.debugElement.query(By.css('b-timepicker'))
         .componentInstance;
 
