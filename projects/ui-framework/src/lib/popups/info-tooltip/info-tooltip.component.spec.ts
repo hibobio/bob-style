@@ -1,25 +1,28 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MockComponent } from 'ng-mocks';
 
-import { InfoTooltipComponent } from './info-tooltip.component';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { PanelModule } from '../panel/panel.module';
-import { TypographyModule } from '../../typography/typography.module';
-import { LinkModule } from '../../indicators/link/link.module';
+
+import { IconComponent } from '../../icons/icon.component';
 import { Icons } from '../../icons/icons.enum';
 import { LinkColor, LinkTarget } from '../../indicators/link/link.enum';
-import { MockComponent } from 'ng-mocks';
-import { IconComponent } from '../../icons/icon.component';
+import { LinkModule } from '../../indicators/link/link.module';
+import { TypographyModule } from '../../typography/typography.module';
+import { PanelModule } from '../panel/panel.module';
+import { InfoTooltipComponent } from './info-tooltip.component';
 
 describe('InfoTooltipComponent', () => {
   let component: InfoTooltipComponent;
   let fixture: ComponentFixture<InfoTooltipComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [InfoTooltipComponent, MockComponent(IconComponent)],
-      imports: [PanelModule, TypographyModule, LinkModule],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [InfoTooltipComponent, MockComponent(IconComponent)],
+        imports: [PanelModule, TypographyModule, LinkModule],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(InfoTooltipComponent);
@@ -41,9 +44,9 @@ describe('InfoTooltipComponent', () => {
     expect(bPanelElement.componentInstance.openOnHover).toBeTruthy();
   });
 
-  it('icon that trigger the panel should be baseline_info', () => {
+  it('icon that trigger the panel should be info_outline', () => {
     const bIcon = fixture.debugElement.query(By.css('b-icon'));
-    expect(bIcon.componentInstance.icon).toEqual(Icons.baseline_info_icon);
+    expect(bIcon.componentInstance.setProps.icon).toEqual(Icons.info_outline);
   });
 
   it('when link is empty do not show link on panel', () => {
