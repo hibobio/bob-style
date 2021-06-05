@@ -64,11 +64,16 @@ $input-focus-border-color: $grey-700;
   }
 }
 
-@mixin input-basics($height: $input-height, $padding: 0 $input-padding) {
+@mixin input-basics(
+  $height: $input-height,
+  $padding: 0 $input-padding,
+  $min-width: 0,
+  $flex-grow: 1
+) {
   box-sizing: border-box;
   display: block;
-  min-width: 0;
-  flex-grow: 1;
+  min-width: $min-width;
+  flex-grow: $flex-grow;
   padding: $padding;
   border: 0;
   border-color: inherit;

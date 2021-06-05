@@ -3,6 +3,7 @@ import {
   Component,
   ElementRef,
   forwardRef,
+  HostBinding,
   HostListener,
   Input,
   NgZone,
@@ -11,9 +12,7 @@ import {
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 import { Keys } from '../../enums';
-import { ICON_CONFIG } from '../../icons/common-icons.const';
-import { Icon } from '../../icons/icon.interface';
-import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
+import { SelectGroupOption } from '../../lists/list.interface';
 import {
   isKey,
   isNullOrUndefined,
@@ -137,53 +136,60 @@ export class TimePickerComponent extends BaseFormElement {
     }
   }
 
+  @HostBinding('attr.data-time-format') get getTimeFormat() {
+    return this.timeFormat;
+  }
+
   public valueHours: string;
   public valueMinutes: string;
   public amPm: 'am' | 'pm';
   public hoursFocused = false;
   public minutesFocused = false;
-  public buttonsFocused = false;
+  public selectFocused = false;
   public timeFormat: TimeFormat = TimeFormat.Time24;
 
   readonly autoComplete = InputAutoCompleteOptions;
-  readonly iconColor = IconColor;
-  readonly clearIcn: Icon = ICON_CONFIG.reset;
-  readonly timeIcn: Icon = {
-    icon: Icons.timeline,
-    size: IconSize.medium,
-  };
   readonly timeFormats = TimeFormat;
+  readonly amPmOptions: SelectGroupOption[] = [
+    {
+      groupName: 'ampm',
+      key: 'ampm',
+      options: [
+        {
+          id: 'am',
+          value: 'AM',
+        },
+        {
+          id: 'pm',
+          value: 'PM',
+        },
+      ],
+    },
+  ];
 
   private parseConfig = BTP_PARSE_CONFIG_BY_TIMEFORMAT[TimeFormat.Time24];
 
-  @HostListener('click.outside-zone', ['$event'])
-  onHostClick(event: MouseEvent) {
+  @HostListener('focusin.outside-zone', ['$event'])
+  onHostFocusIn(event: FocusEvent) {
     const target = event.target as HTMLElement;
 
-    if (target.matches('.bfe-input-button.am')) {
-      this.setAmPm('am');
-    }
-    if (target.matches('.bfe-input-button.pm')) {
-      this.setAmPm('pm');
-    }
-    if (target.matches('.clear-input')) {
-      this.clearInput();
-    }
-    if (target.matches('input')) {
+    if (target.matches('.btmpckr-input-hours,.btmpckr-input-minutes')) {
       (target as HTMLInputElement).select();
     }
-    if (target.matches('button')) {
-      this.buttonsFocused = true;
-      this.cd.detectChanges();
+
+    if (target === this.inputHours.nativeElement) {
+      this.onHoursFocus();
     }
-    if (target?.matches('.bfe-prefix,.bfe-suffix')) {
-      event.preventDefault();
+    if (target === this.inputMinutes.nativeElement) {
+      this.onMinutesFocus();
     }
-    if (target.matches('.bfe-prefix')) {
-      this.inputHours.nativeElement.focus();
-    }
-    if (target.matches('.bfe-suffix')) {
-      this.inputMinutes.nativeElement.focus();
+
+    if (target.matches('.btmpckr-input,.btmpckr-wrap')) {
+      this.hoursFocused ||
+      (this.inputHours.nativeElement.value &&
+        !this.inputMinutes.nativeElement.value)
+        ? this.inputMinutes.nativeElement.focus()
+        : this.inputHours.nativeElement.focus();
     }
   }
 
@@ -192,9 +198,11 @@ export class TimePickerComponent extends BaseFormElement {
     const target = event.target as HTMLElement;
     const relatedTarget = event.relatedTarget as HTMLElement;
 
-    if (relatedTarget?.matches('.bfe-prefix,.bfe-suffix')) {
+    if (relatedTarget?.matches('.btmpckr-input')) {
       event.preventDefault();
+      return;
     }
+
     if (target === this.inputHours.nativeElement) {
       this.onHoursBlur(event);
     }
@@ -202,10 +210,10 @@ export class TimePickerComponent extends BaseFormElement {
       this.onMinutesBlur(event);
     }
     if (
-      !relatedTarget ||
-      !this.hostElRef.nativeElement.contains(relatedTarget)
+      !target.matches('.bfe-input.trigger-input') &&
+      (!relatedTarget || !this.hostElRef.nativeElement.contains(relatedTarget))
     ) {
-      this.hoursFocused = this.minutesFocused = this.buttonsFocused = false;
+      this.hoursFocused = this.minutesFocused = this.selectFocused = false;
       this.cd.detectChanges();
     }
   }
@@ -336,16 +344,14 @@ export class TimePickerComponent extends BaseFormElement {
   }
 
   public onHoursFocus() {
+    this.minutesFocused = false;
     this.hoursFocused = true;
-    this.minutesFocused = this.buttonsFocused = false;
     this.cd.detectChanges();
-    this.inputHours.nativeElement.select();
   }
 
   public onMinutesFocus() {
+    this.hoursFocused = false;
     this.minutesFocused = true;
-    this.hoursFocused = this.buttonsFocused = false;
-    this.inputMinutes.nativeElement.select();
     this.cd.detectChanges();
   }
 
@@ -373,21 +379,6 @@ export class TimePickerComponent extends BaseFormElement {
     }
     this.cd.detectChanges();
     this.transmit(InputEventType.onBlur);
-  }
-
-  public isInputEmpty() {
-    return !(
-      (this.valueHours && this.valueHours !== '00') ||
-      (this.valueMinutes && this.valueMinutes !== '00')
-    );
-  }
-
-  public clearInput() {
-    this.value = this.valueMinutes = this.valueHours = this.amPm = null;
-    this.cd.detectChanges();
-    this.transmitValue(this.value, {
-      eventType: [InputEventType.onChange],
-    });
   }
 
   private transmit(eventType = InputEventType.onChange) {
