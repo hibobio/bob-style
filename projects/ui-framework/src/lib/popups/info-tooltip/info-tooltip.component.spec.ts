@@ -44,9 +44,11 @@ describe('InfoTooltipComponent', () => {
     expect(bPanelElement.componentInstance.openOnHover).toBeTruthy();
   });
 
-  it('icon that trigger the panel should be info_outline', () => {
+  it('icon that trigger the panel should be baseline_info_icon', () => {
     const bIcon = fixture.debugElement.query(By.css('b-icon'));
-    expect(bIcon.componentInstance.setProps.icon).toEqual(Icons.info_outline);
+    expect(bIcon.componentInstance.setProps.icon).toEqual(
+      Icons.baseline_info_icon
+    );
   });
 
   it('when link is empty do not show link on panel', () => {
