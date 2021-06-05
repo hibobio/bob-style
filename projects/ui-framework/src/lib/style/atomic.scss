@@ -444,9 +444,19 @@ clr-positive-500,
 
 // Layout
 
-.blk,
+[class].blk,
 .block {
   display: block;
+}
+
+.flx,
+.b-flex {
+  display: flex;
+}
+
+.grd,
+.b-grid {
+  display: grid;
 }
 
 [class].inl-blk {
@@ -454,11 +464,6 @@ clr-positive-500,
 }
 [class].inl-flx {
   display: inline-flex;
-}
-
-.grd,
-.b-grid {
-  display: grid;
 }
 
 @each $col in (2, 3, 4, 5, 6, 7, 8) {
@@ -488,11 +493,6 @@ clr-positive-500,
   .row-gap-#{$size} {
     grid-row-gap: #{$size * 1px}#{$imp};
   }
-}
-
-.flx,
-.b-flex {
-  display: flex;
 }
 
 .flx-row {

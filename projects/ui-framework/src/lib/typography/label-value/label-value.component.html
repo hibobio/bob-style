@@ -24,6 +24,7 @@
                       [text]="label"></b-truncate-tooltip>
   <ng-container *ngIf="!labelMaxLines">{{label}}</ng-container>
   <b-info-tooltip *ngIf="labelDescription"
+                  class="inl-flx"
                   [config]="labelDescription">
     <ng-content select="[label-tooltip]"></ng-content>
   </b-info-tooltip>
@@ -48,6 +49,7 @@
                       [text]="value"></b-truncate-tooltip>
   <ng-container *ngIf="!valueMaxLines">{{value}}</ng-container>
   <b-info-tooltip *ngIf="valueDescription"
+                  class="inl-flx"
                   [config]="valueDescription">
     <ng-content select="[value-tooltip]"></ng-content>
   </b-info-tooltip>
