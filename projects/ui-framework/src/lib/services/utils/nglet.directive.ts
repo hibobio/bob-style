@@ -13,12 +13,12 @@
  */
 
 import {
-  NgModule,
   Directive,
   Input,
+  NgModule,
+  OnInit,
   TemplateRef,
   ViewContainerRef,
-  OnInit,
 } from '@angular/core';
 
 export class NgLetContext {
@@ -26,7 +26,24 @@ export class NgLetContext {
   ngLet: any = null;
 }
 
+/**
+ * Use to subscribe to observables in the template, instead of the **evil** `*ngIf="smth$|async as smth"` pattern.
+ * You can provide fallbacks so that you don't have to use ? all the time.
+ * ```ts
+ * <ng-container *ngLet="(someData$ | async)||{} as someData">
+ *    {{ someData.name }}
+ * </ng-container>
+ * ```
+ * You can combine multiple observables in an object. Also works for non-observables, of course.
+ * ```ts
+ * <ng-container *ngLet="{ one: someRegularProp?.data||[], two: someDataTwo$|async } as data">
+ *    {{ data.one[0] }} - {{ data.two }}
+ * </ng-container>
+ * ```
+ * .
+ */
 @Directive({
+  // tslint:disable-next-line: directive-selector
   selector: '[ngLet]',
 })
 export class NgLetDirective implements OnInit {
