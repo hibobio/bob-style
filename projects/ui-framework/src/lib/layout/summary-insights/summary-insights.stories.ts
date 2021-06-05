@@ -80,8 +80,6 @@ const note = `
           "useContentTemplate": true,
           "title": "Info-tooltip title",
           "text": "Info-tooltip text",
-          "iconSize": "small",
-          "iconColor": "normal"
         },
         "labelDescription": false
       }

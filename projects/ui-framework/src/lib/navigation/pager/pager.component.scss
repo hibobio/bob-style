@@ -26,12 +26,6 @@
   }
 }
 
-:host[data-show-slice-select='false'] ::ng-deep {
-  .bpgr-page-buttons {
-    justify-content: space-between;
-  }
-}
-
 .bpgr-slice-select {
   min-width: 75px;
 }

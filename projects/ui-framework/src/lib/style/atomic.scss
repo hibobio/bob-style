@@ -449,8 +449,11 @@ clr-positive-500,
   display: block;
 }
 
-.inl-blk {
+[class].inl-blk {
   display: inline-block;
+}
+[class].inl-flx {
+  display: inline-flex;
 }
 
 .grd,
