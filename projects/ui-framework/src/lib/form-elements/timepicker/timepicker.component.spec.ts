@@ -26,11 +26,9 @@ describe('TimePickerComponent', () => {
   let labelComp: FormElementLabelComponent;
   let hhInputElem: HTMLInputElement;
   let mmInputElem: HTMLInputElement;
-  let iconElem: HTMLElement;
   let messageElem: HTMLElement;
 
   let inputValue: (input, value) => void;
-  let clickElement: (element) => void;
 
   beforeEach(
     waitForAsync(() => {
@@ -64,11 +62,11 @@ describe('TimePickerComponent', () => {
             .componentInstance;
           hhInputElem = elementFromFixture(
             fixture,
-            '.bfe-input-hours'
+            '.btmpckr-input-hours'
           ) as HTMLInputElement;
           mmInputElem = elementFromFixture(
             fixture,
-            '.bfe-input-minutes'
+            '.btmpckr-input-minutes'
           ) as HTMLInputElement;
           messageElem = elementFromFixture(fixture, '[b-input-message]');
 
@@ -77,14 +75,6 @@ describe('TimePickerComponent', () => {
             component.onHostFocusOut({
               target: input,
               relatedTarget: null,
-              preventDefault: () => {},
-            } as any);
-          };
-
-          clickElement = (element) => {
-            element.click();
-            component.onHostClick({
-              target: iconElem,
               preventDefault: () => {},
             } as any);
           };
@@ -108,11 +98,6 @@ describe('TimePickerComponent', () => {
 
     it('should display hint message', () => {
       expect(messageElem.innerText).toContain('Hint');
-    });
-
-    it('should not display clear icon, when component has no value', () => {
-      iconElem = elementFromFixture(fixture, '.clear-input');
-      expect(iconElem.hidden).toBeTruthy();
     });
   });
 
@@ -207,32 +192,6 @@ describe('TimePickerComponent', () => {
 
       expect(component.value).toEqual('15:00');
       expect(component.propagateChange).toHaveBeenCalledWith('15:00');
-    });
-  });
-
-  describe('Clear button', () => {
-    beforeEach(() => {
-      component.ngOnChanges(
-        simpleChange({
-          value: '15:30',
-        })
-      );
-      fixture.detectChanges();
-      iconElem = elementFromFixture(fixture, '.clear-input');
-    });
-
-    it('should clear value when clear button is clicked', () => {
-      expect(component.value).not.toBeNull();
-      clickElement(iconElem);
-
-      fixture.detectChanges();
-
-      expect(component.value).toBeNull();
-      expect(component.changed.emit).toHaveBeenCalledWith({
-        event: 'onChange',
-        value: null,
-      });
-      expect(component.propagateChange).toHaveBeenCalledWith(null);
     });
   });
 });
