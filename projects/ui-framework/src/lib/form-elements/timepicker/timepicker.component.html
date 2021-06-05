@@ -5,68 +5,57 @@
                       [fieldId]="id">
 </b-form-element-label>
 
-<div class="bfe-wrap has-prefix"
-     [ngClass]="{
-        focused: hoursFocused || minutesFocused || buttonsFocused,
-        'has-suffix':  !readonly
-     }">
-
-  <b-icon class="bfe-prefix"
-          [config]="timeIcn"
-          [color]="(hoursFocused || minutesFocused || buttonsFocused) ?
-          iconColor.dark : iconColor.normal">
-  </b-icon>
-
-  <span class="bfe-input"
-        [attr.id]="id">
-    <input #inputHours
-           #input
-           class="bfe-input-hours flx-grow"
-           type="tel"
-           [attr.autocomplete]="autoComplete.off"
-           maxlength="2"
-           placeholder="00"
-           [value]="valueHours || null"
-           [attr.disabled]="disabled || readonly || null"
-           [required]="required"
-           [readonly]="readonly"
-           (keydown.outside-zone)="onInputKeydown($event)"
-           (input.outside-zone)="onHoursChange($event)"
-           (focus.outside-zone)="onHoursFocus()">
-    <span class="separator text-center">:</span>
-    <input #inputMinutes
-           class="bfe-input-minutes flx-grow"
-           type="tel"
-           [attr.autocomplete]="autoComplete.off"
-           maxlength="2"
-           placeholder="00"
-           [value]="valueMinutes || null"
-           [attr.disabled]="disabled || readonly || null"
-           [required]="required"
-           [readonly]="readonly"
-           (keydown.outside-zone)="onInputKeydown($event)"
-           (input.outside-zone)="onMinutesChange($event)"
-           (focus.outside-zone)="onMinutesFocus();">
-  </span>
-
-  <span *ngIf="!readonly"
-        class="bfe-suffix">
-    <b-icon [hidden]="isInputEmpty()"
-            class="clear-input"
-            role="button"
-            [config]="clearIcn">
-    </b-icon>
-  </span>
-
-  <div *ngIf="timeFormat===timeFormats.Time12"
-       class="bfe-buttons-wrap">
-    <button type="button"
-            class="bfe-input-button am has-hover"
-            [class.active]="amPm==='am'">AM</button>
-    <button type="button"
-            class="bfe-input-button pm has-hover"
-            [class.active]="amPm==='pm'">PM</button>
+<div class="btmpckr-inputs-wrap flx"
+     [class.focused]="hoursFocused||minutesFocused||selectFocused">
+  <div class="bfe-wrap btmpckr-wrap flx-grow">
+    <span class="bfe-input btmpckr-input"
+          [attr.id]="id"
+          tabindex="0">
+      <input #inputHours
+             #input
+             class="btmpckr-input-hours"
+             type="tel"
+             [attr.autocomplete]="autoComplete.off"
+             maxlength="2"
+             placeholder="00"
+             [value]="valueHours || null"
+             [attr.disabled]="disabled || readonly || null"
+             [required]="required"
+             [readonly]="readonly"
+             (keydown.outside-zone)="onInputKeydown($event)"
+             (input.outside-zone)="onHoursChange($event)">
+      <span class="btmpckr-separator text-center">:</span>
+      <input #inputMinutes
+             class="btmpckr-input-minutes"
+             type="tel"
+             [attr.autocomplete]="autoComplete.off"
+             maxlength="2"
+             placeholder="00"
+             [value]="valueMinutes || null"
+             [attr.disabled]="disabled || readonly || null"
+             [required]="required"
+             [readonly]="readonly"
+             (keydown.outside-zone)="onInputKeydown($event)"
+             (input.outside-zone)="onMinutesChange($event)">
+    </span>
   </div>
+
+  <b-single-select *ngIf="timeFormat===timeFormats.Time12"
+                   class="btmpckr-select"
+                   [options]="amPmOptions"
+                   [value]="[amPm]"
+                   [placeholder]="'--'"
+                   [required]="required"
+                   [readonly]="readonly"
+                   [showNoneOption]="false"
+                   [showSingleGroupHeader]="false"
+                   [panelClass]="'btmpckr-panel'"
+                   [doPropagate]="false"
+                   [min]="1"
+                   [size]="size"
+                   (opened)="selectFocused=true"
+                   (closed)="selectFocused=false"
+                   (changed)="setAmPm($event)"></b-single-select>
 </div>
 
 <p b-input-message

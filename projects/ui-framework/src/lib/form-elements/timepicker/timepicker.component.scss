@@ -1,16 +1,25 @@
 @import '../../style/common-imports';
 
 :host {
-  .bfe-input {
+  .btmpckr-input {
     display: flex;
+    cursor: text;
   }
 }
 
-.bfe-input-hours,
-.bfe-input-minutes {
-  @include input-basics;
-  padding: 0;
-  min-width: 2em;
+.btmpckr-wrap {
+  min-width: 0;
+  cursor: text;
+}
+
+.btmpckr-select {
+  min-width: 70px;
+}
+
+.btmpckr-input-hours,
+.btmpckr-input-minutes {
+  @include input-basics($padding: 0, $min-width: 2em, $flex-grow: null);
+  flex: 0;
   text-align: center;
 
   &:focus::placeholder {
@@ -18,53 +27,43 @@
   }
 }
 
-.separator {
+.btmpckr-separator {
   pointer-events: none;
   user-select: none;
   max-width: 30px;
 }
 
-.bfe-prefix {
-  padding-left: 13px;
-}
-
-.bfe-prefix,
-.bfe-suffix {
-  min-height: $input-height;
-
-  ::ng-deep .b-icon {
-    pointer-events: none;
+:host[data-time-format='12h'] {
+  .bfe-wrap {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right-width: 0;
+  }
+  ::ng-deep {
+    .btmpckr-select {
+      .bfe-wrap {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+      .bfe-input {
+        text-align: center;
+        padding-left: 4px;
+      }
+      .bfe-suffix {
+        padding-left: 4px;
+      }
+    }
   }
 }
 
-:host[data-size='smaller'] ::ng-deep {
-  .bfe-prefix,
-  .bfe-suffix {
-    min-height: $input-height-smaller;
-  }
-}
+::ng-deep {
+  .cdk-overlay-pane.b-select-panel.btmpckr-panel {
+    min-width: 0;
 
-.clear-input[hidden] {
-  display: flex;
-  opacity: 0 !important;
-  pointer-events: none;
-}
-
-@include clear-input-suffix;
-@include bfe-input-buttons;
-
-.bfe-buttons-wrap {
-  min-width: 36px;
-}
-
-.bfe-input-button.active {
-  font-weight: 700;
-  color: $grey-800;
-  background-color: $grey-200;
-
-  &:nth-child(2) {
-    background-image: inherit;
-    background-size: 100% 1px;
-    background-position: center top;
+    .v-scroll-wrapper.no-group-header .option-select.option {
+      justify-content: center;
+      padding-left: 4px;
+      padding-right: 35px;
+    }
   }
 }
