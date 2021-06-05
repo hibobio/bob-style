@@ -7,7 +7,7 @@
    [attr.tabindex]="iconClicked ? 0 : null"></i>
 
 <h6 *ngIf="label"
-    class="blv-label"
+    class="blv-label flx"
     [ngStyle]="labelStyle"
     [ngClass]="labelClass"
     [class.has-hover]="!!labelClicked"
@@ -31,7 +31,7 @@
 </h6>
 
 <p *ngIf="value"
-   class="blv-value"
+   class="blv-value flx"
    [ngStyle]="valueStyle"
    [ngClass]="valueClass"
    [class.has-hover]="!!valueClicked"

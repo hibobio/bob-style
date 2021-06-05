@@ -336,8 +336,6 @@ const toAdd = () => {
       labelDescription: object('labelDescription', {
         title: mockText(3),
         text: mockText(7),
-        iconSize: IconSize.small,
-        icon: Icons.info_outline,
         linkClicked: () => {
           console.log('LINK WAS CLICKED');
         },

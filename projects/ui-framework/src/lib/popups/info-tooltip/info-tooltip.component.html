@@ -1,8 +1,7 @@
 <b-panel [openOnHover]="true">
   <b-icon panel-trigger
-          [icon]="icon"
-          [color]="iconColor"
-          [size]="iconSize"></b-icon>
+          [hasHoverState]="true"
+          [config]="iconConfig"></b-icon>
 
   <div *ngIf="!useContentTemplate && (text||title||link)"
        panel-content>

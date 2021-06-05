@@ -1,4 +1,3 @@
-import { IconColor, IconSize } from '../../icons/icons.enum';
 import { mockThings, mockTime } from '../../mock.const';
 import { ColorPalette } from '../../services/color-service/color-palette.enum';
 import {
@@ -76,8 +75,6 @@ export const summaryInsightsDataMock2 = makeArray(6).map((_, i) => ({
       text: `Data is the value of valueDescription property (make sure it includes useContentTemplate:true).
         To use contentTemplate directive, import ContentTemplateModule.
         See Notes tab for full example.`,
-      iconSize: IconSize.small,
-      iconColor: IconColor.normal,
     },
     labelDescription: i === 1 && {
       useContentTemplate: true,
@@ -85,8 +82,6 @@ export const summaryInsightsDataMock2 = makeArray(6).map((_, i) => ({
       text: `Data is the value of labelDescription property (make sure it includes useContentTemplate:true).
         To use contentTemplate directive, import ContentTemplateModule.
         See Notes tab for full example.`,
-      iconSize: IconSize.small,
-      iconColor: IconColor.normal,
     },
   },
 }));

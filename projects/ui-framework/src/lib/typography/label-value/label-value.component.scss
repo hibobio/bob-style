@@ -1,5 +1,7 @@
 @import '../../style/common-imports';
 
+$blv-info-tooltip-margin: 6px;
+
 $BLVTypeMap: (
   '1': (
     '.blv-label': (
@@ -150,8 +152,21 @@ $BLVTypeMap: (
 }
 
 b-info-tooltip {
-  margin-left: times8(1);
+  margin-left: $blv-info-tooltip-margin;
   line-height: 0;
+
+  &.inl-flx {
+    align-items: center;
+    vertical-align: text-top;
+    line-height: 1;
+    height: 1em;
+  }
+
+  ::ng-deep b-panel {
+    display: block;
+    line-height: 0;
+    font-size: 0px;
+  }
 }
 
 :host::ng-deep > :not(.blv-icon):not(.blv-label):not(.blv-value) {
@@ -312,11 +327,12 @@ b-info-tooltip {
   margin: 0;
   font-size: inherit;
   color: inherit;
-  display: flex;
   align-items: center;
 
   &:before {
     margin-right: 5px;
+    display: inline-block;
+    vertical-align: text-bottom;
   }
 
   &.icon-after {
@@ -329,7 +345,7 @@ b-info-tooltip {
 
     b-info-tooltip {
       margin-left: 0;
-      margin-right: 8px;
+      margin-right: $blv-info-tooltip-margin;
     }
   }
 

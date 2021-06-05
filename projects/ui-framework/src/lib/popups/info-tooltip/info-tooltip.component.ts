@@ -1,10 +1,13 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
+import { ICON_CONFIG } from '../../icons/common-icons.const';
+import { Icon } from '../../icons/icon.interface';
+import { Icons } from '../../icons/icons.enum';
 import { Link } from '../../indicators/link/link.types';
 import {
   isFunction,
   isObject,
+  isString,
   objectMapKeys,
   objectRemoveEntriesByValue,
 } from '../../services/utils/functional-utils';
@@ -19,14 +22,30 @@ export class InfoTooltipComponent {
   @Input() title: string;
   @Input() text: string;
   @Input() link: Link;
-  @Input() icon: Icons = Icons.info_outline;
-  @Input() iconSize: IconSize = IconSize.large;
+
   @Input() useContentTemplate: boolean;
 
-  @Output() linkClicked: EventEmitter<void> = new EventEmitter<void>();
-  linkClickHandler: () => void;
+  public iconConfig: Icon = ICON_CONFIG.info;
 
-  readonly iconColor: IconColor = IconColor.dark;
+  @Input() set icon(icon: Icons | Icon) {
+    if (isString(icon)) {
+      this.iconConfig = { ...this.iconConfig, icon };
+    }
+    if (isObject(icon)) {
+      this.iconConfig = { ...this.iconConfig, ...icon };
+    }
+  }
+  get icon() {
+    return this.iconConfig.icon;
+  }
+  @Input() set iconSize(size: Icon['size']) {
+    if (size) {
+      this.iconConfig = { ...this.iconConfig, size };
+    }
+  }
+  get iconSize() {
+    return this.iconConfig.size;
+  }
 
   @Input('config') set setProps(config: InfoTooltip) {
     if (isObject(config)) {
@@ -38,6 +57,9 @@ export class InfoTooltipComponent {
       );
     }
   }
+
+  @Output() linkClicked: EventEmitter<void> = new EventEmitter<void>();
+  linkClickHandler: () => void;
 
   onLinkClick() {
     this.linkClicked.emit();
