@@ -509,17 +509,33 @@ export const objectGetPropertyDescriptor = (
   return descriptor;
 };
 
-// objectGetDeepestValid(error, 'error.error')
+/**
+ * Follow obj path from right to left and return any non-falsy value found
+ * @param obj the object to search
+ * @param path path to start from
+ * @param fallback value to return if nothing valid dounf
+ * @param validCheck function to use for truthy/valid check, defaults to !isNullOrUndefined
+ * ```ts
+ * objectGetDeepestValid(error, 'error.error')
+ * // error.error.errror || error.error || error
+ * ```
+ * .
+ */
 export const objectGetDeepestValid = <T = any, V = any>(
   obj: T,
   path: string,
-  fallback?: V
+  fallback?: V,
+  validCheck?: (v: any) => boolean
 ): V => {
   if (!isObject(obj) || !isString(path)) {
     return fallback;
   }
 
-  if (!isNullOrUndefined(obj[path])) {
+  validCheck = isFunction(validCheck)
+    ? validCheck
+    : (v) => !isNullOrUndefined(v);
+
+  if (validCheck(obj[path])) {
     return obj[path] as V;
   }
 
@@ -527,17 +543,23 @@ export const objectGetDeepestValid = <T = any, V = any>(
   let index = 0;
   let value: T | V = obj;
 
-  while (!isNullOrUndefined(value[pathParts[index]])) {
+  while (validCheck(value[pathParts[index]])) {
     value = value[pathParts[index]];
     ++index;
   }
 
-  return (fallback !== undefined && (value === undefined || value === obj)
+  return (fallback !== undefined && (!validCheck(value) || value === obj)
     ? fallback
     : value) as V;
 };
 
-// simple 1 level merge
+/**
+ * Simple 1 level objects merge
+ * @param target object to merge into
+ * @param rest 1 or more source objects
+ *
+ * .
+ */
 export const mergeObjects = <I = GenericObject, O = I>(
   target: I,
   ...rest: I[]

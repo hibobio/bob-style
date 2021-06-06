@@ -8,6 +8,7 @@ import { ComponentRef, Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
 import {
+  isNotEmptyString,
   isObject,
   isString,
   objectGetDeepestValid,
@@ -91,9 +92,11 @@ export class AlertService {
           objectGetDeepestValid(
             error,
             'error.error',
-            error.message || this.translate.instant('common.general_error')
+            error.message || this.translate.instant('common.general_error'),
+            (v) => isNotEmptyString(v)
           )
         );
+    text = text.replace(/(^\s*["\W]+\s*)|(\s*["\W]+\s*$)/g, '');
     if (text.replace(/\W/g, '') === 'isTrustedtrue') {
       text = null;
     }
