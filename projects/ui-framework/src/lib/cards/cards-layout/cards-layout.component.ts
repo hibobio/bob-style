@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
 import {
@@ -9,6 +9,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
@@ -34,7 +35,7 @@ import {
   styleUrls: ['./cards-layout.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CardsLayoutComponent implements OnChanges, OnInit {
+export class CardsLayoutComponent implements OnChanges, OnInit, OnDestroy {
   constructor(
     public hostElRef: ElementRef,
     private mobileService: MobileService,
@@ -55,12 +56,17 @@ export class CardsLayoutComponent implements OnChanges, OnInit {
   @Output()
   cardsAmountChanged: EventEmitter<number> = new EventEmitter<number>();
 
-  public cardsInRow$: Observable<number>;
-  public cardsInRow = 1;
+  public cardsInRow$: BehaviorSubject<number> = new BehaviorSubject(1);
+  public get cardsInRow() {
+    return this.cardsInRow$.getValue();
+  }
+
+  public totalCards: number;
   public isMobile = false;
+  private itemsInRowSub: Subscription;
 
   getCardsInRow$(): Observable<number> {
-    return this.cardsInRow$;
+    return this.cardsInRow$.asObservable();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -87,7 +93,9 @@ export class CardsLayoutComponent implements OnChanges, OnInit {
   }
 
   private setCardsInRow(): void {
-    this.cardsInRow$ = this.itemsInRowService
+    this.itemsInRowSub?.unsubscribe();
+
+    this.itemsInRowSub = this.itemsInRowService
       .getItemsInRow$({
         hostElem: this.cardsList.nativeElement,
         elemWidth: this.getCardWidth(),
@@ -102,11 +110,13 @@ export class CardsLayoutComponent implements OnChanges, OnInit {
         extended: false,
       })
       .pipe(
-        tap((cardsInRow) => {
-          this.cardsInRow = cardsInRow;
+        tap(() => {
+          this.totalCards =
+            this.cardsList?.nativeElement.childElementCount || 0;
           this.cd.detectChanges();
         })
-      );
+      )
+      .subscribe(this.cardsInRow$);
   }
 
   private getCardWidth(type = this.type, isMobile = this.isMobile): number {
@@ -117,10 +127,7 @@ export class CardsLayoutComponent implements OnChanges, OnInit {
   }
 
   public hasEnoughCards() {
-    return (
-      this.cardsInRow < this.cardsList.nativeElement.childElementCount &&
-      this.cardsList.nativeElement.childElementCount > 1
-    );
+    return this.cardsInRow < this.totalCards && this.totalCards > 1;
   }
 
   public isSwiperEnabled() {
@@ -137,5 +144,9 @@ export class CardsLayoutComponent implements OnChanges, OnInit {
       this.alignCenter === true ||
       (this.alignCenter === 'auto' && !this.hasEnoughCards())
     );
+  }
+
+  ngOnDestroy(): void {
+    this.itemsInRowSub?.unsubscribe();
   }
 }
