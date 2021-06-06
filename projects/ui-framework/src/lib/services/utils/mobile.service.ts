@@ -1,8 +1,9 @@
-import { isEqual } from 'lodash';
-import { Observable } from 'rxjs';
+import { fromEventPattern, Observable } from 'rxjs';
 import {
+  catchError,
   distinctUntilChanged,
   map,
+  pluck,
   shareReplay,
   startWith,
 } from 'rxjs/operators';
@@ -10,8 +11,9 @@ import {
 import { Injectable, NgZone } from '@angular/core';
 
 import { mobileBreakpoint } from '../../consts';
+import { isFunction } from './functional-utils';
+import { log } from './logger';
 import { insideZone } from './rxjs.operators';
-import { WinResizeEvent } from './utils.interface';
 import { UtilsService } from './utils.service';
 import { WindowRef } from './window-ref.service';
 
@@ -48,20 +50,45 @@ export class MobileService {
   isTouchDevice: boolean;
   mobileOS?: MobileOS;
 
+  private win: Window;
+  private mobileQuery: MediaQueryList;
+
   constructor(
     private windowRef: WindowRef,
     private utilsService: UtilsService,
     private zone: NgZone
   ) {
+    this.win = this.windowRef.nativeWindow as Window;
+
     this.isMobBrowser = this.checkForMobileBrowser();
     this.mobileOS = this.getMobileOperatingSystem();
     this.isTouchDevice = this.checkForTouchDevice();
-    this.mediaEvent$ = this.utilsService.getResizeEvent(true).pipe(
-      startWith({}),
-      map((resizeEvent: WinResizeEvent) => this.getMediaData(resizeEvent)),
-      distinctUntilChanged(isEqual),
-      shareReplay(1)
-    );
+
+    this.zone.runOutsideAngular(() => {
+      this.mobileQuery = this.win.matchMedia(
+        `(max-width: ${mobileBreakpoint}px)`
+      );
+
+      this.mediaEvent$ = fromEventPattern((handler) => {
+        if (isFunction(this.mobileQuery.addEventListener)) {
+          return this.mobileQuery.addEventListener('change', handler);
+        } else {
+          return this.mobileQuery.addListener(handler);
+        }
+      }).pipe(
+        pluck('matches'),
+        catchError((error) => {
+          log.err(error, 'MobileService mediaEvent$');
+          return this.utilsService.getResizeEvent(true);
+        }),
+        startWith(1),
+        map((event: any) => this.getMediaData(event)),
+        distinctUntilChanged((prev, curr) => {
+          return prev.isDesktop === curr.isDesktop;
+        }),
+        shareReplay(1)
+      );
+    });
   }
 
   public matchMedia(query: string): boolean {
@@ -83,9 +110,7 @@ export class MobileService {
 
   public isMobile(matchMobile = null): boolean {
     return Boolean(
-      (matchMobile !== null
-        ? matchMobile
-        : this.matchBreakpoint(mobileBreakpoint, WidthMode.max)) ||
+      (matchMobile !== null ? matchMobile : this.mobileQuery.matches) ||
         this.isMobBrowser ||
         this.mobileOS
     );
@@ -93,9 +118,7 @@ export class MobileService {
 
   public isDesktop(matchDesktop = null): boolean {
     return Boolean(
-      (matchDesktop !== null
-        ? matchDesktop
-        : this.matchBreakpoint(mobileBreakpoint + 1, WidthMode.min)) &&
+      (matchDesktop !== null ? matchDesktop : !this.mobileQuery.matches) &&
         !this.isMobBrowser &&
         !this.mobileOS
     );
@@ -168,9 +191,9 @@ export class MobileService {
     return this.matchMedia(query);
   }
 
-  public getMediaData(resizeEvent: Partial<WinResizeEvent> = {}): MediaEvent {
+  public getMediaData(resizeEvent: any): MediaEvent {
     const width =
-      resizeEvent.innerWidth || this.windowRef.nativeWindow.innerWidth;
+      resizeEvent?.innerWidth || this.windowRef.nativeWindow.innerWidth;
     const matchMobile = width <= mobileBreakpoint;
     const matchDesktop = width > mobileBreakpoint;
 
