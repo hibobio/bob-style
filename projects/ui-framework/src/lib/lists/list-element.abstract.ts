@@ -23,7 +23,8 @@ import { AvatarSize } from '../avatar/avatar/avatar.enum';
 import { Keys } from '../enums';
 import { FORM_ELEMENT_HEIGHT } from '../form-elements/form-elements.const';
 import { FormElementSize } from '../form-elements/form-elements.enum';
-import { IconColor, Icons, IconSize } from '../icons/icons.enum';
+import { ICON_CONFIG } from '../icons/common-icons.const';
+import { IconColor, IconSize } from '../icons/icons.enum';
 import { TooltipClass, TooltipPosition } from '../popups/tooltip/tooltip.enum';
 import { SearchComponent } from '../search/search/search.component';
 import { DOMhelpers } from '../services/html/dom-helpers.service';
@@ -171,7 +172,7 @@ export abstract class BaseListElement
   readonly modes = SelectMode;
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
-  readonly infoIcon = Icons.info_outline.replace('b-icon-', '');
+  readonly infoIcon = ICON_CONFIG.info.icon.replace('b-icon-', '');
   readonly avatarSize = AvatarSize;
   readonly formElementSize = FormElementSize;
   readonly tooltipPosition = TooltipPosition.above;

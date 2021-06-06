@@ -2197,6 +2197,46 @@ export const getObjectChanges$ = <T = GenericObject>(
 // MISC HELPERS
 // ----------------------
 
+/**
+ *
+ * @param str string with some numbered placeholders like {{0}} {{1}}
+ * @param replacements array with replacement strings, whose indexes
+ * correspond to the placeholder items
+ * @param wrapWith a pair of strings you'd like to wrap the replacement with
+ * @param templChar a pair of strings used as template markers
+ * (defaults to `['{{', '}}']`)
+ *
+ * ```ts
+ * replaceNumberedPlaceholders(
+ *  "My dog's name is {{1}} and my cat's name is {{0}}.",
+ *  ['Garfield', 'Pluto'], ['<b>','</b>']
+ * ); // => My dog's name is <b>Pluto</b> and my cat's name is <b>Garfield</b>.
+ * ```
+ * .
+ */
+export const replaceNumberedPlaceholders = (
+  str: string,
+  replacements: string[],
+  wrapWith: string[] = [],
+  templChar = ['{{', '}}']
+): string => {
+  if (isEmptyArray(replacements) || !str) {
+    return str;
+  }
+  const regex = new RegExp(
+    `${templChar[0] || ''}(\\s*\\d+\\s*)${templChar[1] || ''}`,
+    'g'
+  );
+  return str.replace(regex, (match) => {
+    const replacement =
+      replacements[parseInt(match.replace(/\D/g, ''), 10)] || '';
+
+    return replacement
+      ? (wrapWith[0] || '') + replacement + (wrapWith[1] || '')
+      : '';
+  });
+};
+
 export const thisClassName = <T = unknown>(that: T | Type<T>): string =>
   that?.constructor?.name;
 

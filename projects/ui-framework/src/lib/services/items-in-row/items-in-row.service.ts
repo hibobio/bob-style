@@ -87,10 +87,12 @@ export class ItemsInRowService {
           }
         )
       ),
+
       this.mutationObservableService.getResizeObservervable(hostElem, {
         watch: 'width',
         threshold: elemWidth / 3,
       }),
+
       this.mutationObservableService
         .getMutationObservable(hostElem, {
           characterData: false,
@@ -111,13 +113,13 @@ export class ItemsInRowService {
         ]) => {
           return {
             itemsInRow: calcItemsFit(
-              elemRect.width ||
+              elemRect?.width ||
                 this.DOM.getClosest(hostElem, this.DOM.getInnerWidth, 'result'),
               elemWidth,
               gapSize,
               minItems
             ),
-            childCount: (update[0] || hostElem).childElementCount,
+            childCount: ((update && update[0]) || hostElem).childElementCount,
           };
         }
       ),

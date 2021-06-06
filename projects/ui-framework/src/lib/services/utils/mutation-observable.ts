@@ -1,6 +1,6 @@
 import { merge, Observable, of, Subscriber } from 'rxjs';
 import {
-  bufferTime,
+  buffer,
   debounceTime,
   delay,
   distinctUntilChanged,
@@ -90,6 +90,8 @@ export const ELEMENT_IN_VIEW_CONFIG_DEF: IntersectionObservableConfig = {
   threshold: 0.8,
 };
 
+export const OBSERVERS_DEBOUNCETIME_DEF = 100;
+
 @Injectable({
   providedIn: 'root',
 })
@@ -131,6 +133,7 @@ export class MutationObservableService {
       config = { ...MUTATION_OBSERVABLE_CONFIG_DEF, ...config };
     }
     let observable: Observable<Set<HTMLElement>>;
+    let output: Observable<Set<HTMLElement>>;
 
     this.zone.runOutsideAngular(() => {
       observable = new Observable(
@@ -161,25 +164,38 @@ export class MutationObservableService {
           return unsubscribe;
         }
       );
+
+      output = !config.bufferTime
+        ? config.outsideZone === true
+          ? observable
+          : observable.pipe(insideZone(this.zone))
+        : observable.pipe(
+            buffer(
+              observable.pipe(
+                throttleTime(
+                  isNumber(config.bufferTime)
+                    ? config.bufferTime
+                    : OBSERVERS_DEBOUNCETIME_DEF,
+                  undefined,
+                  {
+                    leading: false,
+                    trailing: true,
+                  }
+                )
+              )
+            ),
+            filter<Set<HTMLElement>[]>((sets) => Boolean(sets.length)),
+            //
+            map<Set<HTMLElement>[], Set<HTMLElement>>((collectedResults) => {
+              return new Set(
+                arrayFlatten(collectedResults.map((s) => Array.from(s)))
+              );
+            }),
+            config.outsideZone !== true ? insideZone(this.zone) : pass
+          );
     });
 
-    return !config.bufferTime
-      ? config.outsideZone === true
-        ? observable
-        : observable.pipe(insideZone(this.zone))
-      : observable.pipe(
-          bufferTime<Set<HTMLElement>>(
-            isNumber(config.bufferTime) ? config.bufferTime : 100
-          ),
-          filter<Set<HTMLElement>[]>((sets) => Boolean(sets.length)),
-          //
-          map<Set<HTMLElement>[], Set<HTMLElement>>((collectedResults) => {
-            return new Set(
-              arrayFlatten(collectedResults.map((s) => Array.from(s)))
-            );
-          }),
-          config.outsideZone !== true ? insideZone(this.zone) : pass
-        );
+    return output;
   }
 
   public getResizeObservervable(
@@ -246,7 +262,9 @@ export class MutationObservableService {
       !config.debounceTime || !win.ResizeObserver
         ? pass
         : debounceTime(
-            isNumber(config.debounceTime) ? config.debounceTime : 100
+            isNumber(config.debounceTime)
+              ? config.debounceTime
+              : OBSERVERS_DEBOUNCETIME_DEF
           ),
       filter((newRect) => {
         return this.compareDOMRects(lastRect, newRect, config);
@@ -374,7 +392,9 @@ export class MutationObservableService {
       !config.debounceTime
         ? pass
         : debounceTime(
-            isNumber(config.debounceTime) ? config.debounceTime : 100
+            isNumber(config.debounceTime)
+              ? config.debounceTime
+              : OBSERVERS_DEBOUNCETIME_DEF
           )
     );
   }
