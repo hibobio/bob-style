@@ -191,7 +191,7 @@ export class MobileService {
     return this.matchMedia(query);
   }
 
-  public getMediaData(resizeEvent: any): MediaEvent {
+  public getMediaData(resizeEvent?: any): MediaEvent {
     const width =
       resizeEvent?.innerWidth || this.windowRef.nativeWindow.innerWidth;
     const matchMobile = width <= mobileBreakpoint;
