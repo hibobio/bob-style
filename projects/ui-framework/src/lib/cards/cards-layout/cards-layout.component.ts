@@ -5,12 +5,14 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ContentChildren,
   ElementRef,
   EventEmitter,
   Input,
   OnChanges,
   OnInit,
   Output,
+  QueryList,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
@@ -27,6 +29,7 @@ import {
   CARD_TYPE_WIDTH_MOBILE,
   GAP_SIZE,
 } from './cards-layout.const';
+import { BaseCardElement } from '../card/card.abstract';
 
 @Component({
   selector: 'b-cards',
@@ -45,6 +48,7 @@ export class CardsLayoutComponent implements OnChanges, OnInit {
   }
 
   @ViewChild('cardsList', { static: true }) private cardsList: ElementRef;
+  @ContentChildren(BaseCardElement) public cards: QueryList<BaseCardElement>;
 
   @Input() alignCenter: boolean | 'auto' = false;
   @Input() mobileSwiper = false;
