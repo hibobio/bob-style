@@ -5,7 +5,7 @@ import {
   Input,
 } from '@angular/core';
 
-import { Icons } from '../../icons/icons.enum';
+import { ICON_CONFIG } from '../../icons/common-icons.const';
 import {
   TooltipClass,
   TooltipPosition,
@@ -27,8 +27,7 @@ export class FormElementLabelComponent {
   @HostBinding('class.bfe-label') classname = true;
 
   readonly truncateTooltipType = TruncateTooltipType;
-
-  readonly infoIcon = Icons.info_outline.replace('b-icon-', '');
+  readonly infoIcon = ICON_CONFIG.info.icon.replace('b-icon-', '');
   readonly tooltipPosition = TooltipPosition.above;
   readonly tooltipDelay = 300;
   readonly tooltipClass: TooltipClass[] = [
