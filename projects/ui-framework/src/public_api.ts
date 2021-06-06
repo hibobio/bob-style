@@ -645,10 +645,11 @@ export { ComponentRendererModule } from './lib/services/component-renderer/compo
 export { ComponentRendererComponent } from './lib/services/component-renderer/component-renderer.component';
 export * from './lib/services/component-renderer/component-renderer.interface';
 export * from './lib/services/component-renderer/component-renderer.service';
-// RxJs operators
+// RxJs
 export * from './lib/services/utils/rxjs.operators';
 export * from './lib/services/utils/rxjs.oprtrs.cachemap';
 export * from './lib/services/utils/rxjs.oprtrs.slicer';
+export * from './lib/services/utils/rxjs.misc';
 // Event Manager Plugins
 export {
   EventManagerPlugins,
