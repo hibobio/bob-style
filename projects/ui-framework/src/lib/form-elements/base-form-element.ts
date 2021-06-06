@@ -123,6 +123,8 @@ export abstract class BaseFormElement
   protected skipFocusEvent = false;
   protected forceElementValue: ForceElementValue = false;
   readonly inputTypes = InputTypes;
+  public touched = false;
+  public dirty = false;
 
   readonly subs: Subscription[] = [];
 
@@ -272,14 +274,21 @@ export abstract class BaseFormElement
 
       if (
         doPropagate &&
-        allowedEvents.filter((event) => event !== InputEventType.onFocus)
-          .length > 0
+        allowedEvents.some((event) => event !== InputEventType.onFocus)
       ) {
         this.propagateChange(value);
       }
 
       if (doPropagate && allowedEvents.includes(InputEventType.onBlur)) {
         this.onTouched();
+      }
+
+      if (allowedEvents.some((event) => event !== InputEventType.onWrite)) {
+        this.touched = true;
+      }
+
+      if (allowedEvents.includes(InputEventType.onChange)) {
+        this.dirty = true;
       }
     }
   }
@@ -322,6 +331,7 @@ export abstract class BaseFormElement
 
   public focus(skipFocusEvent = false): void {
     this.skipFocusEvent = skipFocusEvent;
+    this.touched = true;
     if (this.input && this.input.nativeElement) {
       this.input.nativeElement.focus();
     }
