@@ -11,21 +11,30 @@ import { Subject } from 'rxjs';
   selector: 'b-horizontal-layout',
   templateUrl: 'horizontal-layout.component.html',
   styleUrls: ['./horizontal-layout.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
-export class HorizontalLayoutComponent extends ContentTemplateConsumer implements OnDestroy {
-  @Input() items: any[];
+export class HorizontalLayoutComponent
+  extends ContentTemplateConsumer
+  implements OnDestroy {
   showAll: boolean;
+  itemsPerRow: number;
+
+  @Input() items: any[];
+  @Input() cardWidth: number;
+  @Input() swiper: boolean = false;
+  @ViewChild(CardsLayoutComponent, { static: true })
+  private cardsLayout: CardsLayoutComponent;
+
   readonly buttonType = ButtonType;
   readonly buttonSize = ButtonSize;
-  itemsPerRow: number;
   readonly cardType: CardType.small;
   private onDestroyNotifier$ = new Subject();
-  
-  @ViewChild(CardsLayoutComponent, { static: true }) private cardsLayout: CardsLayoutComponent;
 
-  constructor(private elRef: ElementRef, private DOM: DOMhelpers, private cdr: ChangeDetectorRef) {
+  constructor(
+    private elRef: ElementRef,
+    private DOM: DOMhelpers,
+    private cdr: ChangeDetectorRef
+  ) {
     super();
   }
 
@@ -39,23 +48,23 @@ export class HorizontalLayoutComponent extends ContentTemplateConsumer implement
   }
 
   private setItemsPerRow(): void {
-    this.cardsLayout.getCardsInRow$()
-    .pipe(takeUntil(this.onDestroyNotifier$))
-    .subscribe(data => {
-      this.itemsPerRow = data;
-      this.cdr.detectChanges();
+    this.cardsLayout
+      .getCardsInRow$()
+      .pipe(takeUntil(this.onDestroyNotifier$))
+      .subscribe((data) => {
+        this.itemsPerRow = data;
+        this.cdr.detectChanges();
 
-      const itemHeight = this.cardsLayout.hostElRef.nativeElement.querySelector('div.cards-list > div').offsetHeight;
-
-      this.DOM.setCssProps(this.cardsLayout.hostElRef.nativeElement, {
-        '--item-height': `${itemHeight}px`,
-        '--container-max-height': `calc((${itemHeight}px + var(--item-grid-gap)) * 2)`
+        const itemHeight = this.cardsLayout.hostElRef.nativeElement.querySelector('div.cards-list > div').offsetHeight;
+        this.DOM.setCssProps(this.cardsLayout.hostElRef.nativeElement, {
+          '--item-height': `${itemHeight}px`,
+          '--container-max-height': `calc((${itemHeight}px + var(--item-grid-gap)) * 2)`,
+        });
       });
-    })
   }
 
   hasScroll(): boolean {
-    return !!(this.showAll && (this.items?.length > this.itemsPerRow * 2))
+    return !!(this.showAll && (this.items?.length > this.itemsPerRow * 2));
   }
 
   // public scroll(): void {// TODO: programmatically scrolling
@@ -65,5 +74,4 @@ export class HorizontalLayoutComponent extends ContentTemplateConsumer implement
   ngOnDestroy(): void {
     this.onDestroyNotifier$.next();
   }
-
 }
