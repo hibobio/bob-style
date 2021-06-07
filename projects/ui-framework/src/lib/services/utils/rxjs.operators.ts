@@ -6,6 +6,7 @@ import {
   finalize,
   map,
   pairwise,
+  startWith,
   tap,
 } from 'rxjs/operators';
 
@@ -351,6 +352,7 @@ export function pickChangedProps<T = unknown>(
 ): OperatorFunction<T, Partial<T>> {
   return (source: Observable<T>): Observable<Partial<T>> => {
     return source.pipe(
+      startWith({}),
       pairwise(),
       map(([prev, curr]) => onlyUpdatedProps<T>(prev, curr, equalCheck))
     );
