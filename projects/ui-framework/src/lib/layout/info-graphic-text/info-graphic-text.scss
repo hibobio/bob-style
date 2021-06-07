@@ -6,7 +6,7 @@
   align-items: center;
   background-color: rgba($negative-500, 0.05);
   border-radius: 8px;
-  padding: times8(5);
+  padding: times8(5) times8(4);
 }
 
 .flx.flx-wrap .b-display-4 {
@@ -22,6 +22,16 @@
     position: absolute;
     right: -10px;
   }
+}
+
+.button-text {
+  color: $negative-500;
+  font-weight: 700;
+}
+
+b-icon {
+  position: relative;
+  top: 1px;
 }
 
 :host ::ng-deep {

@@ -15,9 +15,7 @@ export class InfoGraphicTextComponent {
 
   @Input() items: ColorTextItem[];
   @Input() title: string;
-  @Input() set buttonText(value: string) {
-    this.buttonConfig.text = value || '';
-  }
+  @Input() buttonText: string;
 
   @Output() buttonClicked: EventEmitter<void> = new EventEmitter<void>();
   readonly linkIconConfig: Icon = {
@@ -26,7 +24,6 @@ export class InfoGraphicTextComponent {
     icon: Icons.chevron_right
   };
   readonly buttonConfig: ButtonConfig = {
-    text: '',
     type: ButtonType.negative,
     onClick: () => this.buttonClicked.emit(),
   };
