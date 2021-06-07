@@ -5,12 +5,15 @@ import {
   filter,
   finalize,
   map,
+  pairwise,
+  startWith,
   tap,
 } from 'rxjs/operators';
 
 import { NgZone, ɵɵdirectiveInject as directiveInject } from '@angular/core';
 
 import { Keys } from '../../enums';
+import { GenericObject } from '../../types';
 import {
   asArray,
   cloneDeepSimpleObject,
@@ -20,7 +23,9 @@ import {
   isEqualByValues,
   isFalsyOrEmpty,
   isFunction,
+  isNotEmptyObject,
   isString,
+  onlyUpdatedProps,
 } from './functional-utils';
 import { log } from './logger';
 
@@ -332,5 +337,27 @@ export function repeatAfter<T = unknown>(
         },
       });
     });
+  };
+}
+
+/**
+ * Assuming the stream values are 1 level deep relatively simple
+ * objects, will compare each previous value with
+ * each current and pick only changed/different properties
+ * @param equalCheck optionally, provide a function for comparison -
+ * takes 2 arguments and should return true if they should be
+ * considered equal
+ * .
+ */
+export function pickChangedProps<T extends GenericObject>(
+  equalCheck?: (a: Partial<T>, b: Partial<T>) => boolean
+): OperatorFunction<T, Partial<T>> {
+  return (source: Observable<T>): Observable<Partial<T>> => {
+    return source.pipe(
+      startWith({}),
+      pairwise(),
+      map(([prev, curr]) => onlyUpdatedProps<T>(prev, curr, equalCheck)),
+      filter(isNotEmptyObject)
+    );
   };
 }
