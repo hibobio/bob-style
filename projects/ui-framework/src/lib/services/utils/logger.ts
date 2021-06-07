@@ -1,6 +1,18 @@
 import { asArray, isDark, isString } from './functional-utils';
 
-const LOGGER_DATA = {
+type LoggerActions =
+  | 'message'
+  | 'info'
+  | 'dir'
+  | 'success'
+  | 'warning'
+  | 'attention'
+  | 'error';
+
+const LOGGER_DATA: Record<
+  LoggerActions,
+  [method: string, color: string, txtIcon: string, fontSize: string]
+> = {
   message: ['log', '#535353', '•', '13px'],
   info: ['info', '#4b95ec', 'ℹ', '12px'],
   dir: ['dir', '#4b95ec', 'ℹ', '12px'],
@@ -12,8 +24,12 @@ const LOGGER_DATA = {
 
 const LOGGER_TXTCOL_DEF = 'white';
 
-type LoggerActions = keyof typeof LOGGER_DATA;
-type LoggerArgs = [any | any[], string?, string?, string?];
+type LoggerArgs = [
+  things: string | (string | unknown)[],
+  tag?: string,
+  bgColor?: string,
+  textColor?: string
+];
 
 // tslint:disable-next-line: class-name
 export class log {
@@ -27,14 +43,40 @@ export class log {
   private readonly _bgColor: string;
   private readonly _textColor: string;
 
+  private static getErrror(
+    thingsIn: any[]
+  ): {
+    things: (string | unknown)[];
+    error: Error;
+    errorTxt: string;
+  } {
+    let errorTxt: string;
+    const things = thingsIn.slice();
+
+    const errorIdx = thingsIn.findIndex(
+      (th) => th instanceof Error || (th?.stack && th?.message)
+    );
+
+    if (errorIdx > -1) {
+      errorTxt = `${thingsIn[errorIdx].name}: ${thingsIn[errorIdx].message}`;
+      things[errorIdx] = errorTxt;
+    }
+
+    return {
+      error: thingsIn[errorIdx],
+      errorTxt,
+      things,
+    };
+  }
+
   private static do(
     what: LoggerActions = 'message',
-    things: any | any[],
+    thingsIn: string | (string | unknown)[],
     tag: string = null,
     bgColor: string = null,
     textColor: string = null
   ) {
-    things = asArray(things);
+    const { things } = log.getErrror(asArray(thingsIn));
 
     const addToTag =
       things.length > 1 && isString(things[0]) && things[0].length < 20;
@@ -44,8 +86,10 @@ export class log {
       textColor ||
       (bgColor ? (isDark(bgColor) ? 'white' : 'black') : LOGGER_TXTCOL_DEF);
 
-    return tag
-      ? console[LOGGER_DATA[what][0]](
+    const method = LOGGER_DATA[what][0];
+
+    tag
+      ? console[method](
           `%c${LOGGER_DATA[what][2]}%c[${tag}]:${
             addToTag ? ` ${things[0]}` : ''
           }`,
@@ -60,7 +104,7 @@ export class log {
             line-height: 12px;`,
           ...(addToTag ? things.slice(1) : things)
         )
-      : console[LOGGER_DATA[what][0]](...things);
+      : console[method](...things);
   }
 
   static me(...args: LoggerArgs) {
@@ -92,22 +136,22 @@ export class log {
     return new log(tag, bgColor);
   }
 
-  message(...things: any[]) {
+  message(...things: (string | unknown)[]) {
     log.me(things, this._tag, this._bgColor, this._textColor);
   }
-  info(...things: any[]) {
+  info(...things: (string | unknown)[]) {
     log.inf(things, this._tag, this._bgColor, this._textColor);
   }
-  success(...things: any[]) {
+  success(...things: (string | unknown)[]) {
     log.scs(things, this._tag, this._bgColor, this._textColor);
   }
-  warning(...things: any[]) {
+  warning(...things: (string | unknown)[]) {
     log.wrn(things, this._tag, this._bgColor, this._textColor);
   }
-  attention(...things: any[]) {
+  attention(...things: (string | unknown)[]) {
     log.atn(things, this._tag, this._bgColor, this._textColor);
   }
-  error(...things: any[]) {
+  error(...things: (string | unknown)[]) {
     log.err(things, this._tag, this._bgColor, this._textColor);
   }
   clear() {
