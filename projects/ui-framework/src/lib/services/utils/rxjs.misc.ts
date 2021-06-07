@@ -19,6 +19,7 @@ import { insideZone } from './rxjs.operators';
  *  {{ t[0] }} : {{ t[1] }} {{ t[2] }}
  * </ng-container>
  * ```
+ *
  * .
  */
 export const clock$ = (

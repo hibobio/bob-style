@@ -36,7 +36,7 @@ export interface SlicerConfig {
  * shuffle - if true, will randomize the data, set to 'auto' and it will only shuffle if loop
  * is enabled and the array lengh is at least 2 times the size of slice
  *
- * ...
+ * .
  */
 export function timedSlice<T = unknown>(
   slice: number,
@@ -75,6 +75,8 @@ export function timedSlice<T = unknown>(
  *
  * <button (click)="next$.next()" [disabled]="(sliceState$|async)==='last'">next</button>
  * ```
+ *
+ * .
  */
 export function slicer<T = unknown>(
   slice: number,
