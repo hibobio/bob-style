@@ -13,6 +13,7 @@ import {
 import { NgZone, ɵɵdirectiveInject as directiveInject } from '@angular/core';
 
 import { Keys } from '../../enums';
+import { GenericObject } from '../../types';
 import {
   asArray,
   cloneDeepSimpleObject,
@@ -22,6 +23,7 @@ import {
   isEqualByValues,
   isFalsyOrEmpty,
   isFunction,
+  isNotEmptyObject,
   isString,
   onlyUpdatedProps,
 } from './functional-utils';
@@ -347,14 +349,15 @@ export function repeatAfter<T = unknown>(
  * considered equal
  * .
  */
-export function pickChangedProps<T = unknown>(
+export function pickChangedProps<T extends GenericObject>(
   equalCheck?: (a: Partial<T>, b: Partial<T>) => boolean
 ): OperatorFunction<T, Partial<T>> {
   return (source: Observable<T>): Observable<Partial<T>> => {
     return source.pipe(
       startWith({}),
       pairwise(),
-      map(([prev, curr]) => onlyUpdatedProps<T>(prev, curr, equalCheck))
+      map(([prev, curr]) => onlyUpdatedProps<T>(prev, curr, equalCheck)),
+      filter(isNotEmptyObject)
     );
   };
 }
