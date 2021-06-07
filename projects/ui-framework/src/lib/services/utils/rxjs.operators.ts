@@ -68,7 +68,8 @@ export function filterEmpty<T = any>(discardAllFalsey = false) {
  * ```ts
  * smth$.pipe(clone())
  * ```
- * ...
+ *
+ * .
  */
 export function clone<T = any>() {
   return map<T, T>((value) => cloneDeepSimpleObject<T>(value));
@@ -83,7 +84,8 @@ export function clone<T = any>() {
  * ```ts
  * smth$.pipe( tapOnce((v)=> console.log('stream init')) )
  * ```
- * ...
+ *
+ * .
  */
 export function tapOnce<T = any>(fn: (value: T) => void, ignoreFalsy = false) {
   return (source: Observable<T>): Observable<T> =>
@@ -146,7 +148,7 @@ export function debug<T = any>(
 /**
  * Convert any incoming values to increasing numbers, acting as a "counter"
  *
- * ...
+ * .
  */
 export function counter<T = any>(startWith = 1, multiplier = 1) {
   return function (source: Observable<T>): Observable<number> {
@@ -249,7 +251,7 @@ export function onlyDistinct<T = any>(config?: EqualByValuesConfig) {
  * true) - set to false if order of array values and/or object keys
  * is important
  *
- * ...
+ * .
  */
 export function distinctFrom<T = any>(
   prev: T | (() => T),
@@ -276,7 +278,8 @@ export function distinctFrom<T = any>(
  * ```ts
  * smth$.pipe(collectToArray())
  * ```
- * ...
+ *
+ * .
  */
 export function collectToArray<T = unknown>(
   startArray: T[] = [],

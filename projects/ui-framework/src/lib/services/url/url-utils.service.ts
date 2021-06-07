@@ -19,6 +19,7 @@ import {
   filestackTest,
   imageLinkTest,
   naiveLinkTest,
+  URL_UTILS_ALLOWED_DOMAINS_DEF,
 } from './url.const';
 import { URLtype } from './url.enum';
 import { MediaData, VideoData } from './url.interface';
@@ -129,6 +130,24 @@ export class URLutils {
       result = Boolean(this.validateVideoUrl(url));
     } catch (e) {}
     return result;
+  }
+
+  /**
+   * Simple url domain validation test
+   * @param url to test
+   * @param allowedHosts array of allowed hosts. check is strict,
+   * so include all possible variants (www.hibob.com, app.hibob.com,
+   * front.hibob.com, etc); defaults to URL_UTILS_ALLOWED_DOMAINS_DEF
+   * @returns boolean indicating if the domain is allowed
+   *
+   * .
+   */
+  validateHost(
+    url: string,
+    allowedHosts: string[] = URL_UTILS_ALLOWED_DOMAINS_DEF
+  ): boolean {
+    const host = this.domain(url);
+    return allowedHosts.includes(host);
   }
 
   validateImgUrl(url: string): SafeResourceUrl {

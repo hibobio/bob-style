@@ -40,6 +40,7 @@ export class NgLetContext {
  *    {{ data.one[0] }} - {{ data.two }}
  * </ng-container>
  * ```
+ *
  * .
  */
 @Directive({

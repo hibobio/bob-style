@@ -1568,7 +1568,7 @@ export const isEqualByValuesConfigured = <T = any>(
  * // [{ v: 'a', archived: false, y: [{v: 'a-2', x: false}]}]
  * ```
  *
- * ...
+ * .
  */
 export const recursiveFilter = <T = any>(
   array: T[],

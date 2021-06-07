@@ -12,3 +12,13 @@ export const imageLinkTest = /(\.(jpg|jpeg|gif|png|svg|webp))|(data:image)/i;
 export const filestackTest = /(filestackcontent.com)/i;
 
 export const base64imageTest = /^data:image\/(jpg|jpeg|gif|png|svg|webp);base64,/i;
+
+export const URL_UTILS_ALLOWED_DOMAINS_DEF = [
+  'cdn.filestackcontent.com',
+  'hibob.com',
+  'www.hibob.com',
+  'localhost.hibob.com',
+  'app.hibob.com',
+  'front.hibob.com',
+  'images.hibob.com',
+];
