@@ -10,6 +10,8 @@
 <ng-template #item
              let-insight="insight"
              let-last="last"
+             let-total="total"
+             let-index="index"
              let-hasShowMore="hasShowMore"
              let-hasShowLess="hasShowLess">
   <div class="insight"
@@ -30,7 +32,8 @@
        [maxLines]="config.maxLines"
        [linkText]="config.readMoreLinkText"></p>
   </div>
-  <b-text-button *ngIf=" (hasShowMore) || (hasShowLess && last)"
+
+  <b-text-button *ngIf=" (hasShowMore && index +1 < total) || (hasShowLess && last)"
                  [ngClass]="{'mrg-t-24': last}"
                  (clicked)="onExpandClick()">
     {{ hasShowMore ? (config.showMoreText | translate) : (config.showLessText | translate) }}
@@ -47,7 +50,9 @@
                           let index=index;
                           trackBy: ('$index' | trackByProp)">
       <ng-container *ngTemplateOutlet="item; context: {
+                        total: data.length,
                         insight: insight,
+                        index: index,
                         last: !isExpanded && index === config.showMoreAfterItem,
                         hasShowMore: !isExpanded,
                         hasShowLess: false
