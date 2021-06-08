@@ -10,8 +10,6 @@
 <ng-template #item
              let-insight="insight"
              let-last="last"
-             let-total="total"
-             let-index="index"
              let-hasShowMore="hasShowMore"
              let-hasShowLess="hasShowLess">
   <div class="insight"
@@ -33,11 +31,14 @@
        [linkText]="config.readMoreLinkText"></p>
   </div>
 
-  <b-text-button *ngIf=" (hasShowMore && index +1 < total) || (hasShowLess && last)"
+  <b-text-button *ngIf="(hasShowMore) || (hasShowLess && last)"
                  [ngClass]="{'mrg-t-24': last}"
+                 class="clr-inherit expand-btn"
                  (clicked)="onExpandClick()">
-    {{ hasShowMore ? (config.showMoreText | translate) : (config.showLessText | translate) }}
+    {{ hasShowMore ? config.showMoreText : config.showLessText }}
+    <b-icon [icon]="hasShowMore ? iconTypes.chevron_down : iconTypes.chevron_up"></b-icon>
   </b-text-button>
+
 </ng-template>
 
 <div class="flx-col flx-grow flx-spread scroll-visible"
@@ -50,18 +51,18 @@
                           let index=index;
                           trackBy: ('$index' | trackByProp)">
       <ng-container *ngTemplateOutlet="item; context: {
-                        total: data.length,
                         insight: insight,
-                        index: index,
-                        last: !isExpanded && index === config.showMoreAfterItem,
-                        hasShowMore: !isExpanded,
+                        last: !isExpanded && index+1 === config.showMoreAfterItem,
+                        hasShowMore: !isExpanded && index+1 ===
+                        config.showMoreAfterItem,
                         hasShowLess: false
                       }">
       </ng-container>
     </ng-container>
   </ng-container>
 
-  <ng-container *ngIf="!config.showMoreAfterItem || (config.showMoreAfterItem && isExpanded)">
+  <ng-container
+                *ngIf="!config.showMoreAfterItem || (config.showMoreAfterItem && isExpanded)">
     <ng-container *ngFor="let insight of (data |
                   slice:(config.showMoreAfterItem||0)
                   :(config.showMoreAfterItem && !isExpanded ?
@@ -78,5 +79,3 @@
   </ng-container>
 
 </div>
-
-
