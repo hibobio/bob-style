@@ -71,8 +71,8 @@ export class QuickFilterLayoutComponent
   @Input() showResetFilter = false;
 
   @Output()
-  filtersChange: EventEmitter<GenericObject> = new EventEmitter<GenericObject>();
-  @Output() resetFilters: EventEmitter<void> = new EventEmitter<void>();
+  filtersChange: EventEmitter<GenericObject> = new EventEmitter();
+  @Output() resetFilters: EventEmitter<void> = new EventEmitter();
 
   public value: GenericObject = {};
   public hasPrefix = true;

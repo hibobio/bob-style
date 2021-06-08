@@ -210,9 +210,9 @@ export class CollapsibleSectionExample1Component implements OnChanges {
   @Input() disableAnimation = false;
   @Input() headerTranscludeStopPropagation = false;
 
-  @Output() opened: EventEmitter<void> = new EventEmitter<void>();
-  @Output() openedFirst: EventEmitter<void> = new EventEmitter<void>();
-  @Output() closed: EventEmitter<void> = new EventEmitter<void>();
+  @Output() opened: EventEmitter<void> = new EventEmitter();
+  @Output() openedFirst: EventEmitter<void> = new EventEmitter();
+  @Output() closed: EventEmitter<void> = new EventEmitter();
 
   readonly labelValueType = LabelValueType;
 
@@ -373,9 +373,9 @@ export class CollapsibleSectionExample2Component implements OnChanges {
 
   @Input() headerTranscludeStopPropagation = true;
 
-  @Output() opened: EventEmitter<void> = new EventEmitter<void>();
-  @Output() openedFirst: EventEmitter<void> = new EventEmitter<void>();
-  @Output() closed: EventEmitter<void> = new EventEmitter<void>();
+  @Output() opened: EventEmitter<void> = new EventEmitter();
+  @Output() openedFirst: EventEmitter<void> = new EventEmitter();
+  @Output() closed: EventEmitter<void> = new EventEmitter();
 
   readonly labelValueType = LabelValueType;
 

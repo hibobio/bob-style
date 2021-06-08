@@ -29,7 +29,7 @@ export class ConfettiComponent implements OnInit, OnDestroy {
 
   @ViewChild('confettiCanvas', { static: true }) canvas: ElementRef;
 
-  @Output() complete: EventEmitter<any> = new EventEmitter<any>();
+  @Output() complete: EventEmitter<any> = new EventEmitter();
   @Input() colors: Color[];
   @Input() numberOfConfetti = 20;
 

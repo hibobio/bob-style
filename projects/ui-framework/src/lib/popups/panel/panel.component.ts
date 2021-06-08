@@ -1,28 +1,30 @@
+import { debounce } from 'lodash';
+import { Subscription } from 'rxjs';
+
+import { CdkOverlayOrigin, OverlayRef } from '@angular/cdk/overlay';
 import {
+  ChangeDetectorRef,
   Component,
+  ElementRef,
+  EventEmitter,
   Input,
+  NgZone,
   OnDestroy,
+  OnInit,
+  Output,
   TemplateRef,
   ViewChild,
   ViewContainerRef,
-  EventEmitter,
-  Output,
-  NgZone,
-  ChangeDetectorRef,
-  OnInit,
-  ElementRef,
 } from '@angular/core';
-import { CdkOverlayOrigin, OverlayRef } from '@angular/cdk/overlay';
-import { Subscription } from 'rxjs';
-import { PanelDefaultPosVer, PanelSize } from './panel.enum';
-import { debounce } from 'lodash';
-import { UtilsService } from '../../services/utils/utils.service';
-import { unsubscribeArray } from '../../services/utils/functional-utils';
+
 import { Keys } from '../../enums';
-import { OverlayPositionClasses } from '../../types';
-import { PanelService } from './panel.service';
-import { Panel } from './panel.interface';
+import { unsubscribeArray } from '../../services/utils/functional-utils';
 import { filterKey } from '../../services/utils/rxjs.operators';
+import { UtilsService } from '../../services/utils/utils.service';
+import { OverlayPositionClasses } from '../../types';
+import { PanelDefaultPosVer, PanelSize } from './panel.enum';
+import { Panel } from './panel.interface';
+import { PanelService } from './panel.service';
 
 const HOVER_DELAY_DURATION = 300;
 
@@ -55,11 +57,10 @@ export class PanelComponent implements OnInit, OnDestroy {
   @Input() disabled = false;
   @Input() hoverTriggerDelay: number;
 
-  @Output() closed: EventEmitter<void> = new EventEmitter<void>();
-  @Output() opened: EventEmitter<OverlayRef> = new EventEmitter<OverlayRef>();
-  @Output() positionChanged: EventEmitter<
-    OverlayPositionClasses
-  > = new EventEmitter<OverlayPositionClasses>();
+  @Output() closed: EventEmitter<void> = new EventEmitter();
+  @Output() opened: EventEmitter<OverlayRef> = new EventEmitter();
+  @Output()
+  positionChanged: EventEmitter<OverlayPositionClasses> = new EventEmitter();
 
   public panel: Panel;
   public positionClassList: OverlayPositionClasses = {};

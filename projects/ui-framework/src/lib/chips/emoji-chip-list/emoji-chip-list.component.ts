@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { EmojiChip } from './emoji-chip-list.interface';
+
 import { isFunction } from '../../services/utils/functional-utils';
+import { EmojiChip } from './emoji-chip-list.interface';
 
 @Component({
   selector: 'b-emoji-chip-list',
@@ -10,7 +11,8 @@ import { isFunction } from '../../services/utils/functional-utils';
 export class EmojiChipListComponent {
   @Input() valueFormatter: Function;
   @Input() chips: EmojiChip[];
-  @Output() chipClicked = new EventEmitter<EmojiChip>();
+  @Output()
+  chipClicked: EventEmitter<EmojiChip> = new EventEmitter();
 
   valueFormatterFn(val): string | number {
     return isFunction(this.valueFormatter) ? this.valueFormatter(val) : val;

@@ -65,8 +65,8 @@ export class TreeListPanelComponent
   @Input() panelClass: string;
   @Input() hasArrow = true;
 
-  @Output() opened: EventEmitter<OverlayRef> = new EventEmitter<OverlayRef>();
-  @Output() closed: EventEmitter<void> = new EventEmitter<void>();
+  @Output() opened: EventEmitter<OverlayRef> = new EventEmitter();
+  @Output() closed: EventEmitter<void> = new EventEmitter();
 
   public treeListValue: TreeListValue;
 

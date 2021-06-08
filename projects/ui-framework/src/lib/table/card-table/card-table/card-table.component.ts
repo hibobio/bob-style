@@ -1,26 +1,26 @@
 import {
+  ChangeDetectionStrategy,
   Component,
-  Input,
+  ElementRef,
+  EventEmitter,
   HostBinding,
+  Input,
   OnInit,
   Output,
-  EventEmitter,
-  ChangeDetectionStrategy,
-  ViewChildren,
   QueryList,
-  ElementRef,
+  ViewChildren,
 } from '@angular/core';
 
+import { isRenderedComponent } from '../../../services/utils/functional-utils';
 import {
-  CardTableCellMeta,
   cardTableAllowedCellStyles,
-  CardTableCellData,
-  CardTableRowClickEvent,
   CardTableCellClickEvent,
+  CardTableCellData,
+  CardTableCellMeta,
+  CardTableRowClickEvent,
 } from '../card-table.interface';
 import { CellWidthsService } from '../cell-widths-service/cell-widths.service';
-import { TableCardComponent } from './../table-card/table-card.component';
-import { isRenderedComponent } from '../../../services/utils/functional-utils';
+import { TableCardComponent } from '../table-card/table-card.component';
 
 @Component({
   selector: 'b-card-table',
@@ -35,17 +35,15 @@ export class CardTableComponent implements OnInit {
   public cardsElRefs: QueryList<TableCardComponent>;
   @Input() meta: CardTableCellMeta[];
   @Input() table: CardTableCellData[][];
-  @Input() default;
+  @Input() default: string | false;
   @Input() minCellWidth = 5;
 
   @HostBinding('attr.role') string = 'table';
 
-  @Output() rowClicked: EventEmitter<CardTableRowClickEvent> = new EventEmitter<
-    CardTableRowClickEvent
-  >();
-  @Output() cellClicked: EventEmitter<
-    CardTableCellClickEvent
-  > = new EventEmitter<CardTableCellClickEvent>();
+  @Output()
+  rowClicked: EventEmitter<CardTableRowClickEvent> = new EventEmitter();
+  @Output()
+  cellClicked: EventEmitter<CardTableCellClickEvent> = new EventEmitter();
 
   cellsStyle: cardTableAllowedCellStyles[];
 

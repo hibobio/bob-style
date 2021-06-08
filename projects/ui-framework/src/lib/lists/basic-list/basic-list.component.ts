@@ -23,6 +23,7 @@ import {
   isObject,
 } from '../../services/utils/functional-utils';
 import { log } from '../../services/utils/logger';
+import { DOMMouseEvent } from '../../types';
 import { BasicListActionDirective } from './basic-list-action.directive';
 import { BasicListType } from './basic-list.enum';
 import { BasicListConfig, BasicListItem } from './basic-list.interface';
@@ -110,9 +111,8 @@ export class BasicListComponent implements AfterContentInit {
   public emptyStateConfig: EmptyStateConfig;
   public enableEmptyState = false;
 
-  @Output() clicked: EventEmitter<BasicListItem> = new EventEmitter<
-    BasicListItem
-  >();
+  @Output()
+  clicked: EventEmitter<BasicListItem> = new EventEmitter();
 
   public items: BasicListItem[];
   public titles: string[];
@@ -125,8 +125,8 @@ export class BasicListComponent implements AfterContentInit {
   private tableCellCount: number;
   private initDone = false;
 
-  public onItemClick(item: BasicListItem, $event: MouseEvent): void {
-    const target = $event.target as HTMLElement;
+  public onItemClick(item: BasicListItem, $event: DOMMouseEvent): void {
+    const target = $event.target;
     if (
       this.clicked.observers &&
       target &&

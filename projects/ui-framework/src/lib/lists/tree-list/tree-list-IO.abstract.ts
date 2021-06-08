@@ -40,7 +40,7 @@ export abstract class TreeListInputOutput implements TreeListComponentIO {
   };
 
   @Output()
-  changed: EventEmitter<TreeListValue> = new EventEmitter<TreeListValue>();
-  @Output() apply: EventEmitter<void> = new EventEmitter<void>();
-  @Output() cancel: EventEmitter<void> = new EventEmitter<void>();
+  changed: EventEmitter<TreeListValue> = new EventEmitter();
+  @Output() apply: EventEmitter<void> = new EventEmitter();
+  @Output() cancel: EventEmitter<void> = new EventEmitter();
 }

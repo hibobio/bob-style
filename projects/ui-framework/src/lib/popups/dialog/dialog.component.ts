@@ -79,8 +79,8 @@ export class DialogComponent implements OnInit, OnDestroy {
     }
   }
 
-  @Output() clickedOK: EventEmitter<void> = new EventEmitter<void>();
-  @Output() clickedCancel: EventEmitter<void> = new EventEmitter<void>();
+  @Output() clickedOK: EventEmitter<void> = new EventEmitter();
+  @Output() clickedCancel: EventEmitter<void> = new EventEmitter();
 
   public showConfirmation = false;
 

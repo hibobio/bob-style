@@ -25,15 +25,16 @@ import { debug } from '../../../../ui-framework/src/lib/services/utils/rxjs.oper
 })
 export class MutationObserversTestComponent implements OnInit {
   constructor(
-    private host: ElementRef,
+    private host: ElementRef<HTMLElement>,
     private cd: ChangeDetectorRef,
     private mutationObservableService: MutationObservableService
   ) {
     this.hostEl = this.host.nativeElement;
   }
 
-  @ViewChild('moBox', { static: true }) moBox: ElementRef;
-  @ViewChild('moTextArea', { static: true }) moTextArea: ElementRef;
+  @ViewChild('moBox', { static: true }) moBox: ElementRef<HTMLElement>;
+  @ViewChild('moTextArea', { static: true })
+  moTextArea: ElementRef<HTMLElement>;
 
   public hostEl: HTMLElement;
 

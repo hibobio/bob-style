@@ -21,12 +21,12 @@ import { ItemsInRowService } from '../../services/items-in-row/items-in-row.serv
 })
 export class AvatarLayoutComponent implements AfterViewInit, OnDestroy {
   constructor(
-    private elementRef: ElementRef,
+    private elementRef: ElementRef<HTMLElement>,
     private itemsInRowService: ItemsInRowService
   ) {}
 
   @Input() align: 'center' | 'left' = 'center';
-  @Output() itemsInRowChange = new EventEmitter<number>();
+  @Output() itemsInRowChange: EventEmitter<number> = new EventEmitter();
 
   gapSize = 8;
   elemWidth = 90;

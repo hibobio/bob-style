@@ -1,3 +1,5 @@
+import { Observable, Subscription } from 'rxjs';
+
 import {
   CdkOverlayOrigin,
   ConnectedPosition,
@@ -14,9 +16,9 @@ import {
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+
 import { BackdropClickMode } from '../../lists/list.enum';
-import { OverlayPositionClasses } from '../../types';
+import { DOMMouseEvent, OverlayPositionClasses } from '../../types';
 import { PanelDefaultPosVer } from './panel.enum';
 
 export interface CreatePanelConfig<T = unknown> {
@@ -50,7 +52,7 @@ export interface Panel<T = unknown>
   componentRef?: ComponentRef<T>;
 
   positionClasses$: Observable<OverlayPositionClasses>;
-  backdropClick$: Observable<MouseEvent>;
+  backdropClick$: Observable<DOMMouseEvent>;
 
   subs?: Subscription[];
   backdropClickMode?: BackdropClickMode;

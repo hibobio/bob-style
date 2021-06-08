@@ -49,7 +49,7 @@ export class SocialComponent
     protected cd: ChangeDetectorRef,
     private URL: URLutils,
     private zone: NgZone,
-    private host: ElementRef
+    private host: ElementRef<HTMLElement>
   ) {
     super(cd);
 
@@ -85,7 +85,7 @@ export class SocialComponent
   // tslint:disable-next-line: no-output-rename
   @Output('socialInputChange') changed: EventEmitter<
     BInputEvent<string>
-  > = new EventEmitter<BInputEvent<string>>();
+  > = new EventEmitter();
 
   public inputId: string | number;
   public narrowInput = false;
@@ -101,8 +101,7 @@ export class SocialComponent
 
   ngOnInit(): void {
     this.inputId = this.bInput.id;
-    this.narrowInput =
-      (this.host.nativeElement as HTMLElement).offsetWidth < 300;
+    this.narrowInput = this.host.nativeElement.offsetWidth < 300;
   }
 
   ngAfterViewInit(): void {

@@ -35,8 +35,8 @@ export class CollapsibleComponent implements OnChanges {
 
   @ViewChild('section', { static: true })
   section: ElementRef<HTMLDetailsElement>;
-  @Output() collapsed: EventEmitter<void> = new EventEmitter<void>();
-  @Output() expanded: EventEmitter<void> = new EventEmitter<void>();
+  @Output() collapsed: EventEmitter<void> = new EventEmitter();
+  @Output() expanded: EventEmitter<void> = new EventEmitter();
   @Input() id: string = simpleUID('bcl');
   @Input() title: string;
   @Input() config: CollapsibleStyle = COLLAPSIBLE_STYLE_DEF;

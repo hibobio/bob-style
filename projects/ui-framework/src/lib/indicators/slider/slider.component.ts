@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { MatSliderChange } from '@angular/material/slider';
 
 @Component({
@@ -7,8 +14,7 @@ import { MatSliderChange } from '@angular/material/slider';
   styleUrls: ['./slider.component.scss'],
 })
 export class SliderComponent implements OnChanges {
-
-  @Output() progressChange: EventEmitter<MatSliderChange> = new EventEmitter<MatSliderChange>();
+  @Output() progressChange: EventEmitter<MatSliderChange> = new EventEmitter();
   @Input() value = 0;
   @Input() min = 0;
   @Input() max = 100;
@@ -20,8 +26,7 @@ export class SliderComponent implements OnChanges {
 
   barFull: boolean;
 
-  constructor() {
-  }
+  constructor() {}
 
   ngOnChanges(changes: SimpleChanges): void {
     this.barFull = this.value === this.max;

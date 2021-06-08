@@ -14,13 +14,19 @@ import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Keys } from '../../enums';
 import { SelectGroupOption } from '../../lists/list.interface';
 import {
+  equalAsStrings,
   isKey,
   isNullOrUndefined,
   isString,
   padWith0,
 } from '../../services/utils/functional-utils';
 import { timeyOrFail } from '../../services/utils/transformers';
-import { TimeFormat } from '../../types';
+import {
+  DOMFocusEvent,
+  DOMInputElement,
+  DOMKeyboardEvent,
+  TimeFormat,
+} from '../../types';
 import { BaseFormElement } from '../base-form-element';
 import { InputEventType } from '../form-elements.enum';
 import { InputAutoCompleteOptions } from '../input/input.enum';
@@ -117,8 +123,10 @@ export class TimePickerComponent extends BaseFormElement {
     this.baseValue = null;
   }
 
-  @ViewChild('inputHours', { static: true }) inputHours: ElementRef;
-  @ViewChild('inputMinutes', { static: true }) inputMinutes: ElementRef;
+  @ViewChild('inputHours', { static: true })
+  inputHours: ElementRef<HTMLInputElement>;
+  @ViewChild('inputMinutes', { static: true })
+  inputMinutes: ElementRef<HTMLInputElement>;
 
   @Input('timeFormat') set setTimeFormat(timeFormat: TimeFormat) {
     if (timeFormat) {
@@ -170,11 +178,11 @@ export class TimePickerComponent extends BaseFormElement {
   private parseConfig = BTP_PARSE_CONFIG_BY_TIMEFORMAT[TimeFormat.Time24];
 
   @HostListener('focusin.outside-zone', ['$event'])
-  onHostFocusIn(event: FocusEvent) {
-    const target = event.target as HTMLElement;
+  onHostFocusIn(event: DOMFocusEvent) {
+    const target = event.target;
 
     if (target.matches('.btmpckr-input-hours,.btmpckr-input-minutes')) {
-      (target as HTMLInputElement).select();
+      target.select();
     }
 
     if (target === this.inputHours.nativeElement) {
@@ -194,9 +202,9 @@ export class TimePickerComponent extends BaseFormElement {
   }
 
   @HostListener('focusout.outside-zone', ['$event'])
-  onHostFocusOut(event: FocusEvent) {
-    const target = event.target as HTMLElement;
-    const relatedTarget = event.relatedTarget as HTMLElement;
+  onHostFocusOut(event: DOMFocusEvent) {
+    const target = event.target;
+    const relatedTarget = event.relatedTarget;
 
     if (relatedTarget?.matches('.btmpckr-input')) {
       event.preventDefault();
@@ -218,11 +226,11 @@ export class TimePickerComponent extends BaseFormElement {
     }
   }
 
-  public onInputKeydown(event: KeyboardEvent) {
+  public onInputKeydown(event: DOMKeyboardEvent<DOMInputElement>) {
     if (!this.kbrdCntrlSrvc.filterAllowedKeys(event, /[0-9]/)) {
       return;
     }
-    const input = event.target as HTMLInputElement;
+    const input = event.target;
     const keyAsNumber = parseInt(event.key, 10);
     const cursorPos = input.selectionStart;
     const valAsNumber = [
@@ -270,8 +278,10 @@ export class TimePickerComponent extends BaseFormElement {
           { ...this.parseConfig.hours, mod: 1 }
         );
         if (
-          this.inputHours.nativeElement.value ===
-          this.parseConfig.hours.maxValue
+          equalAsStrings(
+            this.inputHours.nativeElement.value,
+            this.parseConfig.hours.maxValue
+          )
         ) {
           this.switchInputs();
         } else {
@@ -355,10 +365,10 @@ export class TimePickerComponent extends BaseFormElement {
     this.cd.detectChanges();
   }
 
-  public onHoursBlur(event: FocusEvent) {
+  public onHoursBlur(event: DOMFocusEvent<HTMLInputElement>) {
     this.hoursFocused = false;
     this.inputHours.nativeElement.value = this.valueHours = this.parseValue(
-      (event.target as HTMLInputElement).value,
+      event.target.value,
       { ...this.parseConfig.hours, def: '' }
     );
     if (this.timeFormat === TimeFormat.Time12 && !this.amPm) {
@@ -368,10 +378,10 @@ export class TimePickerComponent extends BaseFormElement {
     this.transmit(InputEventType.onBlur);
   }
 
-  public onMinutesBlur(event: FocusEvent) {
+  public onMinutesBlur(event: DOMFocusEvent<HTMLInputElement>) {
     this.minutesFocused = false;
     this.inputMinutes.nativeElement.value = this.valueMinutes = this.parseValue(
-      (event.target as HTMLInputElement).value,
+      event.target.value,
       { ...this.parseConfig.minutes, def: '' }
     );
     if (this.timeFormat === TimeFormat.Time12 && !this.amPm) {

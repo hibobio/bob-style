@@ -67,8 +67,8 @@ export const utilsServiceStub: spyObj<UtilsService> = createSpyObj(
 );
 utilsServiceStub.getResizeEvent.and.returnValue(of({} as WinResizeEvent));
 utilsServiceStub.getScrollEvent.and.returnValue(of({} as ScrollEvent));
-utilsServiceStub.getWindowKeydownEvent.and.returnValue(of({} as KeyboardEvent));
-utilsServiceStub.getWindowClickEvent.and.returnValue(of({} as MouseEvent));
+utilsServiceStub.getWindowKeydownEvent.and.returnValue(of({} as any));
+utilsServiceStub.getWindowClickEvent.and.returnValue(of({} as any));
 // utilsServiceStub.getElementInViewEvent.and.returnValue(of(true));
 
 export const mobileServiceStub: spyObj<MobileService> = createSpyObj(
@@ -93,7 +93,7 @@ export const listKeyboardServiceStub: spyObj<ListKeyboardService> = createSpyObj
   ['getKeyboardNavigationObservable']
 );
 listKeyboardServiceStub.getKeyboardNavigationObservable.and.returnValue(
-  EMPTY as Observable<KeyboardEvent>
+  EMPTY as Observable<any>
 );
 
 export const mockHighlightPipe = MockPipe(HighlightPipe, (v) => v);

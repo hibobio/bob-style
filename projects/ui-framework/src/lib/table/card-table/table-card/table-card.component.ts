@@ -1,10 +1,10 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import {
-  CardTableCellMeta,
-  CardTableCellData,
   cardTableAllowedCellStyles,
   CardTableCellClickEvent,
+  CardTableCellData,
+  CardTableCellMeta,
 } from '../card-table.interface';
 
 @Component({
@@ -19,9 +19,8 @@ export class TableCardComponent {
   @Input() row: CardTableCellData[];
   @Input() rowIndex: number;
   @Input() style: cardTableAllowedCellStyles[];
-  @Output() cellClicked?: EventEmitter<
-    CardTableCellClickEvent
-  > = new EventEmitter<CardTableCellClickEvent>();
+  @Output()
+  cellClicked?: EventEmitter<CardTableCellClickEvent> = new EventEmitter();
 
   onCellClicked(cell: CardTableCellData, index: number): void {
     this.cellClicked.emit({

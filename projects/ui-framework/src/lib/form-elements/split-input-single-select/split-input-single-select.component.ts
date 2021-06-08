@@ -1,30 +1,31 @@
 import {
+  AfterViewInit,
+  ChangeDetectorRef,
   Component,
+  ElementRef,
   EventEmitter,
+  forwardRef,
   Input,
   Output,
   SimpleChanges,
-  forwardRef,
-  ChangeDetectorRef,
   ViewChild,
-  ElementRef,
-  AfterViewInit,
 } from '@angular/core';
-import { SelectGroupOption, SelectOption } from '../../lists/list.interface';
-import { InputTypes } from '../input/input.enum';
-import { InputEventType } from '../form-elements.enum';
-import { InputSingleSelectValue } from './split-input-single-select.interface';
-import { BInputEvent } from '../input/input.interface';
+import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
+
 import { ListChange } from '../../lists/list-change/list-change';
-import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
-import { BaseFormElement } from '../base-form-element';
-import { objectHasKeyOrFail } from '../../services/utils/transformers';
+import { SelectGroupOption, SelectOption } from '../../lists/list.interface';
 import {
   cloneObject,
-  isEmptyArray,
   hasChanges,
+  isEmptyArray,
 } from '../../services/utils/functional-utils';
+import { objectHasKeyOrFail } from '../../services/utils/transformers';
+import { BaseFormElement } from '../base-form-element';
+import { InputEventType } from '../form-elements.enum';
 import { InputComponent } from '../input/input.component';
+import { InputTypes } from '../input/input.enum';
+import { BInputEvent } from '../input/input.interface';
+import { InputSingleSelectValue } from './split-input-single-select.interface';
 
 const BSISS_VALUE_DEF = {
   inputValue: null,
@@ -49,7 +50,8 @@ const BSISS_VALUE_DEF = {
     { provide: BaseFormElement, useExisting: SplitInputSingleSelectComponent },
   ],
 })
-export class SplitInputSingleSelectComponent extends BaseFormElement
+export class SplitInputSingleSelectComponent
+  extends BaseFormElement
   implements AfterViewInit {
   constructor(cd: ChangeDetectorRef) {
     super(cd);
@@ -77,9 +79,8 @@ export class SplitInputSingleSelectComponent extends BaseFormElement
   public options: SelectGroupOption[] = [];
 
   // tslint:disable-next-line: no-output-rename
-  @Output('elementChange') changed: EventEmitter<
-    InputSingleSelectValue
-  > = new EventEmitter<InputSingleSelectValue>();
+  @Output('elementChange')
+  changed: EventEmitter<InputSingleSelectValue> = new EventEmitter();
 
   // extends BaseFormElement's ngOnChanges
   onNgChanges(changes: SimpleChanges): void {

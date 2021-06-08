@@ -35,13 +35,52 @@ export interface OverlayPositionClasses {
   'panel-before'?: boolean;
 }
 
+export interface DOMInputElement
+  extends HTMLInputElement,
+    Omit<
+      HTMLTextAreaElement,
+      'addEventListener' | 'removeEventListener' | 'type'
+    > {}
+export interface DOMEventTarget
+  extends EventTarget,
+    Extract<HTMLInputElement, EventTarget>,
+    Extract<HTMLButtonElement, EventTarget>,
+    Extract<HTMLElement, EventTarget> {
+  addEventListener: EventTarget['addEventListener'];
+  removeEventListener: EventTarget['removeEventListener'];
+  dispatchEvent: EventTarget['dispatchEvent'];
+}
+
+export interface DOMMouseEvent<T extends EventTarget = DOMEventTarget>
+  extends Omit<MouseEvent, 'target'> {
+  readonly target: T;
+}
+export interface DOMKeyboardEvent<T extends EventTarget = DOMEventTarget>
+  extends Omit<KeyboardEvent, 'target'> {
+  readonly target: T;
+}
+
+export interface DOMFocusEvent<
+  T extends EventTarget = DOMEventTarget,
+  R extends EventTarget = DOMEventTarget
+> extends Omit<FocusEvent, 'target' | 'relatedTarget'> {
+  readonly target: T;
+  readonly relatedTarget: R | null;
+}
+
 export interface DOMInputEvent extends UIEvent {
   readonly data: string | null;
   readonly isComposing: boolean;
   readonly dataTransfer: DataTransfer;
   readonly inputType: string;
-  readonly target: HTMLInputElement;
+  readonly target: DOMInputElement;
 }
+
+export type DOMAnyEvent =
+  | DOMInputEvent
+  | DOMFocusEvent
+  | DOMKeyboardEvent
+  | DOMMouseEvent;
 
 // LOCALE DATES
 

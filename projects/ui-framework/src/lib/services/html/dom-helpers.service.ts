@@ -1,41 +1,42 @@
 import { Injectable } from '@angular/core';
+
+import { GenericObject } from '../../types';
 import {
-  isString,
+  asArray,
+  elementIsInView,
+  getClosestUntil,
+  getSiblingElement,
+  hasProp,
+  injectStyles,
   isArray,
-  isObject,
-  joinArrays,
-  isNotEmptyString,
+  isDomElement,
+  isEmptyArray,
+  isFunction,
+  isNode,
   isNotEmptyArray,
   isNotEmptyObject,
+  isNotEmptyString,
   isNullOrUndefined,
-  isDomElement,
+  isObject,
+  isString,
   isTextNode,
-  isNode,
-  isEmptyArray,
-  asArray,
-  hasProp,
-  isFunction,
-  injectStyles,
-  setCssProps,
+  joinArrays,
   setAttributes,
-  getSiblingElement,
-  getClosestUntil,
-  elementIsInView,
+  setCssProps,
 } from '../utils/functional-utils';
-import {
-  Styles,
-  TextProps,
-  NotEmptyChildren,
-  NgClass,
-} from './html-helpers.interface';
-import { GenericObject } from '../../types';
-import { INLINE_EL_NODENAMES, BLOCK_EL_NODENAMES } from './dom-helpers.const';
+import { WindowRef } from '../utils/window-ref.service';
+import { BLOCK_EL_NODENAMES, INLINE_EL_NODENAMES } from './dom-helpers.const';
 import { DOMtags, TreeWalkerTake } from './dom-helpers.enum';
 import {
   GetElementStylesConfig,
   TreeWalkerConfig,
 } from './dom-helpers.interface';
-import { WindowRef } from '../utils/window-ref.service';
+import {
+  NgClass,
+  NotEmptyChildren,
+  Styles,
+  TextProps,
+} from './html-helpers.interface';
 
 @Injectable({ providedIn: 'root' })
 export class DOMhelpers {
@@ -122,10 +123,7 @@ export class DOMhelpers {
   }
 
   public isTag(element: HTMLElement, tag: DOMtags | string): boolean {
-    return (
-      isDomElement(element) &&
-      (element as HTMLElement).tagName === tag.toUpperCase()
-    );
+    return isDomElement(element) && element.tagName === tag.toUpperCase();
   }
 
   public isSpan(element: HTMLElement | Node): element is HTMLElement {

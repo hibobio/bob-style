@@ -1,11 +1,21 @@
-import { ChangeDetectionStrategy, OnDestroy, ChangeDetectorRef, Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { ButtonType, ButtonSize } from '../../../buttons/buttons.enum';
-import { ContentTemplateConsumer } from '../../../services/utils/contentTemplate.directive';
-import { DOMhelpers } from '../../../services/html/dom-helpers.service';
-import { takeUntil } from 'rxjs/operators';
-import { CardType } from '../../../cards/cards.enum';
-import { CardsLayoutComponent } from '../../../cards/cards-layout/cards-layout.component';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  ViewChild,
+} from '@angular/core';
+
+import { ButtonSize, ButtonType } from '../../../buttons/buttons.enum';
+import { CardsLayoutComponent } from '../../../cards/cards-layout/cards-layout.component';
+import { CardType } from '../../../cards/cards.enum';
+import { DOMhelpers } from '../../../services/html/dom-helpers.service';
+import { ContentTemplateConsumer } from '../../../services/utils/contentTemplate.directive';
 
 @Component({
   selector: 'b-horizontal-layout',
@@ -31,7 +41,7 @@ export class HorizontalLayoutComponent
   private onDestroyNotifier$ = new Subject();
 
   constructor(
-    private elRef: ElementRef,
+    private elRef: ElementRef<HTMLElement>,
     private DOM: DOMhelpers,
     private cdr: ChangeDetectorRef
   ) {
@@ -54,9 +64,12 @@ export class HorizontalLayoutComponent
       .subscribe((data) => {
         this.itemsPerRow = data;
         this.cdr.detectChanges();
-        
-        const cardsList = this.cardsLayout.hostElRef.nativeElement.firstElementChild;
-        const itemHeight = cardsList.firstElementChild.offsetHeight;
+
+        const cardsList = this.cardsLayout.hostElRef.nativeElement
+          .firstElementChild as HTMLElement;
+        const itemHeight = (cardsList.firstElementChild as HTMLElement)
+          .offsetHeight;
+
         this.DOM.setCssProps(cardsList, {
           '--item-height': `${itemHeight}px`,
         });
@@ -64,7 +77,7 @@ export class HorizontalLayoutComponent
   }
 
   hasScroll(): boolean {
-    return !!(this.showAll && (this.items?.length > this.itemsPerRow * 2));
+    return !!(this.showAll && this.items?.length > this.itemsPerRow * 2);
   }
 
   // public scroll(): void {// TODO: programmatically scrolling

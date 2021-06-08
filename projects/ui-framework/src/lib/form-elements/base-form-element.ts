@@ -128,7 +128,7 @@ export abstract class BaseFormElement
 
   readonly subs: Subscription[] = [];
 
-  @Output() changed: EventEmitter<any> = new EventEmitter<any>();
+  @Output() changed: EventEmitter<any> = new EventEmitter();
 
   @HostBinding('attr.data-size') @Input() size = FormElementSize.regular;
   @HostBinding('class.disabled') @Input() disabled = false;

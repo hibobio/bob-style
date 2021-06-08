@@ -31,7 +31,10 @@ export const LEGEND_CONFIG_DEF: LegendConfig = {
   styleUrls: ['./legend.component.scss'],
 })
 export class LegendComponent implements OnChanges {
-  constructor(private hostElRef: ElementRef, private DOM: DOMhelpers) {}
+  constructor(
+    private hostElRef: ElementRef<HTMLElement>,
+    private DOM: DOMhelpers
+  ) {}
 
   @Input('config') set setConfig(config: LegendConfig) {
     let sortByValue =

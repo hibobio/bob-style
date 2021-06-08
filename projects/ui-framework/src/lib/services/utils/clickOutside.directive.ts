@@ -1,8 +1,18 @@
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
-import { Directive, ElementRef, EventEmitter, NgModule, NgZone, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  EventEmitter,
+  NgModule,
+  NgZone,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 
+import { DOMMouseEvent } from '../../types';
 import { getEventPath } from './functional-utils';
 import { insideZone } from './rxjs.operators';
 import { UtilsService } from './utils.service';
@@ -12,9 +22,14 @@ import { UtilsService } from './utils.service';
   selector: '[click.outside]',
 })
 export class ClickOutsideDirective implements OnInit, OnDestroy {
-  constructor(private hostElRef: ElementRef, private utilsService: UtilsService, private zone: NgZone) {}
+  constructor(
+    private hostElRef: ElementRef<HTMLElement>,
+    private utilsService: UtilsService,
+    private zone: NgZone
+  ) {}
 
-  @Output('click.outside') clicked = new EventEmitter<MouseEvent>();
+  @Output('click.outside')
+  clicked: EventEmitter<DOMMouseEvent> = new EventEmitter();
 
   private sub: Subscription;
 
@@ -22,7 +37,7 @@ export class ClickOutsideDirective implements OnInit, OnDestroy {
     this.sub = this.utilsService
       .getWindowClickEvent(true)
       .pipe(
-        filter((event: MouseEvent) => {
+        filter((event: DOMMouseEvent) => {
           return !getEventPath(event).includes(this.hostElRef.nativeElement);
         }),
         insideZone(this.zone)

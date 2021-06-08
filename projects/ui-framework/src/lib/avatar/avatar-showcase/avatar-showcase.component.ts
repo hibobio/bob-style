@@ -65,7 +65,7 @@ export class EmployeesShowcaseComponent
   constructor(
     private showcaseSrvc: AvatarShowcaseService,
     private mutationObservableService: MutationObservableService,
-    private host: ElementRef,
+    private host: ElementRef<HTMLElement>,
     private DOM: DOMhelpers,
     private zone: NgZone
   ) {
@@ -106,9 +106,9 @@ export class EmployeesShowcaseComponent
   zoomOnHover = false;
 
   @Output()
-  selectChange: EventEmitter<ListChange> = new EventEmitter<ListChange>();
-  @Output() selectPanelOpened: EventEmitter<void> = new EventEmitter<void>();
-  @Output() selectPanelClosed: EventEmitter<void> = new EventEmitter<void>();
+  selectChange: EventEmitter<ListChange> = new EventEmitter();
+  @Output() selectPanelOpened: EventEmitter<void> = new EventEmitter();
+  @Output() selectPanelClosed: EventEmitter<void> = new EventEmitter();
 
   @InputObservable([])
   @Input('employees')

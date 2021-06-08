@@ -100,9 +100,9 @@ export class TreeSelectComponent
   @Input() tooltipType: TruncateTooltipType = TruncateTooltipType.auto;
 
   @Output()
-  changed: EventEmitter<TreeListValue> = new EventEmitter<TreeListValue>();
-  @Output() opened: EventEmitter<OverlayRef> = new EventEmitter<OverlayRef>();
-  @Output() closed: EventEmitter<void> = new EventEmitter<void>();
+  changed: EventEmitter<TreeListValue> = new EventEmitter();
+  @Output() opened: EventEmitter<OverlayRef> = new EventEmitter();
+  @Output() closed: EventEmitter<void> = new EventEmitter();
 
   public itemsMap: TreeListItemMap = new Map();
   public overlayRef: OverlayRef;

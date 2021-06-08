@@ -19,6 +19,7 @@ import { InputObservable } from '../../services/utils/decorators';
 import { closestDivisable } from '../../services/utils/functional-utils';
 import { MutationObservableService } from '../../services/utils/mutation-observable';
 import { UtilsService } from '../../services/utils/utils.service';
+import { DOMMouseEvent } from '../../types';
 
 export interface ReadMoreConfig {
   maxLines?: number;
@@ -58,7 +59,7 @@ export const READ_MORE_CONFIG_DEF: ReadMoreConfig = {
 })
 export class BReadMoreComponent implements OnInit, OnDestroy {
   constructor(
-    private host: ElementRef,
+    private host: ElementRef<HTMLElement>,
     private zone: NgZone,
     private DOM: DOMhelpers,
     private utilsService: UtilsService,
@@ -79,9 +80,7 @@ export class BReadMoreComponent implements OnInit, OnDestroy {
   config$: Observable<ReadMoreConfig>;
   private config: ReadMoreConfig = READ_MORE_CONFIG_DEF;
 
-  @Output() clicked: EventEmitter<'text' | 'read-more'> = new EventEmitter<
-    'text' | 'read-more'
-  >();
+  @Output() clicked: EventEmitter<'text' | 'read-more'> = new EventEmitter();
 
   @HostListener('click.outside-zone')
   onHostClick() {
@@ -170,7 +169,7 @@ export class BReadMoreComponent implements OnInit, OnDestroy {
     });
   }
 
-  onReadMoreClicked(event: MouseEvent) {
+  onReadMoreClicked(event: DOMMouseEvent) {
     if (
       this.clicked.observers.length &&
       this.config?.watchClicks !== 'text' &&
@@ -192,7 +191,7 @@ export class BReadMoreComponent implements OnInit, OnDestroy {
     });
 
     this.DOM.setAttributes(this.hostEl, {
-      'data-readmore': this.needsReadMoreButton = false,
+      'data-readmore': (this.needsReadMoreButton = false),
     });
   }
 

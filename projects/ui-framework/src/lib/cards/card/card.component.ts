@@ -13,6 +13,7 @@ import { Button } from '../../buttons/buttons.interface';
 import { BUTTON_CONFIG } from '../../buttons/common-buttons.const';
 import { IconColor } from '../../icons/icons.enum';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import { DOMMouseEvent } from '../../types';
 import { BaseCardElement } from './card.abstract';
 
 @Component({
@@ -24,7 +25,7 @@ import { BaseCardElement } from './card.abstract';
 })
 export class CardComponent extends BaseCardElement implements AfterViewInit {
   constructor(
-    public cardElRef: ElementRef,
+    public cardElRef: ElementRef<HTMLElement>,
     private zone: NgZone,
     private cd: ChangeDetectorRef,
     private DOM: DOMhelpers
@@ -32,8 +33,8 @@ export class CardComponent extends BaseCardElement implements AfterViewInit {
     super(cardElRef);
   }
 
-  @ViewChild('cardTop') cardTop: ElementRef;
-  @ViewChild('cardContent') cardContent: ElementRef;
+  @ViewChild('cardTop') cardTop: ElementRef<HTMLElement>;
+  @ViewChild('cardContent') cardContent: ElementRef<HTMLElement>;
 
   readonly buttonType = ButtonType;
   readonly iconColor = IconColor;
@@ -44,7 +45,7 @@ export class CardComponent extends BaseCardElement implements AfterViewInit {
 
   public titleMaxLines = 2;
 
-  onCtaClick(event: MouseEvent): void {
+  onCtaClick(event: DOMMouseEvent): void {
     this.clicked.emit(event);
   }
 

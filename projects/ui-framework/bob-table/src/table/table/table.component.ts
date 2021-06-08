@@ -33,6 +33,7 @@ import { TranslateService } from '@ngx-translate/core';
 import {
   applyChanges,
   DOMhelpers,
+  DOMMouseEvent,
   EmptyStateConfig,
   get,
   hasChanges,
@@ -101,7 +102,7 @@ const DEFAULT_PROP_VALUES = {
 export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   constructor(
     private tableUtilsService: TableUtilsService,
-    private elRef: ElementRef,
+    private elRef: ElementRef<HTMLElement>,
     private cdr: ChangeDetectorRef,
     private DOM: DOMhelpers,
     private translate: TranslateService
@@ -152,22 +153,22 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   public emptyStateConfig: EmptyStateConfig;
 
   @Output()
-  sortChanged: EventEmitter<SortChangedEvent> = new EventEmitter<SortChangedEvent>();
+  sortChanged: EventEmitter<SortChangedEvent> = new EventEmitter();
   @Output()
-  rowClicked: EventEmitter<RowClickedEvent> = new EventEmitter<RowClickedEvent>();
+  rowClicked: EventEmitter<RowClickedEvent> = new EventEmitter();
   @Output()
-  rowDragEnd: EventEmitter<BRowDragEvent> = new EventEmitter<BRowDragEvent>();
-  @Output() selectionChanged: EventEmitter<any[]> = new EventEmitter<any[]>();
-  @Output() gridInit: EventEmitter<void> = new EventEmitter<void>();
+  rowDragEnd: EventEmitter<BRowDragEvent> = new EventEmitter();
+  @Output() selectionChanged: EventEmitter<any[]> = new EventEmitter();
+  @Output() gridInit: EventEmitter<void> = new EventEmitter();
   @Output()
-  columnsChanged: EventEmitter<ColumnsChangedEvent> = new EventEmitter<ColumnsChangedEvent>();
+  columnsChanged: EventEmitter<ColumnsChangedEvent> = new EventEmitter();
   @Output()
-  columnsOrderChanged: EventEmitter<ColumnsOrderChangedEvent> = new EventEmitter<ColumnsOrderChangedEvent>();
+  columnsOrderChanged: EventEmitter<ColumnsOrderChangedEvent> = new EventEmitter();
   @Output()
-  cellClicked: EventEmitter<CellClickedEvent> = new EventEmitter<CellClickedEvent>();
-  @Output() columnRemoved: EventEmitter<string> = new EventEmitter<string>();
+  cellClicked: EventEmitter<CellClickedEvent> = new EventEmitter();
+  @Output() columnRemoved: EventEmitter<string> = new EventEmitter();
   @Output()
-  pagerPageSizeChange: EventEmitter<number> = new EventEmitter<number>();
+  pagerPageSizeChange: EventEmitter<number> = new EventEmitter();
 
   readonly tableType = TableType;
 
@@ -182,8 +183,8 @@ export class TableComponent extends AgGridWrapper implements OnInit, OnChanges {
   private columns: string[];
 
   @HostListener('click', ['$event'])
-  onHostClick(event: MouseEvent) {
-    const target = event.target as HTMLElement;
+  onHostClick(event: DOMMouseEvent) {
+    const target = event.target;
 
     if (
       this.removeColumnButtonEnabled &&

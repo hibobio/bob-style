@@ -5,6 +5,7 @@ import {
   eventKeyIsNavOrMeta,
   isNumber,
 } from '../../services/utils/functional-utils';
+import { DOMKeyboardEvent } from '../../types';
 
 export interface InputCursorState {
   value: string;
@@ -25,9 +26,9 @@ export class FormElementKeyboardCntrlService {
   constructor() {}
 
   public filterAllowedKeys(
-    event: KeyboardEvent,
+    event: DOMKeyboardEvent,
     allowedKeys = /[0-9,\W]/i
-  ): KeyboardEvent {
+  ): DOMKeyboardEvent {
     if (eventKeyIsNavOrMeta(event)) {
       return event;
     }

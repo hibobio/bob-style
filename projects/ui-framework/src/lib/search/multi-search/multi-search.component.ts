@@ -16,6 +16,7 @@ import {
   isFunction,
   isKey,
 } from '../../services/utils/functional-utils';
+import { DOMKeyboardEvent, DOMMouseEvent } from '../../types';
 import { MultiSearchBaseElement } from './multi-search.abstract';
 import {
   MULTI_SEARCH_KEYMAP_DEF,
@@ -83,8 +84,8 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
     }
   }
 
-  public onSearchKeydown(event: KeyboardEvent): void {
-    const target = event.target as HTMLInputElement;
+  public onSearchKeydown(event: DOMKeyboardEvent<HTMLInputElement>): void {
+    const target = event.target;
 
     if (target !== this.search.input.nativeElement) {
       return;
@@ -102,8 +103,8 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
     }
   }
 
-  public onListClick(event: MouseEvent): void {
-    const target = event.target as HTMLElement;
+  public onListClick(event: DOMMouseEvent): void {
+    const target = event.target;
 
     const { group, option } = this.getGroupAndOptionFromUIEvent(event) || {};
 
@@ -125,8 +126,8 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
     this.focusSearchInput();
   }
 
-  public onListKeydown(event: KeyboardEvent): void {
-    const target = event.target as HTMLElement;
+  public onListKeydown(event: DOMKeyboardEvent): void {
+    const target = event.target;
 
     if (
       !target.matches('.bms-option') ||

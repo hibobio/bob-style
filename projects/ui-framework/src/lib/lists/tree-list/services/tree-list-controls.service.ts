@@ -1,20 +1,22 @@
 import { Injectable } from '@angular/core';
+
 import { Keys } from '../../../enums';
-import {
-  isKey,
-  eventHasCntrlKey,
-  eventHasShiftlKey,
-  eventHasMetaKey,
-} from '../../../services/utils/functional-utils';
-import { TreeListItem, TreeListItemMap } from '../tree-list.interface';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
-import { TreeListViewUtils } from './tree-list-view.static';
 import {
-  TreeListItemEditContext,
-  InsertItemLocation,
-} from '../editable-tree-list/editable-tree-list.interface';
+  eventHasCntrlKey,
+  eventHasMetaKey,
+  eventHasShiftlKey,
+  isKey,
+} from '../../../services/utils/functional-utils';
+import { DOMKeyboardEvent, DOMMouseEvent } from '../../../types';
 import { SelectMode } from '../../list.enum';
 import { itemID } from '../../list.interface';
+import {
+  InsertItemLocation,
+  TreeListItemEditContext,
+} from '../editable-tree-list/editable-tree-list.interface';
+import { TreeListItem, TreeListItemMap } from '../tree-list.interface';
+import { TreeListViewUtils } from './tree-list-view.static';
 
 interface TreeListClickConfig {
   itemsMap: TreeListItemMap;
@@ -79,7 +81,7 @@ export class TreeListControlsService {
   constructor(private DOM: DOMhelpers) {}
 
   public onListClick(
-    event: MouseEvent,
+    event: DOMMouseEvent,
     config: TreeListClickConfig
   ): HTMLElement {
     const {
@@ -93,7 +95,7 @@ export class TreeListControlsService {
       mode,
     } = config;
 
-    const target = event.target as HTMLElement;
+    const target = event.target;
 
     const { itemElement, item } = TreeListViewUtils.getItemFromElement(
       target,
@@ -135,7 +137,7 @@ export class TreeListControlsService {
   }
 
   public onListKeyDown(
-    event: KeyboardEvent,
+    event: DOMKeyboardEvent,
     config: TreeListKeydownConfig
   ): void {
     const {
@@ -156,7 +158,7 @@ export class TreeListControlsService {
     event.preventDefault();
     event.stopPropagation();
 
-    const target = event.target as HTMLElement;
+    const target = event.target;
 
     const {
       itemElement,
@@ -229,7 +231,7 @@ export class TreeListControlsService {
   }
 
   public onEditableListKeyDown(
-    event: KeyboardEvent,
+    event: DOMKeyboardEvent,
     config: TreeListKeydownConfig
   ): void {
     const {
@@ -248,7 +250,7 @@ export class TreeListControlsService {
 
     event.stopPropagation();
 
-    const target = event.target as HTMLElement;
+    const target = event.target;
 
     const {
       itemElement,

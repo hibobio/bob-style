@@ -1,15 +1,18 @@
-import { Inject, Injectable, InjectionToken, NgZone } from '@angular/core';
 import { defer, EMPTY, fromEvent, merge, Observable } from 'rxjs';
-import { map, share, throttleTime, filter } from 'rxjs/operators';
-import { WindowRef } from './window-ref.service';
+import { filter, map, share, throttleTime } from 'rxjs/operators';
+
+import { Inject, Injectable, InjectionToken, NgZone } from '@angular/core';
+
+import { DOMKeyboardEvent, DOMMouseEvent } from '../../types';
+import { DocumentRef } from './document-ref.service';
+import { asArray } from './functional-utils';
+import { insideZone } from './rxjs.operators';
 import {
   ScrollEvent,
   WindowMessageData,
   WinResizeEvent,
 } from './utils.interface';
-import { insideZone } from './rxjs.operators';
-import { DocumentRef } from './document-ref.service';
-import { asArray } from './functional-utils';
+import { WindowRef } from './window-ref.service';
 
 export function appScrollContainerTokenFactory() {
   return '.app-content > .content-wrapper';
@@ -28,8 +31,8 @@ export const APP_SCROLL_CONTAINER = new InjectionToken<string>(
 export class UtilsService {
   winResize$: Observable<WinResizeEvent>;
   winScroll$: Observable<ScrollEvent>;
-  winClick$: Observable<MouseEvent>;
-  winKey$: Observable<KeyboardEvent>;
+  winClick$: Observable<DOMMouseEvent>;
+  winKey$: Observable<DOMKeyboardEvent>;
   appScrollableContainerElement: HTMLElement;
   winMessages$: Observable<MessageEvent<WindowMessageData>['data']>;
 
@@ -86,12 +89,12 @@ export class UtilsService {
         share()
       );
 
-      this.winClick$ = fromEvent<MouseEvent>(
+      this.winClick$ = fromEvent<DOMMouseEvent>(
         this.windowRef.nativeWindow as Window,
         'click'
       ).pipe(share());
 
-      this.winKey$ = fromEvent<KeyboardEvent>(
+      this.winKey$ = fromEvent<DOMKeyboardEvent>(
         this.windowRef.nativeWindow as Window,
         'keydown'
       ).pipe(share());
@@ -118,7 +121,7 @@ export class UtilsService {
       : this.winScroll$.pipe(insideZone(this.zone));
   }
 
-  public getWindowClickEvent(outsideNgZone = false): Observable<MouseEvent> {
+  public getWindowClickEvent(outsideNgZone = false): Observable<DOMMouseEvent> {
     return outsideNgZone
       ? this.winClick$
       : this.winClick$.pipe(insideZone(this.zone));
@@ -126,7 +129,7 @@ export class UtilsService {
 
   public getWindowKeydownEvent(
     outsideNgZone = false
-  ): Observable<KeyboardEvent> {
+  ): Observable<DOMKeyboardEvent> {
     return outsideNgZone
       ? this.winKey$
       : this.winKey$.pipe(insideZone(this.zone));
