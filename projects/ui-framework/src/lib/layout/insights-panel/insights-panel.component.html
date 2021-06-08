@@ -1,5 +1,6 @@
 <b-button *ngIf="config.collapsible!==false && !config.showMoreAfterItem"
           class="btn-minimize clr-inherit uppercase mrg-l-auto"
+          [ngClass]="{'mrg-t-8': isExpanded}"
           [button]="expandButtonConf"
           [text]="isExpanded ? null : config.expandButtonText"
           [icon]="isExpanded ? iconTypes.contract : iconTypes.expand"
@@ -28,13 +29,12 @@
        [readMore]="insight.content"
        [maxLines]="config.maxLines"
        [linkText]="config.readMoreLinkText"></p>
-
-    <b-text-button *ngIf="hasShowMore|| (hasShowLess && last)"
-                   class="mrg-t-24"
-                   (clicked)="onExpandClick()">
-      {{ hasShowMore ? 'Show More' : 'Show Less' }}
-    </b-text-button>
   </div>
+  <b-text-button *ngIf=" (hasShowMore) || (hasShowLess && last)"
+                 [ngClass]="{'mrg-t-24': last}"
+                 (clicked)="onExpandClick()">
+    {{ hasShowMore ? (config.showMoreText | translate) : (config.showLessText | translate) }}
+  </b-text-button>
 </ng-template>
 
 <div class="flx-col flx-grow flx-spread scroll-visible"
@@ -42,11 +42,13 @@
      config.showMoreAfterItem > 0">
 
   <ng-container *ngIf="config.showMoreAfterItem>0">
-    <ng-container
-                  *ngFor="let insight of (data | slice:0:config.showMoreAfterItem); let last = last; trackBy: ('$index' | trackByProp)">
+    <ng-container *ngFor="let insight of (data | slice:0:config.showMoreAfterItem);
+                          let last = last;
+                          let index=index;
+                          trackBy: ('$index' | trackByProp)">
       <ng-container *ngTemplateOutlet="item; context: {
                         insight: insight,
-                        last: !isExpanded,
+                        last: !isExpanded && index === config.showMoreAfterItem,
                         hasShowMore: !isExpanded,
                         hasShowLess: false
                       }">
@@ -54,8 +56,7 @@
     </ng-container>
   </ng-container>
 
-  <ng-container
-                *ngIf="!config.showMoreAfterItem || (config.showMoreAfterItem && isExpanded)">
+  <ng-container *ngIf="!config.showMoreAfterItem || (config.showMoreAfterItem && isExpanded)">
     <ng-container *ngFor="let insight of (data |
                   slice:(config.showMoreAfterItem||0)
                   :(config.showMoreAfterItem && !isExpanded ?
@@ -72,3 +73,5 @@
   </ng-container>
 
 </div>
+
+
