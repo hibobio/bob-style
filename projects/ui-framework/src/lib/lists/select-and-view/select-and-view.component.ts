@@ -215,6 +215,5 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
       moveItemInArray(items, previousIndex, currentIndex);
       this.listValue$.next(items);
     }
-    this.cd.detectChanges();
   }
 }
