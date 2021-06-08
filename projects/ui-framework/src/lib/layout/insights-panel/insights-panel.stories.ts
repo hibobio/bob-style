@@ -139,7 +139,7 @@ story.add(
           'Props'
         ),
         maxLines: number('maxLines', 3, {}, 'Props'),
-        showMoreAfterItem: number('showMoreAfterItem', 2, {}, 'Props'),
+        showMoreAfterItem: number('showMoreAfterItem', 1, {}, 'Props'),
         expandButtonText: text('expandButtonText', 'Insights', 'Props'),
         readMoreLinkText: text('readMoreLinkText', 'Read More', 'Props'),
         data: data,
