@@ -183,7 +183,7 @@ export function filterByEventTarget(target: string | HTMLElement) {
   });
 }
 
-export function filterDOMevent({
+export function filterDOMevent<T extends DOMAnyEvent>({
   pathIncludes,
   targetMatches,
   pathIncludesNot,
@@ -195,8 +195,8 @@ export function filterDOMevent({
   pathIncludesNot?: HTMLElement;
   targetMatchesNot?: string | HTMLElement;
   allowedKeys?: Keys | string | (Keys | string)[];
-}) {
-  return filter<DOMAnyEvent>((event) => {
+}): OperatorFunction<T, T> {
+  return filter<T>((event) => {
     const targetEl = event.target;
 
     return (
