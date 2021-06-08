@@ -42,7 +42,11 @@ export class InsightsPanelComponent {
     InsightsPanelType.information;
 
   @HostBinding('attr.data-expanded') get panelIsExpanded() {
-    return this.config?.collapsible === false || this.isExpanded;
+    return (
+      this.config.showMoreAfterItem > 0 ||
+      this.config.collapsible === false ||
+      this.isExpanded
+    );
   }
 
   @Output() expanded: EventEmitter<boolean> = new EventEmitter<boolean>();

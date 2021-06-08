@@ -25,13 +25,28 @@ const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
 const type = Object.values(InsightsPanelType);
 
 const template1 = `
-  <b-insights-panel
+  <b-insights-panel class="mrg-l-auto"
         [type]="type"
         [data]="data"
         [config]="{
           collapsible:collapsible,
           icon:icon,
           maxLines:maxLines,
+          expandButtonText:expandButtonText,
+          readMoreLinkText:readMoreLinkText
+        }"
+        [expanded]="expanded"
+        (expanded)="onExpand($event ? 'yes' : 'no')"
+  ></b-insights-panel>
+`;
+
+const template2 = `
+  <b-insights-panel
+        [type]="'warning'"
+        [data]="data"
+        [config]="{
+          showMoreAfterItem: 1,
+          icon: 'b-icon-pie-chart',
           expandButtonText:expandButtonText,
           readMoreLinkText:readMoreLinkText
         }"
@@ -52,8 +67,10 @@ const templateForNotes = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Insight Panel'">
-  <div style="justify-content: flex-end;display: flex;">
+  <div class="flx-column" >
     ${template1}
+    <br><br>
+    ${template2}
   </div>
 </b-story-book-layout>
 `;
