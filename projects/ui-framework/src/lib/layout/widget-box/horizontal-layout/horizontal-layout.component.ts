@@ -54,11 +54,11 @@ export class HorizontalLayoutComponent
       .subscribe((data) => {
         this.itemsPerRow = data;
         this.cdr.detectChanges();
-
-        const itemHeight = this.cardsLayout.hostElRef.nativeElement.querySelector('div.cards-list > div').offsetHeight;
-        this.DOM.setCssProps(this.cardsLayout.hostElRef.nativeElement, {
+        
+        const cardsList = this.cardsLayout.hostElRef.nativeElement.firstElementChild;
+        const itemHeight = cardsList.firstElementChild.offsetHeight;
+        this.DOM.setCssProps(cardsList, {
           '--item-height': `${itemHeight}px`,
-          '--container-max-height': `calc((${itemHeight}px + var(--item-grid-gap)) * 2)`,
         });
       });
   }
