@@ -1,4 +1,9 @@
-<b-cards class="pad-x-16 pad-b-16 scroll-visible-alt" [type]="cardType" [swiper]="false" [attr.data-scroll]="hasScroll()">
+<b-cards class="pad-x-16 pad-b-16 scroll-visible-alt" 
+  [type]="cardType" 
+  [swiper]="swiper"
+  [attr.data-scroll]="hasScroll()"
+  [cardWidth]="cardWidth"
+  >
   <!-- <input type="button" value="scroll x" (click)="scroll()" style="position: absolute; right: 0; z-index: 999" /> -->
   <ng-content></ng-content>
   <div *ngFor="let item of (showAll ? items : (items | slice:0:itemsPerRow));
