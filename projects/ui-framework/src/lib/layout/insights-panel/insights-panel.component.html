@@ -33,7 +33,7 @@
   <b-text-button *ngIf=" (hasShowMore) || (hasShowLess && last)"
                  [ngClass]="{'mrg-t-24': last}"
                  (clicked)="onExpandClick()">
-    {{ hasShowMore ? (config.showMoreText | translate) : (config.showLessText | translate) }}
+    {{ hasShowMore ? config.showMoreText : config.showLessText }}
   </b-text-button>
 </ng-template>
 
