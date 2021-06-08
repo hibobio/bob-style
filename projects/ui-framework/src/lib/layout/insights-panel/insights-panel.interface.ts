@@ -10,7 +10,7 @@ export interface InsightsPanelData {
 
 export interface InsightsPanelConfig {
   collapsible?: boolean;
-  showMoreAfterItem?: number | false;
+  showMoreAfterItem?: number | null;
   showMoreText?: string;
   showLessText?: string;
   icon?: Icons;
