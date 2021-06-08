@@ -48,15 +48,17 @@
                           trackBy: ('$index' | trackByProp)">
       <ng-container *ngTemplateOutlet="item; context: {
                         insight: insight,
-                        last: !isExpanded && index === config.showMoreAfterItem,
-                        hasShowMore: !isExpanded,
+                        last: !isExpanded && index+1 === config.showMoreAfterItem,
+                        hasShowMore: !isExpanded && index+1 ===
+                        config.showMoreAfterItem,
                         hasShowLess: false
                       }">
       </ng-container>
     </ng-container>
   </ng-container>
 
-  <ng-container *ngIf="!config.showMoreAfterItem || (config.showMoreAfterItem && isExpanded)">
+  <ng-container
+                *ngIf="!config.showMoreAfterItem || (config.showMoreAfterItem && isExpanded)">
     <ng-container *ngFor="let insight of (data |
                   slice:(config.showMoreAfterItem||0)
                   :(config.showMoreAfterItem && !isExpanded ?
@@ -73,5 +75,3 @@
   </ng-container>
 
 </div>
-
-
