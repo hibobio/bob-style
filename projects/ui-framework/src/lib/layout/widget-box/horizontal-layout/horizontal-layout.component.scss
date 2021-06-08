@@ -6,8 +6,8 @@
 }
 
 b-cards {
-  &[data-scroll=true] {
-    max-height: var(--container-max-height);
+  &[data-scroll=true] ::ng-deep .cards-list {
+    max-height: calc(var(--item-height) * 2 + var(--item-grid-gap));
   }
   
   @include mobile($small-mobile-media-width) {
