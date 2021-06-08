@@ -25,11 +25,12 @@ const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
 const type = Object.values(InsightsPanelType);
 
 const template1 = `
-  <b-insights-panel
+  <b-insights-panel class="mrg-l-auto"
         [type]="type"
         [data]="data"
         [config]="{
           collapsible:collapsible,
+          showMoreAfterItem:showMoreAfterItem,
           icon:icon,
           maxLines:maxLines,
           expandButtonText:expandButtonText,
@@ -52,7 +53,7 @@ const templateForNotes = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Insight Panel'">
-  <div style="justify-content: flex-end;display: flex;">
+  <div class="flx-column" >
     ${template1}
   </div>
 </b-story-book-layout>
@@ -84,6 +85,9 @@ const note = `
   maxLines? | number | max lines of section content before 'View more' link is shown
   expandButtonText? | string | text for the expand/collapse button
   readMoreLinkText? | string | text for the 'View more' link
+  showMoreText? | string | text for the 'View more' link (translated inside)
+  showLessText? | string | text for the 'View more' link (translated inside)
+  showMoreAfterItem? | number | number for the 'View more' count. (not supported with "collapsible"=true)
   headingClass, sectionClass | string / string[] / object | custom content & heading classes - support what ngClass binding supports
   headingStyle, sectionStyle | object | custom content & heading css styles - support what ngStyle supports
 
@@ -105,7 +109,7 @@ const data = [
   {
     title: 'Outliers',
     content:
-      "The number of leavers in Kendall Roy's team during <strong>Q3 2020</strong> (10) was lower than expected from the average trend for that group.",
+      `The number of leavers in Kendall Roy's team during <strong>Q3 2020</strong> (10) was lower than expected from the average trend for that group.`,
   },
 ];
 
@@ -117,7 +121,7 @@ story.add(
       props: {
         type: select('type', type, InsightsPanelType.information, 'Props'),
         expanded: boolean('expanded', false, 'Props'),
-        collapsible: boolean('collapsible', true, 'Props'),
+        collapsible: boolean('collapsible', false, 'Props'),
         icon: select(
           'icon',
           [
@@ -135,6 +139,7 @@ story.add(
           'Props'
         ),
         maxLines: number('maxLines', 3, {}, 'Props'),
+        showMoreAfterItem: number('showMoreAfterItem', 1, {}, 'Props'),
         expandButtonText: text('expandButtonText', 'Insights', 'Props'),
         readMoreLinkText: text('readMoreLinkText', 'Read More', 'Props'),
         data: data,

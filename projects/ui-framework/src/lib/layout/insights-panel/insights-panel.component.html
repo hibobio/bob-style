@@ -1,31 +1,81 @@
-<b-button *ngIf="config?.collapsible!==false"
+<b-button *ngIf="config.collapsible!==false && !config.showMoreAfterItem"
           class="btn-minimize clr-inherit uppercase mrg-l-auto"
+          [ngClass]="{'mrg-t-8': isExpanded}"
           [button]="expandButtonConf"
-          [text]="isExpanded ? null : config?.expandButtonText"
+          [text]="isExpanded ? null : config.expandButtonText"
           [icon]="isExpanded ? iconTypes.contract : iconTypes.expand"
           (clicked)="onExpandClick()">
 </b-button>
 
-<ng-container *ngIf="config?.collapsible === false || isExpanded">
-
-  <div *ngFor="let insight of data;  let last = last; trackBy: ('$index' | trackByProp)"
-       class="insight"
+<ng-template #item
+             let-insight="insight"
+             let-last="last"
+             let-hasShowMore="hasShowMore"
+             let-hasShowLess="hasShowLess">
+  <div class="insight"
        [class.mrg-b-40]="!last"
-       [ngClass]="config?.sectionClass"
-       [ngStyle]="config?.sectionStyle">
-    <h4 class="b-heading uppercase inl-blk mrg-b-10"
-        [ngClass]="config?.headingClass"
-        [ngStyle]="config?.headingStyle">
+       [ngClass]="config.sectionClass"
+       [ngStyle]="config.sectionStyle">
+    <h4 class="b-subheading uppercase inl-blk mrg-b-10"
+        [ngClass]="config.headingClass"
+        [ngStyle]="config.headingStyle">
       <b-icon class="icon pad-b-4 mrg-r-8"
-              [icon]="insight?.icon || config?.icon"
+              [icon]="insight?.icon || config.icon"
               [size]="iconSizes.small"
               color="inherit">
       </b-icon>{{ insight.title }}
     </h4>
     <p class="mrg-0"
        [readMore]="insight.content"
-       [maxLines]="config?.maxLines"
-       [linkText]="config?.readMoreLinkText"></p>
+       [maxLines]="config.maxLines"
+       [linkText]="config.readMoreLinkText"></p>
   </div>
 
-</ng-container>
+  <b-text-button *ngIf="(hasShowMore) || (hasShowLess && last)"
+                 [ngClass]="{'mrg-t-24': last}"
+                 class="clr-inherit expand-btn"
+                 (clicked)="onExpandClick()">
+    {{ hasShowMore ? config.showMoreText : config.showLessText }}
+    <b-icon [icon]="hasShowMore ? iconTypes.chevron_down : iconTypes.chevron_up"></b-icon>
+  </b-text-button>
+
+</ng-template>
+
+<div class="flx-col flx-grow flx-spread scroll-visible"
+     *ngIf="config.collapsible === false || isExpanded ||
+     config.showMoreAfterItem > 0">
+
+  <ng-container *ngIf="config.showMoreAfterItem>0">
+    <ng-container *ngFor="let insight of (data | slice:0:config.showMoreAfterItem);
+                          let last = last;
+                          let index=index;
+                          trackBy: ('$index' | trackByProp)">
+      <ng-container *ngTemplateOutlet="item; context: {
+                        insight: insight,
+                        last: !isExpanded && index+1 === config.showMoreAfterItem,
+                        hasShowMore: !isExpanded && index+1 ===
+                        config.showMoreAfterItem,
+                        hasShowLess: false
+                      }">
+      </ng-container>
+    </ng-container>
+  </ng-container>
+
+  <ng-container
+                *ngIf="!config.showMoreAfterItem || (config.showMoreAfterItem && isExpanded)">
+    <ng-container *ngFor="let insight of (data |
+                  slice:(config.showMoreAfterItem||0)
+                  :(config.showMoreAfterItem && !isExpanded ?
+                  config.showMoreAfterItem : undefined));
+                  let last = last; trackBy: ('$index' | trackByProp)">
+      <ng-container *ngTemplateOutlet="item; context: {
+                        insight: insight,
+                        last: last,
+                        hasShowMore: false,
+                        hasShowLess: config.showMoreAfterItem>0
+                      }">
+      </ng-container>
+    </ng-container>
+  </ng-container>
+
+</div>

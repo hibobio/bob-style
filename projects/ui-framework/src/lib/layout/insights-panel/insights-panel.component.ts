@@ -7,6 +7,7 @@ import {
   Input,
   Output,
 } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
 import { Button } from '../../buttons/buttons.interface';
@@ -25,7 +26,17 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InsightsPanelComponent {
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private translate: TranslateService
+  ) {
+    this.config = {
+      ...INSIGHTS_PANEL_CONFIG_DEF,
+      showMoreText: this.translate.instant('common.view-more'),
+      showLessText: this.translate.instant('common.view-less'),
+      readMoreLinkText: this.translate.instant('common.read_more'),
+    };
+  }
 
   readonly iconSizes = IconSize;
   readonly iconTypes = Icons;
@@ -36,13 +47,17 @@ export class InsightsPanelComponent {
   @Input('config') set setConfig(config: InsightsPanelConfig) {
     this.config = { ...this.config, ...config };
   }
-  public config: InsightsPanelConfig = { ...INSIGHTS_PANEL_CONFIG_DEF };
+  public config: InsightsPanelConfig;
 
   @HostBinding('attr.data-type') @Input() type: InsightsPanelType =
     InsightsPanelType.information;
 
   @HostBinding('attr.data-expanded') get panelIsExpanded() {
-    return this.config?.collapsible === false || this.isExpanded;
+    return (
+      this.config.showMoreAfterItem > 0 ||
+      this.config.collapsible === false ||
+      this.isExpanded
+    );
   }
 
   @Output() expanded: EventEmitter<boolean> = new EventEmitter<boolean>();
