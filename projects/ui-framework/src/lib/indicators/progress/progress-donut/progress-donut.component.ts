@@ -40,7 +40,7 @@ export class ProgressDonutComponent
   extends BaseProgressElement
   implements OnInit {
   constructor(
-    protected host: ElementRef,
+    protected host: ElementRef<HTMLElement>,
     protected DOM: DOMhelpers,
     protected zone: NgZone,
     protected cd: ChangeDetectorRef,

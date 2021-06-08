@@ -58,7 +58,7 @@ export class InfoTooltipComponent {
     }
   }
 
-  @Output() linkClicked: EventEmitter<void> = new EventEmitter<void>();
+  @Output() linkClicked: EventEmitter<void> = new EventEmitter();
   linkClickHandler: () => void;
 
   onLinkClick() {

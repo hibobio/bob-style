@@ -1,26 +1,28 @@
 import {
-  Component,
-  EventEmitter,
-  Input,
-  Output,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  OnChanges,
+  Component,
+  EventEmitter,
   HostBinding,
+  Input,
   NgZone,
+  OnChanges,
+  Output,
 } from '@angular/core';
-import { Icons, IconColor, IconSize } from '../../icons/icons.enum';
-import { ButtonType } from '../../buttons/buttons.enum';
-import { SideMenuOption } from './side-menu.interface';
-import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { isKey } from '../../services/utils/functional-utils';
-import { Keys } from '../../enums';
+
 import { AvatarSize } from '../../avatar/avatar/avatar.enum';
-import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
+import { ButtonType } from '../../buttons/buttons.enum';
+import { Keys } from '../../enums';
+import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import {
   TooltipClass,
   TooltipPosition,
 } from '../../popups/tooltip/tooltip.enum';
+import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import { isKey } from '../../services/utils/functional-utils';
+import { DOMFocusEvent, DOMKeyboardEvent, DOMMouseEvent } from '../../types';
+import { SideMenuOption } from './side-menu.interface';
 
 @Component({
   selector: 'b-side-menu',
@@ -53,17 +55,15 @@ export class SideMenuComponent implements OnChanges {
 
   public focusedId: number | string;
 
-  @Output() selectOption: EventEmitter<number | string> = new EventEmitter<
-    number | string
-  >();
+  @Output() selectOption: EventEmitter<number | string> = new EventEmitter();
 
   ngOnChanges() {
     this.focusedId = null;
   }
 
-  public onFocus(event: FocusEvent) {
+  public onFocus(event: DOMFocusEvent) {
     event.stopPropagation();
-    const target = event.target as HTMLElement;
+    const target = event.target;
     const index = this.getOptionIndex(target);
 
     if (index !== null && !this.options[index].disabled) {
@@ -75,9 +75,9 @@ export class SideMenuComponent implements OnChanges {
     this.cd.detectChanges();
   }
 
-  public onBlur(event: FocusEvent) {
+  public onBlur(event: DOMFocusEvent) {
     event.stopPropagation();
-    const relatedTarget = event.relatedTarget as HTMLElement;
+    const relatedTarget = event.relatedTarget;
 
     if (
       !relatedTarget ||
@@ -90,9 +90,9 @@ export class SideMenuComponent implements OnChanges {
     }
   }
 
-  public onClick(event: MouseEvent) {
+  public onClick(event: DOMMouseEvent) {
     event.stopPropagation();
-    const target = event.target as HTMLElement;
+    const target = event.target;
     const index = this.getOptionIndex(target);
 
     if (
@@ -109,9 +109,9 @@ export class SideMenuComponent implements OnChanges {
     }
   }
 
-  public onKey(event: KeyboardEvent) {
+  public onKey(event: DOMKeyboardEvent) {
     event.stopPropagation();
-    const target = event.target as HTMLElement;
+    const target = event.target;
 
     if (isKey(event.key, Keys.enter) || isKey(event.key, Keys.space)) {
       event.preventDefault();

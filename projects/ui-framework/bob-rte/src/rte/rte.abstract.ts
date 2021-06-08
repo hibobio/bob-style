@@ -78,7 +78,7 @@ export abstract class RTEbaseElement
     protected placeholdersConverter: PlaceholdersConverterService,
     protected parserService: HtmlParserHelpers,
     protected DOM: DOMhelpers,
-    protected host: ElementRef,
+    protected host: ElementRef<HTMLElement>,
     protected translate: TranslateService,
     protected rteUtilsService: RteUtilsService,
     protected sanitizer: SanitizerService
@@ -137,9 +137,9 @@ export abstract class RTEbaseElement
   @Input() public mentionsList: RteMentionsOption[];
   @Input() public placeholderList: SelectGroupOption[];
 
-  @Output() blurred: EventEmitter<string> = new EventEmitter<string>();
-  @Output() focused: EventEmitter<string> = new EventEmitter<string>();
-  @Output() changed: EventEmitter<string> = new EventEmitter<string>();
+  @Output() blurred: EventEmitter<string> = new EventEmitter();
+  @Output() focused: EventEmitter<string> = new EventEmitter();
+  @Output() changed: EventEmitter<string> = new EventEmitter();
 
   @HostBinding('attr.data-type') @Input() public type: RTEType =
     RTEType.primary;

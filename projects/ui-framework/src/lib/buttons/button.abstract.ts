@@ -31,7 +31,7 @@ import {
   unsubscribeArray,
 } from '../services/utils/functional-utils';
 import { insideZone } from '../services/utils/rxjs.operators';
-import { GenericObject } from '../types';
+import { DOMMouseEvent, GenericObject } from '../types';
 import { BackButtonType, ButtonSize, ButtonType } from './buttons.enum';
 import { Button, ButtonConfig, ButtonInputCmnt } from './buttons.interface';
 
@@ -41,7 +41,8 @@ export abstract class BaseButtonElement
   implements OnChanges, OnInit, OnDestroy {
   constructor(protected cd: ChangeDetectorRef, protected zone: NgZone) {}
 
-  @ViewChild('button', { static: true }) public button: ElementRef;
+  @ViewChild('button', { static: true })
+  public button: ElementRef<HTMLButtonElement>;
 
   @Input('button') set setProps(button: Button | DialogButton | ButtonConfig) {
     if (isObject(button)) {
@@ -79,7 +80,8 @@ export abstract class BaseButtonElement
     | ButtonInputCmnt
     | boolean = false;
 
-  @Output() clicked: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
+  @Output()
+  clicked: EventEmitter<DOMMouseEvent> = new EventEmitter();
 
   readonly buttonType = ButtonType;
   readonly buttonSize = ButtonSize;
@@ -93,7 +95,7 @@ export abstract class BaseButtonElement
 
   protected readonly subs: Subscription[] = [];
 
-  onClick: (event: MouseEvent) => void;
+  onClick: (event: DOMMouseEvent) => void;
 
   ngOnChanges(changes: SimpleChanges, dc = true): void {
     applyChanges(this, changes);
@@ -127,7 +129,7 @@ export abstract class BaseButtonElement
 
     this.zone.runOutsideAngular(() => {
       this.subs.push(
-        fromEvent<MouseEvent>(this.button.nativeElement, 'click', {
+        fromEvent<DOMMouseEvent>(this.button.nativeElement, 'click', {
           capture: true,
         })
           .pipe(

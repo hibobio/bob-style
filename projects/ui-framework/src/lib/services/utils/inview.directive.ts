@@ -28,16 +28,15 @@ export const IN_VIEW_DIR_CONFIG_DEF: IntersectionObservableConfig = {
 })
 export class InViewDirective implements OnInit, OnDestroy {
   constructor(
-    private hostRef: ElementRef,
+    private hostRef: ElementRef<HTMLElement>,
     private mutationObservableService: MutationObservableService
   ) {}
 
   // tslint:disable-next-line: no-input-rename
   @Input('inViewConfig') config: IntersectionObservableConfig;
 
-  @Output('inView') isInView: EventEmitter<boolean> = new EventEmitter<
-    boolean
-  >();
+  @Output('inView')
+  isInView: EventEmitter<boolean> = new EventEmitter();
 
   private inViewSub: Subscription;
 

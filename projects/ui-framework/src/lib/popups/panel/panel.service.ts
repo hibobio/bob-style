@@ -1,3 +1,6 @@
+import { Observable, race } from 'rxjs';
+import { filter, map, tap, throttleTime } from 'rxjs/operators';
+
 import {
   CdkOverlayOrigin,
   ConnectedOverlayPositionChange,
@@ -11,8 +14,7 @@ import {
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
-import { race } from 'rxjs';
-import { filter, map, tap, throttleTime } from 'rxjs/operators';
+
 import {
   asArray,
   getEventPath,
@@ -22,7 +24,7 @@ import {
 } from '../../services/utils/functional-utils';
 import { onlyDistinct } from '../../services/utils/rxjs.operators';
 import { UtilsService } from '../../services/utils/utils.service';
-import { OverlayPositionClasses } from '../../types';
+import { DOMMouseEvent, OverlayPositionClasses } from '../../types';
 import { PanelPositionService } from './panel-position-service/panel-position.service';
 import { PanelDefaultPosVer } from './panel.enum';
 import { CreatePanelConfig, Panel } from './panel.interface';
@@ -101,9 +103,9 @@ export class PanelService {
     );
 
     panel.backdropClick$ = race(
-      panel.overlayRef.backdropClick(),
+      panel.overlayRef.backdropClick() as Observable<DOMMouseEvent>,
       this.utilsService.getWindowClickEvent(true).pipe(
-        filter((event: MouseEvent) => {
+        filter((event: DOMMouseEvent) => {
           return (
             new Date().getTime() - panel.created > 200 &&
             document.contains(panel.overlayRef.overlayElement) &&

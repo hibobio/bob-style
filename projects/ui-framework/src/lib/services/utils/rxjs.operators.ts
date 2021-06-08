@@ -13,7 +13,7 @@ import {
 import { NgZone, ɵɵdirectiveInject as directiveInject } from '@angular/core';
 
 import { Keys } from '../../enums';
-import { GenericObject } from '../../types';
+import { DOMAnyEvent, DOMKeyboardEvent, GenericObject } from '../../types';
 import {
   asArray,
   cloneDeepSimpleObject,
@@ -155,41 +155,35 @@ export function debug<T = any>(
  *
  * .
  */
-export function counter<T = any>(startWith = 1, multiplier = 1) {
+export function counter<T = any>(startVal = 1, multiplier = 1) {
   return function (source: Observable<T>): Observable<number> {
     return defer(() => {
-      let i = startWith - 1;
+      let i = startVal - 1;
       return source.pipe(map(() => ++i * multiplier));
     });
   };
 }
 
 export function filterKey(key: Keys | string | (Keys | string)[]) {
-  return filter<KeyboardEvent>((event) => asArray(key).includes(event.key));
+  return filter<DOMKeyboardEvent>((event) => asArray(key).includes(event.key));
 }
 
 export const filterByEventKey = filterKey;
 
-export function filterByEventPath<
-  E extends Event = Event | KeyboardEvent | MouseEvent | FocusEvent
->(element: HTMLElement) {
-  return filter<E>((event) => {
+export function filterByEventPath(element: HTMLElement) {
+  return filter<DOMAnyEvent>((event) => {
     return getEventPath(event).includes(element);
   });
 }
 
-export function filterByEventTarget<
-  E extends Event = Event | KeyboardEvent | MouseEvent | FocusEvent
->(target: string | HTMLElement) {
-  return filter<E>((event) => {
-    const targetEl = event.target as HTMLElement;
+export function filterByEventTarget(target: string | HTMLElement) {
+  return filter<DOMAnyEvent>((event) => {
+    const targetEl = event.target;
     return isString(target) ? targetEl.matches(target) : targetEl === target;
   });
 }
 
-export function filterDOMevent<
-  E extends Event = Event | KeyboardEvent | MouseEvent | FocusEvent
->({
+export function filterDOMevent({
   pathIncludes,
   targetMatches,
   pathIncludesNot,
@@ -202,8 +196,8 @@ export function filterDOMevent<
   targetMatchesNot?: string | HTMLElement;
   allowedKeys?: Keys | string | (Keys | string)[];
 }) {
-  return filter<E>((event) => {
-    const targetEl = event.target as HTMLElement;
+  return filter<DOMAnyEvent>((event) => {
+    const targetEl = event.target;
 
     return (
       (allowedKeys ? asArray(allowedKeys).includes(event['key']) : true) &&

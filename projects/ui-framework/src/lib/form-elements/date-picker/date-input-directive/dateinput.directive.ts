@@ -1,37 +1,39 @@
+import endOfMonth from 'date-fns/endOfMonth';
+import isAfter from 'date-fns/isAfter';
+import isBefore from 'date-fns/isBefore';
+import isSameDay from 'date-fns/isSameDay';
+import startOfMonth from 'date-fns/startOfMonth';
+import toDate from 'date-fns/toDate';
+
 import {
   Directive,
   ElementRef,
+  EventEmitter,
   HostListener,
   Input,
-  SimpleChanges,
-  Output,
-  EventEmitter,
   OnChanges,
   OnInit,
+  Output,
+  SimpleChanges,
 } from '@angular/core';
-import { DateParseService } from '../date-parse-service/date-parse.service';
+
+import { DISPLAY_DATE_FORMAT_DEF } from '../../../consts';
 import {
   applyChanges,
   hasChanges,
   isNullOrUndefined,
 } from '../../../services/utils/functional-utils';
-import { DateParseResult, FormatParserResult } from '../datepicker.interface';
-import { DOMInputEvent, DateFormatFullDate } from '../../../types';
-import { DISPLAY_DATE_FORMAT_DEF } from '../../../consts';
+import { DateFormatFullDate, DOMInputEvent } from '../../../types';
+import { DateParseService } from '../date-parse-service/date-parse.service';
 import { DateAdjust } from '../datepicker.enum';
-import isBefore from 'date-fns/isBefore';
-import isAfter from 'date-fns/isAfter';
-import isSameDay from 'date-fns/isSameDay';
-import startOfMonth from 'date-fns/startOfMonth';
-import endOfMonth from 'date-fns/endOfMonth';
-import toDate from 'date-fns/toDate';
+import { DateParseResult, FormatParserResult } from '../datepicker.interface';
 
 @Directive({
   selector: '[bDateInput]',
 })
 export class DateInputDirective implements OnChanges, OnInit {
   constructor(
-    private inputRef: ElementRef,
+    private inputRef: ElementRef<HTMLInputElement>,
     private parseService: DateParseService
   ) {
     this.input = inputRef.nativeElement;
@@ -55,9 +57,7 @@ export class DateInputDirective implements OnChanges, OnInit {
   @Input() max: Date;
   @Input() setTo: DateAdjust;
 
-  @Output() parsed: EventEmitter<DateParseResult> = new EventEmitter<
-    DateParseResult
-  >();
+  @Output() parsed: EventEmitter<DateParseResult> = new EventEmitter();
 
   @HostListener('change', ['$event']) onChange($event: DOMInputEvent): void {
     this.process();

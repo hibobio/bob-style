@@ -100,7 +100,7 @@ export class ReadMoreComponent implements OnInit, OnDestroy {
   @Input() maxLines: number;
   @Input() linkText: number;
 
-  @Output() clicked = new EventEmitter<void>();
+  @Output() clicked: EventEmitter<void> = new EventEmitter();
 
   public textView$: Observable<SafeHtml>;
   readonly complete$ = new BehaviorSubject<boolean>(false);

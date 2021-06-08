@@ -8,9 +8,10 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
+
+import { TruncateTooltipType } from '../truncate-tooltip/truncate-tooltip.enum';
 import { COMMON_EMOJIS, EMOJI_DATA } from './emoji-data.consts';
 import { Emoji, EmojiCategory } from './emoji.interface';
-import { TruncateTooltipType } from '../truncate-tooltip/truncate-tooltip.enum';
 
 @Component({
   selector: 'b-emoji',
@@ -25,8 +26,8 @@ export class EmojiComponent implements OnInit {
   readonly tooltipType = TruncateTooltipType;
 
   @Input() title: string;
-  @Output() toggleClick = new EventEmitter<boolean>();
-  @Output() emojiSelect = new EventEmitter<Emoji>();
+  @Output() toggleClick: EventEmitter<boolean> = new EventEmitter();
+  @Output() emojiSelect: EventEmitter<Emoji> = new EventEmitter();
   @ViewChild('overlayRef') panelElement: any;
 
   constructor(private cdr: ChangeDetectorRef) {}

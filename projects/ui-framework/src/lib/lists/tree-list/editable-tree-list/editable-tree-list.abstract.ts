@@ -36,7 +36,7 @@ import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { Styles } from '../../../services/html/html-helpers.interface';
 import {
   applyChanges,
-  compareAsStrings,
+  equalAsStrings,
   eventHasCntrlKey,
   getEventPath,
   hasChanges,
@@ -45,7 +45,12 @@ import {
   notFirstChanges,
 } from '../../../services/utils/functional-utils';
 import { UtilsService } from '../../../services/utils/utils.service';
-import { DOMInputEvent } from '../../../types';
+import {
+  DOMFocusEvent,
+  DOMInputEvent,
+  DOMKeyboardEvent,
+  DOMMouseEvent,
+} from '../../../types';
 import { SelectMode } from '../../list.enum';
 import { itemID } from '../../list.interface';
 import { TreeListControlsService } from '../services/tree-list-controls.service';
@@ -79,7 +84,7 @@ export abstract class BaseEditableTreeListElement
     protected utilsService: UtilsService,
     protected zone: NgZone,
     protected cd: ChangeDetectorRef,
-    protected host: ElementRef,
+    protected host: ElementRef<HTMLElement>,
     protected translate: TranslateService
   ) {
     this.hostElement = this.host.nativeElement;
@@ -95,9 +100,7 @@ export abstract class BaseEditableTreeListElement
   @HostBinding('attr.data-embedded') @Input() embedded = false;
   @HostBinding('attr.data-dnd-disabled') @Input() disableDragAndDrop = false;
 
-  @Output() changed: EventEmitter<TreeListOption[]> = new EventEmitter<
-    TreeListOption[]
-  >();
+  @Output() changed: EventEmitter<TreeListOption[]> = new EventEmitter();
 
   @ViewChild('listElement', { static: true, read: ElementRef })
   set setListEl(elem: ElementRef) {
@@ -142,7 +145,7 @@ export abstract class BaseEditableTreeListElement
     icon: Icons.add,
   };
 
-  @HostListener('click', ['$event']) onHostClick(event: MouseEvent) {
+  @HostListener('click', ['$event']) onHostClick(event: DOMMouseEvent) {
     if (this.cancelFocus) {
       this.cancelFocus = false;
       return;
@@ -225,14 +228,14 @@ export abstract class BaseEditableTreeListElement
       .getWindowKeydownEvent(true)
       .pipe(
         filter(
-          (event: KeyboardEvent) =>
+          (event: DOMKeyboardEvent) =>
             event.key === 'z' &&
             eventHasCntrlKey(event) &&
             getEventPath(event).includes(this.hostElement)
         ),
         delay(0)
       )
-      .subscribe((event: KeyboardEvent) => {
+      .subscribe((event: DOMKeyboardEvent) => {
         if (this.isTyping) {
           this.isTyping = false;
         } else {
@@ -309,7 +312,7 @@ export abstract class BaseEditableTreeListElement
     }
   }
 
-  public onListClick(event: MouseEvent): void {
+  public onListClick(event: DOMMouseEvent): void {
     this.cancelFocus = false;
     this.cntrlsSrvc.onListClick(event, {
       itemsMap: this.itemsMap,
@@ -330,7 +333,7 @@ export abstract class BaseEditableTreeListElement
     }
   }
 
-  public onListKeyDown(event: KeyboardEvent): void {
+  public onListKeyDown(event: DOMKeyboardEvent): void {
     this.cntrlsSrvc.onEditableListKeyDown(event, {
       itemsMap: this.itemsMap,
       listViewModel: this.listViewModel,
@@ -443,8 +446,8 @@ export abstract class BaseEditableTreeListElement
     this.isTyping = true;
   }
 
-  public onListBlur(event: FocusEvent): void {
-    const target = event.target as HTMLInputElement;
+  public onListBlur(event: DOMFocusEvent): void {
+    const target = event.target;
 
     if (target.matches('.betl-item-input')) {
       this.isTyping = false;
@@ -487,7 +490,7 @@ export abstract class BaseEditableTreeListElement
     return (
       (item.name &&
         TreeListModelUtils.getAllSiblingsIDs(item, this.itemsMap).filter((id) =>
-          compareAsStrings(item.name, this.itemsMap.get(id).name, false)
+          equalAsStrings(item.name, this.itemsMap.get(id).name, false)
         ).length) ||
       0
     );

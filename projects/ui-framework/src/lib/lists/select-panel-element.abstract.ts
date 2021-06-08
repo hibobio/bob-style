@@ -84,7 +84,7 @@ export abstract class BaseSelectPanelElement
   @ViewChild(CdkOverlayOrigin, { static: true })
   overlayOrigin: CdkOverlayOrigin;
   @ViewChild('templateRef', { static: true }) templateRef: TemplateRef<any>;
-  @ViewChild('prefix') prefix: ElementRef;
+  @ViewChild('prefix') prefix: ElementRef<HTMLElement>;
 
   @HostBinding('attr.data-size') @Input() size = SELECT_PANEL_PROPS_DEF.size;
 
@@ -117,9 +117,9 @@ export abstract class BaseSelectPanelElement
   @Input() showValueShowcase = SELECT_PANEL_PROPS_DEF.showValueShowcase;
 
   @Output()
-  selectChange: EventEmitter<ListChange> = new EventEmitter<ListChange>();
-  @Output() opened: EventEmitter<OverlayRef> = new EventEmitter<OverlayRef>();
-  @Output() closed: EventEmitter<void> = new EventEmitter<void>();
+  selectChange: EventEmitter<ListChange> = new EventEmitter();
+  @Output() opened: EventEmitter<OverlayRef> = new EventEmitter();
+  @Output() closed: EventEmitter<void> = new EventEmitter();
 
   protected type: SelectType;
   public showPrefix = true;

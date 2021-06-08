@@ -1,37 +1,38 @@
 import {
-  Component,
-  forwardRef,
-  ViewChild,
   AfterViewInit,
+  ChangeDetectorRef,
+  Component,
   ElementRef,
+  forwardRef,
   Input,
   NgZone,
-  ChangeDetectorRef,
   SimpleChanges,
+  ViewChild,
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { BaseInputElement } from '../base-input-element';
+
+import { controlKeys, deleteKeys, Keys } from '../../enums';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import {
+  countDecimals,
+  firstChanges,
+  hasChanges,
+  isKey,
+  isNullOrUndefined,
+  isNumber,
+  isRegExp,
+  parseToNumber,
+} from '../../services/utils/functional-utils';
+import { valueAsNumber } from '../../services/utils/transformers';
+import { DOMFocusEvent, DOMInputEvent, DOMKeyboardEvent } from '../../types';
+import { BaseFormElement } from '../base-form-element';
+import { BaseInputElement } from '../base-input-element';
+import { InputEventType } from '../form-elements.enum';
 import {
   FormElementKeyboardCntrlService,
   InputCursorState,
 } from '../services/keyboard-cntrl.service';
 import { InputTypes } from './input.enum';
-import { BaseFormElement } from '../base-form-element';
-import {
-  parseToNumber,
-  isNumber,
-  countDecimals,
-  isNullOrUndefined,
-  firstChanges,
-  hasChanges,
-  isKey,
-  isRegExp,
-} from '../../services/utils/functional-utils';
-import { InputEventType } from '../form-elements.enum';
-import { DOMInputEvent } from '../../types';
-import { Keys, controlKeys, deleteKeys } from '../../enums';
-import { valueAsNumber } from '../../services/utils/transformers';
 
 @Component({
   selector: 'b-input',
@@ -87,8 +88,8 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
     };
   }
 
-  @ViewChild('prefix') prefix: ElementRef;
-  @ViewChild('suffix') suffix: ElementRef;
+  @ViewChild('prefix') prefix: ElementRef<HTMLElement>;
+  @ViewChild('suffix') suffix: ElementRef<HTMLElement>;
 
   @Input() hasPrefix = false;
   public showPrefix = true;
@@ -148,7 +149,7 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
     });
   }
 
-  public onInputKeydown(event: KeyboardEvent): void {
+  public onInputKeydown(event: DOMKeyboardEvent): void {
     if (this.allowedKeys) {
       this.kbrdCntrlSrvc.filterAllowedKeys(event, this.allowedKeys);
     }
@@ -258,12 +259,12 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
     }
   }
 
-  public onInputBlur(event: FocusEvent = null) {
+  public onInputBlur(event: DOMFocusEvent<HTMLInputElement> = null) {
     if (this.inputType === InputTypes.number && (this.value + '').length) {
       this.processNumberValue(this.value, false, false);
     }
 
-    const relatedTarget = event.relatedTarget as HTMLButtonElement;
+    const relatedTarget = event.relatedTarget;
 
     if (
       this.inputType !== InputTypes.number ||

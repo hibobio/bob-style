@@ -53,9 +53,9 @@ export class AutoCompleteComponent
   @Input() displayOptionsOnFocus = false;
   @Input() skipOptionsFiltering = false;
 
-  @Output() searchChange: EventEmitter<string> = new EventEmitter<string>();
+  @Output() searchChange: EventEmitter<string> = new EventEmitter();
   @Output()
-  optionSelect: EventEmitter<AutoCompleteOption> = new EventEmitter<AutoCompleteOption>();
+  optionSelect: EventEmitter<AutoCompleteOption> = new EventEmitter();
 
   searchValue = '';
   filteredOptions: AutoCompleteOption[];

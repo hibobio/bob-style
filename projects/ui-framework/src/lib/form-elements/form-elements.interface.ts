@@ -1,16 +1,19 @@
-import {
-  InputEventType,
-  FormEvents,
-  FormElementSize,
-} from './form-elements.enum';
-import { ValidatorFn, FormControl, ValidationErrors } from '@angular/forms';
-import { Func } from '../services/utils/functional-utils';
-import { InputTypes, InputAutoCompleteOptions } from './input/input.enum';
-import { ElementRef, SimpleChanges } from '@angular/core';
-import { SelectGroupOption, ListFooterActions } from '../lists/list.interface';
-import { SelectMode } from '../lists/list.enum';
-import { TruncateTooltipType } from '../popups/truncate-tooltip/truncate-tooltip.enum';
 import { Subscription } from 'rxjs';
+
+import { ElementRef, SimpleChanges } from '@angular/core';
+import { FormControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+
+import { SelectMode } from '../lists/list.enum';
+import { ListFooterActions, SelectGroupOption } from '../lists/list.interface';
+import { TruncateTooltipType } from '../popups/truncate-tooltip/truncate-tooltip.enum';
+import { Func } from '../services/utils/functional-utils';
+import { DOMKeyboardEvent } from '../types';
+import {
+  FormElementSize,
+  FormEvents,
+  InputEventType,
+} from './form-elements.enum';
+import { InputAutoCompleteOptions, InputTypes } from './input/input.enum';
 
 export interface TransmitOptions {
   eventType: InputEventType[];
@@ -70,7 +73,7 @@ export interface FormElementSpec {
   onInputChange?: (event: any, forceElementValue?: any) => void;
   onInputFocus?: (event: FocusEvent) => void;
   onInputBlur?: (event: FocusEvent) => void;
-  onInputKeydown?: (event: KeyboardEvent) => void;
+  onInputKeydown?: (event: DOMKeyboardEvent) => void;
   options?: SelectGroupOption[];
   optionsDefault?: SelectGroupOption[];
   mode?: SelectMode;

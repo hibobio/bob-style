@@ -43,7 +43,7 @@ export class MasonryItemComponent {}
 })
 export class MasonryLayoutComponent implements OnInit, OnDestroy {
   constructor(
-    private host: ElementRef,
+    private host: ElementRef<HTMLElement>,
     private zone: NgZone,
     private mutationObservableService: MutationObservableService,
     private service: MasonryService
@@ -58,9 +58,8 @@ export class MasonryLayoutComponent implements OnInit, OnDestroy {
   @Input('config')
   public config$: Observable<MasonryConfig>;
 
-  @Output() masonryItemsChanged: EventEmitter<
-    MasonryItemsChangedEvent
-  > = new EventEmitter<MasonryItemsChangedEvent>();
+  @Output()
+  masonryItemsChanged: EventEmitter<MasonryItemsChangedEvent> = new EventEmitter();
 
   public hostEl: HTMLElement;
   private config: MasonryConfig;

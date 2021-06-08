@@ -1,5 +1,5 @@
 import {
-  compareAsStrings,
+  equalAsStrings,
   isBoolean,
   isEmptyArray,
   isEmptyMap,
@@ -163,7 +163,7 @@ export class TreeListViewUtils {
     const indexInView = parseInt(itemElement.getAttribute('data-index'), 10);
 
     let item = itemsMap.get(listViewModel[indexInView]);
-    item = (compareAsStrings(item?.id, itemElementId) && item) || undefined;
+    item = (equalAsStrings(item?.id, itemElementId) && item) || undefined;
 
     return { itemElement, indexInView, item };
   }

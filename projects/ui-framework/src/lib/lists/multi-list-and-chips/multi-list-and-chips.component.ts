@@ -46,7 +46,7 @@ export class MultiListAndChipsComponent
   extends BaseMultiListAndSomethingElement<MlacChip, MultiListComponent>
   implements MultiListAndSomething<MlacChip, MultiListComponent>, OnInit {
   constructor(
-    public host: ElementRef,
+    public host: ElementRef<HTMLElement>,
     protected DOM: DOMhelpers,
     protected translate: TranslateService,
     protected listModelService: ListModelService,

@@ -16,6 +16,7 @@ import { AvatarSize } from '../../../avatar/avatar/avatar.enum';
 import { ButtonSize, ButtonType } from '../../../buttons/buttons.enum';
 import { IconColor, Icons } from '../../../icons/icons.enum';
 import { hasChanges } from '../../../services/utils/functional-utils';
+import { DOMMouseEvent } from '../../../types';
 import { COMMENT_EQ_CHECK } from '../../comments.const';
 import { CommentItem } from '../../comments.interface';
 import { CommentsUtilService } from '../../comments.service';
@@ -56,10 +57,8 @@ export class CommentItemComponent implements OnChanges, AfterViewInit {
   }
 
   @HostListener('click.outside-zone', ['$event'])
-  onHostClick($event: MouseEvent) {
-    const employeeId = ($event.target as HTMLElement).getAttribute(
-      'mention-employee-id'
-    );
+  onHostClick($event: DOMMouseEvent) {
+    const employeeId = $event.target.getAttribute('mention-employee-id');
 
     if (employeeId) {
       $event.preventDefault();

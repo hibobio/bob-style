@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 
 import { FormElementSize } from '../../form-elements/form-elements.enum';
+import { DOMFocusEvent } from '../../types';
 import { SearchComponent } from '../search/search.component';
 import { CompactSearchConfig } from './compact-search.interface';
 
@@ -23,8 +24,8 @@ export class CompactSearchComponent {
 
   @Input() config: CompactSearchConfig;
 
-  @Output() searchChange: EventEmitter<string> = new EventEmitter<string>();
-  @Output() searchFocus: EventEmitter<string> = new EventEmitter<string>();
+  @Output() searchChange: EventEmitter<string> = new EventEmitter();
+  @Output() searchFocus: EventEmitter<string> = new EventEmitter();
 
   readonly formElementSize = FormElementSize;
   public open = false;
@@ -38,8 +39,8 @@ export class CompactSearchComponent {
     return Boolean(this.open || (this.config?.openIfNotEmpty && !this.empty));
   }
 
-  public onSearchClose(event: FocusEvent): void {
-    const relatedTarget = event.relatedTarget as HTMLElement;
+  public onSearchClose(event: DOMFocusEvent): void {
+    const relatedTarget = event.relatedTarget;
     if (!relatedTarget || !relatedTarget.matches('.clear-input')) {
       this.search.inputFocused = false;
       this.open = false;

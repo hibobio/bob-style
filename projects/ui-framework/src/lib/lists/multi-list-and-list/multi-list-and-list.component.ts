@@ -42,7 +42,7 @@ export class MultiListAndListComponent
   extends BaseMultiListAndSomethingElement<ListRow, MultiListComponent>
   implements MultiListAndSomething<ListRow, MultiListComponent> {
   constructor(
-    public host: ElementRef,
+    public host: ElementRef<HTMLElement>,
     protected DOM: DOMhelpers,
     protected translate: TranslateService,
     protected listModelService: ListModelService,
@@ -71,10 +71,7 @@ export class MultiListAndListComponent
   @Output() menuAction: EventEmitter<{
     action: string;
     item: itemID;
-  }> = new EventEmitter<{
-    action: string;
-    item: itemID;
-  }>();
+  }> = new EventEmitter();
 
   readonly buttonType: ButtonType = ButtonType.tertiary;
   readonly type: BasicListType = BasicListType.primary;

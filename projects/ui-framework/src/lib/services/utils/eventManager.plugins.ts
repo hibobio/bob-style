@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { EventManager, EVENT_MANAGER_PLUGINS } from '@angular/platform-browser';
+import { EVENT_MANAGER_PLUGINS, EventManager } from '@angular/platform-browser';
+
 import { NativeEvents } from '../../enums';
 
 export enum EventModifiers {
@@ -39,7 +40,7 @@ const getDocElement = (selector: string): EventTarget => {
     case GlobalEventModifiers.document:
       return document as Document;
     case GlobalEventModifiers.body:
-      return document.body as HTMLElement;
+      return document.body;
     default:
       throw new Error(`Element selector [${selector}] not supported.`);
   }

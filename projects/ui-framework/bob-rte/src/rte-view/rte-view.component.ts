@@ -1,23 +1,26 @@
 import {
-  Component,
-  Input,
-  ElementRef,
-  HostListener,
-  SimpleChanges,
-  OnChanges,
-  HostBinding,
-  NgZone,
   ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  HostBinding,
+  HostListener,
+  Input,
+  NgZone,
+  OnChanges,
+  SimpleChanges,
 } from '@angular/core';
 import { Router } from '@angular/router';
+
 import {
+  DOMMouseEvent,
+  FilterXSSOptions,
+  hasChanges,
+  SANITIZER_ALLOWED_ATTRS,
+  SANITIZER_FILTER_XSS_OPTIONS,
   SanitizerService,
   SelectGroupOption,
-  hasChanges,
-  SANITIZER_FILTER_XSS_OPTIONS,
-  SANITIZER_ALLOWED_ATTRS,
-  FilterXSSOptions,
 } from 'bob-style';
+
 import { PlaceholdersConverterService } from '../rte/placeholders.service';
 import { RteViewType } from './rte-view.enum';
 
@@ -36,13 +39,13 @@ export const RTE_VIEW_SANITIZER_OPTIONS: Partial<FilterXSSOptions> = {
 })
 export class RteViewComponent implements OnChanges {
   constructor(
-    private host: ElementRef,
+    private host: ElementRef<HTMLElement>,
     private zone: NgZone,
     private sanitizer: SanitizerService,
     private router: Router,
     private placeholdersConverter: PlaceholdersConverterService
   ) {
-    this.hostEl = this.host.nativeElement as HTMLElement;
+    this.hostEl = this.host.nativeElement;
   }
 
   private hostEl: HTMLElement;
@@ -54,10 +57,8 @@ export class RteViewComponent implements OnChanges {
   @HostBinding('class.fr-view') frViewClass = true;
 
   @HostListener('click.outside-zone', ['$event'])
-  onHostClick($event: MouseEvent) {
-    const employeeId = ($event.target as HTMLElement).getAttribute(
-      'mention-employee-id'
-    );
+  onHostClick($event: DOMMouseEvent) {
+    const employeeId = $event.target.getAttribute('mention-employee-id');
 
     if (employeeId) {
       $event.preventDefault();

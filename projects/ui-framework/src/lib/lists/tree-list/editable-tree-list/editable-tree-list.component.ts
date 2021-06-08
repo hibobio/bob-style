@@ -1,25 +1,27 @@
+import { CdkDragDrop, CdkDragStart } from '@angular/cdk/drag-drop';
 import {
-  Component,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
+  Component,
   ElementRef,
   NgZone,
 } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+
+import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { isNumber } from '../../../services/utils/functional-utils';
-import { CdkDragDrop, CdkDragStart } from '@angular/cdk/drag-drop';
-import { BaseEditableTreeListElement } from './editable-tree-list.abstract';
-import { TreeListItem } from '../tree-list.interface';
+import { UtilsService } from '../../../services/utils/utils.service';
+import { DOMMouseEvent } from '../../../types';
+import { TreeListControlsService } from '../services/tree-list-controls.service';
+import { TreeListEditUtils } from '../services/tree-list-edit.static';
 import { TreeListModelService } from '../services/tree-list-model.service';
 import { TreeListModelUtils } from '../services/tree-list-model.static';
-import { TreeListControlsService } from '../services/tree-list-controls.service';
+import { TreeListItem } from '../tree-list.interface';
+import { BaseEditableTreeListElement } from './editable-tree-list.abstract';
 import {
-  TreeListItemEditContext,
   InsertItemLocation,
+  TreeListItemEditContext,
 } from './editable-tree-list.interface';
-import { TreeListEditUtils } from '../services/tree-list-edit.static';
-import { DOMhelpers } from '../../../services/html/dom-helpers.service';
-import { UtilsService } from '../../../services/utils/utils.service';
-import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'b-editable-tree-list',
@@ -36,7 +38,7 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
     utilsService: UtilsService,
     zone: NgZone,
     cd: ChangeDetectorRef,
-    host: ElementRef,
+    host: ElementRef<HTMLElement>,
     translate: TranslateService
   ) {
     super(modelSrvc, cntrlsSrvc, DOM, utilsService, zone, cd, host, translate);
@@ -192,13 +194,13 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
     this.dragHoverIndex = indexInView;
   }
 
-  public onListHover(event: MouseEvent): void {
+  public onListHover(event: DOMMouseEvent): void {
     window.clearTimeout(this.dragHoverTimer);
 
     if (this.draggingIndex === undefined) {
       return;
     }
-    const target = event.target as HTMLInputElement;
+    const target = event.target;
     const itemElement = target.closest('.betl-item');
 
     if (!itemElement) {

@@ -7,7 +7,7 @@ import { itemID } from '../../lists/list.interface';
 import { GenericObject } from '../../types';
 import {
   asArray,
-  compareAsStrings,
+  equalAsStrings,
   getType,
   hasProp,
   isArray,
@@ -73,7 +73,7 @@ export const valueToObjectWithKeyOfValueFromArray = (
   if (isNullOrUndefined(value) || isNullOrUndefined(array)) {
     return undefined;
   }
-  return array.find((i) => compareAsStrings(i[key], value));
+  return array.find((i) => equalAsStrings(i[key], value));
 };
 
 export const stringToDate = (date: string | Date): Date => {

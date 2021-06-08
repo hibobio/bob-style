@@ -46,7 +46,7 @@ import { Avatar, AvatarInputCmnt, BadgeConfig } from '../avatar.interface';
 })
 export class AvatarImageComponent implements OnChanges, OnInit, AfterViewInit {
   constructor(
-    private elRef: ElementRef,
+    private elRef: ElementRef<HTMLElement>,
     private DOM: DOMhelpers,
     private zone: NgZone,
     private cd: ChangeDetectorRef
@@ -75,7 +75,7 @@ export class AvatarImageComponent implements OnChanges, OnInit, AfterViewInit {
   @Input() isClickable: AvatarInputCmnt | boolean;
   @Input() supressWarnings: AvatarInputCmnt | boolean = false;
 
-  @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
+  @Output() clicked: EventEmitter<void> = new EventEmitter();
 
   @HostListener('click.outside-zone') onHostClick() {
     if (this.clicked.observers) {

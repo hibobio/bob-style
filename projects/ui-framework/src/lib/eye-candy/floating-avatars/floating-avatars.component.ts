@@ -36,7 +36,7 @@ import { AvatarLocation, CanvasDimension } from './floating-avatars.interface';
 })
 export class FloatingAvatarsComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
-    private hostRef: ElementRef,
+    private hostRef: ElementRef<HTMLElement>,
     private zone: NgZone,
     private mutationObservableService: MutationObservableService,
     private mobileService: MobileService
