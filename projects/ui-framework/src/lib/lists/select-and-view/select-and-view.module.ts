@@ -1,3 +1,4 @@
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NgModule } from '@angular/core';
 import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
 import { SelectAndViewComponent } from './select-and-view.component';
@@ -25,7 +26,8 @@ import { ButtonsModule } from '../../buttons/buttons.module';
     FiltersModule,
     NgLetModule,
     ButtonsModule,
-    TruncateTooltipModule
+    TruncateTooltipModule,
+    DragDropModule
   ],
   exports: [SelectAndViewComponent]
 })
