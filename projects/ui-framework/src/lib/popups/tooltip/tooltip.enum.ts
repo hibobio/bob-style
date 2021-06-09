@@ -1,6 +1,8 @@
 export enum TooltipPosition {
   above = 'above',
   below = 'below',
+  after = 'after',
+  before = 'before',
 }
 
 export enum TooltipClass {

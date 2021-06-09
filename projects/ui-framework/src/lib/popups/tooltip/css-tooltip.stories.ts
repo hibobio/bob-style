@@ -1,16 +1,16 @@
+import { radios, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
-import { withKnobs, text, select } from '@storybook/addon-knobs';
+
 import { ComponentGroupType } from '../../consts';
+import { DividerModule } from '../../layout/divider/divider.module';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { TypographyModule } from '../../typography/typography.module';
 import {
-  CSSTooltipWrap,
-  TooltipPosition,
   CSSTooltipShowOn,
   CSSTooltipTextAlign,
+  CSSTooltipWrap,
+  TooltipPosition,
 } from './tooltip.enum';
-import { DividerModule } from '../../layout/divider/divider.module';
-import { TypographyModule } from '../../typography/typography.module';
-import { radios } from '@storybook/addon-knobs';
 
 const story = storiesOf(ComponentGroupType.Tooltip, module).addDecorator(
   withKnobs
@@ -21,7 +21,7 @@ const story2 = storiesOf(ComponentGroupType.HtmlCss, module).addDecorator(
 );
 
 const template = `
-  <b-heading [attr.data-tooltip]="tooltipText"
+  <b-heading style="border:1px solid silver;max-width:185px;margin: auto;padding:4px" [attr.data-tooltip]="tooltipText"
      [attr.data-tooltip-position]="tooltipPosition"
      [attr.data-tooltip-align]="tooltipTextAlign"
      [attr.data-tooltip-wrap]="tooltipWrap"
