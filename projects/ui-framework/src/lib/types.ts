@@ -1,4 +1,4 @@
-import { Sort } from './enums';
+import { Keys, Sort } from './enums';
 import {
   ColorPalette,
   ColorsGrey,
@@ -43,21 +43,28 @@ export interface DOMInputElement
     > {}
 export interface DOMEventTarget
   extends EventTarget,
-    Extract<HTMLInputElement, EventTarget>,
-    Extract<HTMLButtonElement, EventTarget>,
-    Extract<HTMLElement, EventTarget> {
+    Omit<
+      Extract<HTMLInputElement, EventTarget> &
+        Extract<HTMLButtonElement, EventTarget> &
+        Extract<HTMLElement, EventTarget>,
+      'addEventListener' | 'removeEventListener' | 'dispatchEvent'
+    > {
   addEventListener: EventTarget['addEventListener'];
   removeEventListener: EventTarget['removeEventListener'];
   dispatchEvent: EventTarget['dispatchEvent'];
 }
 
-export interface DOMMouseEvent<T extends EventTarget = DOMEventTarget>
-  extends Omit<MouseEvent, 'target'> {
+export interface DOMMouseEvent<
+  T extends EventTarget = DOMEventTarget,
+  R extends EventTarget = DOMEventTarget
+> extends Omit<MouseEvent, 'target' | 'relatedTarget'> {
   readonly target: T;
+  readonly relatedTarget: R | null;
 }
 export interface DOMKeyboardEvent<T extends EventTarget = DOMEventTarget>
   extends Omit<KeyboardEvent, 'target'> {
   readonly target: T;
+  key: Keys | string;
 }
 
 export interface DOMFocusEvent<
@@ -76,11 +83,26 @@ export interface DOMInputEvent extends UIEvent {
   readonly target: DOMInputElement;
 }
 
-export type DOMAnyEvent =
-  | DOMInputEvent
-  | DOMFocusEvent
-  | DOMKeyboardEvent
-  | DOMMouseEvent;
+export interface DOMAnyEvent
+  extends Omit<
+    Event &
+      Partial<DOMMouseEvent & DOMKeyboardEvent & DOMFocusEvent & DOMInputEvent>,
+    'target' | 'key' | 'relatedTarget'
+  > {
+  key?: Keys | string;
+  target: DOMEventTarget;
+  relatedTarget?: DOMEventTarget;
+}
+
+export interface DOMSomeEvent
+  extends Omit<
+    DOMMouseEvent & DOMKeyboardEvent & DOMFocusEvent & DOMInputEvent,
+    'target' | 'key' | 'relatedTarget'
+  > {
+  key?: Keys | string;
+  target: DOMEventTarget;
+  relatedTarget?: DOMEventTarget;
+}
 
 // LOCALE DATES
 
