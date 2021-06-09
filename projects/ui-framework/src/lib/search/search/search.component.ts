@@ -48,6 +48,7 @@ export class SearchComponent implements OnChanges, OnInit, OnDestroy {
 
   @Input() config: SearchConfig;
 
+  @Input() hideIcon = false;
   @Input() hideLabelOnFocus = true;
   @Input() enableBrowserAutoComplete: InputAutoCompleteOptions =
     InputAutoCompleteOptions.off;
