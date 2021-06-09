@@ -128,14 +128,14 @@ describe('SearchComponent', () => {
     it('should not have class has-prefix', () => {
       component.hideIcon = true;
       fixture.detectChanges();
-      const inputIconElement = fixture.debugElement.query(By.css('.bfe-wrap'));
-      expect(inputIconElement.classes['has-prefix']).toBeFalsy();
+      const bfeWrapElement = fixture.debugElement.query(By.css('.bfe-wrap'));
+      expect(bfeWrapElement.classes['has-prefix']).toBeFalsy();
     });
     it('should have class has-prefix', () => {
       component.hideIcon = false;
       fixture.detectChanges();
-      const inputIconElement = fixture.debugElement.query(By.css('.bfe-wrap'));
-      expect(inputIconElement.classes['has-prefix']).toBeTruthy();
+      const bfeWrapElement = fixture.debugElement.query(By.css('.bfe-wrap'));
+      expect(bfeWrapElement.classes['has-prefix']).toBeTruthy();
     });
   });
 });
