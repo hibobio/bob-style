@@ -194,6 +194,7 @@ export class EditableTreeListComponent extends BaseEditableTreeListElement {
     this.dragHoverIndex = indexInView;
   }
 
+  public onListHover(event: Event | MouseEvent): void;
   public onListHover(event: DOMMouseEvent): void {
     window.clearTimeout(this.dragHoverTimer);
 

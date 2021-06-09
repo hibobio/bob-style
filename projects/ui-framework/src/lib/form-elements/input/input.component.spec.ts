@@ -1,20 +1,21 @@
+import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { InputComponent } from './input.component';
-import { InputEventType } from '../form-elements.enum';
-import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { InputMessageModule } from '../input-message/input-message.module';
+
+import { Keys, NativeEventNames } from '../../enums';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { InputTypes } from './input.enum';
+import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
 import {
   elementFromFixture,
   emitNativeEvent,
   inputValue,
 } from '../../services/utils/test-helpers';
-import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
-import { Keys, NativeEvents } from '../../enums';
 import { FormElementLabelModule } from '../form-element-label/form-element-label.module';
+import { InputEventType } from '../form-elements.enum';
+import { InputMessageModule } from '../input-message/input-message.module';
+import { InputComponent } from './input.component';
+import { InputTypes } from './input.enum';
 
 describe('InputComponent', () => {
   let component: InputComponent;
@@ -23,29 +24,31 @@ describe('InputComponent', () => {
   let buttonUpElement: any;
   let buttonDownElement: any;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [InputComponent],
-      imports: [
-        NoopAnimationsModule,
-        CommonModule,
-        InputMessageModule,
-        FormElementLabelModule,
-      ],
-      providers: [DOMhelpers, EventManagerPlugins[0]],
-    })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(InputComponent);
-        component = fixture.componentInstance;
-        component.ignoreEvents = [];
-        component.ngAfterViewInit = () => {};
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [InputComponent],
+        imports: [
+          NoopAnimationsModule,
+          CommonModule,
+          InputMessageModule,
+          FormElementLabelModule,
+        ],
+        providers: [DOMhelpers, EventManagerPlugins[0]],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(InputComponent);
+          component = fixture.componentInstance;
+          component.ignoreEvents = [];
+          component.ngAfterViewInit = () => {};
 
-        spyOn(component.changed, 'emit');
-        component.changed.subscribe(() => {});
-        spyOn(component, 'propagateChange');
-      });
-  }));
+          spyOn(component.changed, 'emit');
+          component.changed.subscribe(() => {});
+          spyOn(component, 'propagateChange');
+        });
+    })
+  );
 
   afterEach(() => {
     component.changed.complete();
@@ -86,7 +89,7 @@ describe('InputComponent', () => {
     it(`should emit InputEvent on keydown, if there is a subscriber to the event; \
     Should not propagateChange.`, () => {
       component.value = 'change input value';
-      emitNativeEvent(inputElement, NativeEvents.keydown, {
+      emitNativeEvent(inputElement, NativeEventNames.keydown, {
         key: Keys.enter,
       });
       expect(component.changed.emit).toHaveBeenCalledWith({
@@ -99,7 +102,7 @@ describe('InputComponent', () => {
 
     it('should NOT emit InputEvent on keydown, if there are no subscribers to the event', () => {
       component.changed.complete();
-      emitNativeEvent(inputElement, NativeEvents.keydown, {
+      emitNativeEvent(inputElement, NativeEventNames.keydown, {
         key: Keys.enter,
       });
       expect(component.changed.emit).not.toHaveBeenCalled();

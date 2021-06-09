@@ -102,6 +102,7 @@ export class AvatarComponent implements OnChanges {
     }
   }
 
+  onAvatarClick(event: Event | MouseEvent): void;
   onAvatarClick(event: DOMMouseEvent): void {
     if (this.isClickable) {
       this.zone.run(() => {

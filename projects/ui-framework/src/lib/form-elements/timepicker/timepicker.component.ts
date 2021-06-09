@@ -226,7 +226,8 @@ export class TimePickerComponent extends BaseFormElement {
     }
   }
 
-  public onInputKeydown(event: DOMKeyboardEvent<DOMInputElement>) {
+  public onInputKeydown(event: Event | KeyboardEvent): void;
+  public onInputKeydown(event: DOMKeyboardEvent<DOMInputElement>): void {
     if (!this.kbrdCntrlSrvc.filterAllowedKeys(event, /[0-9]/)) {
       return;
     }

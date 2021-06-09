@@ -48,18 +48,14 @@ export interface DOMEventTarget
         Extract<HTMLButtonElement, EventTarget> &
         Extract<HTMLElement, EventTarget>,
       'addEventListener' | 'removeEventListener' | 'dispatchEvent'
-    > {
-  addEventListener: EventTarget['addEventListener'];
-  removeEventListener: EventTarget['removeEventListener'];
-  dispatchEvent: EventTarget['dispatchEvent'];
-}
+    > {}
 
 export interface DOMMouseEvent<
   T extends EventTarget = DOMEventTarget,
   R extends EventTarget = DOMEventTarget
 > extends Omit<MouseEvent, 'target' | 'relatedTarget'> {
   readonly target: T;
-  readonly relatedTarget: R | null;
+  readonly relatedTarget?: R | null;
 }
 export interface DOMKeyboardEvent<T extends EventTarget = DOMEventTarget>
   extends Omit<KeyboardEvent, 'target'> {
@@ -99,9 +95,9 @@ export interface DOMSomeEvent
     DOMMouseEvent & DOMKeyboardEvent & DOMFocusEvent & DOMInputEvent,
     'target' | 'key' | 'relatedTarget'
   > {
-  key?: Keys | string;
+  key: Keys | string;
   target: DOMEventTarget;
-  relatedTarget?: DOMEventTarget;
+  relatedTarget: DOMEventTarget;
 }
 
 // LOCALE DATES

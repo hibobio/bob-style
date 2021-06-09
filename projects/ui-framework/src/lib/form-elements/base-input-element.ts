@@ -66,6 +66,10 @@ export abstract class BaseInputElement extends BaseFormElement {
   }
 
   public onInputChange(
+    event: Event | InputEvent,
+    forceElementValue?: any
+  ): void;
+  public onInputChange(
     event: DOMInputEvent,
     forceElementValue: any = this.forceElementValue
   ): void {
@@ -95,6 +99,7 @@ export abstract class BaseInputElement extends BaseFormElement {
     this.cd.detectChanges();
   }
 
+  public onInputKeydown(event: Event | KeyboardEvent): void;
   public onInputKeydown(event: DOMKeyboardEvent): void {
     if (
       (isKey(event.key, Keys.enter) || isKey(event.key, Keys.escape)) &&

@@ -49,7 +49,8 @@
 
               <b-component-renderer *ngIf="option.prefixComponent?.component"
                                     class="bms-option-prefix"
-                                    [render]="option.prefixComponent"></b-component-renderer>
+                                    [render]="option.prefixComponent">
+              </b-component-renderer>
 
               <b-avatar-image *ngIf="option.icon && !option.prefixComponent"
                               class="bms-option-icon"

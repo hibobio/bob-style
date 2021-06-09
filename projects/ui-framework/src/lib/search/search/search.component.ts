@@ -110,6 +110,7 @@ export class SearchComponent implements OnChanges, OnInit, OnDestroy {
     this.skipFocusEvent = false;
   }
 
+  onBlur(event: Event | FocusEvent): void;
   onBlur(event: DOMFocusEvent): void {
     this.inputFocused = false;
     if (this.searchBlur.observers) {

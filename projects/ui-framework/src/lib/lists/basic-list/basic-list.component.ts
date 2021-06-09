@@ -125,6 +125,7 @@ export class BasicListComponent implements AfterContentInit {
   private tableCellCount: number;
   private initDone = false;
 
+  public onItemClick(item: BasicListItem, $event: Event | MouseEvent): void;
   public onItemClick(item: BasicListItem, $event: DOMMouseEvent): void {
     const target = $event.target;
     if (

@@ -365,12 +365,14 @@ export abstract class BaseDatepickerElement<
     this.allowInputBlur = false;
   }
 
+  public onInputMouseDown(event: Event | MouseEvent): void;
   public onInputMouseDown(event: DOMMouseEvent<HTMLInputElement>): void {
     if (event.button === 2) {
       event.preventDefault();
     }
   }
 
+  public onInputKeydown(event: Event | KeyboardEvent, index?: number): void;
   public onInputKeydown(
     event: DOMKeyboardEvent<HTMLInputElement>,
     index: number = 0

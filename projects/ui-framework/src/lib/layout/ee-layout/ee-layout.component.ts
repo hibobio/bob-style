@@ -15,7 +15,7 @@ import {
 
 import { AvatarOrientation, AvatarSize } from '../../avatar/avatar/avatar.enum';
 import { Avatar } from '../../avatar/avatar/avatar.interface';
-import { ButtonSize } from '../../buttons/buttons.enum';
+import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
 import { Types } from '../../enums';
 import { Icons } from '../../icons/icons.enum';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
@@ -68,6 +68,7 @@ export class EELayoutComponent implements OnChanges, AfterViewInit {
 
   readonly icons = Icons;
   readonly buttonSize = ButtonSize;
+  readonly buttonType = ButtonType;
 
   public hasHeader = true;
   public hasSectionHeader = true;

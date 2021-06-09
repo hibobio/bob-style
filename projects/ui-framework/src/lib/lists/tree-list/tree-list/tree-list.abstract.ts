@@ -198,6 +198,7 @@ export abstract class BaseTreeListElement
     });
   }
 
+  public onListClick(event: Event | MouseEvent): void;
   public onListClick(event: DOMMouseEvent): void {
     this.cntrlsSrvc.onListClick(event, {
       itemsMap: this.itemsMap,
@@ -211,7 +212,8 @@ export abstract class BaseTreeListElement
     });
   }
 
-  public onListKeyDown(event: DOMKeyboardEvent) {
+  public onListKeyDown(event: Event | KeyboardEvent): void;
+  public onListKeyDown(event: DOMKeyboardEvent): void {
     this.cntrlsSrvc.onListKeyDown(event, {
       itemsMap: this.itemsMap,
       listViewModel: this.listViewModel,

@@ -172,6 +172,7 @@ export class ColorPickerComponent
     }
   }
 
+  public onInputChange(event: Event | InputEvent): void;
   public onInputChange(event: DOMInputEvent): void {
     this.isTyping = true;
 

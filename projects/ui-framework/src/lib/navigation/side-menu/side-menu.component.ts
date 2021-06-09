@@ -61,7 +61,8 @@ export class SideMenuComponent implements OnChanges {
     this.focusedId = null;
   }
 
-  public onFocus(event: DOMFocusEvent) {
+  public onFocus(event: Event | FocusEvent): void;
+  public onFocus(event: DOMFocusEvent): void {
     event.stopPropagation();
     const target = event.target;
     const index = this.getOptionIndex(target);
@@ -75,7 +76,8 @@ export class SideMenuComponent implements OnChanges {
     this.cd.detectChanges();
   }
 
-  public onBlur(event: DOMFocusEvent) {
+  public onBlur(event: Event | FocusEvent): void;
+  public onBlur(event: DOMFocusEvent): void {
     event.stopPropagation();
     const relatedTarget = event.relatedTarget;
 
@@ -90,7 +92,8 @@ export class SideMenuComponent implements OnChanges {
     }
   }
 
-  public onClick(event: DOMMouseEvent) {
+  public onClick(event: Event | MouseEvent): void;
+  public onClick(event: DOMMouseEvent): void {
     event.stopPropagation();
     const target = event.target;
     const index = this.getOptionIndex(target);
@@ -109,7 +112,8 @@ export class SideMenuComponent implements OnChanges {
     }
   }
 
-  public onKey(event: DOMKeyboardEvent) {
+  public onKey(event: Event | KeyboardEvent): void;
+  public onKey(event: DOMKeyboardEvent): void {
     event.stopPropagation();
     const target = event.target;
 
