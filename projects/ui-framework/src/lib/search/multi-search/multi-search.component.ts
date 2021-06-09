@@ -84,6 +84,7 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
     }
   }
 
+  public onSearchKeydown(event: Event): void;
   public onSearchKeydown(event: DOMKeyboardEvent<HTMLInputElement>): void {
     const target = event.target;
 
@@ -103,6 +104,7 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
     }
   }
 
+  public onListClick(event: Event): void;
   public onListClick(event: DOMMouseEvent): void {
     const target = event.target;
 
@@ -126,6 +128,7 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
     this.focusSearchInput();
   }
 
+  public onListKeydown(event: Event): void;
   public onListKeydown(event: DOMKeyboardEvent): void {
     const target = event.target;
 

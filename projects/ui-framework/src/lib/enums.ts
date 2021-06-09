@@ -99,7 +99,7 @@ export const clickKeys = [Keys.enter, Keys.space];
 
 export const deleteKeys = [Keys.backspace, Keys.delete];
 
-export enum NativeEvents {
+export enum NativeEventNames {
   click = 'click',
   dblclick = 'dblclick',
   mousedown = 'mousedown',
@@ -109,52 +109,73 @@ export enum NativeEvents {
   mouseenter = 'mouseenter',
   mouseleave = 'mouseleave',
   mouseout = 'mouseout',
+
   keydown = 'keydown',
   keypress = 'keypress',
   keyup = 'keyup',
+
   focus = 'focus',
   blur = 'blur',
+  focusin = 'focusin',
+  focusout = 'focusout',
+
   change = 'change',
   input = 'input',
+  select = 'select',
+
   submit = 'submit',
   reset = 'reset',
+
   resize = 'resize',
   scroll = 'scroll',
-  select = 'select',
-  dragstart = 'dragstart',
+
   drag = 'drag',
+  dragstart = 'dragstart',
+  dragend = 'dragend',
   dragenter = 'dragenter',
   dragleave = 'dragleave',
   dragover = 'dragover',
   drop = 'drop',
-  dragend = 'dragend',
+
   touchstart = 'touchstart',
   touchend = 'touchend',
   touchmove = 'touchmove',
   touchenter = 'touchenter',
   touchleave = 'touchleave',
   touchcancel = 'touchcancel',
-  focusin = 'focusin',
-  focusout = 'focusout',
 }
 
-export const NativeMouseEvents = [
-  NativeEvents.click,
-  NativeEvents.dblclick,
-  NativeEvents.mousedown,
-  NativeEvents.mouseup,
-  NativeEvents.mouseover,
-  NativeEvents.mousemove,
-  NativeEvents.mouseenter,
-  NativeEvents.mouseleave,
-  NativeEvents.mouseout,
-];
+export const NativeMouseEventNames = [
+  NativeEventNames.click,
+  NativeEventNames.dblclick,
+  NativeEventNames.mousedown,
+  NativeEventNames.mouseup,
+  NativeEventNames.mouseover,
+  NativeEventNames.mousemove,
+  NativeEventNames.mouseenter,
+  NativeEventNames.mouseleave,
+  NativeEventNames.mouseout,
+] as const;
 
-export const NativeKeyboardEvents = [
-  NativeEvents.keydown,
-  NativeEvents.keypress,
-  NativeEvents.keyup,
-];
+export const NativeKeyboardEventNames = [
+  NativeEventNames.keydown,
+  NativeEventNames.keypress,
+  NativeEventNames.keyup,
+] as const;
+
+export const NativeFocusEventNames = [
+  NativeEventNames.focus,
+  NativeEventNames.blur,
+  NativeEventNames.focusin,
+  NativeEventNames.focusout,
+] as const;
+
+/*
+export type NativeEventName = keyof typeof NativeEventNames;
+export type NativeMouseEventName = typeof NativeMouseEventNames;
+export type NativeKeyboardEventName = typeof NativeKeyboardEventNames;
+export type NativeFocusEventName = typeof NativeFocusEventNames;
+*/
 
 export const KEYCODES = {
   BACKSPACE: 8,

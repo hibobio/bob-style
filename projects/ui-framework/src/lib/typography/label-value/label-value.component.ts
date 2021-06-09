@@ -63,13 +63,13 @@ export class LabelValueComponent implements OnChanges, AfterViewInit {
   @Input() set label(label: string | number) {
     this._label = label;
   }
-  get label() {
+  get label(): string {
     return (this._label ?? '') + '';
   }
   @Input() set value(value: string | number) {
     this._value = value;
   }
-  get value() {
+  get value(): string {
     return (this._value ?? '') + '';
   }
 
