@@ -21,7 +21,7 @@ import {
 } from '../../services/utils/functional-utils';
 import { DOMMouseEvent } from '../../types';
 import { PAGER_CONFIG_DEF } from './pager.const';
-import { PagerConfig } from './pager.interface';
+import { PagerConfig, PagerState } from './pager.interface';
 import { PagerService } from './pager.service';
 
 @Component({
@@ -84,6 +84,7 @@ export class PagerComponent<T = any> implements OnInit {
   @Output() sliceChange: EventEmitter<number[] | T[]> = new EventEmitter();
   @Output() pageChange: EventEmitter<number> = new EventEmitter();
   @Output() sliceSizeChange: EventEmitter<number> = new EventEmitter();
+  @Output() stateChange: EventEmitter<PagerState> = new EventEmitter();
 
   public totalItems: number;
   public totalPages: number;
@@ -138,9 +139,12 @@ export class PagerComponent<T = any> implements OnInit {
     this.config.sliceSize = value.selectedIDs[0] as number;
     this.totalPages = Math.ceil(this.totalItems / this.config.sliceSize);
 
-    const newPage = Math.floor(currentSliceStart / this.config.sliceSize);
+    const newPage =
+      this.config.resetToFirstPage === true
+        ? 0
+        : Math.floor(currentSliceStart / this.config.sliceSize);
 
-    this.changePage(newPage);
+    this.changePage(newPage, false);
     this.emitChange('slicesize');
   }
 
@@ -210,8 +214,15 @@ export class PagerComponent<T = any> implements OnInit {
       );
     }
     if (which === 'slicesize') {
+      this.pageChange.emit(this.currentPage);
       this.sliceSizeChange.emit(this.config.sliceSize);
     }
+
+    this.stateChange.emit({
+      page: this.currentPage,
+      limit: this.config.sliceSize,
+      offset: this.currentPage * this.config.sliceSize
+    });
   }
 
   public pageButtonsTrackBy(index: number, page: number): number {
