@@ -47,6 +47,6 @@
                class="card-bottom cta-button"
                [id]="card.id ? (card['id']+'-cta') : null"
                [text]="card.footerCtaLabel"
-               type="primary"
+               [type]="buttonType.primary"
                (clicked)="onCtaClick($event)">
 </b-text-button>

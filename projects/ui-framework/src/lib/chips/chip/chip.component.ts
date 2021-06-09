@@ -115,6 +115,7 @@ export class ChipComponent implements OnChanges {
     }
   }
 
+  onRemoveClick(event: Event | MouseEvent): void;
   onRemoveClick(event: DOMMouseEvent) {
     event.stopPropagation();
 

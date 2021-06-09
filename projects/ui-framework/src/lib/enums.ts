@@ -65,9 +65,11 @@ export enum Keys {
   caps = 'CapsLock',
 }
 
+export type Key = keyof typeof Keys;
+
 export const metaKeys = [Keys.meta, Keys.alt, Keys.control, Keys.shift];
 
-export const controlKeys = [
+export const controlKeys: string[] = [
   Keys.meta,
   Keys.alt,
   Keys.control,
@@ -88,16 +90,16 @@ export const controlKeys = [
   Keys.caps,
 ];
 
-export const arrowKeys = [
+export const arrowKeys: string[] = [
   Keys.arrowdown,
   Keys.arrowleft,
   Keys.arrowright,
   Keys.arrowup,
 ];
 
-export const clickKeys = [Keys.enter, Keys.space];
+export const clickKeys: string[] = [Keys.enter, Keys.space];
 
-export const deleteKeys = [Keys.backspace, Keys.delete];
+export const deleteKeys: string[] = [Keys.backspace, Keys.delete];
 
 export enum NativeEventNames {
   click = 'click',

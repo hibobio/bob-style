@@ -143,6 +143,7 @@ export class EditCommentComponent
     this.value = this.inputValue;
   }
 
+  enterPress(event: Event | KeyboardEvent): void;
   enterPress(event: DOMKeyboardEvent): void {
     if (!isKey(event.key, Keys.enter) || this.tribute?.isActive) {
       return;

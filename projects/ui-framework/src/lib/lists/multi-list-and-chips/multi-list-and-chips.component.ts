@@ -15,7 +15,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { ChipListComponent } from '../../chips/chip-list/chip-list.component';
 import { ChipType } from '../../chips/chips.enum';
-import { ChipListConfig } from '../../chips/chips.interface';
+import { Chip, ChipListConfig } from '../../chips/chips.interface';
 import { ListChangeService } from '../../lists/list-change/list-change.service';
 import { ListModelService } from '../../lists/list-service/list-model.service';
 import {
@@ -155,6 +155,7 @@ export class MultiListAndChipsComponent
     return chips;
   }
 
+  public unselectOptions(chip: Chip): void;
   public unselectOptions(chip: MlacChip): void {
     super.unselectOptions(
       chip.group

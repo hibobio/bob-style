@@ -149,6 +149,7 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
     });
   }
 
+  public onInputKeydown(event: Event | KeyboardEvent): void;
   public onInputKeydown(event: DOMKeyboardEvent): void {
     if (this.allowedKeys) {
       this.kbrdCntrlSrvc.filterAllowedKeys(event, this.allowedKeys);
@@ -235,6 +236,7 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
     super.onInputKeydown(event);
   }
 
+  public onInputChange(event: Event | InputEvent): void;
   public onInputChange(event: DOMInputEvent): void {
     if (this.inputType !== InputTypes.number || !this.numberFormat) {
       super.onInputChange(event);
@@ -259,7 +261,8 @@ export class InputComponent extends BaseInputElement implements AfterViewInit {
     }
   }
 
-  public onInputBlur(event: DOMFocusEvent<HTMLInputElement> = null) {
+  public onInputBlur(event: Event | FocusEvent): void;
+  public onInputBlur(event: DOMFocusEvent<HTMLInputElement> = null): void {
     if (this.inputType === InputTypes.number && (this.value + '').length) {
       this.processNumberValue(this.value, false, false);
     }

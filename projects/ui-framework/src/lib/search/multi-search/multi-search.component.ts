@@ -84,7 +84,7 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
     }
   }
 
-  public onSearchKeydown(event: Event): void;
+  public onSearchKeydown(event: Event | KeyboardEvent): void;
   public onSearchKeydown(event: DOMKeyboardEvent<HTMLInputElement>): void {
     const target = event.target;
 
@@ -104,7 +104,7 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
     }
   }
 
-  public onListClick(event: Event): void;
+  public onListClick(event: Event | MouseEvent): void;
   public onListClick(event: DOMMouseEvent): void {
     const target = event.target;
 
@@ -128,20 +128,17 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
     this.focusSearchInput();
   }
 
-  public onListKeydown(event: Event): void;
+  public onListKeydown(event: Event | KeyboardEvent): void;
   public onListKeydown(event: DOMKeyboardEvent): void {
     const target = event.target;
 
-    if (
-      !target.matches('.bms-option') ||
-      !controlKeys.includes(event.key as Keys)
-    ) {
+    if (!target.matches('.bms-option') || !controlKeys.includes(event.key)) {
       return;
     }
 
     const { group, option } = this.getGroupAndOptionFromUIEvent(event) || {};
 
-    if (arrowKeys.includes(event.key as Keys)) {
+    if (arrowKeys.includes(event.key)) {
       event.preventDefault();
       const sibling = this.findSiblingOptionEl(
         target,
@@ -161,7 +158,7 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
       return;
     }
 
-    if (clickKeys.includes(event.key as Keys)) {
+    if (clickKeys.includes(event.key)) {
       event.preventDefault();
 
       if (group && option) {

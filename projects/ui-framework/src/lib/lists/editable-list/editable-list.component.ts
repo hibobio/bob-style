@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
+import { MenuItem } from '../../navigation/menu/menu.interface';
 import {
   arrayRemoveItemMutate,
   isNumber,
@@ -41,7 +42,7 @@ export class EditableListComponent extends BaseEditableListElement {
   }
 
   public onMenuAction(
-    action: ListActionType,
+    { key: action }: MenuItem,
     item: SelectOption,
     index: number
   ): void {

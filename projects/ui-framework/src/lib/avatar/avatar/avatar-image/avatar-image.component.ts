@@ -30,6 +30,7 @@ import {
 } from '../../../services/utils/functional-utils';
 import { log } from '../../../services/utils/logger';
 import { valueAsNumber } from '../../../services/utils/transformers';
+import { DOMMouseEvent } from '../../../types';
 import { AvatarBadges, AvatarIconSize, BadgeSize } from '../avatar.consts';
 import { AvatarBadge, AvatarSize } from '../avatar.enum';
 import { Avatar, AvatarInputCmnt, BadgeConfig } from '../avatar.interface';
@@ -75,12 +76,14 @@ export class AvatarImageComponent implements OnChanges, OnInit, AfterViewInit {
   @Input() isClickable: AvatarInputCmnt | boolean;
   @Input() supressWarnings: AvatarInputCmnt | boolean = false;
 
-  @Output() clicked: EventEmitter<void> = new EventEmitter();
+  @Output() clicked: EventEmitter<DOMMouseEvent> = new EventEmitter();
 
-  @HostListener('click.outside-zone') onHostClick() {
+  @HostListener('click.outside-zone', ['$event']) onHostClick(
+    event: DOMMouseEvent
+  ) {
     if (this.clicked.observers) {
       this.zone.run(() => {
-        this.clicked.emit();
+        this.clicked.emit(event);
       });
     }
   }

@@ -86,6 +86,7 @@ export class TabsComponent implements OnChanges, AfterViewInit {
     this.updateTabWidths();
   }
 
+  public onNavBarClick($event: Event | MouseEvent): void;
   public onNavBarClick($event: DOMMouseEvent): void {
     const { index, tab } = this.getTabFromEl($event.target);
 
@@ -94,6 +95,7 @@ export class TabsComponent implements OnChanges, AfterViewInit {
     });
   }
 
+  public onNavBarKeydown($event: Event | KeyboardEvent): void;
   public onNavBarKeydown($event: DOMKeyboardEvent): void {
     if (isKey($event.key, Keys.enter) || isKey($event.key, Keys.space)) {
       $event.preventDefault();

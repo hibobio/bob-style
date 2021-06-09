@@ -93,7 +93,7 @@ export abstract class MultiSearchBaseElement
   public panelClassList: string[] = ['b-select-panel', 'bms-select-panel'];
   public positionClassList: OverlayPositionClasses = {};
 
-  public onFocusOut(event: FocusEvent): void;
+  public onFocusOut(event: Event | FocusEvent): void;
   public onFocusOut(event: DOMFocusEvent): void {
     if (this.ignoreFocusOut) {
       this.ignoreFocusOut = false;

@@ -110,6 +110,7 @@ export class PagerComponent<T = any> implements OnInit {
     return this.totalPages > 1 && this.currentPage === page;
   }
 
+  public onPageClick(event: Event | MouseEvent): void;
   public onPageClick(event: DOMMouseEvent): void {
     const target = event.target;
 

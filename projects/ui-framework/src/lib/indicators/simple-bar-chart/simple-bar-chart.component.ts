@@ -133,6 +133,7 @@ export class SimpleBarChartComponent
     unsubscribeArray(this.subs);
   }
 
+  public onBarClick(event: Event | MouseEvent): void;
   public onBarClick(event: DOMMouseEvent): void {
     const target = event.target;
 

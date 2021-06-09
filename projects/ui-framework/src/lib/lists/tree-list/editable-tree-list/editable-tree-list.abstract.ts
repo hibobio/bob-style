@@ -312,6 +312,7 @@ export abstract class BaseEditableTreeListElement
     }
   }
 
+  public onListClick(event: Event | MouseEvent): void;
   public onListClick(event: DOMMouseEvent): void {
     this.cancelFocus = false;
     this.cntrlsSrvc.onListClick(event, {
@@ -333,6 +334,7 @@ export abstract class BaseEditableTreeListElement
     }
   }
 
+  public onListKeyDown(event: Event | KeyboardEvent): void;
   public onListKeyDown(event: DOMKeyboardEvent): void {
     this.cntrlsSrvc.onEditableListKeyDown(event, {
       itemsMap: this.itemsMap,
@@ -441,11 +443,13 @@ export abstract class BaseEditableTreeListElement
     this.expandedWhileDragging.clear();
   }
 
+  public onListInput(event: Event | InputEvent): void;
   public onListInput(event: DOMInputEvent): void {
     this.hasChanges = true;
     this.isTyping = true;
   }
 
+  public onListBlur(event: Event | FocusEvent): void;
   public onListBlur(event: DOMFocusEvent): void {
     const target = event.target;
 

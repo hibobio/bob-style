@@ -263,6 +263,7 @@ export class ChipInputComponent extends BaseFormElement implements OnInit {
     this.cd.detectChanges();
   }
 
+  public onInputKeyup(event: Event | KeyboardEvent): void;
   public onInputKeyup(event: DOMKeyboardEvent): void {
     if (isKey(event.key, Keys.backspace)) {
       if (this.input.nativeElement.value === '' && this.chips.list.last) {
@@ -294,6 +295,7 @@ export class ChipInputComponent extends BaseFormElement implements OnInit {
     }
   }
 
+  public onInputKeydown(event: Event | KeyboardEvent): void;
   public onInputKeydown(event: DOMKeyboardEvent): void {
     if (this.isAddChipKeyEvent(event)) {
       event.preventDefault();
