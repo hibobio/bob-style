@@ -1,6 +1,6 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { action } from '@storybook/addon-actions';
-import { boolean, object, text, withKnobs } from '@storybook/addon-knobs';
+import { boolean, object, select, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 
 import { ComponentGroupType } from '../../consts';
@@ -8,6 +8,7 @@ import { mockAvatar, mockName, mockNames, mockText } from '../../mock.const';
 import { MentionsOption } from '../../services/mentions/mentions.service';
 import { simpleUID } from '../../services/utils/functional-utils';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { CommentType } from '../comments.interface';
 import { HTML_COMMENT_TEXT } from '../comments.mocks';
 import { CommentsModule } from '../comments.module';
 
@@ -40,6 +41,8 @@ const template = `<b-edit-comment
     [placeholder]="placeholder"
     [autoFocus]="autoFocus"
     [mentionsList]="mentionsList"
+    [type]="type"
+    [showEmoji]="showEmoji"
     (sendComment)="sendComment($event)">
 </b-edit-comment>`;
 
@@ -84,11 +87,11 @@ story.add(
         content: text('content', 'First comment!', 'Props'),
         name: text('name', name, 'Props'),
         avatar: text('avatar', avatar, 'Props'),
-
+        type: select('type', CommentType, CommentType.regular, 'Props'),
+        showEmoji: boolean('showEmoji', true, 'Props'),
         placeholder: text('placeholder', 'Write your comment here.', 'Props'),
         autoFocus: boolean('autoFocus', true, 'Props'),
         updateOnBlur: boolean('updateOnBlur', false, 'Props'),
-
         mentionsList: object('mentionsList', mentionsOptions, 'Data'),
       },
       moduleMetadata: {

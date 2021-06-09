@@ -4,6 +4,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  HostBinding,
   Input,
   OnChanges,
   OnDestroy,
@@ -17,6 +18,7 @@ import { Keys } from '../../enums';
 import { InputTypes } from '../../form-elements/input/input.enum';
 // tslint:disable-next-line: max-line-length
 import { FormElementKeyboardCntrlService } from '../../form-elements/services/keyboard-cntrl.service';
+import { Emoji } from '../../popups/emoji/emoji.interface';
 import { HTML_TEST } from '../../services/html/html-parser.const';
 import {
   MentionsOption,
@@ -30,7 +32,7 @@ import {
   notFirstChanges,
 } from '../../services/utils/functional-utils';
 import { COMMENT_EQ_CHECK, MENTIONS_LIST_EQ_CHECK } from '../comments.const';
-import { CommentItem, CommentItemDto } from '../comments.interface';
+import { CommentItem, CommentItemDto, CommentType } from '../comments.interface';
 import { CommentsUtilService } from '../comments.service';
 
 @Component({
@@ -63,7 +65,8 @@ export class EditCommentComponent
   @Input() updateOnBlur = false;
 
   @Input() public mentionsList: MentionsOption[];
-
+  @Input() showEmoji = true; 
+  @HostBinding('attr.data-type') @Input() type: CommentType = CommentType.inputRadius; 
   @Output()
   sendComment: EventEmitter<CommentItemDto> = new EventEmitter();
 
@@ -90,6 +93,7 @@ export class EditCommentComponent
   public set inputValue(value: string) {
     this.input && (this.input[this.isHtml ? 'innerHTML' : 'value'] = value);
   }
+  private lastCaretInputCommentPosition: number;
 
   public tribute: TributeInstance;
 
@@ -134,6 +138,12 @@ export class EditCommentComponent
     this.inputValue = this.value;
   }
 
+  addEmoji(code: Emoji): void {
+    const first = this.inputValue.slice(0, this.lastCaretInputCommentPosition);
+    const last = this.inputValue.slice(this.lastCaretInputCommentPosition)
+    this.inputValue = first + code.icon + last;
+  }
+
   focus() {
     this.input.focus();
   }
@@ -163,6 +173,10 @@ export class EditCommentComponent
   }
 
   onBlur(): void {
+    if (!this.isHtml) {
+      this.lastCaretInputCommentPosition = this.kbrdCntrlSrvc.
+      getInputCursorState(this.commentInput.nativeElement as HTMLTextAreaElement).selectionStart;
+    }
     if (this.updateOnBlur) {
       this.updateCommentAndResetValue();
     }

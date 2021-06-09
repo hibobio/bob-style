@@ -5,6 +5,26 @@
   min-width: 0;
 }
 
+[data-type='inputRadius'] {
+    background: $grey-100;
+    border-radius: 32px;
+    &.text-section {
+      &:before,
+      &:after {
+        border: unset
+      }
+    }
+  }
+
+.text-area-wrapper {
+  width: 100%;
+  min-height: 42px;
+  .bfe-textarea {
+    flex-grow: 1;
+    overflow: hidden;
+  }
+}
+
 .bfe-input.bfe-textarea {
   resize: none;
   height: times8(5);
@@ -31,4 +51,9 @@
       color: transparent;
     }
   }
+}
+
+b-emoji {
+    display: flex;
+    align-items: flex-end;
 }
