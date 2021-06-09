@@ -29,9 +29,9 @@ import {
   Color,
   DOMAnyEvent,
   DOMKeyboardEvent,
-  DOMMouseEvent,
   GenericObject,
   HexColor,
+  MouseOrKeyboardEvent,
   RegExpWrapper,
   SortType,
 } from '../../types';
@@ -1634,27 +1634,29 @@ export const isKey = (key: string, expected: string): boolean =>
 export const isMetaKey = (key: string): boolean =>
   metaKeys.includes(key as any);
 
-export const eventHasCntrlKey = (
-  event: DOMKeyboardEvent | DOMMouseEvent
-): boolean => event.metaKey || event.ctrlKey;
+export const eventHasCntrlKey = (event: MouseOrKeyboardEvent): boolean =>
+  event.metaKey || event.ctrlKey;
 
-export const eventKeyIsNavOrMeta = (event: DOMKeyboardEvent): boolean =>
-  controlKeys.includes(event.key as any);
+export const eventKeyIsNavOrMeta = (
+  event: KeyboardEvent | DOMKeyboardEvent
+): boolean => controlKeys.includes(event.key as any);
 
-export const eventHasShiftlKey = (
-  event: DOMKeyboardEvent | DOMMouseEvent
-): boolean => event.shiftKey;
+export const eventHasShiftlKey = (event: MouseOrKeyboardEvent): boolean =>
+  event.shiftKey;
 
-export const eventHasMetaKey = (
-  event: DOMKeyboardEvent | DOMMouseEvent
-): boolean => event.metaKey || event.shiftKey || event.ctrlKey || event.altKey;
+export const eventHasMetaKey = (event: MouseOrKeyboardEvent): boolean =>
+  event.metaKey || event.shiftKey || event.ctrlKey || event.altKey;
 
-export const getEventPath = (event: DOMAnyEvent): HTMLElement[] =>
+export const getEventPath = (
+  event: DOMAnyEvent | MouseOrKeyboardEvent
+): HTMLElement[] =>
   ((event['path'] as any[]) ||
     (event.composedPath && (event.composedPath() as any[])) ||
     []) as HTMLElement[];
 
-export const keyEventIsCharacter = (event: DOMKeyboardEvent): boolean => {
+export const keyEventIsCharacter = (
+  event: KeyboardEvent | DOMKeyboardEvent
+): boolean => {
   // tslint:disable-next-line: deprecation
   const code = event.which || event.keyCode;
 

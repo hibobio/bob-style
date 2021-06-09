@@ -100,6 +100,36 @@ export interface DOMSomeEvent
   relatedTarget: DOMEventTarget;
 }
 
+export type DOMeventID<
+  E extends Partial<
+    Event & MouseEvent & KeyboardEvent & FocusEvent & InputEvent
+  >
+> = E extends MouseEvent
+  ? DOMMouseEvent
+  : E extends DOMMouseEvent
+  ? DOMMouseEvent
+  : E extends KeyboardEvent
+  ? DOMKeyboardEvent
+  : E extends DOMKeyboardEvent
+  ? DOMKeyboardEvent
+  : E extends InputEvent
+  ? DOMInputEvent
+  : E extends DOMInputEvent
+  ? DOMInputEvent
+  : E extends FocusEvent
+  ? DOMFocusEvent
+  : E extends DOMFocusEvent
+  ? DOMFocusEvent
+  : E extends Event
+  ? DOMAnyEvent
+  : DOMAnyEvent;
+
+export type MouseOrKeyboardEvent =
+  | KeyboardEvent
+  | DOMKeyboardEvent
+  | MouseEvent
+  | DOMMouseEvent;
+
 // LOCALE DATES
 
 export enum TimeFormat {

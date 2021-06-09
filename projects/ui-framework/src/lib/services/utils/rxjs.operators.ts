@@ -165,7 +165,9 @@ export function counter<T = any>(startVal = 1, multiplier = 1) {
 }
 
 export function filterKey(key: Keys | string | (Keys | string)[]) {
-  return filter<DOMKeyboardEvent>((event) => asArray(key).includes(event.key));
+  return filter<DOMKeyboardEvent | KeyboardEvent>((event) =>
+    asArray(key).includes(event.key)
+  );
 }
 
 export const filterByEventKey = filterKey;
