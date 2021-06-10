@@ -26,7 +26,7 @@ import { Icon } from '../../icons/icon.interface';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { simpleUID } from '../../services/utils/functional-utils';
 import { insideZone } from '../../services/utils/rxjs.operators';
-import { DOMInputEvent } from '../../types';
+import { DOMFocusEvent, DOMInputEvent } from '../../types';
 import { SearchConfig } from './search.interface';
 
 @Component({
@@ -48,6 +48,7 @@ export class SearchComponent implements OnChanges, OnInit, OnDestroy {
 
   @Input() config: SearchConfig;
 
+  @Input() hideIcon = false;
   @Input() hideLabelOnFocus = true;
   @Input() enableBrowserAutoComplete: InputAutoCompleteOptions =
     InputAutoCompleteOptions.off;
@@ -70,10 +71,10 @@ export class SearchComponent implements OnChanges, OnInit, OnDestroy {
   private skipFocusEvent = false;
   private sub: Subscription;
 
-  @Output() searchChange: EventEmitter<string> = new EventEmitter<string>();
-  @Output() searchFocus: EventEmitter<string> = new EventEmitter<string>();
+  @Output() searchChange: EventEmitter<string> = new EventEmitter();
+  @Output() searchFocus: EventEmitter<string> = new EventEmitter();
   @Output()
-  searchBlur: EventEmitter<FocusEvent> = new EventEmitter<FocusEvent>();
+  searchBlur: EventEmitter<DOMFocusEvent> = new EventEmitter();
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.value) {
@@ -109,7 +110,8 @@ export class SearchComponent implements OnChanges, OnInit, OnDestroy {
     this.skipFocusEvent = false;
   }
 
-  onBlur(event: FocusEvent): void {
+  onBlur(event: Event | FocusEvent): void;
+  onBlur(event: DOMFocusEvent): void {
     this.inputFocused = false;
     if (this.searchBlur.observers) {
       this.searchBlur.emit(event);

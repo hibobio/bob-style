@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -6,10 +7,10 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { ChainSelectModule } from './chain-select.module';
-import { SingleSelectModule } from '../single-select/single-select.module';
-import { CommonModule } from '@angular/common';
+
 import { SelectGroupOption } from '../list.interface';
+import { SingleSelectModule } from '../single-select/single-select.module';
+import { ChainSelectModule } from './chain-select.module';
 
 @Component({
   selector: 'b-chain-single-select-example',
@@ -21,7 +22,7 @@ import { SelectGroupOption } from '../list.interface';
 export class ChainSingleSelectExampleComponent implements OnInit {
   @Input() selectedId: number;
   public options: SelectGroupOption[];
-  @Output() selectChange: EventEmitter<any> = new EventEmitter<any>();
+  @Output() selectChange: EventEmitter<any> = new EventEmitter();
 
   ngOnInit(): void {
     this.options = [
@@ -73,7 +74,7 @@ export const template = `
 export class ChainSelectExampleComponent {
   @Input() actionLabel: string;
   @Input() staticMode: boolean;
-  @Output() selectChange: EventEmitter<any> = new EventEmitter<any>();
+  @Output() selectChange: EventEmitter<any> = new EventEmitter();
   public selectedIdList = [1, 2, 3];
   public change($event) {
     this.selectChange.emit($event);

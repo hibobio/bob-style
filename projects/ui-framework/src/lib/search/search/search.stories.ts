@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/angular';
-import { text, withKnobs } from '@storybook/addon-knobs';
+import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { SearchModule } from './search.module';
 import { ComponentGroupType } from '../../consts';
@@ -17,6 +17,7 @@ const template = `
           [label]="label"
           [placeholder]="placeholder"
           [size]="size"
+          [hideIcon]="hideIcon"
           (searchChange)="searchChange($event)"
           (searchFocus)="searchFocus($event)">
 </b-search>
@@ -45,6 +46,7 @@ const note = `
   [hideLabelOnFocus] | boolean | make label behave as placeholder | true
   [enableBrowserAutoComplete] | InputAutoCompleteOptions | enable/disable autocomplete | off
   [size] | FormElementSize | regular height (44px), smaller height (36px) | regular
+  [hideIcon] | boolean | hide the search icon | false
   (searchFocus) | EventEmitter<wbr>&lt;string&gt;  | emits on input focus | &nbsp;
   (searchChange) | EventEmitter<wbr>&lt;string&gt;  | emits on input value change | &nbsp;
 
@@ -61,6 +63,7 @@ story.add(
         value: text('value', ''),
         label: text('label', ''),
         placeholder: text('placeholder', 'Search'),
+        hideIcon: boolean('hideIcon', false),
         searchChange: action('searchChange'),
         searchFocus: action('searchFocus'),
         size: select(

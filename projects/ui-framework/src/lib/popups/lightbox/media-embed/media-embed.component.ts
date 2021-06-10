@@ -1,22 +1,4 @@
-import {
-  Component,
-  Input,
-  HostListener,
-  OnDestroy,
-  ElementRef,
-  HostBinding,
-  Output,
-  EventEmitter,
-  OnInit,
-} from '@angular/core';
-import { URLutils } from '../../../services/url/url-utils.service';
-import { MediaData, VideoData } from '../../../services/url/url.interface';
-import { LightboxData } from '../lightbox.interface';
-import { LightboxService } from '../lightbox.service';
-import { MediaType } from './media-embed.enum';
-
 import { Observable } from 'rxjs';
-import { InputObservable } from '../../../services/utils/decorators';
 import {
   distinctUntilChanged,
   filter,
@@ -25,7 +7,26 @@ import {
   take,
   tap,
 } from 'rxjs/operators';
+
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostBinding,
+  HostListener,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
+
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
+import { URLutils } from '../../../services/url/url-utils.service';
+import { MediaData, VideoData } from '../../../services/url/url.interface';
+import { InputObservable } from '../../../services/utils/decorators';
+import { LightboxData } from '../lightbox.interface';
+import { LightboxService } from '../lightbox.service';
+import { MediaType } from './media-embed.enum';
 
 @Component({
   selector: 'b-media-embed',
@@ -53,7 +54,7 @@ export class MediaEmbedComponent implements OnInit, OnDestroy {
   @Input('url')
   url$: Observable<string>;
 
-  @Output() clicked: EventEmitter<VideoData> = new EventEmitter<VideoData>();
+  @Output() clicked: EventEmitter<VideoData> = new EventEmitter();
 
   @HostBinding('attr.data-inline-embed') @Input() inline = false;
 

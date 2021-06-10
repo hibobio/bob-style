@@ -24,6 +24,7 @@ import {
 } from '../../../services/utils/functional-utils';
 import { MutationObservableService } from '../../../services/utils/mutation-observable';
 import { valueAsNumber } from '../../../services/utils/transformers';
+import { DOMMouseEvent } from '../../../types';
 import { BaseProgressElement } from '../progress-element.abstract';
 import {
   MultiProgressBarConfig,
@@ -40,7 +41,7 @@ export class MultiProgressBarComponent
   extends BaseProgressElement
   implements OnChanges, OnInit {
   constructor(
-    protected host: ElementRef,
+    protected host: ElementRef<HTMLElement>,
     protected DOM: DOMhelpers,
     protected zone: NgZone,
     protected cd: ChangeDetectorRef,
@@ -61,7 +62,7 @@ export class MultiProgressBarComponent
   }
 
   @HostListener('click.outside-zone', ['$event'])
-  onHostClick($event: MouseEvent) {
+  onHostClick($event: DOMMouseEvent) {
     if (this.clicked.observers.length > 0) {
       this.zone.run(() => {
         this.onClick();

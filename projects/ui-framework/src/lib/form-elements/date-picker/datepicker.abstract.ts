@@ -47,7 +47,13 @@ import { MobileService } from '../../services/utils/mobile.service';
 import { dateOrFail } from '../../services/utils/transformers';
 import { UtilsService } from '../../services/utils/utils.service';
 import { WindowRef } from '../../services/utils/window-ref.service';
-import { DateFormat, DateFormatFullDate, LocaleFormat } from '../../types';
+import {
+  DateFormat,
+  DateFormatFullDate,
+  DOMKeyboardEvent,
+  DOMMouseEvent,
+  LocaleFormat,
+} from '../../types';
 import { BaseFormElement } from '../base-form-element';
 import { InputEventType } from '../form-elements.enum';
 import { InputAutoCompleteOptions } from '../input/input.enum';
@@ -117,7 +123,7 @@ export abstract class BaseDatepickerElement<
     }
   }
 
-  @ViewChild('inputWrap', { static: true }) inputWrap: ElementRef;
+  @ViewChild('inputWrap', { static: true }) inputWrap: ElementRef<HTMLElement>;
   @ViewChildren(MatDatepicker) public pickers: QueryList<MatDatepicker<any>>;
   @ViewChildren('input', { read: ElementRef })
   public inputs: QueryList<ElementRef>;
@@ -137,7 +143,7 @@ export abstract class BaseDatepickerElement<
   @Input() panelClass: string;
 
   // tslint:disable-next-line: no-output-rename
-  @Output('dateChange') changed: EventEmitter<O> = new EventEmitter<O>();
+  @Output('dateChange') changed: EventEmitter<O> = new EventEmitter();
 
   public isMobile = false;
   public inputFocused: boolean[] = [];
@@ -359,13 +365,18 @@ export abstract class BaseDatepickerElement<
     this.allowInputBlur = false;
   }
 
-  public onInputMouseDown(event: MouseEvent): void {
+  public onInputMouseDown(event: Event | MouseEvent): void;
+  public onInputMouseDown(event: DOMMouseEvent<HTMLInputElement>): void {
     if (event.button === 2) {
       event.preventDefault();
     }
   }
 
-  public onInputKeydown(event: KeyboardEvent, index: number = 0): void {
+  public onInputKeydown(event: Event | KeyboardEvent, index?: number): void;
+  public onInputKeydown(
+    event: DOMKeyboardEvent<HTMLInputElement>,
+    index: number = 0
+  ): void {
     if (isKey(event.key, Keys.enter) || isKey(event.key, Keys.escape)) {
       this.closePicker(index);
     }
@@ -388,7 +399,7 @@ export abstract class BaseDatepickerElement<
     }
 
     if (isKey(event.key, Keys.delete) || isKey(event.key, Keys.backspace)) {
-      const target = event.target as HTMLInputElement;
+      const target = event.target;
 
       if (target.selectionEnd - target.selectionStart === target.value.length) {
         const clearBtn: HTMLElement = this.DOM.getNextSibling(
@@ -468,8 +479,8 @@ export abstract class BaseDatepickerElement<
     if (this.inputs && this.inputs.length > 0) {
       this.inputs
         .toArray()
-        .forEach((input: ElementRef) =>
-          func(input.nativeElement as HTMLInputElement)
+        .forEach((input: ElementRef<HTMLInputElement>) =>
+          func(input.nativeElement)
         );
     }
   }
@@ -545,8 +556,8 @@ export abstract class BaseDatepickerElement<
     const elements = (
       (!this.isMobile && panel.popup) ||
       (this.isMobile && panel.dialog)
-    ).querySelectorAll(selector);
-    return Array.from(elements) as HTMLElement[];
+    ).querySelectorAll<HTMLElement>(selector);
+    return Array.from(elements);
   }
 
   public openPicker(picker: MatDatepicker<any> | number = 0): void {

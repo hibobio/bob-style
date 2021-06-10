@@ -1,12 +1,15 @@
-import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { LIST_EL_HEIGHT } from '../list.consts';
+
+import { Injectable } from '@angular/core';
+
 import { Keys } from '../../enums';
+import { FORM_ELEMENT_HEIGHT } from '../../form-elements/form-elements.const';
+import { FormElementSize } from '../../form-elements/form-elements.enum';
 import { isKey } from '../../services/utils/functional-utils';
 import { UtilsService } from '../../services/utils/utils.service';
-import { FormElementSize } from '../../form-elements/form-elements.enum';
-import { FORM_ELEMENT_HEIGHT } from '../../form-elements/form-elements.const';
+import { DOMKeyboardEvent } from '../../types';
+import { LIST_EL_HEIGHT } from '../list.consts';
 
 @Injectable({
   providedIn: 'root',
@@ -14,12 +17,12 @@ import { FORM_ELEMENT_HEIGHT } from '../../form-elements/form-elements.const';
 export class ListKeyboardService {
   constructor(private utilSrvc: UtilsService) {}
 
-  getKeyboardNavigationObservable(): Observable<KeyboardEvent> {
+  getKeyboardNavigationObservable(): Observable<DOMKeyboardEvent> {
     return this.utilSrvc
       .getWindowKeydownEvent()
       .pipe(
         filter(
-          (e: KeyboardEvent) =>
+          (e: DOMKeyboardEvent) =>
             isKey(e.key, Keys.arrowup) ||
             isKey(e.key, Keys.arrowdown) ||
             isKey(e.key, Keys.enter) ||

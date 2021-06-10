@@ -1,4 +1,5 @@
 import { IconColor, Icons } from '../icons/icons.enum';
+import { DOMMouseEvent } from '../types';
 import { ButtonSize, ButtonType } from './buttons.enum';
 
 export interface Button {
@@ -17,7 +18,7 @@ export interface Button {
 
   throttle?: number | false;
   swallow?: boolean;
-  onClick?: (arg?: MouseEvent | any) => void;
+  onClick?: (arg?: DOMMouseEvent<HTMLButtonElement> | any) => void;
 }
 
 export interface ButtonConfig extends Button {}

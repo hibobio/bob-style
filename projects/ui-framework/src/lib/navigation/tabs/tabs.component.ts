@@ -27,6 +27,7 @@ import {
   notFirstChanges,
 } from '../../services/utils/functional-utils';
 import { WindowRef } from '../../services/utils/window-ref.service';
+import { DOMKeyboardEvent, DOMMouseEvent } from '../../types';
 import { TabsType } from './tabs.enum';
 import { Tab, TabChangeEvent } from './tabs.interface';
 
@@ -67,9 +68,9 @@ export class TabsComponent implements OnChanges, AfterViewInit {
   @Input() controlled = false;
 
   @Output()
-  selectChange: EventEmitter<TabChangeEvent> = new EventEmitter<TabChangeEvent>();
+  selectChange: EventEmitter<TabChangeEvent> = new EventEmitter();
   @Output()
-  selectClick: EventEmitter<TabChangeEvent> = new EventEmitter<TabChangeEvent>();
+  selectClick: EventEmitter<TabChangeEvent> = new EventEmitter();
 
   ngOnChanges(changes: SimpleChanges): void {
     if (notFirstChanges(changes)) {
@@ -85,20 +86,22 @@ export class TabsComponent implements OnChanges, AfterViewInit {
     this.updateTabWidths();
   }
 
-  public onNavBarClick($event: MouseEvent): void {
-    const { index, tab } = this.getTabFromEl($event.target as HTMLElement);
+  public onNavBarClick($event: Event | MouseEvent): void;
+  public onNavBarClick($event: DOMMouseEvent): void {
+    const { index, tab } = this.getTabFromEl($event.target);
 
     this.zone.run(() => {
       this.onTabChange(tab, index);
     });
   }
 
-  public onNavBarKeydown($event: KeyboardEvent): void {
+  public onNavBarKeydown($event: Event | KeyboardEvent): void;
+  public onNavBarKeydown($event: DOMKeyboardEvent): void {
     if (isKey($event.key, Keys.enter) || isKey($event.key, Keys.space)) {
       $event.preventDefault();
       $event.stopPropagation();
 
-      const { index, tab } = this.getTabFromEl($event.target as HTMLElement);
+      const { index, tab } = this.getTabFromEl($event.target);
 
       this.zone.run(() => {
         this.onTabChange(tab, index);

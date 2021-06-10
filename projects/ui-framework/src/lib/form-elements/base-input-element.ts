@@ -17,7 +17,7 @@ import {
   notFirstChanges,
 } from '../services/utils/functional-utils';
 import { stringyOrFail } from '../services/utils/transformers';
-import { DOMInputEvent } from '../types';
+import { DOMInputEvent, DOMKeyboardEvent } from '../types';
 import { BaseFormElement } from './base-form-element';
 import { InputEventType } from './form-elements.enum';
 import { InputTypes } from './input/input.enum';
@@ -50,7 +50,7 @@ export abstract class BaseInputElement extends BaseFormElement {
   // tslint:disable-next-line: no-output-rename
   @Output('inputEvents') changed: EventEmitter<
     BInputEvent<string>
-  > = new EventEmitter<BInputEvent<string>>();
+  > = new EventEmitter();
 
   @HostBinding('attr.hidden') get isHidden() {
     return this.inputType === InputTypes.hidden ? 'hidden' : null;
@@ -65,6 +65,10 @@ export abstract class BaseInputElement extends BaseFormElement {
     }
   }
 
+  public onInputChange(
+    event: Event | InputEvent,
+    forceElementValue?: any
+  ): void;
   public onInputChange(
     event: DOMInputEvent,
     forceElementValue: any = this.forceElementValue
@@ -95,7 +99,8 @@ export abstract class BaseInputElement extends BaseFormElement {
     this.cd.detectChanges();
   }
 
-  public onInputKeydown(event: KeyboardEvent): void {
+  public onInputKeydown(event: Event | KeyboardEvent): void;
+  public onInputKeydown(event: DOMKeyboardEvent): void {
     if (
       (isKey(event.key, Keys.enter) || isKey(event.key, Keys.escape)) &&
       this.changed.observers.length > 0

@@ -3,7 +3,7 @@ import { InsightsPanelConfig } from './insights-panel.interface';
 
 export const INSIGHTS_PANEL_CONFIG_DEF: InsightsPanelConfig = {
   collapsible: true,
-  showMoreAfterItem: false,
+  showMoreAfterItem: null,
   showMoreText: 'Show More',
   showLessText: 'Show Less',
   readMoreLinkText: 'Read More',

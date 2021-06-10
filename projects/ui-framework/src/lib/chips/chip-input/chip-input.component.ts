@@ -1,33 +1,35 @@
 import {
-  Component,
-  Input,
-  ViewChild,
-  forwardRef,
-  OnInit,
-  SimpleChanges,
-  Output,
-  EventEmitter,
   ChangeDetectionStrategy,
-  NgZone,
   ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  forwardRef,
+  Input,
+  NgZone,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild,
 } from '@angular/core';
+import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 import {
+  MatAutocomplete,
   MatAutocompleteSelectedEvent,
   MatAutocompleteTrigger,
-  MatAutocomplete,
 } from '@angular/material/autocomplete';
-import { NG_VALUE_ACCESSOR, NG_VALIDATORS } from '@angular/forms';
-import { BaseFormElement } from '../../form-elements/base-form-element';
-import { ChipType } from '../chips.enum';
-import { ChipInputChange, ChipListConfig, Chip } from '../chips.interface';
-import { isKey, isRegExp } from '../../services/utils/functional-utils';
+
 import { Keys } from '../../enums';
+import { BaseFormElement } from '../../form-elements/base-form-element';
 import { InputEventType } from '../../form-elements/form-elements.enum';
-import { arrayOrFail } from '../../services/utils/transformers';
-import { ChipListComponent } from '../chip-list/chip-list.component';
-import { UtilsService } from '../../services/utils/utils.service';
-import { ChipInputValidation, CHIP_INPUT_VALIDATION } from './chip-input.const';
 import { InputAutoCompleteOptions } from '../../form-elements/input/input.enum';
+import { isKey, isRegExp } from '../../services/utils/functional-utils';
+import { arrayOrFail } from '../../services/utils/transformers';
+import { UtilsService } from '../../services/utils/utils.service';
+import { DOMKeyboardEvent } from '../../types';
+import { ChipListComponent } from '../chip-list/chip-list.component';
+import { ChipType } from '../chips.enum';
+import { Chip, ChipInputChange, ChipListConfig } from '../chips.interface';
+import { CHIP_INPUT_VALIDATION, ChipInputValidation } from './chip-input.const';
 
 @Component({
   selector: 'b-chip-input',
@@ -93,7 +95,7 @@ export class ChipInputComponent extends BaseFormElement implements OnInit {
   private autocompletePanel: MatAutocomplete;
 
   @Output()
-  changed: EventEmitter<ChipInputChange> = new EventEmitter<ChipInputChange>();
+  changed: EventEmitter<ChipInputChange> = new EventEmitter();
 
   // extends BaseFormElement's ngOnChanges
   onNgChanges(changes: SimpleChanges): void {
@@ -261,7 +263,8 @@ export class ChipInputComponent extends BaseFormElement implements OnInit {
     this.cd.detectChanges();
   }
 
-  public onInputKeyup(event: KeyboardEvent): void {
+  public onInputKeyup(event: Event | KeyboardEvent): void;
+  public onInputKeyup(event: DOMKeyboardEvent): void {
     if (isKey(event.key, Keys.backspace)) {
       if (this.input.nativeElement.value === '' && this.chips.list.last) {
         if (this.chips.list.last.chip.dataset.aboutToDelete) {
@@ -292,13 +295,14 @@ export class ChipInputComponent extends BaseFormElement implements OnInit {
     }
   }
 
-  public onInputKeydown(event: KeyboardEvent): void {
+  public onInputKeydown(event: Event | KeyboardEvent): void;
+  public onInputKeydown(event: DOMKeyboardEvent): void {
     if (this.isAddChipKeyEvent(event)) {
       event.preventDefault();
     }
   }
 
-  private isAddChipKeyEvent(event: KeyboardEvent): boolean {
+  private isAddChipKeyEvent(event: DOMKeyboardEvent): boolean {
     return (
       isKey(event.key, Keys.enter) ||
       isKey(event.key, Keys.comma) ||

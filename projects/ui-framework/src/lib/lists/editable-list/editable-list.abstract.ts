@@ -38,6 +38,7 @@ import {
   outsideZone,
 } from '../../services/utils/rxjs.operators';
 import { UtilsService } from '../../services/utils/utils.service';
+import { DOMKeyboardEvent, DOMMouseEvent } from '../../types';
 import { SelectOption } from '../list.interface';
 import {
   EDITABLE_LIST_ALLOWED_ACTIONS_DEF,
@@ -195,7 +196,7 @@ export abstract class BaseEditableListElement implements OnInit, OnDestroy {
 
     this.subs.push(
       //
-      fromEvent<MouseEvent>(this.itemListElRef.nativeElement, 'mouseover')
+      fromEvent<DOMMouseEvent>(this.itemListElRef.nativeElement, 'mouseover')
         .pipe(outsideZone(this.zone))
         .subscribe((event) => {
           this.onMouseOver(event);
@@ -211,7 +212,7 @@ export abstract class BaseEditableListElement implements OnInit, OnDestroy {
         ),
 
         this.utilsService.getWindowClickEvent(true).pipe(
-          filter((event: MouseEvent) => {
+          filter((event: DOMMouseEvent) => {
             if (!['add', 'remove', 'edit'].includes(this.state.currentAction)) {
               return false;
             }
@@ -234,7 +235,7 @@ export abstract class BaseEditableListElement implements OnInit, OnDestroy {
         .getWindowKeydownEvent(true)
         .pipe(
           filter(
-            (event: KeyboardEvent) =>
+            (event: DOMKeyboardEvent) =>
               isKey(event.key, Keys.enter) &&
               ['add', 'remove', 'edit'].includes(this.state.currentAction)
           )
@@ -268,7 +269,7 @@ export abstract class BaseEditableListElement implements OnInit, OnDestroy {
     order: ListSortType,
     currentOrder: ListSortType
   ): void;
-  public abstract onMouseOver(event: MouseEvent): void;
+  public abstract onMouseOver(event: DOMMouseEvent): void;
   public abstract onDrop(
     { item, previousIndex, currentIndex }: Partial<CdkDragDrop<any>>,
     subList?: SelectOption[]

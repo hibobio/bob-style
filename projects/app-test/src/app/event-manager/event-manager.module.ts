@@ -1,24 +1,25 @@
 import {
-  NgModule,
-  Component,
-  Output,
-  EventEmitter,
-  ViewChild,
-  ElementRef,
-  HostListener,
   ChangeDetectorRef,
-  NgZone
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  NgModule,
+  NgZone,
+  Output,
+  ViewChild,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+
+import { ButtonsModule } from '../../../../ui-framework/src/lib/buttons/buttons.module';
 // tslint:disable-next-line: max-line-length
 import { ComponentRendererModule } from '../../../../ui-framework/src/lib/services/component-renderer/component-renderer.module';
-import { ButtonsModule } from '../../../../ui-framework/src/lib/buttons/buttons.module';
 import { EventManagerPlugins } from '../../../../ui-framework/src/lib/services/utils/eventManager.plugins';
 import {
+  simpleUID,
   stringify,
-  simpleUID
 } from '../../../../ui-framework/src/lib/services/utils/functional-utils';
-import { FormsModule } from '@angular/forms';
 
 @Component({
   // tslint:disable-next-line: component-selector
@@ -80,8 +81,8 @@ import { FormsModule } from '@angular/forms';
   `,
   styles: [
     'button {display: block; width: 100px; height: 50px; text-transform: uppercase; margin: 0 auto 15px;}',
-    'label, span {display:block;}'
-  ]
+    'label, span {display:block;}',
+  ],
 })
 export class MockButtonComponent {
   constructor(private cd: ChangeDetectorRef, private zone: NgZone) {}
@@ -92,13 +93,13 @@ export class MockButtonComponent {
   mark = false;
   randID = simpleUID();
 
-  @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
-  @Output() keyed: EventEmitter<void> = new EventEmitter<void>();
-  @Output() focused: EventEmitter<void> = new EventEmitter<void>();
-  @Output() blurred: EventEmitter<void> = new EventEmitter<void>();
-  @Output() mouseIn: EventEmitter<void> = new EventEmitter<void>();
-  @Output() mouseOut: EventEmitter<void> = new EventEmitter<void>();
-  @Output() mouseMove: EventEmitter<void> = new EventEmitter<void>();
+  @Output() clicked: EventEmitter<void> = new EventEmitter();
+  @Output() keyed: EventEmitter<void> = new EventEmitter();
+  @Output() focused: EventEmitter<void> = new EventEmitter();
+  @Output() blurred: EventEmitter<void> = new EventEmitter();
+  @Output() mouseIn: EventEmitter<void> = new EventEmitter();
+  @Output() mouseOut: EventEmitter<void> = new EventEmitter();
+  @Output() mouseMove: EventEmitter<void> = new EventEmitter();
 
   emit($event) {
     let emitEvent = '';
@@ -135,7 +136,7 @@ export class MockButtonComponent {
         this[emitEvent].emit({
           type: $event.type,
           key: $event.key,
-          clientX: $event.clientX
+          clientX: $event.clientX,
         });
       });
     } else {
@@ -167,17 +168,17 @@ export class MockButtonComponent {
       >click</mock-button
     >
   `,
-  styles: [':host {display: block; margin: 20px auto;}']
+  styles: [':host {display: block; margin: 20px auto;}'],
 })
 // tslint:disable-next-line: component-class-suffix
 export class ClickForwarerComponent1 {
-  @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
-  @Output() keyed: EventEmitter<void> = new EventEmitter<void>();
-  @Output() focused: EventEmitter<void> = new EventEmitter<void>();
-  @Output() blurred: EventEmitter<void> = new EventEmitter<void>();
-  @Output() mouseIn: EventEmitter<void> = new EventEmitter<void>();
-  @Output() mouseOut: EventEmitter<void> = new EventEmitter<void>();
-  @Output() mouseMove: EventEmitter<void> = new EventEmitter<void>();
+  @Output() clicked: EventEmitter<void> = new EventEmitter();
+  @Output() keyed: EventEmitter<void> = new EventEmitter();
+  @Output() focused: EventEmitter<void> = new EventEmitter();
+  @Output() blurred: EventEmitter<void> = new EventEmitter();
+  @Output() mouseIn: EventEmitter<void> = new EventEmitter();
+  @Output() mouseOut: EventEmitter<void> = new EventEmitter();
+  @Output() mouseMove: EventEmitter<void> = new EventEmitter();
 
   onClick($event) {
     this.clicked.emit($event);
@@ -219,44 +220,44 @@ export class ClickForwarerComponent1 {
     >
     </click-forwarder-1>
   `,
-  styles: [':host {display: block; margin: 20px auto;}']
+  styles: [':host {display: block; margin: 20px auto;}'],
 })
 // tslint:disable-next-line: component-class-suffix
 export class ClickForwarerComponent2 {
-  @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
-  @Output() keyed: EventEmitter<void> = new EventEmitter<void>();
-  @Output() focused: EventEmitter<void> = new EventEmitter<void>();
-  @Output() blurred: EventEmitter<void> = new EventEmitter<void>();
-  @Output() mouseIn: EventEmitter<void> = new EventEmitter<void>();
-  @Output() mouseOut: EventEmitter<void> = new EventEmitter<void>();
-  @Output() mouseMove: EventEmitter<void> = new EventEmitter<void>();
+  @Output() clicked: EventEmitter<void> = new EventEmitter();
+  @Output() keyed: EventEmitter<void> = new EventEmitter();
+  @Output() focused: EventEmitter<void> = new EventEmitter();
+  @Output() blurred: EventEmitter<void> = new EventEmitter();
+  @Output() mouseIn: EventEmitter<void> = new EventEmitter();
+  @Output() mouseOut: EventEmitter<void> = new EventEmitter();
+  @Output() mouseMove: EventEmitter<void> = new EventEmitter();
 
   renderButton = {
     component: ClickForwarerComponent1,
 
     handlers: {
-      clicked: $event => {
+      clicked: ($event) => {
         this.onClick($event);
       },
-      keyed: $event => {
+      keyed: ($event) => {
         this.onKeyDown($event);
       },
-      focused: $event => {
+      focused: ($event) => {
         this.onFocus($event);
       },
-      blurred: $event => {
+      blurred: ($event) => {
         this.onBlur($event);
       },
-      mouseIn: $event => {
+      mouseIn: ($event) => {
         this.onMouseEnter($event);
       },
-      mouseOut: $event => {
+      mouseOut: ($event) => {
         this.onMouseLeave($event);
       },
-      mouseMove: $event => {
+      mouseMove: ($event) => {
         this.onMouseMove($event);
-      }
-    }
+      },
+    },
   };
 
   onClick($event) {
@@ -319,7 +320,7 @@ export class ClickForwarerComponent2 {
       >
     </div>
   `,
-  styles: [':host {display: block; margin: 20px auto;}']
+  styles: [':host {display: block; margin: 20px auto;}'],
 })
 export class EventManagerTesterComponent {
   constructor(private cd: ChangeDetectorRef, private zone: NgZone) {}
@@ -338,7 +339,7 @@ export class EventManagerTesterComponent {
     blur: 0,
     mouseenter: 0,
     mouseleave: 0,
-    mousemove: 0
+    mousemove: 0,
   };
 
   loggerOutput = '';
@@ -351,7 +352,7 @@ export class EventManagerTesterComponent {
     this.log($event.type, 'host');
   }
   @HostListener('window:keydown.outside-zone,window:click.outside-zone', [
-    '$event'
+    '$event',
   ])
   onWindowEvent($event) {
     this.log($event.type, 'window', $event.key || $event.clientX);
@@ -411,16 +412,16 @@ export class EventManagerTesterComponent {
     MockButtonComponent,
     ClickForwarerComponent1,
     ClickForwarerComponent2,
-    EventManagerTesterComponent
+    EventManagerTesterComponent,
   ],
   exports: [
     MockButtonComponent,
     ClickForwarerComponent1,
     ClickForwarerComponent2,
-    EventManagerTesterComponent
+    EventManagerTesterComponent,
   ],
   imports: [BrowserModule, ComponentRendererModule, ButtonsModule, FormsModule],
   providers: [...EventManagerPlugins],
-  entryComponents: [MockButtonComponent, ClickForwarerComponent1]
+  entryComponents: [MockButtonComponent, ClickForwarerComponent1],
 })
 export class EventManagerModule {}

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { EventManager, EVENT_MANAGER_PLUGINS } from '@angular/platform-browser';
-import { NativeEvents } from '../../enums';
+import { EVENT_MANAGER_PLUGINS, EventManager } from '@angular/platform-browser';
+
+import { NativeEventNames } from '../../enums';
 
 export enum EventModifiers {
   outsideZone = 'outside-zone',
@@ -11,7 +12,7 @@ export enum GlobalEventModifiers {
   body = 'body',
 }
 
-const allowedNativeEvents = Object.values(NativeEvents);
+const allowedNativeEvents = Object.values(NativeEventNames);
 const globalElems = Object.values(GlobalEventModifiers);
 
 const splitToArray = (name: string, test = /[^\w-]+/): string[] => {
@@ -25,7 +26,7 @@ const getEventsArray = (eventName: string): string[] =>
 
 const getNativeEventsArray = (eventName: string): string[] =>
   splitToArray(eventName).filter((name) =>
-    allowedNativeEvents.includes(name as NativeEvents)
+    allowedNativeEvents.includes(name as any)
   );
 
 const getNativeEventName = (eventName: string): string => {
@@ -39,7 +40,7 @@ const getDocElement = (selector: string): EventTarget => {
     case GlobalEventModifiers.document:
       return document as Document;
     case GlobalEventModifiers.body:
-      return document.body as HTMLElement;
+      return document.body;
     default:
       throw new Error(`Element selector [${selector}] not supported.`);
   }
@@ -57,9 +58,7 @@ export class OutsideZonePlugin {
     return (
       splitName.length === 2 &&
       splitName[1] === EventModifiers.outsideZone &&
-      allowedNativeEvents.includes(
-        getNativeEventName(splitName[0]) as NativeEvents
-      )
+      allowedNativeEvents.includes(getNativeEventName(splitName[0]) as any)
     );
   }
 

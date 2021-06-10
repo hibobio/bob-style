@@ -126,7 +126,8 @@ $font-size-subheading: $font-size-body;
   $lineHeight: $line-height-body,
   $color: null,
   $style: null,
-  $addCssVars: false
+  $addCssVars: false,
+  $font-family: var(--body-font-family)
 ) {
   @include BodyFont(
     $color: $color,
@@ -134,7 +135,8 @@ $font-size-subheading: $font-size-body;
     $weight: $font-weight-bold-body,
     $lineHeight: $lineHeight,
     $style: $style,
-    $addCssVars: $addCssVars
+    $addCssVars: $addCssVars,
+    $font-family: $font-family
   );
   @content;
 }

@@ -54,7 +54,8 @@ export class TruncateTooltipComponent
     this.setMaxLines(value);
   }
 
-  @ViewChild('textContainer', { static: true }) textContainer: ElementRef;
+  @ViewChild('textContainer', { static: true })
+  textContainer: ElementRef<HTMLElement>;
   @ViewChild('directiveTemplate', { read: ViewContainerRef, static: true })
   child: ViewContainerRef;
 
@@ -226,7 +227,7 @@ export class TruncateTooltipComponent
 
   private setMaxLinesAttr(): void {
     if (this.textContainer) {
-      this.textContainer.nativeElement.dataset.maxLines = this.maxLines;
+      this.textContainer.nativeElement.dataset.maxLines = this.maxLines + '';
     }
   }
 

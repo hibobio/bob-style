@@ -13,6 +13,7 @@ import {
 
 import { AvatarSize } from '../../avatar/avatar/avatar.enum';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import { DOMMouseEvent } from '../../types';
 import { BaseCardElement } from '../card/card.abstract';
 import { CardEmployee } from './card-employee.interface';
 
@@ -23,10 +24,11 @@ import { CardEmployee } from './card-employee.interface';
   providers: [{ provide: BaseCardElement, useExisting: CardEmployeeComponent }],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CardEmployeeComponent extends BaseCardElement
+export class CardEmployeeComponent
+  extends BaseCardElement
   implements OnChanges, AfterViewInit {
   constructor(
-    public cardElRef: ElementRef,
+    public cardElRef: ElementRef<HTMLElement>,
     private zone: NgZone,
     private cd: ChangeDetectorRef,
     private DOM: DOMhelpers
@@ -34,8 +36,8 @@ export class CardEmployeeComponent extends BaseCardElement
     super(cardElRef);
   }
 
-  @ViewChild('cardContent') cardContent: ElementRef;
-  @ViewChild('cardBottom') cardBottom: ElementRef;
+  @ViewChild('cardContent') cardContent: ElementRef<HTMLElement>;
+  @ViewChild('cardBottom') cardBottom: ElementRef<HTMLElement>;
 
   readonly avatarSize = AvatarSize;
   public hasContent = true;
@@ -43,7 +45,7 @@ export class CardEmployeeComponent extends BaseCardElement
 
   @Input() card: CardEmployee;
 
-  onClick($event: MouseEvent) {
+  onClick($event: DOMMouseEvent) {
     this.clicked.emit($event);
   }
 

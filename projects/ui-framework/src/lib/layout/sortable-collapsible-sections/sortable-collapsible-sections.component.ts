@@ -41,12 +41,12 @@ export class SortableCollapsibleSectionsComponent implements OnChanges {
 
   @Input() sections: SortableCollapsibleSection[];
 
-  @Output() dragStart: EventEmitter<number> = new EventEmitter<number>();
-  @Output() dragEnd: EventEmitter<number> = new EventEmitter<number>();
+  @Output() dragStart: EventEmitter<number> = new EventEmitter();
+  @Output() dragEnd: EventEmitter<number> = new EventEmitter();
   @Output()
-  orderChanged: EventEmitter<SortableCollapsibleDropped> = new EventEmitter<SortableCollapsibleDropped>();
-  @Output() opened: EventEmitter<number> = new EventEmitter<number>();
-  @Output() closed: EventEmitter<number> = new EventEmitter<number>();
+  orderChanged: EventEmitter<SortableCollapsibleDropped> = new EventEmitter();
+  @Output() opened: EventEmitter<number> = new EventEmitter();
+  @Output() closed: EventEmitter<number> = new EventEmitter();
 
   UISections: SortableCollapsibleSection[];
   dragging: boolean;

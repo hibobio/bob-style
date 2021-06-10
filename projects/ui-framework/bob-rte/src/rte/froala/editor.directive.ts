@@ -1,23 +1,32 @@
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
-import { Directive, ElementRef, EventEmitter, Input, NgZone, Optional, Output, forwardRef, Renderer2 } from '@angular/core';
-
 import FroalaEditor from 'froala-editor';
+
+import {
+  Directive,
+  ElementRef,
+  EventEmitter,
+  forwardRef,
+  Input,
+  NgZone,
+  Output,
+} from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Directive({
   selector: '[froalaEditor]',
   exportAs: 'froalaEditor',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR, useExisting:
-      forwardRef(() => FroalaEditorDirective),
-    multi: true
-  }]
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => FroalaEditorDirective),
+      multi: true,
+    },
+  ],
 })
 export class FroalaEditorDirective implements ControlValueAccessor {
-
   // editor options
   private _opts: any = {
     immediateAngularModelUpdate: false,
-    angularIgnoreAttrs: null
+    angularIgnoreAttrs: null,
   };
 
   private _element: any;
@@ -37,7 +46,6 @@ export class FroalaEditorDirective implements ControlValueAccessor {
   private _oldModel: string = null;
 
   constructor(el: ElementRef, private zone: NgZone) {
-
     let element: any = el.nativeElement;
 
     // check if the element is a special tag
@@ -50,16 +58,20 @@ export class FroalaEditorDirective implements ControlValueAccessor {
   }
 
   // Begin ControlValueAccesor methods.
-  onChange = (_) => { };
-  onTouched = () => { };
+  onChange = (_) => {};
+  onTouched = () => {};
 
   // Form model content changed.
   writeValue(content: any): void {
     this.updateEditor(content);
   }
 
-  registerOnChange(fn: (_: any) => void): void { this.onChange = fn; }
-  registerOnTouched(fn: () => void): void { this.onTouched = fn; }
+  registerOnChange(fn: (_: any) => void): void {
+    this.onChange = fn;
+  }
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
   // End ControlValueAccesor methods.
 
   // froalaEditor directive as input: store the editor options
@@ -80,31 +92,27 @@ export class FroalaEditorDirective implements ControlValueAccessor {
 
     if (!this._hasSpecialTag) {
       this._oldModel = content;
-    }
-    else {
+    } else {
       this._model = content;
     }
 
     if (this._editorInitialized) {
       if (!this._hasSpecialTag) {
         this._editor.html.set(content);
-      }
-      else {
+      } else {
         this.setContent();
       }
-    }
-    else {
+    } else {
       if (!this._hasSpecialTag) {
         this._element.innerHTML = content || '';
-      }
-      else {
+      } else {
         this.setContent();
       }
     }
   }
 
   // froalaModel directive as output: update model if editor contentChanged
-  @Output() froalaModelChange: EventEmitter<any> = new EventEmitter<any>();
+  @Output() froalaModelChange: EventEmitter<any> = new EventEmitter();
 
   // froalaInit directive as output: send manual editor initialization
   @Output() froalaInit: EventEmitter<Object> = new EventEmitter<Object>();
@@ -112,18 +120,18 @@ export class FroalaEditorDirective implements ControlValueAccessor {
   // update model if editor contentChanged
   private updateModel() {
     this.zone.run(() => {
-
       let modelContent: any = null;
 
       if (this._hasSpecialTag) {
-
         let attributeNodes = this._element.attributes;
         let attrs = {};
 
         for (let i = 0; i < attributeNodes.length; i++) {
-
           let attrName = attributeNodes[i].name;
-          if (this._opts.angularIgnoreAttrs && this._opts.angularIgnoreAttrs.indexOf(attrName) != -1) {
+          if (
+            this._opts.angularIgnoreAttrs &&
+            this._opts.angularIgnoreAttrs.indexOf(attrName) != -1
+          ) {
             continue;
           }
 
@@ -136,7 +144,6 @@ export class FroalaEditorDirective implements ControlValueAccessor {
 
         modelContent = attrs;
       } else {
-
         let returnedHtml: any = this._editor.html.get();
         if (typeof returnedHtml === 'string') {
           modelContent = returnedHtml;
@@ -151,12 +158,10 @@ export class FroalaEditorDirective implements ControlValueAccessor {
         // Update form model.
         this.onChange(modelContent);
       }
-
-    })
+    });
   }
 
   private registerEvent(eventName, callback) {
-
     if (!eventName || !callback) {
       return;
     }
@@ -206,13 +211,19 @@ export class FroalaEditorDirective implements ControlValueAccessor {
     // init editor
     this.zone.runOutsideAngular(() => {
       // Add listeners on initialized event.
-      if (!this._opts.events) this._opts.events = {}
+      if (!this._opts.events) this._opts.events = {};
 
       // Register initialized event.
-      this.registerEvent('initialized', this._opts.events && this._opts.events.initialized);
+      this.registerEvent(
+        'initialized',
+        this._opts.events && this._opts.events.initialized
+      );
       const existingInitCallback = this._opts.events.initialized;
       // Default initialized event.
-      if (!this._opts.events.initialized || !this._opts.events.initialized.overridden) {
+      if (
+        !this._opts.events.initialized ||
+        !this._opts.events.initialized.overridden
+      ) {
         this._opts.events.initialized = () => {
           this.initListeners();
           existingInitCallback && existingInitCallback.call(this._editor, this);
@@ -221,15 +232,12 @@ export class FroalaEditorDirective implements ControlValueAccessor {
       }
 
       // Initialize the Froala Editor.
-      this._editor = new FroalaEditor(
-        this._element,
-        this._opts
-      );
+      this._editor = new FroalaEditor(this._element, this._opts);
     });
   }
 
   private setHtml() {
-    this._editor.html.set(this._model || "");
+    this._editor.html.set(this._model || '');
 
     // This will reset the undo stack everytime the model changes externally. Can we fix this?
     this._editor.undo.reset();
@@ -243,12 +251,10 @@ export class FroalaEditorDirective implements ControlValueAccessor {
     if (this._model || this._model == '') {
       this._oldModel = this._model;
       if (this._hasSpecialTag) {
-
         let tags: Object = this._model;
 
         // add tags on element
         if (tags) {
-
           for (let attr in tags) {
             if (tags.hasOwnProperty(attr) && attr != this.INNER_HTML_ATTR) {
               this._element.setAttribute(attr, tags[attr]);

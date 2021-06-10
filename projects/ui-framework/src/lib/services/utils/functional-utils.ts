@@ -27,8 +27,11 @@ import { controlKeys, KEYCODES, Keys, metaKeys } from '../../enums';
 import { SelectGroupOption } from '../../lists/list.interface';
 import {
   Color,
+  DOMAnyEvent,
+  DOMKeyboardEvent,
   GenericObject,
   HexColor,
+  MouseOrKeyboardEvent,
   RegExpWrapper,
   SortType,
 } from '../../types';
@@ -1483,7 +1486,7 @@ export const compareAsNumbers = (
   b: string | number
 ): boolean => asNumber(a) === asNumber(b);
 
-export const compareAsStrings = (a: any, b: any, strict = true): boolean => {
+export const equalAsStrings = (a: any, b: any, strict = true): boolean => {
   return strict
     ? String(a) === String(b)
     : String(a)
@@ -1631,24 +1634,29 @@ export const isKey = (key: string, expected: string): boolean =>
 export const isMetaKey = (key: string): boolean =>
   metaKeys.includes(key as any);
 
-export const eventHasCntrlKey = (event: KeyboardEvent | MouseEvent): boolean =>
+export const eventHasCntrlKey = (event: MouseOrKeyboardEvent): boolean =>
   event.metaKey || event.ctrlKey;
 
-export const eventKeyIsNavOrMeta = (event: KeyboardEvent): boolean =>
-  controlKeys.includes(event.key as any);
+export const eventKeyIsNavOrMeta = (
+  event: KeyboardEvent | DOMKeyboardEvent
+): boolean => controlKeys.includes(event.key as any);
 
-export const eventHasShiftlKey = (event: KeyboardEvent | MouseEvent): boolean =>
+export const eventHasShiftlKey = (event: MouseOrKeyboardEvent): boolean =>
   event.shiftKey;
 
-export const eventHasMetaKey = (event: KeyboardEvent | MouseEvent): boolean =>
+export const eventHasMetaKey = (event: MouseOrKeyboardEvent): boolean =>
   event.metaKey || event.shiftKey || event.ctrlKey || event.altKey;
 
-export const getEventPath = (event: Event): HTMLElement[] =>
+export const getEventPath = (
+  event: DOMAnyEvent | MouseOrKeyboardEvent
+): HTMLElement[] =>
   ((event['path'] as any[]) ||
     (event.composedPath && (event.composedPath() as any[])) ||
     []) as HTMLElement[];
 
-export const keyEventIsCharacter = (event: KeyboardEvent): boolean => {
+export const keyEventIsCharacter = (
+  event: KeyboardEvent | DOMKeyboardEvent
+): boolean => {
   // tslint:disable-next-line: deprecation
   const code = event.which || event.keyCode;
 

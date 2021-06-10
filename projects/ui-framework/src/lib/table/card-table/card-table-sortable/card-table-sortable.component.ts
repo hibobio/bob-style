@@ -23,7 +23,7 @@ export class CardTableSortableComponent extends CardTableComponent {
   @Input() useDragHandle = false;
   @Input() disableDragging = false;
   @Output()
-  rowOrderChanged: EventEmitter<CardTableRowOrderChangeEvent> = new EventEmitter<CardTableRowOrderChangeEvent>();
+  rowOrderChanged: EventEmitter<CardTableRowOrderChangeEvent> = new EventEmitter();
 
   constructor(protected widthsService: CellWidthsService) {
     super(widthsService);

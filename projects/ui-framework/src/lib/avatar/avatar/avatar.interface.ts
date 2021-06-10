@@ -2,6 +2,7 @@ import { Chip } from '../../chips/chips.interface';
 import { Icon } from '../../icons/icon.interface';
 import { IconColor, Icons } from '../../icons/icons.enum';
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
+import { DOMMouseEvent } from '../../types';
 import { AvatarBadge, AvatarOrientation, AvatarSize } from './avatar.enum';
 
 export interface BadgeConfig {
@@ -27,7 +28,7 @@ export interface Avatar {
   tooltipType?: TruncateTooltipType;
   expectChanges?: boolean;
   supressWarnings?: boolean;
-  onClick?: (event: MouseEvent) => void;
+  onClick?: (event: DOMMouseEvent) => void;
   [key: string]: any;
 }
 

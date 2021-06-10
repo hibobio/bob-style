@@ -106,4 +106,36 @@ describe('SearchComponent', () => {
       expect(component.searchChange.emit).toHaveBeenCalledWith('some untrimmed string');
     }));
   });
+
+  describe('hideIcon', () => {
+    it('should show icon by default', () => {
+      const inputIconElement = fixture.debugElement.query(By.css('.input-icon'));
+      fixture.detectChanges();
+      expect(inputIconElement).toBeTruthy();
+    });
+    it('should hide icon', () => {
+      component.hideIcon = true;
+      fixture.detectChanges();
+      const inputIconElement = fixture.debugElement.query(By.css('.input-icon'));
+      expect(inputIconElement).toBeNull();
+    });
+    it('should show icon', () => {
+      component.hideIcon = false;
+      fixture.detectChanges();
+      const inputIconElement = fixture.debugElement.query(By.css('.input-icon'));
+      expect(inputIconElement).toBeTruthy();
+    });
+    it('should not have class has-prefix', () => {
+      component.hideIcon = true;
+      fixture.detectChanges();
+      const bfeWrapElement = fixture.debugElement.query(By.css('.bfe-wrap'));
+      expect(bfeWrapElement.classes['has-prefix']).toBeFalsy();
+    });
+    it('should have class has-prefix', () => {
+      component.hideIcon = false;
+      fixture.detectChanges();
+      const bfeWrapElement = fixture.debugElement.query(By.css('.bfe-wrap'));
+      expect(bfeWrapElement.classes['has-prefix']).toBeTruthy();
+    });
+  });
 });

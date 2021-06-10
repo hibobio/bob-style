@@ -39,7 +39,8 @@ export const debounce = <F extends (...args: any[]) => any>(
   templateUrl: './donut-chart-text.component.html',
   styleUrls: ['./donut-chart-text.component.scss'],
 })
-export class DonutChartTextComponent extends ChartCore
+export class DonutChartTextComponent
+  extends ChartCore
   implements OnChanges, AfterViewInit {
   constructor(public cdr: ChangeDetectorRef, public zone: NgZone) {
     super(cdr, zone);
@@ -51,7 +52,6 @@ export class DonutChartTextComponent extends ChartCore
   chartElRef: ElementRef<HTMLElement>;
   @ViewChild(PieChartComponent)
   chart: PieChartComponent;
-  @ViewChild('text', { read: ElementRef }) textContainer: ElementRef;
 
   @Input() data: SeriesPieDataOptions[];
   @Input() name: string;

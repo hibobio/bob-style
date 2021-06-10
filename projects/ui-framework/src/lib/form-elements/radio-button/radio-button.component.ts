@@ -96,7 +96,7 @@ export class RadioButtonComponent
         .getWindowKeydownEvent(true)
         .pipe(
           filter((event) => {
-            const target = event.target as HTMLElement;
+            const target = event.target;
             return (
               controlKeys.includes(event.key as Keys) &&
               getEventPath(event).includes(this.hostElRef.nativeElement) &&
@@ -106,7 +106,7 @@ export class RadioButtonComponent
         )
         .subscribe((event) => {
           event.preventDefault();
-          const target = event.target as HTMLElement;
+          const target = event.target;
           const isInput = this.DOM.isTag(target, DOMtags.input);
           this.zone.run(() => {
             if (clickKeys.includes(event.key as Keys)) {
@@ -144,7 +144,7 @@ export class RadioButtonComponent
   // tslint:disable-next-line: no-output-rename
   @Output('radioChange') changed: EventEmitter<
     BInputEvent<number | string>
-  > = new EventEmitter<BInputEvent<number | string>>();
+  > = new EventEmitter();
 
   readonly infoIcn: Icon = ICON_CONFIG.info;
 

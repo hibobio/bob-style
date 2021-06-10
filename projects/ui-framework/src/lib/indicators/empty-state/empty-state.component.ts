@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { IconColor, IconSize } from '../../icons/icons.enum';
+
 import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
-import { EmptyStateConfig } from './empty-state.interface';
+import { IconColor, IconSize } from '../../icons/icons.enum';
 import { isFunction } from '../../services/utils/functional-utils';
+import { EmptyStateConfig } from './empty-state.interface';
 
 @Component({
   selector: 'b-empty-state',
@@ -13,7 +14,7 @@ export class EmptyStateComponent {
   constructor() {}
 
   @Input() config: EmptyStateConfig;
-  @Output() buttonClick: EventEmitter<void> = new EventEmitter<void>();
+  @Output() buttonClick: EventEmitter<void> = new EventEmitter();
 
   readonly iconSize = IconSize;
   readonly iconColor: IconColor = IconColor.light;

@@ -38,20 +38,20 @@ describe('EditCommentComponent', () => {
       sendCommentSpy = spyOn(component.sendComment as any, 'emit');
     });
     it('should not run if shiftKey === false', () => {
-      component.enterPress(eventEnterShiftKey(false));
+      component.enterPress(eventEnterShiftKey(false) as any);
       expect(sendCommentSpy).toHaveBeenCalled();
     });
     it('should not run if shiftKey === false', () => {
       (component.commentInput.nativeElement as HTMLTextAreaElement).value =
         'some input update';
       fixture.detectChanges();
-      component.enterPress(eventEnterShiftKey(false));
+      component.enterPress(eventEnterShiftKey(false) as any);
       expect(sendCommentSpy).toHaveBeenCalledWith({
         content: 'some input update',
       });
     });
     it('should run if shiftKey === true', () => {
-      component.enterPress(eventEnterShiftKey(true));
+      component.enterPress(eventEnterShiftKey(true) as any);
       expect(sendCommentSpy).not.toHaveBeenCalled();
     });
   });

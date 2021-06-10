@@ -40,7 +40,7 @@ import { IconColor, IconRotate, Icons, IconSize, IconType } from './icons.enum';
 })
 export class IconComponent implements OnChanges {
   constructor(
-    private host: ElementRef,
+    private host: ElementRef<HTMLElement>,
     private DOM: DOMhelpers,
     private cd: ChangeDetectorRef
   ) {}

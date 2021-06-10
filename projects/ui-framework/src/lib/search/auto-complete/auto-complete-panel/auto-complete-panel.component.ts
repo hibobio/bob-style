@@ -1,4 +1,9 @@
+import { has } from 'lodash';
+import { Subscription } from 'rxjs';
+
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 import {
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -8,19 +13,16 @@ import {
   Output,
   SimpleChanges,
   ViewChild,
-  ChangeDetectorRef,
 } from '@angular/core';
-import { LIST_EL_HEIGHT, LIST_MAX_ITEMS } from '../../../lists/list.consts';
-import { AutoCompleteOption } from '../auto-complete.interface';
-import { has } from 'lodash';
-import { Subscription } from 'rxjs';
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { ListKeyboardService } from '../../../lists/list-service/list-keyboard.service';
-import { Keys } from '../../../enums';
 
-import { SearchComponent } from '../../search/search.component';
-import { getEventPath } from '../../../services/utils/functional-utils';
+import { Keys } from '../../../enums';
 import { FormElementSize } from '../../../form-elements/form-elements.enum';
+import { ListKeyboardService } from '../../../lists/list-service/list-keyboard.service';
+import { LIST_EL_HEIGHT, LIST_MAX_ITEMS } from '../../../lists/list.consts';
+import { getEventPath } from '../../../services/utils/functional-utils';
+import { DOMKeyboardEvent } from '../../../types';
+import { SearchComponent } from '../../search/search.component';
+import { AutoCompleteOption } from '../auto-complete.interface';
 
 @Component({
   selector: 'b-auto-complete-panel',
@@ -35,10 +37,9 @@ export class AutoCompletePanelComponent
   @Input() searchInput: SearchComponent;
 
   @Input() searchValue: string;
-  @Output() optionSelect: EventEmitter<AutoCompleteOption> = new EventEmitter<
-    AutoCompleteOption
-  >();
-  @Output() escapeClick: EventEmitter<void> = new EventEmitter<void>();
+  @Output()
+  optionSelect: EventEmitter<AutoCompleteOption> = new EventEmitter();
+  @Output() escapeClick: EventEmitter<void> = new EventEmitter();
 
   readonly listElHeight = LIST_EL_HEIGHT;
   readonly maxHeight = LIST_EL_HEIGHT * LIST_MAX_ITEMS;
@@ -61,7 +62,7 @@ export class AutoCompletePanelComponent
   ngOnInit(): void {
     this.keyDownSubscriber = this.listKeyboardService
       .getKeyboardNavigationObservable()
-      .subscribe((e: KeyboardEvent) => {
+      .subscribe((e: DOMKeyboardEvent) => {
         if (
           this.searchInput &&
           !getEventPath(e).includes(this.searchInput.input.nativeElement)

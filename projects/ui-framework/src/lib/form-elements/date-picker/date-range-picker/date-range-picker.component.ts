@@ -1,3 +1,6 @@
+import { startOfMonth } from 'date-fns';
+
+import { Overlay } from '@angular/cdk/overlay';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -9,40 +12,40 @@ import {
   OnInit,
 } from '@angular/core';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { DateAdapter } from '@angular/material/core';
+import {
+  MAT_DATEPICKER_SCROLL_STRATEGY,
+  MatDatepicker,
+} from '@angular/material/datepicker';
+
 import { SERVER_DATE_FORMAT } from '../../../consts';
+import { DOMhelpers } from '../../../services/html/dom-helpers.service';
+import {
+  cloneObject,
+  simpleUID,
+} from '../../../services/utils/functional-utils';
+import { MobileService } from '../../../services/utils/mobile.service';
 import {
   dateOrFail,
   dateToString,
   objectHasKeyOrFail,
 } from '../../../services/utils/transformers';
-import {
-  cloneObject,
-  simpleUID,
-} from '../../../services/utils/functional-utils';
+import { UtilsService } from '../../../services/utils/utils.service';
+import { WindowRef } from '../../../services/utils/window-ref.service';
+import { DOMMouseEvent } from '../../../types';
+import { BaseFormElement } from '../../base-form-element';
+import { FormElementKeyboardCntrlService } from '../../services/keyboard-cntrl.service';
+import { DateParseService } from '../date-parse-service/date-parse.service';
 import {
   BaseDatepickerElement,
   CLOSE_SCROLL_STRATEGY_FACTORY,
 } from '../datepicker.abstract';
-import { MobileService } from '../../../services/utils/mobile.service';
-import { DateParseService } from '../date-parse-service/date-parse.service';
-import { DOMhelpers } from '../../../services/html/dom-helpers.service';
-import { WindowRef } from '../../../services/utils/window-ref.service';
+import { DatepickerType } from '../datepicker.enum';
 import {
   DateRangePickerChangeEvent,
   DateRangePickerValue,
   DateRangePickerValueLocal,
 } from '../datepicker.interface';
-import { Overlay } from '@angular/cdk/overlay';
-import { DatepickerType } from '../datepicker.enum';
-import { startOfMonth } from 'date-fns';
-import { FormElementKeyboardCntrlService } from '../../services/keyboard-cntrl.service';
-import { BaseFormElement } from '../../base-form-element';
-import {
-  MAT_DATEPICKER_SCROLL_STRATEGY,
-  MatDatepicker,
-} from '@angular/material/datepicker';
-import { DateAdapter } from '@angular/material/core';
-import { UtilsService } from '../../../services/utils/utils.service';
 
 const DATERANGE_VALUE_DEF: DateRangePickerValueLocal = {
   startDate: undefined,
@@ -141,8 +144,8 @@ export class DateRangePickerComponent
     this.subs.push(
       this.utilsService
         .getWindowClickEvent(true)
-        .subscribe((event: MouseEvent) => {
-          const target = event.target as HTMLElement;
+        .subscribe((event: DOMMouseEvent) => {
+          const target = event.target;
 
           if (!target) {
             return;

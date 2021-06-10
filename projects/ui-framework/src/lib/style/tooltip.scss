@@ -50,6 +50,27 @@ $toolti-offset: 10px;
     }
   }
 
+  // position after
+  &[style*='left center'] {
+    margin: 0 0 0 ($tooltip-arrow-size);
+    &:before {
+      @include arrow-left($tooltip-arrow-size, $tooltip-color);
+      left: $tooltip-arrow-size/-2;
+      top: calc(50% - #{$tooltip-arrow-size/2});
+    }
+  }
+
+  // position before
+  &[style*='right center'] {
+    margin: 0 ($tooltip-arrow-size) 0 0;
+    &:before {
+      @include arrow-right($tooltip-arrow-size, $tooltip-color);
+      left: auto;
+      right: $tooltip-arrow-size/-2;
+      top: calc(50% - #{$tooltip-arrow-size/2});
+    }
+  }
+
   // text align
 
   &.text-center {
@@ -186,6 +207,54 @@ $toolti-offset: 10px;
       top: calc(100% + #{$toolti-offset - $tooltip-arrow-size/2});
       transform-origin: center top;
       animation-name: tooltip-arrow-apprnc-below;
+    }
+  }
+
+  // position after & before
+  &[data-tooltip-position='after'],
+  &[data-tooltip-position='before'] {
+    &:after {
+      bottom: auto;
+      top: 50%;
+      margin: 0 $tooltip-arrow-size;
+      transform: translateY(-50%);
+      animation: none;
+    }
+    &:before {
+      bottom: auto;
+      top: calc(50% - #{$tooltip-arrow-size/2});
+      animation: none;
+    }
+  }
+
+  // position after
+  &[data-tooltip-position='after'] {
+    &:after {
+      transform-origin: left center;
+      left: 100%;
+    }
+    &:before {
+      border-left: 0;
+      @include arrow-left($tooltip-arrow-size, $tooltip-color);
+      left: auto;
+      right: $tooltip-arrow-size/-1;
+      transform-origin: left center;
+    }
+  }
+
+  // position before
+  &[data-tooltip-position='before'] {
+    &:after {
+      transform-origin: left center;
+      left: auto;
+      right: 100%;
+    }
+    &:before {
+      border-right: 0;
+      @include arrow-right($tooltip-arrow-size, $tooltip-color);
+      right: auto;
+      left: $tooltip-arrow-size/-1;
+      transform-origin: right center;
     }
   }
 

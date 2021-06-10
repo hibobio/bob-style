@@ -43,6 +43,7 @@ import {
   simpleChange,
 } from '../services/utils/functional-utils';
 import { MobileService } from '../services/utils/mobile.service';
+import { DOMKeyboardEvent } from '../types';
 import { ListChange } from './list-change/list-change';
 import { ListChangeService } from './list-change/list-change.service';
 import { LIST_ACTIONS_STATE_DEF } from './list-footer/list-footer.const';
@@ -134,10 +135,10 @@ export abstract class BaseListElement
   @HostBinding('attr.data-size') @Input() size = FormElementSize.regular;
 
   @Output()
-  selectChange: EventEmitter<ListChange> = new EventEmitter<ListChange>();
+  selectChange: EventEmitter<ListChange> = new EventEmitter();
 
-  @Output() apply: EventEmitter<ListChange> = new EventEmitter<ListChange>();
-  @Output() cancel: EventEmitter<void> = new EventEmitter<void>();
+  @Output() apply: EventEmitter<ListChange> = new EventEmitter();
+  @Output() cancel: EventEmitter<void> = new EventEmitter();
 
   protected type: SelectType;
   public noGroupHeaders: boolean;
@@ -282,7 +283,7 @@ export abstract class BaseListElement
     this.focusIndex = -1;
     this.keyDownSubscriber = this.keybrdSrvc
       .getKeyboardNavigationObservable()
-      .subscribe((e: KeyboardEvent) => {
+      .subscribe((e: DOMKeyboardEvent) => {
         if (!getEventPath(e).includes(this.host.nativeElement)) {
           return;
         }

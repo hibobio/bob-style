@@ -1,18 +1,20 @@
+import { Observable, of } from 'rxjs';
+import { delay, map, tap } from 'rxjs/operators';
+
+import { CommonModule } from '@angular/common';
 import {
-  NgModule,
+  ChangeDetectionStrategy,
   Component,
+  ElementRef,
   Input,
+  NgModule,
   OnInit,
   ViewChild,
-  ElementRef,
-  ChangeDetectionStrategy,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Observable, of } from 'rxjs';
-import { InputObservable } from '../../services/utils/decorators';
-import { map, delay, tap } from 'rxjs/operators';
-import { randomNumber } from '../../services/utils/functional-utils';
+
 import { mockImage } from '../../mock.const';
+import { InputObservable } from '../../services/utils/decorators';
+import { randomNumber } from '../../services/utils/functional-utils';
 
 @Component({
   selector: 'b-masonry-test-card',
@@ -59,7 +61,7 @@ export class MasonryTestComponent implements OnInit {
   @Input('card')
   public card$: Observable<{ title: string; text: string }>;
 
-  @ViewChild('imgEl') imgEl: ElementRef;
+  @ViewChild('imgEl') imgEl: ElementRef<HTMLImageElement>;
 
   title$: Observable<string>;
   text$: Observable<string>;
@@ -80,7 +82,7 @@ export class MasonryTestComponent implements OnInit {
     this.img$ = of(this.makeImageSrc()).pipe(
       delay(randomNumber(500, 2000)),
       tap(() => {
-        const imageEl = this.imgEl?.nativeElement as HTMLImageElement;
+        const imageEl = this.imgEl?.nativeElement;
 
         if (imageEl) {
           imageEl.addEventListener('load', () => {

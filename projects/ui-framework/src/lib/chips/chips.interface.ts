@@ -1,8 +1,8 @@
-import { ChipType, ChipListAlign, ChipListSelectable } from './chips.enum';
 import { InputEventType } from '../form-elements/form-elements.enum';
 import { Icons } from '../icons/icons.enum';
 import { NgClass } from '../services/html/html-helpers.interface';
-import { Color } from '../types';
+import { Color, DOMKeyboardEvent } from '../types';
+import { ChipListAlign, ChipListSelectable, ChipType } from './chips.enum';
 
 export interface Chip {
   text: string;
@@ -29,7 +29,7 @@ export interface ChipListConfig {
 }
 
 export interface ChipKeydownEvent {
-  event: KeyboardEvent;
+  event: DOMKeyboardEvent;
   chip: Chip;
 }
 

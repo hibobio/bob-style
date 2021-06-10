@@ -1,12 +1,12 @@
 import {
   Component,
   EventEmitter,
+  HostBinding,
   Input,
   Output,
-  HostBinding,
 } from '@angular/core';
 
-import { BreadcrumbsType, BreadcrumbsStepState } from './breadcrumbs.enum';
+import { BreadcrumbsStepState, BreadcrumbsType } from './breadcrumbs.enum';
 import { Breadcrumb } from './breadcrumbs.interface';
 
 @Component({
@@ -27,7 +27,7 @@ export class BreadcrumbsComponent {
 
   @Input() clickable = true;
 
-  @Output() stepClick: EventEmitter<number> = new EventEmitter<number>();
+  @Output() stepClick: EventEmitter<number> = new EventEmitter();
 
   readonly breadcrumbsType = BreadcrumbsType;
   readonly stepStates = BreadcrumbsStepState;

@@ -63,15 +63,15 @@ export class QuickFilterBarComponent implements OnChanges, AfterViewInit {
     private cd: ChangeDetectorRef
   ) {}
 
-  @ViewChild('prefix') prefix: ElementRef;
-  @ViewChild('suffix') suffix: ElementRef;
+  @ViewChild('prefix') prefix: ElementRef<HTMLElement>;
+  @ViewChild('suffix') suffix: ElementRef<HTMLElement>;
 
   @HostBinding('attr.data-size') @Input() size = FormElementSize.regular;
   @Input() quickFilters: QuickFilterConfig[];
   @Input() showResetFilter = false;
   @Output()
-  filtersChange: EventEmitter<QuickFilterBarChangeEvent> = new EventEmitter<QuickFilterBarChangeEvent>();
-  @Output() resetFilters: EventEmitter<void> = new EventEmitter<void>();
+  filtersChange: EventEmitter<QuickFilterBarChangeEvent> = new EventEmitter();
+  @Output() resetFilters: EventEmitter<void> = new EventEmitter();
 
   quickFiltersChanges: QuickFilterBarChangeEvent = {};
 

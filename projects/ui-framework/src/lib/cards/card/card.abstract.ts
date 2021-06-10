@@ -1,20 +1,21 @@
 import {
-  Input,
-  Output,
+  Directive,
+  ElementRef,
   EventEmitter,
   HostBinding,
-  ElementRef,
-  Directive,
-  SimpleChanges,
+  Input,
   OnChanges,
+  Output,
+  SimpleChanges,
 } from '@angular/core';
-import { Card } from './card.interface';
-import { CardType } from '../cards.enum';
+
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 import {
   applyChanges,
   isFunction,
 } from '../../services/utils/functional-utils';
+import { CardType } from '../cards.enum';
+import { Card } from './card.interface';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -23,7 +24,7 @@ export abstract class BaseCardElement implements OnChanges {
 
   @Input() card: Card;
   @Input() isClickable = false;
-  @Output() clicked: EventEmitter<any> = new EventEmitter<any>();
+  @Output() clicked: EventEmitter<any> = new EventEmitter();
 
   readonly cardType = CardType;
   readonly tooltipType = TruncateTooltipType;

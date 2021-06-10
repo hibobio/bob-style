@@ -27,7 +27,7 @@ import {
   notFirstChanges,
   objectRemoveEntriesByValue,
 } from '../../services/utils/functional-utils';
-import { GenericObject } from '../../types';
+import { DOMKeyboardEvent, DOMMouseEvent, GenericObject } from '../../types';
 import { IconPosition, LabelValueType, TextAlign } from './label-value.enum';
 import { LabelValue } from './label-value.interface';
 
@@ -39,7 +39,7 @@ import { LabelValue } from './label-value.interface';
 })
 export class LabelValueComponent implements OnChanges, AfterViewInit {
   constructor(
-    private hostRef: ElementRef,
+    private hostRef: ElementRef<HTMLElement>,
     private zone: NgZone,
     private cd: ChangeDetectorRef
   ) {}
@@ -51,6 +51,8 @@ export class LabelValueComponent implements OnChanges, AfterViewInit {
   public valueStyle: GenericObject<string>;
   public expectChanges = false;
   public tooltipType = TruncateTooltipType.css;
+  public labelStr: string;
+  public valueStr: string;
 
   @Input('labelValue') set setProps(labelValue: LabelValue) {
     if (isObject(labelValue)) {
@@ -58,8 +60,23 @@ export class LabelValueComponent implements OnChanges, AfterViewInit {
     }
   }
 
-  @Input() label: string | number;
-  @Input() value: string | number;
+  private _label: string | number;
+  @Input() set label(label: string | number) {
+    this._label = label;
+    this.labelStr = (label ?? '') + '';
+  }
+  get label() {
+    return this._label;
+  }
+  private _value: string | number;
+  @Input() set value(value: string | number) {
+    this._value = value;
+    this.valueStr = (value ?? '') + '';
+  }
+  get value() {
+    return this._value;
+  }
+
   @Input() labelMaxLines: number;
   @Input() valueMaxLines: number;
 
@@ -90,12 +107,12 @@ export class LabelValueComponent implements OnChanges, AfterViewInit {
   }
 
   @Output() clicked: EventEmitter<
-    MouseEvent | KeyboardEvent
-  > = new EventEmitter<MouseEvent | KeyboardEvent>();
+    DOMMouseEvent | DOMKeyboardEvent
+  > = new EventEmitter();
 
-  public valueClicked: (e: MouseEvent | KeyboardEvent) => void;
-  public labelClicked: (e: MouseEvent | KeyboardEvent) => void;
-  public iconClicked: (e: MouseEvent | KeyboardEvent) => void;
+  public valueClicked: (e: DOMMouseEvent | DOMKeyboardEvent) => void;
+  public labelClicked: (e: DOMMouseEvent | DOMKeyboardEvent) => void;
+  public iconClicked: (e: DOMMouseEvent | DOMKeyboardEvent) => void;
 
   @HostBinding('attr.data-type') @Input() type: LabelValueType =
     LabelValueType.one;
@@ -116,12 +133,12 @@ export class LabelValueComponent implements OnChanges, AfterViewInit {
   }
 
   @HostListener('click.outside-zone', ['$event'])
-  onClick($event: MouseEvent) {
+  onClick($event: DOMMouseEvent) {
     this.emitEvents($event);
   }
 
   @HostListener('keydown.outside-zone', ['$event'])
-  onKey($event: KeyboardEvent) {
+  onKey($event: DOMKeyboardEvent) {
     if (isKey($event.key, Keys.enter) || isKey($event.key, Keys.space)) {
       this.emitEvents($event);
     }
@@ -143,9 +160,9 @@ export class LabelValueComponent implements OnChanges, AfterViewInit {
     this.hostRef.nativeElement.dataset.initialized = 'true';
   }
 
-  private emitEvents($event: MouseEvent | KeyboardEvent): void {
+  private emitEvents($event: DOMMouseEvent | DOMKeyboardEvent): void {
     if (
-      ($event.target as HTMLElement).className.includes('blv-value') &&
+      $event.target.className.includes('blv-value') &&
       isFunction(this.valueClicked)
     ) {
       $event.stopPropagation();
@@ -153,7 +170,7 @@ export class LabelValueComponent implements OnChanges, AfterViewInit {
         this.valueClicked($event);
       });
     } else if (
-      ($event.target as HTMLElement).className.includes('blv-label') &&
+      $event.target.className.includes('blv-label') &&
       isFunction(this.labelClicked)
     ) {
       $event.stopPropagation();
@@ -161,7 +178,7 @@ export class LabelValueComponent implements OnChanges, AfterViewInit {
         this.labelClicked($event);
       });
     } else if (
-      ($event.target as HTMLElement).className.includes('blv-icon') &&
+      $event.target.className.includes('blv-icon') &&
       isFunction(this.iconClicked)
     ) {
       $event.stopPropagation();
