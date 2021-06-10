@@ -31,10 +31,10 @@ export class ListFooterComponent {
 
   @HostBinding('attr.data-size') @Input() size = FormElementSize.regular;
 
-  @Output() apply: EventEmitter<void> = new EventEmitter<void>();
-  @Output() cancel: EventEmitter<void> = new EventEmitter<void>();
-  @Output() clear: EventEmitter<void> = new EventEmitter<void>();
-  @Output() reset: EventEmitter<void> = new EventEmitter<void>();
+  @Output() apply: EventEmitter<void> = new EventEmitter();
+  @Output() cancel: EventEmitter<void> = new EventEmitter();
+  @Output() clear: EventEmitter<void> = new EventEmitter();
+  @Output() reset: EventEmitter<void> = new EventEmitter();
 
   readonly buttonSize = ButtonSize;
   readonly buttonType = ButtonType;

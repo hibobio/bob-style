@@ -60,7 +60,7 @@ export class InsightsPanelComponent {
     );
   }
 
-  @Output() expanded: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() expanded: EventEmitter<boolean> = new EventEmitter();
 
   readonly expandButtonConf: Button = {
     type: ButtonType.tertiary,

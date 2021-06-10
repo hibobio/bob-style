@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 
 import { isFunction } from '../../services/utils/functional-utils';
+import { DOMMouseEvent } from '../../types';
 import { BaseCardElement } from '../card/card.abstract';
 import { ImageCard } from './card-image.interface';
 
@@ -25,7 +26,7 @@ export class CardImageComponent extends BaseCardElement {
   @Input() card: ImageCard;
 
   @HostListener('click', ['$event'])
-  onClick($event: MouseEvent) {
+  onClick($event: DOMMouseEvent) {
     if (isFunction(this.card.action)) {
       this.card.action();
     }

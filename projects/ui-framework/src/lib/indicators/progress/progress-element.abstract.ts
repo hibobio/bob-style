@@ -33,7 +33,7 @@ import { ProgressConfig, ProgressData } from './progress.interface';
 export abstract class BaseProgressElement
   implements OnChanges, OnInit, OnDestroy {
   constructor(
-    protected host: ElementRef,
+    protected host: ElementRef<HTMLElement>,
     protected DOM: DOMhelpers,
     protected zone: NgZone,
     protected cd: ChangeDetectorRef,
@@ -46,7 +46,7 @@ export abstract class BaseProgressElement
   @Input() config: ProgressConfig = {};
   @Output() clicked: EventEmitter<
     ProgressData | ProgressData[]
-  > = new EventEmitter<ProgressData | ProgressData[]>();
+  > = new EventEmitter();
 
   readonly id: string;
   readonly progressType = ProgressType;

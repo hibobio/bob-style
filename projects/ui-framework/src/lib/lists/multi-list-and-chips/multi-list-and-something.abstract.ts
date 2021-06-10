@@ -74,7 +74,7 @@ export abstract class BaseMultiListAndSomethingElement<
     AfterViewInit,
     OnDestroy {
   constructor(
-    public host: ElementRef,
+    public host: ElementRef<HTMLElement>,
     protected DOM: DOMhelpers,
     protected translate: TranslateService,
     protected listModelService: ListModelService,
@@ -110,9 +110,9 @@ export abstract class BaseMultiListAndSomethingElement<
   public listMaxHeight: number;
 
   @Output()
-  selectChange: EventEmitter<ListChange> = new EventEmitter<ListChange>();
+  selectChange: EventEmitter<ListChange> = new EventEmitter();
 
-  @Output() changed: EventEmitter<itemID[]> = new EventEmitter<itemID[]>();
+  @Output() changed: EventEmitter<itemID[]> = new EventEmitter();
 
   readonly listElHeight: number = LIST_EL_HEIGHT;
   readonly listID: string = simpleUID('mlas');

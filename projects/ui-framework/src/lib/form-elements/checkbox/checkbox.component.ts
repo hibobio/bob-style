@@ -62,7 +62,7 @@ export class CheckboxComponent extends BaseFormElement implements OnChanges {
         .getWindowKeydownEvent(true)
         .pipe(
           filter((event) => {
-            const target = event.target as HTMLElement;
+            const target = event.target;
             return (
               clickKeys.includes(event.key as Keys) &&
               target.matches(`label[for="${this.id}"],input[id="${this.id}"]`)
@@ -84,7 +84,7 @@ export class CheckboxComponent extends BaseFormElement implements OnChanges {
   // tslint:disable-next-line: no-output-rename
   @Output('checkboxChange') changed: EventEmitter<
     BInputEvent<boolean>
-  > = new EventEmitter<BInputEvent<boolean>>();
+  > = new EventEmitter();
 
   readonly delay = 300;
   readonly tooltipPosition = TooltipPosition;

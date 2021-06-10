@@ -17,7 +17,10 @@ import {
   BaseFormElement,
   chainCall,
   cloneArray,
+  DOMFocusEvent,
   DOMhelpers,
+  DOMKeyboardEvent,
+  DOMMouseEvent,
   EMOJI_DATA,
   eventHasCntrlKey,
   eventHasMetaKey,
@@ -59,14 +62,15 @@ import { RTEMode } from './rte.enum';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RichTextEditorComponent extends RTEbaseElement
+export class RichTextEditorComponent
+  extends RTEbaseElement
   implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     protected cd: ChangeDetectorRef,
     protected placeholdersConverter: PlaceholdersConverterService,
     protected parserService: HtmlParserHelpers,
     protected DOM: DOMhelpers,
-    protected host: ElementRef,
+    protected host: ElementRef<HTMLElement>,
     protected translate: TranslateService,
     protected rteUtilsService: RteUtilsService,
     protected sanitizer: SanitizerService
@@ -84,12 +88,12 @@ export class RichTextEditorComponent extends RTEbaseElement
   }
 
   @HostListener('click.outside-zone', ['$event'])
-  onHostClick(event: MouseEvent) {
+  onHostClick(event: DOMMouseEvent) {
     this.clicksHandler(event);
   }
 
   @HostListener('focusin.outside-zone', ['$event'])
-  onHostFocus(event: FocusEvent) {
+  onHostFocus(event: DOMFocusEvent) {
     this.focusHandler(event);
   }
 
@@ -116,7 +120,7 @@ export class RichTextEditorComponent extends RTEbaseElement
 
         this.editor.events.on(
           'keydown',
-          (event: KeyboardEvent) => {
+          (event: DOMKeyboardEvent) => {
             return this.keydownHandler(event);
           },
           true
@@ -230,7 +234,7 @@ export class RichTextEditorComponent extends RTEbaseElement
         }
       },
 
-      click: (event: MouseEvent) => {
+      click: (event: DOMMouseEvent) => {
         event?.stopPropagation();
         this.clicksHandler(event);
       },
@@ -417,8 +421,8 @@ export class RichTextEditorComponent extends RTEbaseElement
     this.getEditorTextbox().outerHTML = this.getEditorTextbox().outerHTML;
   }
 
-  private focusHandler(event: FocusEvent): void {
-    const target = event?.target as HTMLElement;
+  private focusHandler(event: DOMFocusEvent<HTMLInputElement>): void {
+    const target = event?.target;
 
     if (!target) {
       return;
@@ -429,12 +433,12 @@ export class RichTextEditorComponent extends RTEbaseElement
       target.matches('.fr-link-insert-layer input.fr-link-attr.fr-not-empty')
     ) {
       event.stopPropagation();
-      (target as HTMLInputElement).select();
+      target.select();
     }
   }
 
-  private clicksHandler(event: MouseEvent): void {
-    const target = event?.target as HTMLElement;
+  private clicksHandler(event: DOMMouseEvent): void {
+    const target = event?.target;
 
     this.closeMentions();
 
@@ -463,7 +467,7 @@ export class RichTextEditorComponent extends RTEbaseElement
     }
   }
 
-  private keydownHandler(event: KeyboardEvent): any {
+  private keydownHandler(event: DOMKeyboardEvent): any {
     if (!event) {
       return;
     }

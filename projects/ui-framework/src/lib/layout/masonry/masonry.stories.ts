@@ -1,12 +1,13 @@
-import { storiesOf } from '@storybook/angular';
-import { boolean, number, withKnobs } from '@storybook/addon-knobs';
-import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { MasonryLayoutModule } from './masonry.module';
-import { masonryCardsMock } from './masonry.mock';
-import { MasonryTestModule } from './masonry-test.component';
+import { boolean, number, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ComponentGroupType } from '../../consts';
 import { log } from '../../services/utils/logger';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { MasonryTestModule } from './masonry-test.component';
+import { masonryCardsMock } from './masonry.mock';
+import { MasonryLayoutModule } from './masonry.module';
 
 const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
   withKnobs
@@ -118,7 +119,7 @@ const note = `
   ngOnInit(): void {
      this.img$ = this.getImageSourseObservable().pipe(
       tap(() => {
-        const imageEl = this.imgEl?.nativeElement as HTMLImageElement;
+        const imageEl = this.imgEl?.nativeElement;
 
         if (imageEl) {
           imageEl.addEventListener('load', () => {

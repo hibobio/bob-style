@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 
 import { isFunction } from '../../services/utils/functional-utils';
+import { DOMMouseEvent } from '../../types';
 import { BaseCardElement } from '../card/card.abstract';
 import { AddCard } from './card-add.interface';
 
@@ -28,7 +29,7 @@ export class CardAddComponent extends BaseCardElement {
   @HostBinding('attr.tabindex') tabindx = '0';
 
   @HostListener('click', ['$event'])
-  onClick($event: MouseEvent) {
+  onClick($event: DOMMouseEvent) {
     if (isFunction(this.card.action)) {
       this.card.action();
     }

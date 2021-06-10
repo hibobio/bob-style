@@ -28,7 +28,7 @@ export class SnowComponent implements OnInit, OnDestroy {
 
   @Input() numberOfFlakes = 120;
   @Input() snowDuration = 1000 * 30;
-  @Output() complete: EventEmitter<any> = new EventEmitter<any>();
+  @Output() complete: EventEmitter<any> = new EventEmitter();
 
   private canvasEl: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;

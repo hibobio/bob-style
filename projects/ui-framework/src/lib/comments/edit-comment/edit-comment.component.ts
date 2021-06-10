@@ -29,6 +29,7 @@ import {
   isKey,
   notFirstChanges,
 } from '../../services/utils/functional-utils';
+import { DOMKeyboardEvent } from '../../types';
 import { COMMENT_EQ_CHECK, MENTIONS_LIST_EQ_CHECK } from '../comments.const';
 import { CommentItem, CommentItemDto } from '../comments.interface';
 import { CommentsUtilService } from '../comments.service';
@@ -142,7 +143,8 @@ export class EditCommentComponent
     this.value = this.inputValue;
   }
 
-  enterPress(event: KeyboardEvent): void {
+  enterPress(event: Event | KeyboardEvent): void;
+  enterPress(event: DOMKeyboardEvent): void {
     if (!isKey(event.key, Keys.enter) || this.tribute?.isActive) {
       return;
     }

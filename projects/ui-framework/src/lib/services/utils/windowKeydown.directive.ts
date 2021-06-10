@@ -1,3 +1,5 @@
+import { Subscription } from 'rxjs';
+
 import {
   Directive,
   EventEmitter,
@@ -7,8 +9,9 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { Subscription } from 'rxjs';
+
 import { Keys } from '../../enums';
+import { DOMKeyboardEvent } from '../../types';
 import { unsubscribeArray } from './functional-utils';
 import { filterKey, insideZone } from './rxjs.operators';
 import { UtilsService } from './utils.service';
@@ -20,10 +23,10 @@ import { UtilsService } from './utils.service';
 export class WindowKeydownDirective implements OnInit, OnDestroy {
   constructor(private utilsService: UtilsService, private zone: NgZone) {}
 
-  @Output('win.keydown.enter') enterPressed = new EventEmitter<KeyboardEvent>();
-  @Output('win.keydown.escape') escapePressed = new EventEmitter<
-    KeyboardEvent
-  >();
+  @Output('win.keydown.enter')
+  enterPressed: EventEmitter<DOMKeyboardEvent> = new EventEmitter();
+  @Output('win.keydown.escape')
+  escapePressed: EventEmitter<DOMKeyboardEvent> = new EventEmitter();
 
   private readonly subs: Subscription[] = [];
 

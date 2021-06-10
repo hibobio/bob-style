@@ -1,24 +1,26 @@
 import {
-  Component,
-  Input,
-  Output,
-  EventEmitter,
-  SimpleChanges,
-  OnChanges,
   ChangeDetectionStrategy,
-  NgZone,
   ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  NgZone,
+  OnChanges,
+  Output,
+  SimpleChanges,
 } from '@angular/core';
-import { Chip, ChipListConfig, ChipKeydownEvent } from '../chips.interface';
-import {
-  isNumber,
-  hasChanges,
-  applyChanges,
-} from '../../services/utils/functional-utils';
-import { arrayOfValuesToArrayOfObjects } from '../../services/utils/transformers';
-import { ChipType, ChipListSelectable } from '../chips.enum';
+
 import { AvatarSize } from '../../avatar/avatar/avatar.enum';
 import { IconSize } from '../../icons/icons.enum';
+import {
+  applyChanges,
+  hasChanges,
+  isNumber,
+} from '../../services/utils/functional-utils';
+import { arrayOfValuesToArrayOfObjects } from '../../services/utils/transformers';
+import { DOMKeyboardEvent, DOMMouseEvent } from '../../types';
+import { ChipListSelectable, ChipType } from '../chips.enum';
+import { Chip, ChipKeydownEvent, ChipListConfig } from '../chips.interface';
 import { ChipListBaseElement } from './chip-list.abstract';
 
 @Component({
@@ -27,7 +29,8 @@ import { ChipListBaseElement } from './chip-list.abstract';
   styleUrls: ['./chip-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChipListComponent extends ChipListBaseElement
+export class ChipListComponent
+  extends ChipListBaseElement
   implements OnChanges {
   constructor(protected zone: NgZone, protected cd: ChangeDetectorRef) {
     super(zone, cd);
@@ -42,12 +45,11 @@ export class ChipListComponent extends ChipListBaseElement
   readonly avatarSize = AvatarSize;
   readonly iconSize = IconSize;
 
-  @Output() removed: EventEmitter<Chip> = new EventEmitter<Chip>();
-  @Output() selected: EventEmitter<Chip> = new EventEmitter<Chip>();
-  @Output() clicked: EventEmitter<Chip> = new EventEmitter<Chip>();
-  @Output() keyPressed: EventEmitter<ChipKeydownEvent> = new EventEmitter<
-    ChipKeydownEvent
-  >();
+  @Output() removed: EventEmitter<Chip> = new EventEmitter();
+  @Output() selected: EventEmitter<Chip> = new EventEmitter();
+  @Output() clicked: EventEmitter<Chip> = new EventEmitter();
+  @Output()
+  keyPressed: EventEmitter<ChipKeydownEvent> = new EventEmitter();
 
   ngOnChanges(changes: SimpleChanges): void {
     applyChanges(
@@ -109,7 +111,7 @@ export class ChipListComponent extends ChipListBaseElement
     }
   }
 
-  public onChipClick(event: MouseEvent, chip: Chip, index: number): void {
+  public onChipClick(event: DOMMouseEvent, chip: Chip, index: number): void {
     super.onChipClick(event, chip, index);
 
     if (this.clicked.observers) {
@@ -118,7 +120,7 @@ export class ChipListComponent extends ChipListBaseElement
   }
 
   protected onChipKeydown(
-    event: KeyboardEvent,
+    event: DOMKeyboardEvent,
     chip: Chip,
     index: number
   ): void {

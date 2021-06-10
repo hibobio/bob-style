@@ -1,38 +1,44 @@
+import { CdkOverlayOrigin, OverlayRef } from '@angular/cdk/overlay';
 import {
-  Directive,
   ChangeDetectorRef,
-  ViewContainerRef,
-  ViewChild,
-  TemplateRef,
-  Input,
-  HostBinding,
-  Output,
+  Directive,
   EventEmitter,
+  HostBinding,
+  Input,
+  Output,
+  TemplateRef,
+  ViewChild,
+  ViewContainerRef,
 } from '@angular/core';
+
+import { AvatarSize } from '../../avatar/avatar/avatar.enum';
+import { FormElementSize } from '../../form-elements/form-elements.enum';
+import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import {
   ListPanelService,
   OverlayEnabledComponent,
 } from '../../lists/list-panel.service';
+import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
+import { Panel } from '../../popups/panel/panel.interface';
+import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { OverlayRef, CdkOverlayOrigin } from '@angular/cdk/overlay';
+import { simpleUID } from '../../services/utils/functional-utils';
+import {
+  DOMFocusEvent,
+  DOMKeyboardEvent,
+  DOMMouseEvent,
+  OverlayPositionClasses,
+} from '../../types';
+import { SearchComponent } from '../search/search.component';
 import {
   MULTI_SEARCH_KEYMAP_DEF,
   MULTI_SEARCH_SHOW_ITEMS_DEF,
 } from './multi-search.const';
-import { AvatarSize } from '../../avatar/avatar/avatar.enum';
-import { Icons, IconColor, IconSize } from '../../icons/icons.enum';
 import {
+  MultiSearchClickedEvent,
   MultiSearchGroupOption,
   MultiSearchOption,
-  MultiSearchClickedEvent,
 } from './multi-search.interface';
-import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
-import { OverlayPositionClasses } from '../../types';
-import { simpleUID } from '../../services/utils/functional-utils';
-import { SearchComponent } from '../search/search.component';
-import { FormElementSize } from '../../form-elements/form-elements.enum';
-import { Panel } from '../../popups/panel/panel.interface';
-import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -52,11 +58,10 @@ export abstract class MultiSearchBaseElement
 
   @HostBinding('attr.data-size') @Input() size = FormElementSize.regular;
 
-  @Output() opened: EventEmitter<OverlayRef> = new EventEmitter<OverlayRef>();
-  @Output() closed: EventEmitter<void> = new EventEmitter<void>();
-  @Output() clicked: EventEmitter<MultiSearchClickedEvent> = new EventEmitter<
-    MultiSearchClickedEvent
-  >();
+  @Output() opened: EventEmitter<OverlayRef> = new EventEmitter();
+  @Output() closed: EventEmitter<void> = new EventEmitter();
+  @Output()
+  clicked: EventEmitter<MultiSearchClickedEvent> = new EventEmitter();
 
   public options: MultiSearchGroupOption[];
   public searchOptions: MultiSearchGroupOption[];
@@ -88,14 +93,15 @@ export abstract class MultiSearchBaseElement
   public panelClassList: string[] = ['b-select-panel', 'bms-select-panel'];
   public positionClassList: OverlayPositionClasses = {};
 
-  public onFocusOut(event: FocusEvent): void {
+  public onFocusOut(event: Event | FocusEvent): void;
+  public onFocusOut(event: DOMFocusEvent): void {
     if (this.ignoreFocusOut) {
       this.ignoreFocusOut = false;
       this.focusFirstOption(true);
       return;
     }
 
-    const relatedTarget = event.relatedTarget as HTMLElement;
+    const relatedTarget = event.relatedTarget;
 
     if (
       !relatedTarget ||
@@ -167,10 +173,10 @@ export abstract class MultiSearchBaseElement
   }
 
   protected getGroupAndOptionFromUIEvent(
-    event: MouseEvent | KeyboardEvent
+    event: DOMMouseEvent | DOMKeyboardEvent
   ): { group: MultiSearchGroupOption; option: MultiSearchOption } {
     const optionEl = this.DOM.getClosestUntil(
-      event.target as HTMLElement,
+      event.target,
       '.bms-option',
       '.b-select-panel'
     );

@@ -21,7 +21,7 @@ import {
   isDark,
   isDefined,
 } from '../../services/utils/functional-utils';
-import { Color } from '../../types';
+import { Color, DOMMouseEvent } from '../../types';
 import { ChipType } from '../chips.enum';
 
 @Component({
@@ -30,7 +30,7 @@ import { ChipType } from '../chips.enum';
   styleUrls: ['./chip.component.scss'],
 })
 export class ChipComponent implements OnChanges {
-  constructor(public elRef: ElementRef, private DOM: DOMhelpers) {
+  constructor(public elRef: ElementRef<HTMLElement>, private DOM: DOMhelpers) {
     this.chip = this.elRef.nativeElement;
   }
 
@@ -47,7 +47,7 @@ export class ChipComponent implements OnChanges {
   @HostBinding('attr.data-selected') @Input() selected = false;
   @HostBinding('attr.data-disabled') @Input() disabled = false;
 
-  @Output() removed: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
+  @Output() removed: EventEmitter<DOMMouseEvent> = new EventEmitter();
 
   readonly chipType = ChipType;
 
@@ -115,7 +115,8 @@ export class ChipComponent implements OnChanges {
     }
   }
 
-  onRemoveClick(event: MouseEvent) {
+  onRemoveClick(event: Event | MouseEvent): void;
+  onRemoveClick(event: DOMMouseEvent) {
     event.stopPropagation();
 
     if (this.removed.observers.length > 0) {

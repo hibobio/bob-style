@@ -24,6 +24,7 @@ import {
   SelectGroupOption,
   SelectOption,
 } from '../../lists/list.interface';
+import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 import { InputObservable, InputSubject } from '../../services/utils/decorators';
 import {
   arrayRemoveItemMutate,
@@ -69,7 +70,7 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
   @ViewChild(SingleListComponent, { static: true })
   listComponent: SingleListComponent;
 
-  @Output() changed: EventEmitter<itemID[]> = new EventEmitter<itemID[]>();
+  @Output() changed: EventEmitter<itemID[]> = new EventEmitter();
 
   public selectOptions$: BehaviorSubject<
     SelectGroupOption[]

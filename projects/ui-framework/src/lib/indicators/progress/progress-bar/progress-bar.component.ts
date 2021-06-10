@@ -28,7 +28,7 @@ export class ProgressBarComponent
   extends BaseProgressElement
   implements OnChanges, OnInit {
   constructor(
-    protected host: ElementRef,
+    protected host: ElementRef<HTMLElement>,
     protected DOM: DOMhelpers,
     protected zone: NgZone,
     protected cd: ChangeDetectorRef,

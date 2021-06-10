@@ -54,7 +54,7 @@ export class PasswordInputComponent
   readonly iconSize = IconSize;
   readonly iconColor = IconColor;
 
-  readonly showIcn: Partial<Icon> = {
+  readonly showIcn: Icon = {
     size: IconSize.medium,
     color: IconColor.dark,
     hasHoverState: true,

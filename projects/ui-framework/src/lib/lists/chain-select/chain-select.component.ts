@@ -1,25 +1,27 @@
+import { cloneDeep } from 'lodash';
+
 import {
   Component,
+  ContentChild,
   EventEmitter,
   Input,
-  Output,
-  ContentChild,
   OnChanges,
-  SimpleChanges,
   OnInit,
+  Output,
+  SimpleChanges,
 } from '@angular/core';
-import { cloneDeep } from 'lodash';
-import { Icons, IconSize } from '../../icons/icons.enum';
+
 import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
-import { ChainSelectDirective } from './chain-select.directive';
-import { ChainSelectEvent } from './chain-select.interface';
-import { ChainSelectEventEnum } from './chain-select.enum';
+import { Icons, IconSize } from '../../icons/icons.enum';
 import {
   applyChanges,
   asArray,
   getEmptyOfSameType,
   objectStringID,
 } from '../../services/utils/functional-utils';
+import { ChainSelectDirective } from './chain-select.directive';
+import { ChainSelectEventEnum } from './chain-select.enum';
+import { ChainSelectEvent } from './chain-select.interface';
 
 @Component({
   selector: 'b-chain-select',
@@ -34,9 +36,7 @@ export class ChainSelectComponent implements OnChanges, OnInit {
   @Input() selectedItemList: any[];
   @Input() staticMode = false;
 
-  @Output() selectChange: EventEmitter<ChainSelectEvent> = new EventEmitter<
-    ChainSelectEvent
-  >();
+  @Output() selectChange: EventEmitter<ChainSelectEvent> = new EventEmitter();
 
   public chainLinkList: any[];
 

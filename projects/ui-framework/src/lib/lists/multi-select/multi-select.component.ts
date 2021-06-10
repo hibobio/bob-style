@@ -1,33 +1,34 @@
 import {
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   forwardRef,
-  Output,
-  ViewContainerRef,
-  ViewChild,
   NgZone,
-  ChangeDetectorRef,
+  Output,
+  ViewChild,
+  ViewContainerRef,
 } from '@angular/core';
-import { BaseSelectPanelElement } from '../select-panel-element.abstract';
 import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { ListChange } from '../list-change/list-change';
-import { ListChangeService } from '../list-change/list-change.service';
-import { ListModelService } from '../list-service/list-model.service';
-import { SelectOption } from '../list.interface';
-import { TruncateTooltipComponent } from '../../popups/truncate-tooltip/truncate-tooltip.component';
-import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { BaseFormElement } from '../../form-elements/base-form-element';
-import { FormEvents } from '../../form-elements/form-elements.enum';
-import { arrayFlatten } from '../../services/utils/functional-utils';
-import { SelectType } from '../list.enum';
-import { ListPanelService } from '../list-panel.service';
-import { MobileService } from '../../services/utils/mobile.service';
-import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
-import { LIST_ACTIONS_DEF } from '../list-footer/list-footer.const';
 import { TranslateService } from '@ngx-translate/core';
-import { IconColor } from '../../icons/icons.enum';
+
 import { ShowcaseInputItem } from '../../avatar/avatar-showcase/avatar-showcase.interface';
 import { Avatar } from '../../avatar/avatar/avatar.interface';
+import { BaseFormElement } from '../../form-elements/base-form-element';
+import { FormEvents } from '../../form-elements/form-elements.enum';
+import { IconColor } from '../../icons/icons.enum';
+import { PanelDefaultPosVer } from '../../popups/panel/panel.enum';
+import { TruncateTooltipComponent } from '../../popups/truncate-tooltip/truncate-tooltip.component';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import { arrayFlatten } from '../../services/utils/functional-utils';
+import { MobileService } from '../../services/utils/mobile.service';
+import { ListChange } from '../list-change/list-change';
+import { ListChangeService } from '../list-change/list-change.service';
+import { LIST_ACTIONS_DEF } from '../list-footer/list-footer.const';
+import { ListPanelService } from '../list-panel.service';
+import { ListModelService } from '../list-service/list-model.service';
+import { SelectType } from '../list.enum';
+import { SelectOption } from '../list.interface';
+import { BaseSelectPanelElement } from '../select-panel-element.abstract';
 
 @Component({
   selector: 'b-multi-select',
@@ -85,12 +86,8 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
   @ViewChild('input', { static: true, read: TruncateTooltipComponent })
   truncate: TruncateTooltipComponent;
 
-  @Output() selectModified: EventEmitter<ListChange> = new EventEmitter<
-    ListChange
-  >();
-  @Output() selectCancelled: EventEmitter<ListChange> = new EventEmitter<
-    ListChange
-  >();
+  @Output() selectModified: EventEmitter<ListChange> = new EventEmitter();
+  @Output() selectCancelled: EventEmitter<ListChange> = new EventEmitter();
 
   public valueShowcase: ShowcaseInputItem[];
 

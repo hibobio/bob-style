@@ -1,3 +1,6 @@
+import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
+import { distinctUntilChanged, map, tap } from 'rxjs/operators';
+
 import {
   ChangeDetectionStrategy,
   Component,
@@ -9,8 +12,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
-import { distinctUntilChanged, map, tap } from 'rxjs/operators';
+
 import { InputObservable } from '../../services/utils/decorators';
 import { asArray, closestNumber } from '../../services/utils/functional-utils';
 import { MutationObservableService } from '../../services/utils/mutation-observable';
@@ -106,7 +108,7 @@ export class FitTextComponent implements OnInit, OnDestroy {
 
   @HostBinding('attr.data-disable-animation') @Input() disableAnimation = false;
 
-  @Output() changed: EventEmitter<number> = new EventEmitter<number>();
+  @Output() changed: EventEmitter<number> = new EventEmitter();
 
   public fontSize$: BehaviorSubject<number> = new BehaviorSubject(0);
 

@@ -28,6 +28,7 @@ import {
   objectHasTruthyValue,
 } from '../../../services/utils/functional-utils';
 import { MobileService } from '../../../services/utils/mobile.service';
+import { DOMKeyboardEvent, DOMMouseEvent } from '../../../types';
 import { LIST_ACTIONS_STATE_DEF } from '../../list-footer/list-footer.const';
 import { LIST_MAX_ITEMS } from '../../list.consts';
 import { SelectMode, SelectType } from '../../list.enum';
@@ -65,9 +66,9 @@ export abstract class BaseTreeListElement
   @ViewChild('search', { read: SearchComponent })
   protected search: SearchComponent;
   @ViewChild('listElement', { static: true, read: ElementRef })
-  protected listElement: ElementRef;
+  protected listElement: ElementRef<HTMLElement>;
   @ViewChild('footer', { read: ElementRef })
-  protected footer: ElementRef;
+  protected footer: ElementRef<HTMLElement>;
 
   @HostBinding('attr.data-embedded') @Input() embedded = false;
   @HostBinding('attr.data-empty') empty = true;
@@ -197,7 +198,8 @@ export abstract class BaseTreeListElement
     });
   }
 
-  public onListClick(event: MouseEvent): void {
+  public onListClick(event: Event | MouseEvent): void;
+  public onListClick(event: DOMMouseEvent): void {
     this.cntrlsSrvc.onListClick(event, {
       itemsMap: this.itemsMap,
       listViewModel: this.listViewModel,
@@ -210,7 +212,8 @@ export abstract class BaseTreeListElement
     });
   }
 
-  public onListKeyDown(event: KeyboardEvent) {
+  public onListKeyDown(event: Event | KeyboardEvent): void;
+  public onListKeyDown(event: DOMKeyboardEvent): void {
     this.cntrlsSrvc.onListKeyDown(event, {
       itemsMap: this.itemsMap,
       listViewModel: this.listViewModel,

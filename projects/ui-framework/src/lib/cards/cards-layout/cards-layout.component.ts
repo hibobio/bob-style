@@ -37,7 +37,7 @@ import {
 })
 export class CardsLayoutComponent implements OnChanges, OnInit, OnDestroy {
   constructor(
-    public hostElRef: ElementRef,
+    public hostElRef: ElementRef<HTMLElement>,
     private mobileService: MobileService,
     private cd: ChangeDetectorRef,
     private itemsInRowService: ItemsInRowService
@@ -45,7 +45,8 @@ export class CardsLayoutComponent implements OnChanges, OnInit, OnDestroy {
     this.isMobile = this.mobileService.isMobile();
   }
 
-  @ViewChild('cardsList', { static: true }) private cardsList: ElementRef;
+  @ViewChild('cardsList', { static: true })
+  private cardsList: ElementRef<HTMLElement>;
 
   @Input() alignCenter: boolean | 'auto' = false;
   @Input() mobileSwiper = false;
@@ -54,7 +55,7 @@ export class CardsLayoutComponent implements OnChanges, OnInit, OnDestroy {
   @Input() cardWidth: number;
 
   @Output()
-  cardsAmountChanged: EventEmitter<number> = new EventEmitter<number>();
+  cardsAmountChanged: EventEmitter<number> = new EventEmitter();
 
   public cardsInRow$: BehaviorSubject<number> = new BehaviorSubject(1);
   public get cardsInRow() {

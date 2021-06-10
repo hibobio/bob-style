@@ -1,8 +1,19 @@
 import { fromEvent, Subscription } from 'rxjs';
 import { bufferCount, filter, map } from 'rxjs/operators';
 
-import { Directive, ElementRef, EventEmitter, Input, NgModule, NgZone, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  EventEmitter,
+  Input,
+  NgModule,
+  NgZone,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 
+import { DOMMouseEvent } from '../../types';
 import { insideZone } from './rxjs.operators';
 import { UtilsService } from './utils.service';
 
@@ -11,9 +22,14 @@ import { UtilsService } from './utils.service';
   selector: '[click.double]',
 })
 export class DoubleClickDirective implements OnInit, OnDestroy {
-  constructor(private hostElRef: ElementRef, private utilsService: UtilsService, private zone: NgZone) {}
+  constructor(
+    private hostElRef: ElementRef<HTMLElement>,
+    private utilsService: UtilsService,
+    private zone: NgZone
+  ) {}
 
-  @Output('click.double') clicked = new EventEmitter<MouseEvent>();
+  @Output('click.double')
+  clicked: EventEmitter<DOMMouseEvent> = new EventEmitter();
 
   @Input() timeSpan: number;
   @Input() swallow = false;
@@ -22,9 +38,13 @@ export class DoubleClickDirective implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.zone.runOutsideAngular(() => {
-      this.sub = fromEvent<MouseEvent>(this.hostElRef.nativeElement, 'click', {
-        capture: true,
-      })
+      this.sub = fromEvent<DOMMouseEvent>(
+        this.hostElRef.nativeElement,
+        'click',
+        {
+          capture: true,
+        }
+      )
         .pipe(
           map((event) => {
             if (this.swallow) {

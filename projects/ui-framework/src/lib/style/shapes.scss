@@ -46,6 +46,22 @@ $chevronWidth: 2px;
   border-bottom: ($size/2) solid $color;
 }
 
+@mixin arrow-left($size, $color) {
+  width: 0;
+  height: 0;
+  border-right: ($size/2) solid $color;
+  border-top: ($size/2) solid transparent;
+  border-bottom: ($size/2) solid transparent;
+}
+
+@mixin arrow-right($size, $color) {
+  width: 0;
+  height: 0;
+  border-left: ($size/2) solid $color;
+  border-top: ($size/2) solid transparent;
+  border-bottom: ($size/2) solid transparent;
+}
+
 @mixin chevron($color, $size) {
   position: relative;
   border-style: solid;

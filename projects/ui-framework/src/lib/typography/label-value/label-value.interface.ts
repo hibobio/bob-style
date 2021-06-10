@@ -1,7 +1,7 @@
 import { InfoTooltip } from '../../popups/info-tooltip/info-tooltip.interface';
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 import { NgClass } from '../../services/html/html-helpers.interface';
-import { GenericObject } from '../../types';
+import { DOMKeyboardEvent, DOMMouseEvent, GenericObject } from '../../types';
 import { LabelValueType, TextAlign } from './label-value.enum';
 
 export interface LabelValue {
@@ -26,7 +26,7 @@ export interface LabelValue {
 
   useContentTemplate?: boolean;
 
-  valueClicked?: (e: MouseEvent | KeyboardEvent) => void;
-  labelClicked?: (e: MouseEvent | KeyboardEvent) => void;
-  iconClicked?: (e: MouseEvent | KeyboardEvent) => void;
+  valueClicked?: (e: DOMMouseEvent | DOMKeyboardEvent) => void;
+  labelClicked?: (e: DOMMouseEvent | DOMKeyboardEvent) => void;
+  iconClicked?: (e: DOMMouseEvent | DOMKeyboardEvent) => void;
 }

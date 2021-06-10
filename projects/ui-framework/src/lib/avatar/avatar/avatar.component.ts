@@ -25,7 +25,7 @@ import {
   objectMapKeys,
   objectRemoveEntriesByValue,
 } from '../../services/utils/functional-utils';
-import { GenericObject } from '../../types';
+import { DOMMouseEvent, GenericObject } from '../../types';
 import { AvatarImageComponent } from './avatar-image/avatar-image.component';
 import { AvatarBadge, AvatarOrientation, AvatarSize } from './avatar.enum';
 import { Avatar, AvatarInputCmnt, BadgeConfig } from './avatar.interface';
@@ -76,7 +76,7 @@ export class AvatarComponent implements OnChanges {
   @Input() tooltipType: AvatarInputCmnt | TruncateTooltipType =
     TruncateTooltipType.css;
 
-  @Output() clicked: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
+  @Output() clicked: EventEmitter<DOMMouseEvent> = new EventEmitter();
 
   @HostBinding('attr.data-size') get sizeClass() {
     return getKeyByValue(AvatarSize, this.size);
@@ -90,7 +90,7 @@ export class AvatarComponent implements OnChanges {
     | AvatarInputCmnt
     | boolean = false;
 
-  onClick: (event: MouseEvent) => void;
+  onClick: (event: DOMMouseEvent) => void;
 
   ngOnChanges(changes: SimpleChanges): void {
     this.isClickable =
@@ -102,7 +102,8 @@ export class AvatarComponent implements OnChanges {
     }
   }
 
-  onAvatarClick(event: MouseEvent): void {
+  onAvatarClick(event: Event | MouseEvent): void;
+  onAvatarClick(event: DOMMouseEvent): void {
     if (this.isClickable) {
       this.zone.run(() => {
         isFunction(this.onClick) && this.onClick(event);

@@ -29,6 +29,7 @@ import {
 } from '../../services/utils/functional-utils';
 import { MutationObservableService } from '../../services/utils/mutation-observable';
 import { valueAsNumber } from '../../services/utils/transformers';
+import { DOMMouseEvent } from '../../types';
 import { ProgressSize } from '../progress/progress.enum';
 import { ProgressConfig } from '../progress/progress.interface';
 import { SimpleBarChartItem } from './simple-bar-chart.interface';
@@ -42,7 +43,7 @@ import { SimpleBarChartItem } from './simple-bar-chart.interface';
 export class SimpleBarChartComponent
   implements OnChanges, AfterViewInit, OnDestroy {
   constructor(
-    private host: ElementRef,
+    private host: ElementRef<HTMLElement>,
     private DOM: DOMhelpers,
     private mutationObservableService: MutationObservableService,
     private zone: NgZone,
@@ -64,7 +65,7 @@ export class SimpleBarChartComponent
   @Input() config: ProgressConfig = {};
 
   @Output()
-  clicked: EventEmitter<SimpleBarChartItem> = new EventEmitter<SimpleBarChartItem>();
+  clicked: EventEmitter<SimpleBarChartItem> = new EventEmitter();
 
   private wasInView = false;
   readonly id = simpleUID('bsbc');
@@ -132,8 +133,9 @@ export class SimpleBarChartComponent
     unsubscribeArray(this.subs);
   }
 
-  public onBarClick(event: MouseEvent): void {
-    const target = event.target as HTMLElement;
+  public onBarClick(event: Event | MouseEvent): void;
+  public onBarClick(event: DOMMouseEvent): void {
+    const target = event.target;
 
     if (this.clicked.observers.length && target.matches('.bsbc-bar-box')) {
       event.stopPropagation();
@@ -150,36 +152,40 @@ export class SimpleBarChartComponent
       '--bsbc-item-count': this.data?.length || null,
     });
 
-    this.bars.toArray().forEach((bar: ElementRef, index: number) => {
-      const barElmnt = bar.nativeElement as HTMLElement;
-      const item: SimpleBarChartItem = this.data[index];
+    this.bars
+      .toArray()
+      .forEach((bar: ElementRef<HTMLElement>, index: number) => {
+        const barElmnt = bar.nativeElement;
+        const item: SimpleBarChartItem = this.data[index];
 
-      this.DOM.setCssProps(barElmnt, {
-        '--bsbc-value':
-          this.wasInView || this.config.disableAnimation
-            ? (item.value || 0) + '%'
-            : null,
-        '--bsbc-color': item.color || null,
-        '--bsbc-trans': this.config.disableAnimation
-          ? '0s'
-          : (item.value > 50
-              ? randomNumber(750, 1500)
-              : randomNumber(250, 500)) + 'ms',
-        '--bsbc-trans-delay': this.config.disableAnimation
-          ? '0s'
-          : randomNumber(50, 200) + 'ms',
+        this.DOM.setCssProps(barElmnt, {
+          '--bsbc-value':
+            this.wasInView || this.config.disableAnimation
+              ? (item.value || 0) + '%'
+              : null,
+          '--bsbc-color': item.color || null,
+          '--bsbc-trans': this.config.disableAnimation
+            ? '0s'
+            : (item.value > 50
+                ? randomNumber(750, 1500)
+                : randomNumber(250, 500)) + 'ms',
+          '--bsbc-trans-delay': this.config.disableAnimation
+            ? '0s'
+            : randomNumber(50, 200) + 'ms',
+        });
       });
-    });
   }
   protected removeCssProps(): void {
-    this.bars.toArray().forEach((bar: ElementRef, index: number) => {
-      const barElmnt = bar.nativeElement as HTMLElement;
-      this.DOM.setCssProps(barElmnt, {
-        '--bsbc-value': null,
-        '--bsbc-trans': null,
-        '--bsbc-trans-delay': null,
+    this.bars
+      .toArray()
+      .forEach((bar: ElementRef<HTMLElement>, index: number) => {
+        const barElmnt = bar.nativeElement;
+        this.DOM.setCssProps(barElmnt, {
+          '--bsbc-value': null,
+          '--bsbc-trans': null,
+          '--bsbc-trans-delay': null,
+        });
       });
-    });
   }
 
   public trackBy(index: number, item: SimpleBarChartItem): string {

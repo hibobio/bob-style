@@ -1,4 +1,4 @@
-import { Sort } from './enums';
+import { Keys, Sort } from './enums';
 import {
   ColorPalette,
   ColorsGrey,
@@ -35,13 +35,100 @@ export interface OverlayPositionClasses {
   'panel-before'?: boolean;
 }
 
+export interface DOMInputElement
+  extends HTMLInputElement,
+    Omit<
+      HTMLTextAreaElement,
+      'addEventListener' | 'removeEventListener' | 'type'
+    > {}
+export interface DOMEventTarget
+  extends EventTarget,
+    Omit<
+      Extract<HTMLInputElement, EventTarget> &
+        Extract<HTMLButtonElement, EventTarget> &
+        Extract<HTMLElement, EventTarget>,
+      'addEventListener' | 'removeEventListener' | 'dispatchEvent'
+    > {}
+
+export interface DOMMouseEvent<
+  T extends EventTarget = DOMEventTarget,
+  R extends EventTarget = DOMEventTarget
+> extends Omit<MouseEvent, 'target' | 'relatedTarget'> {
+  readonly target: T;
+  readonly relatedTarget?: R | null;
+}
+export interface DOMKeyboardEvent<T extends EventTarget = DOMEventTarget>
+  extends Omit<KeyboardEvent, 'target'> {
+  readonly target: T;
+  key: Keys | string;
+}
+
+export interface DOMFocusEvent<
+  T extends EventTarget = DOMEventTarget,
+  R extends EventTarget = DOMEventTarget
+> extends Omit<FocusEvent, 'target' | 'relatedTarget'> {
+  readonly target: T;
+  readonly relatedTarget: R | null;
+}
+
 export interface DOMInputEvent extends UIEvent {
   readonly data: string | null;
   readonly isComposing: boolean;
   readonly dataTransfer: DataTransfer;
   readonly inputType: string;
-  readonly target: HTMLInputElement;
+  readonly target: DOMInputElement;
 }
+
+export interface DOMAnyEvent
+  extends Omit<
+    Event &
+      Partial<DOMMouseEvent & DOMKeyboardEvent & DOMFocusEvent & DOMInputEvent>,
+    'target' | 'key' | 'relatedTarget'
+  > {
+  key?: Keys | string;
+  target: DOMEventTarget;
+  relatedTarget?: DOMEventTarget;
+}
+
+export interface DOMSomeEvent
+  extends Omit<
+    DOMMouseEvent & DOMKeyboardEvent & DOMFocusEvent & DOMInputEvent,
+    'target' | 'key' | 'relatedTarget'
+  > {
+  key: Keys | string;
+  target: DOMEventTarget;
+  relatedTarget: DOMEventTarget;
+}
+
+export type DOMeventID<
+  E extends Partial<
+    Event & MouseEvent & KeyboardEvent & FocusEvent & InputEvent
+  >
+> = E extends MouseEvent
+  ? DOMMouseEvent
+  : E extends DOMMouseEvent
+  ? DOMMouseEvent
+  : E extends KeyboardEvent
+  ? DOMKeyboardEvent
+  : E extends DOMKeyboardEvent
+  ? DOMKeyboardEvent
+  : E extends InputEvent
+  ? DOMInputEvent
+  : E extends DOMInputEvent
+  ? DOMInputEvent
+  : E extends FocusEvent
+  ? DOMFocusEvent
+  : E extends DOMFocusEvent
+  ? DOMFocusEvent
+  : E extends Event
+  ? DOMAnyEvent
+  : DOMAnyEvent;
+
+export type MouseOrKeyboardEvent =
+  | KeyboardEvent
+  | DOMKeyboardEvent
+  | MouseEvent
+  | DOMMouseEvent;
 
 // LOCALE DATES
 

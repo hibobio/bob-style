@@ -45,7 +45,7 @@ export const COLLAPSIBLE_OPTIONS_DEF: CollapsibleOptions = {
 export class CollapsibleSectionComponent
   implements OnChanges, OnInit, AfterViewInit, OnDestroy {
   constructor(
-    private host: ElementRef,
+    private host: ElementRef<HTMLElement>,
     private utilsService: UtilsService,
     private DOM: DOMhelpers,
     private zone: NgZone,
@@ -76,13 +76,13 @@ export class CollapsibleSectionComponent
   @Input() options: CollapsibleOptions = cloneObject(COLLAPSIBLE_OPTIONS_DEF);
   @Input() disableAnimation = false;
 
-  @Output() opened: EventEmitter<void> = new EventEmitter<void>();
-  @Output() openedFirst: EventEmitter<void> = new EventEmitter<void>();
-  @Output() closed: EventEmitter<void> = new EventEmitter<void>();
+  @Output() opened: EventEmitter<void> = new EventEmitter();
+  @Output() openedFirst: EventEmitter<void> = new EventEmitter();
+  @Output() closed: EventEmitter<void> = new EventEmitter();
 
-  @ViewChild('headerContent') headerContent: ElementRef;
-  @ViewChild('panelContent') panelContent: ElementRef;
-  @ViewChild('footerContent') footerContent: ElementRef;
+  @ViewChild('headerContent') headerContent: ElementRef<HTMLElement>;
+  @ViewChild('panelContent') panelContent: ElementRef<HTMLElement>;
+  @ViewChild('footerContent') footerContent: ElementRef<HTMLElement>;
 
   @HostBinding('attr.data-animation-disabled') get animationDisabled() {
     return this.options.disableAnimation || this.disableAnimation || null;

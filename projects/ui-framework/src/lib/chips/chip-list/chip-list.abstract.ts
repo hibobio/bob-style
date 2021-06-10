@@ -1,17 +1,19 @@
 import {
-  NgZone,
   ChangeDetectorRef,
-  ViewChildren,
-  QueryList,
-  HostListener,
-  HostBinding,
   Directive,
+  HostBinding,
+  HostListener,
+  NgZone,
+  QueryList,
+  ViewChildren,
 } from '@angular/core';
-import { ChipComponent } from '../chip/chip.component';
-import { Chip, ChipListConfig } from '../chips.interface';
-import { ChipListSelectable, ChipListAlign, ChipType } from '../chips.enum';
-import { isKey } from '../../services/utils/functional-utils';
+
 import { Keys } from '../../enums';
+import { isKey } from '../../services/utils/functional-utils';
+import { DOMKeyboardEvent, DOMMouseEvent } from '../../types';
+import { ChipComponent } from '../chip/chip.component';
+import { ChipListAlign, ChipListSelectable, ChipType } from '../chips.enum';
+import { Chip, ChipListConfig } from '../chips.interface';
 
 @Directive()
 // tslint:disable-next-line: directive-class-suffix
@@ -39,8 +41,8 @@ export abstract class ChipListBaseElement {
   }
 
   @HostListener('click', ['$event'])
-  onHostClick($event: MouseEvent) {
-    const target = $event.target as HTMLElement;
+  onHostClick($event: DOMMouseEvent) {
+    const target = $event.target;
 
     if (!this.config.disabled && target.nodeName.toUpperCase() === 'B-CHIP') {
       const index = parseInt(target.dataset.index, 10);
@@ -54,8 +56,8 @@ export abstract class ChipListBaseElement {
   }
 
   @HostListener('keydown', ['$event'])
-  onHostKeydown($event: KeyboardEvent) {
-    const target = $event.target as HTMLElement;
+  onHostKeydown($event: DOMKeyboardEvent) {
+    const target = $event.target;
     if (!this.config.disabled && target.nodeName.toUpperCase() === 'B-CHIP') {
       const index = parseInt(target.dataset.index, 10);
       const chip = this.chips[index];
@@ -68,14 +70,14 @@ export abstract class ChipListBaseElement {
 
   public onChipRemove(chip: Chip): void {}
 
-  public onChipClick(event: MouseEvent, chip: Chip, index: number): void {
+  public onChipClick(event: DOMMouseEvent, chip: Chip, index: number): void {
     if (this.config.selectable) {
       this.selectChip(chip, index);
     }
   }
 
   protected onChipKeydown(
-    event: KeyboardEvent,
+    event: DOMKeyboardEvent,
     chip: Chip,
     index: number
   ): void {

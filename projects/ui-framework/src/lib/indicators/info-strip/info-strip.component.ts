@@ -24,7 +24,7 @@ export class InfoStripComponent {
   @Input() text: string;
   @Input() iconSize: InfoStripIconSize = InfoStripIconSize.large;
 
-  @Output() linkClicked: EventEmitter<void> = new EventEmitter<void>();
+  @Output() linkClicked: EventEmitter<void> = new EventEmitter();
 
   readonly iconSizes = InfoStripIconSize;
   readonly iconsDic: Record<InfoStripIconType, Icon> = INFOSTRIP_ICON_DICT;

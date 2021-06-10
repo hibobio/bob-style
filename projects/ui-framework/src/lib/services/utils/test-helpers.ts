@@ -8,9 +8,9 @@ import {
 import { By } from '@angular/platform-browser';
 
 import {
-  NativeEvents,
-  NativeKeyboardEvents,
-  NativeMouseEvents,
+  NativeEventNames,
+  NativeKeyboardEventNames,
+  NativeMouseEventNames,
 } from '../../enums';
 
 export const emptyImg =
@@ -106,7 +106,7 @@ export const inputValue = (
 
 export const emitNativeEvent = (
   element: any,
-  type: string | NativeEvents = NativeEvents.click,
+  type: string | NativeEventNames = NativeEventNames.click,
   props = null
 ): void => {
   if (!element) {
@@ -127,9 +127,9 @@ export const emitNativeEvent = (
     ...props,
   } as EventInit;
 
-  if (NativeMouseEvents.includes(type as any)) {
+  if (NativeMouseEventNames.includes(type as any)) {
     (element as HTMLElement).dispatchEvent(new MouseEvent(type, eventData));
-  } else if (NativeKeyboardEvents.includes(type as any)) {
+  } else if (NativeKeyboardEventNames.includes(type as any)) {
     (element as HTMLElement).dispatchEvent(new KeyboardEvent(type, eventData));
   } else {
     (element as HTMLElement).dispatchEvent(new Event(type, eventData));

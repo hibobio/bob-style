@@ -19,6 +19,7 @@ import {
   isNumber,
   numberMinMax,
 } from '../../services/utils/functional-utils';
+import { DOMMouseEvent } from '../../types';
 import { PAGER_CONFIG_DEF } from './pager.const';
 import { PagerConfig } from './pager.interface';
 import { PagerService } from './pager.service';
@@ -80,11 +81,9 @@ export class PagerComponent<T = any> implements OnInit {
     return this.hidden || null;
   }
 
-  @Output() sliceChange: EventEmitter<number[] | T[]> = new EventEmitter<
-    number[] | T[]
-  >();
-  @Output() pageChange: EventEmitter<number> = new EventEmitter<number>();
-  @Output() sliceSizeChange: EventEmitter<number> = new EventEmitter<number>();
+  @Output() sliceChange: EventEmitter<number[] | T[]> = new EventEmitter();
+  @Output() pageChange: EventEmitter<number> = new EventEmitter();
+  @Output() sliceSizeChange: EventEmitter<number> = new EventEmitter();
 
   public totalItems: number;
   public totalPages: number;
@@ -111,8 +110,9 @@ export class PagerComponent<T = any> implements OnInit {
     return this.totalPages > 1 && this.currentPage === page;
   }
 
-  public onPageClick(event: MouseEvent): void {
-    const target = event.target as HTMLElement;
+  public onPageClick(event: Event | MouseEvent): void;
+  public onPageClick(event: DOMMouseEvent): void {
+    const target = event.target;
 
     if (!target.matches('button.tertiary')) {
       return;

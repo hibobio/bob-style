@@ -1,4 +1,5 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+
 import { isFunction } from '../../services/utils/functional-utils';
 import { Link } from '../link/link.types';
 
@@ -18,7 +19,7 @@ import { Link } from '../link/link.types';
 })
 export class LinkComponent {
   @Input() config: Link = {} as any;
-  @Output() clicked: EventEmitter<void> = new EventEmitter<void>();
+  @Output() clicked: EventEmitter<void> = new EventEmitter();
 
   onClick() {
     isFunction(this.config.clickHandler) && this.config.clickHandler();

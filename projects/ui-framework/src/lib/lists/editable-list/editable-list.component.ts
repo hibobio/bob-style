@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 
+import { MenuItem } from '../../navigation/menu/menu.interface';
 import {
   arrayRemoveItemMutate,
   isNumber,
@@ -16,6 +17,7 @@ import {
   simpleUID,
 } from '../../services/utils/functional-utils';
 import { UtilsService } from '../../services/utils/utils.service';
+import { DOMMouseEvent } from '../../types';
 import { SelectOption } from '../list.interface';
 import { BaseEditableListElement } from './editable-list.abstract';
 import { EDITABLE_LIST_ITEMS_BEFORE_PAGER } from './editable-list.const';
@@ -40,7 +42,7 @@ export class EditableListComponent extends BaseEditableListElement {
   }
 
   public onMenuAction(
-    action: ListActionType,
+    { key: action }: MenuItem,
     item: SelectOption,
     index: number
   ): void {
@@ -58,8 +60,8 @@ export class EditableListComponent extends BaseEditableListElement {
       : null;
   }
 
-  public onMouseOver(event: MouseEvent): void {
-    const target = event.target as HTMLElement;
+  public onMouseOver(event: DOMMouseEvent): void {
+    const target = event.target;
     const hoverItemViewIndex = parseInt(target.dataset.itemViewIndex, 10);
 
     if (

@@ -1,20 +1,20 @@
-import { storiesOf } from '@storybook/angular';
-import { withKnobs, text } from '@storybook/addon-knobs';
-import { radios } from '@storybook/addon-knobs';
-import { ComponentGroupType } from '../../consts';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { TooltipPosition, TooltipClass } from './tooltip.enum';
-import { DividerModule } from '../../layout/divider/divider.module';
-import { TypographyModule } from '../../typography/typography.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { radios, text, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ComponentGroupType } from '../../consts';
+import { DividerModule } from '../../layout/divider/divider.module';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { TypographyModule } from '../../typography/typography.module';
+import { TooltipClass, TooltipPosition } from './tooltip.enum';
 
 const story = storiesOf(ComponentGroupType.Tooltip, module).addDecorator(
   withKnobs
 );
 
 const template = `
-  <b-heading [matTooltip]="tooltipText"
+  <b-heading style="border:1px solid silver;max-width:185px;margin: auto;padding:4px" [matTooltip]="tooltipText"
              [matTooltipPosition]="tooltipPosition"
              [matTooltipClass]="tooltipClass">
        Hover over this text to see tooltip.

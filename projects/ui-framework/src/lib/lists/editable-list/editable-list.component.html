@@ -6,7 +6,7 @@
     <b-button class="bel-plus-button"
               [button]="addButton"
               [hidden]="state.currentAction === 'add'"
-              [disabled]="state.searchValue"
+              [disabled]="!!state.searchValue"
               (clicked)="addItem()">
     </b-button>
 
@@ -56,7 +56,7 @@
               [button]="sortButton"
               [icon]="sortButton['icons'][state.sortType]"
               [text]="sortButton['texts'][state.sortType]"
-              [disabled]="state.searchValue"
+              [disabled]="!!state.searchValue"
               (clicked)="sortList()">
     </b-button>
 
@@ -167,7 +167,7 @@
                           [swallow]="true"
                           [menuItems]="item.canBeDeleted!==false?menuItems:menuItems.slice(1)"
                           (openMenu)="cancel()"
-                          (actionClick)="onMenuAction($event.key,item,
+                          (actionClick)="onMenuAction($event,item,
                           state.hoverItemIndex)">
     </b-action-menu-button>
 

@@ -2,27 +2,30 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
-  ElementRef, EventEmitter,
+  ElementRef,
+  EventEmitter,
   HostBinding,
   Input,
   NgZone,
-  OnChanges, Output,
+  OnChanges,
+  Output,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
 
 import { AvatarOrientation, AvatarSize } from '../../avatar/avatar/avatar.enum';
 import { Avatar } from '../../avatar/avatar/avatar.interface';
+import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
 import { Types } from '../../enums';
+import { Icons } from '../../icons/icons.enum';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import {
   hasChanges,
   mergeObjects,
 } from '../../services/utils/functional-utils';
+import { DOMMouseEvent } from '../../types';
 import { EE_LAYOUT_CONFIG_BY_TYPE } from './ee-layout.const';
 import { EELayoutConfig } from './ee-layout.interface';
-import { Icons } from '../../icons/icons.enum';
-import { ButtonSize } from '../../buttons/buttons.enum';
 
 @Component({
   selector: 'b-ee-layout, [b-ee-layout]',
@@ -58,11 +61,14 @@ export class EELayoutComponent implements OnChanges, AfterViewInit {
   @Input() tooltipNext: string;
   @Input() tooltipPrev: string;
 
-  @Output() nextClicked: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
-  @Output() prevClicked: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
+  @Output()
+  nextClicked: EventEmitter<DOMMouseEvent> = new EventEmitter();
+  @Output()
+  prevClicked: EventEmitter<DOMMouseEvent> = new EventEmitter();
 
   readonly icons = Icons;
   readonly buttonSize = ButtonSize;
+  readonly buttonType = ButtonType;
 
   public hasHeader = true;
   public hasSectionHeader = true;
