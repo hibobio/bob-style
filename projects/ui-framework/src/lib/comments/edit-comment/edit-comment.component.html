@@ -9,11 +9,13 @@
             class="bfe-input bfe-textarea"
             [attr.placeholder]="placeholder || null"
             [attr.data-empty]="!value?.length"
+            [attr.has-emoji]="canDisplayEmoji"
+            [attr.data-type]="type"
             (blur)="onBlur()"
             (keydown)="enterPress($event)"
             (input)="onInputChange()"></textarea>
 
-        <b-emoji *ngIf="showEmoji" class="mrg-r-4"
+        <b-emoji *ngIf="canDisplayEmoji" class="mrg-r-4"
             (emojiSelect)="addEmoji($event)">
             <b-display-2>😀</b-display-2>
         </b-emoji>

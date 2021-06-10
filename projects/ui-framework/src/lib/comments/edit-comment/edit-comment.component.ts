@@ -1,4 +1,5 @@
 import {
+  AfterContentChecked,
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
@@ -47,7 +48,7 @@ import { CommentsUtilService } from '../comments.service';
   providers: [CommentsUtilService],
 })
 export class EditCommentComponent
-  implements OnChanges, AfterViewInit, OnDestroy {
+  implements OnChanges, AfterViewInit, OnDestroy, AfterContentChecked {
   constructor(
     private kbrdCntrlSrvc: FormElementKeyboardCntrlService,
     private mentionsService: MentionsService,
@@ -138,10 +139,25 @@ export class EditCommentComponent
     this.inputValue = this.value;
   }
 
+  ngAfterContentChecked() {
+    if (this.type !== CommentType.inputRadius || !this.commentInput) { return; }
+    const textarea = this.commentInput.nativeElement as HTMLTextAreaElement;
+    textarea.style.height = 'auto';
+    if (textarea.value.split(/\r*\n/).length <= 1) {
+      textarea.style.height = '40px'
+      return;
+    }
+    textarea.style.height = textarea.scrollHeight + 'px';      
+  }
+
   addEmoji(code: Emoji): void {
-    const first = this.inputValue.slice(0, this.lastCaretInputCommentPosition);
-    const last = this.inputValue.slice(this.lastCaretInputCommentPosition)
-    this.inputValue = first + code.icon + last;
+    const textBeforeEmoji = this.inputValue.slice(0, this.lastCaretInputCommentPosition);
+    const textAfterEmoji = this.inputValue.slice(this.lastCaretInputCommentPosition)
+    this.inputValue = textBeforeEmoji + code.icon + textAfterEmoji;
+  }
+
+  get canDisplayEmoji(): boolean {
+    return this.showEmoji && this.type == CommentType.inputRadius;
   }
 
   focus() {
