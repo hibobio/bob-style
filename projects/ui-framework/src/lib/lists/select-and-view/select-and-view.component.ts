@@ -24,7 +24,6 @@ import {
   SelectGroupOption,
   SelectOption,
 } from '../../lists/list.interface';
-import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 import { InputObservable, InputSubject } from '../../services/utils/decorators';
 import {
   arrayRemoveItemMutate,
