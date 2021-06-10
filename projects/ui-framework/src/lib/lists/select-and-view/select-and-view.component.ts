@@ -1,3 +1,5 @@
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
@@ -22,7 +24,6 @@ import {
   SelectGroupOption,
   SelectOption,
 } from '../../lists/list.interface';
-import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 import { InputObservable, InputSubject } from '../../services/utils/decorators';
 import {
   arrayRemoveItemMutate,
@@ -206,5 +207,13 @@ export class SelectAndViewComponent implements OnInit, OnDestroy {
 
   public resetValue(): void {
     this.listValue$.next(this.valueDefault);
+  }
+
+  public onDrop({ previousIndex, currentIndex, }: Partial<CdkDragDrop<any>>): void {
+    if (previousIndex !== currentIndex) {
+      const items = this.listValue$.getValue();
+      moveItemInArray(items, previousIndex, currentIndex);
+      this.listValue$.next(items);
+    }
   }
 }

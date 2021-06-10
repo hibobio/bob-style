@@ -28,6 +28,7 @@
 
   &:hover {
     background-color: $color-option-hover-solid;
+    cursor: grab;
 
     .remove-button {
       opacity: 1;
@@ -35,8 +36,34 @@
   }
 }
 
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1) !important;
+}
+.cdk-drop-list-dragging .viewItem:not(.cdk-drag-placeholder) {
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+  
+  &:hover {
+    background-color: $white;
+    
+    .remove-button {
+      opacity: 0;
+    }
+  }
+}
+
+.cdk-drag-preview {
+  cursor: grab;
+  background-color: $white;
+  border: 1px solid $border-color;
+}
+
 .remove-button {
   opacity: 0;
+  cursor: pointer;
 }
 
 b-empty-state {
