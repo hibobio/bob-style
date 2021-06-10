@@ -67,7 +67,7 @@ export class EditCommentComponent
   @Input() updateOnBlur = false;
 
   @Input() public mentionsList: MentionsOption[];
-  @Input() showEmoji = true; 
+  @Input() showEmoji = false; 
   @HostBinding('attr.data-type') @Input() type: CommentType = CommentType.inputRadius; 
   @Output()
   sendComment: EventEmitter<CommentItemDto> = new EventEmitter();
