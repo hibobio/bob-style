@@ -77,12 +77,22 @@ b-big-body,
   }
 }
 
-strong,
-.b-bold-body,
 b-bold-body,
-[b-bold-body],
-b {
+[b-bold-body] {
   @include b-bold-body($size: null, $addCssVars: true) {
+    margin: 0;
+  }
+}
+
+strong,
+b,
+.b-bold-body {
+  @include b-bold-body(
+    $size: null,
+    $lineHeight: null,
+    $font-family: null,
+    $addCssVars: true
+  ) {
     margin: 0;
   }
 }

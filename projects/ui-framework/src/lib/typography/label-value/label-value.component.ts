@@ -51,8 +51,8 @@ export class LabelValueComponent implements OnChanges, AfterViewInit {
   public valueStyle: GenericObject<string>;
   public expectChanges = false;
   public tooltipType = TruncateTooltipType.css;
-  public label: string;
-  public value: string;
+  public labelStr: string;
+  public valueStr: string;
 
   @Input('labelValue') set setProps(labelValue: LabelValue) {
     if (isObject(labelValue)) {
@@ -60,11 +60,21 @@ export class LabelValueComponent implements OnChanges, AfterViewInit {
     }
   }
 
-  @Input('label') set setLabel(label: string | number) {
-    this.label = (label ?? '') + '';
+  private _label: string | number;
+  @Input() set label(label: string | number) {
+    this._label = label;
+    this.labelStr = (label ?? '') + '';
   }
-  @Input('value') set setValue(value: string | number) {
-    this.value = (value ?? '') + '';
+  get label() {
+    return this._label;
+  }
+  private _value: string | number;
+  @Input() set value(value: string | number) {
+    this._value = value;
+    this.valueStr = (value ?? '') + '';
+  }
+  get value() {
+    return this._value;
   }
 
   @Input() labelMaxLines: number;
