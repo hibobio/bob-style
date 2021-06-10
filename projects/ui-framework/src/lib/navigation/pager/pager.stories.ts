@@ -44,7 +44,7 @@ const storyTemplate = `
                   sliceMax: config.sliceMax,
                   sliceSize: config.sliceSize,
                   showSliceSizeSelect: showSliceSizeSelect,
-                  resetToFirstPage: resetToFirstPage
+                  resetOnSliceSizeChange: resetOnSliceSizeChange
                 }"
                 (pageChange)="onPageChange($event)"
                 (sliceChange)="onSliceChange($event)"
@@ -76,7 +76,7 @@ const note = `
   (sliceChange) |  EventEmitter<wbr>&lt;number[] / any[]&gt; | if a number was provided for [items] (that is considered to be your items array length), the output emits current slice indexes;<br>\
   if you provided your data array as [items], the output emits a slice of your data array ('current page items') | &nbsp;
   (sliceSizeChange) | number | emits on slice size change (from the Select) | &nbsp;
-  (stateChange) | PagerState | combination of currentPage, limit, offset (API usage) | &nbsp;
+  (stateChange) | PagerState | combination of currentPage, slice, sliceSize, offset | &nbsp;
 
   --------------------------------
 
@@ -120,8 +120,9 @@ const note = `
   #### interface: PagerState
   Name | Type | Description
   --- | --- | ---
-  page | number | current page
-  limit | number | limit (API usage)
+  currentPage | number | current page
+  slice | number[] | current slice [start inclusive index, end exclusive index]
+  sliceSize | number | current slice size; limit (API usage)
   offset | number | offset (API usage)
 
   #### interface: PagerConfig
@@ -130,7 +131,7 @@ const note = `
   sliceSize | number | current items per page | &nbsp;
   sliceMax | number | max items per page | &nbsp;
   sliceStep | number | items per page step for items-per-page Select | &nbsp;
-  resetToFirstPage | boolean | should reset to first page on slice size change | false
+  resetOnSliceSizeChange | boolean | should reset to first page on slice size change | false
 
   #### const: PAGER<sub>-</sub>CONFIG<sub>-</sub>DEF
   ~~~
@@ -185,7 +186,7 @@ story.add(
         }),
 
         showSliceSizeSelect: boolean('showSliceSizeSelect', true),
-        resetToFirstPage: boolean('resetToFirstPage', false),
+        resetOnSliceSizeChange: boolean('resetOnSliceSizeChange', false),
 
         onSliceChange: action('sliceChange'),
         onPageChange: action('pageChange'),

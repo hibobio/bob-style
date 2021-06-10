@@ -3,11 +3,12 @@ export interface PagerConfig {
   sliceMax: number;
   sliceSize: number;
   showSliceSizeSelect?: boolean;
-  resetToFirstPage?: boolean;
+  resetOnSliceSizeChange?: boolean;
 }
 
-export interface PagerState {
-  page: number;
-  limit: number;
+export interface PagerState<T = any> {
+  currentPage: number;
+  sliceSize: number;
+  slice: number[] | T[];
   offset: number;
 }
