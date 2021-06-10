@@ -20,6 +20,7 @@ const template = `
                  [label]="label"
                  [placeholder]="placeholder"
                  [displayOptionsOnFocus]="displayOptionsOnFocus"
+                 [hideIcon]="hideIcon"
                  (searchChange)="searchChange($event)"
                  (optionSelect)="optionSelect($event)">
 </b-auto-complete>
@@ -47,6 +48,7 @@ const note = `
   searchChange | action | search value string | &nbsp;
   optionSelect | action | AutoCompleteOption | &nbsp;
   displayOptionsOnFocus | boolean | opens the list on focus | false
+  hideIcon | boolean | hide the search icon | false
 
   ~~~
   ${template}
@@ -77,6 +79,7 @@ story.add(
         label: text('label', ''),
         placeholder: text('placeholder', 'Search auto-complete'),
         displayOptionsOnFocus: boolean('displayOptionsOnFocus', false),
+        hideIcon: boolean('hideIcon', false),
         options: object('options', optionsMock),
         searchChange: action('searchChange'),
         optionSelect: action('optionSelect'),

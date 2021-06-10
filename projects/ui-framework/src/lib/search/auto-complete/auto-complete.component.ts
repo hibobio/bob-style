@@ -52,6 +52,7 @@ export class AutoCompleteComponent
   @Input() options: AutoCompleteOption[];
   @Input() displayOptionsOnFocus = false;
   @Input() skipOptionsFiltering = false;
+  @Input() hideIcon = false;
 
   @Output() searchChange: EventEmitter<string> = new EventEmitter();
   @Output()
