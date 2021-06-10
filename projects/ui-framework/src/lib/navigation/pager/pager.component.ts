@@ -220,7 +220,7 @@ export class PagerComponent<T = any> implements OnInit {
     this.stateChange.emit({
       currentPage: this.currentPage,
       sliceSize: this.config.sliceSize,
-      slice: this.getCurrentSlice(),
+      currentSlice: this.getCurrentSlice(),
       offset: this.currentPage * this.config.sliceSize
     });
   }

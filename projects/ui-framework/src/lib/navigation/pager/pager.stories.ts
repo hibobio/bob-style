@@ -121,7 +121,7 @@ const note = `
   Name | Type | Description
   --- | --- | ---
   currentPage | number | current page
-  slice | number[] | current slice [start inclusive index, end exclusive index]
+  currentSlice | number[] | current slice [start inclusive index, end exclusive index]
   sliceSize | number | current slice size; limit (API usage)
   offset | number | offset (API usage)
 
