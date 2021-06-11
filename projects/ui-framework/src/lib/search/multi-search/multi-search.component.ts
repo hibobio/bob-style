@@ -248,7 +248,7 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
         ].filter((option: MultiSearchOption) => {
           //
           let searchValueIndex = 0,
-            valueToMatch =
+            valueToMatch: string =
               option[group.keyMap?.value || MULTI_SEARCH_KEYMAP_DEF.value],
             match = matcher.exec(valueToMatch),
             highlightedMatch: string;
@@ -286,6 +286,7 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
             option[group.keyMap?.value || MULTI_SEARCH_KEYMAP_DEF.value]
               ? 'highlightedValue'
               : 'highlightedSearchValue']: highlightedMatch,
+            matchLength: match['0'].length,
           };
 
           return true;
@@ -296,8 +297,14 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
 
           options.sort((a, b) => {
             return a.searchMatch.index[0] !== b.searchMatch.index[0]
-              ? a.searchMatch.index[0] - b.searchMatch.index[0]
-              : a.searchMatch.index[1] - b.searchMatch.index[1];
+              ? a.searchMatch.index[0] +
+                  (a.searchMatch.matchLength - searchValue.length) -
+                  (b.searchMatch.index[0] +
+                    (b.searchMatch.matchLength - searchValue.length))
+              : a.searchMatch.index[1] +
+                  (a.searchMatch.matchLength - searchValue.length) -
+                  (b.searchMatch.index[1] +
+                    (b.searchMatch.matchLength - searchValue.length));
           });
 
           msgo.push({

@@ -12,6 +12,7 @@ import {
   mockNames,
   mockText,
   mockThings,
+  sadAvatar,
   uselessDomain,
 } from '../../mock.const';
 import {
@@ -19,6 +20,7 @@ import {
   makeArray,
   randomFromArray,
   randomNumber,
+  simpleUID,
 } from '../../services/utils/functional-utils';
 import {
   MultiSearchGroupOption,
@@ -87,39 +89,88 @@ export const mockSearchData: MultiSearchGroupOption[] = [
     groupName: 'People',
     key: 'people',
     icon: Icons.department_icon,
-    options: [items > 1 ? 'Crème Brûlée' : null, ...asArray(mockNames(items))]
-      .filter(Boolean)
-      .map((name: string, index) => ({
-        value: name,
-        id: name,
 
-        searchValue: [
-          name,
-          `${name.split(' ')[1]}, ${name.split(' ')[0]}`,
-          `${mockNames(1)
-            .toLowerCase()
-            .replace(/\s/g, '.')}@${uselessDomain()}`,
-          randomNumber(100000000, 999999999),
-        ] as string[],
-
-        ...(items > 1 && {
-          prefixComponent: {
-            component: AvatarImageComponent,
-            attributes: {
-              imageSource: mockAvatar(),
-              badge: randomFromArray([
-                null,
-                null,
-                null,
-                AvatarBadge.approved,
-                AvatarBadge.pending,
-                AvatarBadge.rejected,
-                AvatarBadge.error,
-              ]),
+    options: [
+      ...(items > 1
+        ? [
+            {
+              id: simpleUID(),
+              value: 'Jonathan Stoye',
             },
-          },
-        }),
-      })),
+            {
+              id: simpleUID(),
+              value: 'Jorinde Grottker',
+            },
+            {
+              id: simpleUID(),
+              value: 'Jose Antonio Montero Morcillo',
+            },
+            {
+              id: simpleUID(),
+              value: 'Moritz von Goetz und Schwanenfließ',
+            },
+            {
+              id: simpleUID(),
+              value: 'People and Organisation Growth Team',
+            },
+            {
+              id: simpleUID(),
+              value: 'Tabea Otte',
+            },
+            {
+              id: simpleUID(),
+              value: 'Otte Tabea',
+            },
+            {
+              id: simpleUID(),
+              value: 'Something other than The ABC',
+            },
+          ].map((o) => ({
+            ...o,
+            prefixComponent: {
+              component: AvatarImageComponent,
+              attributes: {
+                imageSource: sadAvatar(1),
+              },
+            },
+          }))
+        : []),
+
+      ...[items > 1 ? 'Crème Brûlée' : null, ...asArray(mockNames(items - 6))]
+        .filter(Boolean)
+        .map((name: string, index) => ({
+          value: name,
+          id: name,
+
+          searchValue: [
+            name,
+            `${name.split(' ')[1]}, ${name.split(' ')[0]}`,
+            `${mockNames(1)
+              .toLowerCase()
+              .replace(/\s/g, '.')}@${uselessDomain()}`,
+            randomNumber(100000000, 999999999),
+          ] as string[],
+
+          ...(items > 1 && {
+            prefixComponent: {
+              component: AvatarImageComponent,
+              attributes: {
+                imageSource: mockAvatar(),
+                badge: randomFromArray([
+                  null,
+                  null,
+                  null,
+                  AvatarBadge.approved,
+                  AvatarBadge.pending,
+                  AvatarBadge.rejected,
+                  AvatarBadge.error,
+                ]),
+              },
+            },
+          }),
+        })),
+    ],
+
     ...(items > 1 && {
       optionClickHandler: (option: MultiSearchOption) => {
         console.log(`Handler for: ${option.value}`);
@@ -218,4 +269,7 @@ export const mockSearchData: MultiSearchGroupOption[] = [
   },
 ].slice(0, groups);
 
+function mockWords(arg0: number) {
+  throw new Error('Function not implemented.');
+}
 // ❯
