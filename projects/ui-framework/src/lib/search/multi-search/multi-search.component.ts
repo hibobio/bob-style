@@ -7,12 +7,14 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 
+import { FUZZY_SRCH_CONFIG } from '../../consts';
 import { arrowKeys, clickKeys, controlKeys, Keys } from '../../enums';
 import { ListPanelService } from '../../lists/list-panel.service';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import {
   asArray,
   getFuzzyMatcher,
+  getMatcher,
   isFunction,
   isKey,
 } from '../../services/utils/functional-utils';
@@ -239,7 +241,12 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
       );
     }
 
-    const matcher = getFuzzyMatcher(searchValue);
+    const fuzzyMatcher = getFuzzyMatcher(searchValue);
+    const regMatcher = getMatcher(searchValue, false);
+
+    const getMatch = (vtm: string): RegExpExecArray =>
+      regMatcher.exec(vtm) ||
+      (vtm.length >= FUZZY_SRCH_CONFIG[0] ? fuzzyMatcher.exec(vtm) : null);
 
     const filtered = groupOptions.reduce(
       (msgo: MultiSearchGroupOption[], group) => {
@@ -250,14 +257,14 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
           let searchValueIndex = 0,
             valueToMatch: string =
               option[group.keyMap?.value || MULTI_SEARCH_KEYMAP_DEF.value],
-            match = matcher.exec(valueToMatch),
+            match = getMatch(valueToMatch),
             highlightedMatch: string;
 
           if (option.searchValue) {
             option.searchValue = asArray(option.searchValue);
 
             searchValueIndex = option.searchValue.findIndex((sv) => {
-              return (match = matcher.exec(sv));
+              return (match = getMatch(sv));
             });
 
             if (searchValueIndex === -1) {

@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-import { FUZZY_SRCH_MIN_LENGTH } from '../../consts';
+import { FUZZY_SRCH_CONFIG } from '../../consts';
 import {
   getFuzzyMatcher,
   getMatcher,
@@ -30,7 +30,7 @@ export class HighlightPipe implements PipeTransform {
     // try to match string as is, then try fuzzy match
     const match =
       getMatcher(searchStr, false).exec(valueToMatch) ||
-      (fuzzy && valueToMatch.length >= FUZZY_SRCH_MIN_LENGTH
+      (fuzzy && valueToMatch.length >= FUZZY_SRCH_CONFIG[0]
         ? getFuzzyMatcher(searchStr).exec(valueToMatch)
         : null);
 

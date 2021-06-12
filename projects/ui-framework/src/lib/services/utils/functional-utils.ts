@@ -22,7 +22,7 @@ import { delay, take } from 'rxjs/operators';
 import { ElementRef, SimpleChange, SimpleChanges, Type } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
 
-import { FUZZY_SRCH_MIN_LENGTH } from '../../consts';
+import { FUZZY_SRCH_CONFIG } from '../../consts';
 import { controlKeys, KEYCODES, Keys, metaKeys } from '../../enums';
 import { SelectGroupOption } from '../../lists/list.interface';
 import {
@@ -1284,13 +1284,15 @@ export const getMatcher = (searchStr: string, fuzzy = false): RegExpWrapper =>
     : wrapRegExp(stringToRegex(normalizeString(searchStr), 'i'), true);
 
 export const getFuzzyMatcher = (searchStr: string): RegExpWrapper => {
-  if (searchStr.length < FUZZY_SRCH_MIN_LENGTH) {
+  if (searchStr.length < FUZZY_SRCH_CONFIG[0]) {
     return getMatcher(searchStr, false);
   }
-  const split = normalizeString(searchStr, true, true)?.split('');
+  const split = normalizeString(searchStr, true, true)
+    ?.split('')
+    .filter((a, i, aa) => a !== aa[i + 1]);
   const ptrn = split.length
     ? split.reduce((a, b) => {
-        return a + '[^' + b + ']*' + b;
+        return `${a}+[^${b}]{0,${FUZZY_SRCH_CONFIG[1]}}${b}`;
       })
     : '';
   return wrapRegExp(new RegExp(ptrn, 'gi'), true);
