@@ -95,7 +95,7 @@ export const mockSearchData: MultiSearchGroupOption[] = [
         ? [
             {
               id: simpleUID(),
-              value: 'Jonathan Stoye',
+              value: 'Moritz von Goetz und Schwanenfließ',
             },
             {
               id: simpleUID(),
@@ -107,7 +107,13 @@ export const mockSearchData: MultiSearchGroupOption[] = [
             },
             {
               id: simpleUID(),
-              value: 'Moritz von Goetz und Schwanenfließ',
+              value: 'Isabella-Marie Standke',
+              searchValue: 'Standke Isabella-Marie',
+            },
+            {
+              id: simpleUID(),
+              value: 'Marcel Bernat Cabrero',
+              searchValue: 'Bernat Cabrero Marcel',
             },
             {
               id: simpleUID(),
@@ -115,15 +121,23 @@ export const mockSearchData: MultiSearchGroupOption[] = [
             },
             {
               id: simpleUID(),
+              value: 'Tabea Spiekermann',
+            },
+            {
+              id: simpleUID(),
+              value: 'Jonathan Stoye',
+            },
+            {
+              id: simpleUID(),
               value: 'Tabea Otte',
             },
             {
               id: simpleUID(),
-              value: 'Otte Tabea',
+              value: 'Something other than The ABC',
             },
             {
               id: simpleUID(),
-              value: 'Something other than The ABC',
+              value: 'Otte Tabea',
             },
           ].map((o) => ({
             ...o,
