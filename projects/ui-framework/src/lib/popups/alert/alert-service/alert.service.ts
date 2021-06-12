@@ -87,17 +87,15 @@ export class AlertService {
 
     let text = isString(error)
       ? error
-      : stringify(
-          objectGetDeepestValid(
-            error,
-            'error.error',
-            error.message || this.translate.instant('common.general_error')
-          )
-        );
-    text = text.replace(/(^\s*["\W]+\s*)|(\s*["\W]+\s*$)/g, '');
-    if (text.replace(/\W/g, '') === 'isTrustedtrue') {
+      : stringify(objectGetDeepestValid(error, 'error.error', null));
+    text = text?.replace(/(^\s*["\W]+\s*)|(\s*["\W]+\s*$)/g, '');
+    if (text?.replace(/\W/g, '') === 'isTrustedtrue') {
       text = null;
     }
+    text =
+      text ||
+      error['message'] ||
+      this.translate.instant('common.general_error');
 
     return {
       alertType: AlertType.error,
