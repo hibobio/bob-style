@@ -24,3 +24,7 @@
     position: static;
   }
 }
+
+:host.has-label .bfe-wrap .bfe-input[data-placeholder]:before {
+  opacity: 1;
+}
