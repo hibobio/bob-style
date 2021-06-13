@@ -4,11 +4,11 @@ import { boolean, object, select, text, withKnobs } from '@storybook/addon-knobs
 import { storiesOf } from '@storybook/angular';
 
 import { ComponentGroupType } from '../../consts';
+import { Types } from '../../enums';
 import { mockAvatar, mockName, mockNames, mockText } from '../../mock.const';
 import { MentionsOption } from '../../services/mentions/mentions.service';
 import { simpleUID } from '../../services/utils/functional-utils';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { CommentType } from '../comments.interface';
 import { HTML_COMMENT_TEXT } from '../comments.mocks';
 import { CommentsModule } from '../comments.module';
 
@@ -87,7 +87,7 @@ story.add(
         content: text('content', 'First comment!', 'Props'),
         name: text('name', name, 'Props'),
         avatar: text('avatar', avatar, 'Props'),
-        type: select('type', CommentType, CommentType.regular, 'Props'),
+        type: select('type', Types, Types.primary, 'Props'),
         showEmoji: boolean('showEmoji', true, 'Props'),
         placeholder: text('placeholder', 'Write your comment here.', 'Props'),
         autoFocus: boolean('autoFocus', true, 'Props'),

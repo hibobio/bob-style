@@ -12,7 +12,3 @@ export interface CommentItemDto {
   content: string;
 }
 
-export enum CommentType {
-  regular = 'regular',
-  inputRadius = 'inputRadius'
-}

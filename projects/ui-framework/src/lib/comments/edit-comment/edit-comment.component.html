@@ -9,7 +9,7 @@
             class="bfe-input bfe-textarea scroll-visible-alt"
             [attr.placeholder]="placeholder || null"
             [attr.data-empty]="!value?.length"
-            [attr.has-emoji]="canDisplayEmoji"
+            [attr.data-emoji]="canDisplayEmoji"
             [attr.data-type]="type"
             (blur)="onBlur()"
             (keydown)="enterPress($event)"

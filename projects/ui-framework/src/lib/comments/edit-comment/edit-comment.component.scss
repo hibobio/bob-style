@@ -5,7 +5,7 @@
   min-width: 0;
 }
 
-[data-type='inputRadius'] {
+[data-type='secondary'] {
     background: $grey-100;
     border-radius: 32px;
     &.text-section {
@@ -26,8 +26,8 @@
   min-height: 42px;
   .bfe-textarea {
     flex-grow: 1;
-    &[data-type='inputRadius'],
-    &[has-emoji='true'] {
+    &[data-type='secondary'],
+    &[data-emoji='true'] {
       overflow: hidden;
     }
     &.textarea-nowrap {
@@ -52,15 +52,15 @@
     transition-duration: 0.3s;
   }
 
-  &:focus:not([data-type='inputRadius']),
-  &[data-empty='false']:not([data-type='inputRadius'])
+  &:focus:not([data-type='secondary']),
+  &[data-empty='false']:not([data-type='secondary'])
   {
     height: times8(10);
     min-height: times8(10);
     max-height: times8(10);
   }
 
-  &[data-type='inputRadius'] {
+  &[data-type='secondary'] {
     padding: 11px 20px;
   }
 

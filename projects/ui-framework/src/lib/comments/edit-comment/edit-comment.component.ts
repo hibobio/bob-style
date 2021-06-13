@@ -16,7 +16,7 @@ import {
 } from '@angular/core';
 
 import { AvatarSize } from '../../avatar/avatar/avatar.enum';
-import { Keys } from '../../enums';
+import { Keys, Types } from '../../enums';
 import { InputTypes } from '../../form-elements/input/input.enum';
 // tslint:disable-next-line: max-line-length
 import { FormElementKeyboardCntrlService, InputCursorState } from '../../form-elements/services/keyboard-cntrl.service';
@@ -35,7 +35,7 @@ import {
 } from '../../services/utils/functional-utils';
 import { DOMKeyboardEvent } from '../../types';
 import { COMMENT_EQ_CHECK, MENTIONS_LIST_EQ_CHECK } from '../comments.const';
-import { CommentItem, CommentItemDto, CommentType } from '../comments.interface';
+import { CommentItem, CommentItemDto } from '../comments.interface';
 import { CommentsUtilService } from '../comments.service';
 
 @Component({
@@ -70,7 +70,7 @@ export class EditCommentComponent
 
   @Input() public mentionsList: MentionsOption[];
   @Input() showEmoji = false; 
-  @HostBinding('attr.data-type') @Input() type: CommentType = CommentType.inputRadius; 
+  @HostBinding('attr.data-type') @Input() type: Types = Types.primary 
   @Output()
   sendComment: EventEmitter<CommentItemDto> = new EventEmitter();
 
@@ -143,7 +143,7 @@ export class EditCommentComponent
   }
 
   ngAfterContentChecked() {
-    if (this.type !== CommentType.inputRadius || !this.commentInput) { return; }
+    if (this.type !== Types.secondary || !this.commentInput) { return; }
     this.setTextAreaHeight();
   }
 
@@ -167,7 +167,7 @@ export class EditCommentComponent
   }
 
   get canDisplayEmoji(): boolean {
-    return this.showEmoji && this.type == CommentType.inputRadius;
+    return this.showEmoji && this.type == Types.secondary;
   }
 
   focus() {
