@@ -85,8 +85,8 @@ export class PanelService {
     }
 
     panel.originElement = this.getOriginElement(panel.overlayOrigin);
-    panel.overlayElement = panel.overlayRef.overlayElement;
-    panel.panelElement = panel.overlayElement.children[0] as HTMLElement;
+    panel.overlayElement = panel.overlayRef?.overlayElement;
+    panel.panelElement = panel.overlayElement?.children[0] as HTMLElement;
 
     panel.positionClasses$ = panel.positionStrategy['positionChanges']?.pipe(
       throttleTime(200, undefined, {
