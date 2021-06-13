@@ -1,7 +1,7 @@
 <div [ngClass]="{'panel-open': panelOpen, 'panel-above':
      positionClassList['panel-above'],
      'panel-below': positionClassList['panel-below']}"
-     (click)="openPanel()"
+     (click)="togglePanel()"
      cdkOverlayOrigin>
 
   <b-chevron-button *ngIf="chevronButtonText"

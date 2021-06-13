@@ -3,7 +3,7 @@ import {
   EventEmitter,
   HostBinding,
   Input,
-  Output,
+  Output
 } from '@angular/core';
 
 import { Icon } from '../../icons/icon.interface';
@@ -19,6 +19,7 @@ import { InfoStripIconSize, InfoStripIconType } from './info-strip.enum';
 export class InfoStripComponent {
   @HostBinding('attr.data-type') @Input() iconType: InfoStripIconType =
     InfoStripIconType.information;
+  @HostBinding('attr.data-full-width') @Input() fullWidth = false;
 
   @Input() link: Link;
   @Input() text: string;

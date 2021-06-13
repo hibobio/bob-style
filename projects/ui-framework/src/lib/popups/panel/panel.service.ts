@@ -1,4 +1,4 @@
-import { Observable, race } from 'rxjs';
+import { fromEvent, merge, Observable, race } from 'rxjs';
 import { filter, map, tap, throttleTime } from 'rxjs/operators';
 
 import {
@@ -11,6 +11,7 @@ import {
   ComponentRef,
   ElementRef,
   Injectable,
+  NgZone,
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
@@ -24,7 +25,11 @@ import {
 } from '../../services/utils/functional-utils';
 import { onlyDistinct } from '../../services/utils/rxjs.operators';
 import { UtilsService } from '../../services/utils/utils.service';
-import { DOMMouseEvent, OverlayPositionClasses } from '../../types';
+import {
+  DOMFocusEvent,
+  DOMMouseEvent,
+  OverlayPositionClasses,
+} from '../../types';
 import { PanelPositionService } from './panel-position-service/panel-position.service';
 import { PanelDefaultPosVer } from './panel.enum';
 import { CreatePanelConfig, Panel } from './panel.interface';
@@ -36,7 +41,8 @@ export class PanelService {
   constructor(
     private overlay: Overlay,
     private panelPositionService: PanelPositionService,
-    private utilsService: UtilsService
+    private utilsService: UtilsService,
+    private zone: NgZone
   ) {}
 
   createPanel<T = unknown>(config: CreatePanelConfig): Panel<T> {
@@ -78,6 +84,10 @@ export class PanelService {
       panel.componentRef = this.attachPanel<T>(panel);
     }
 
+    panel.originElement = this.getOriginElement(panel.overlayOrigin);
+    panel.overlayElement = panel.overlayRef?.overlayElement;
+    panel.panelElement = panel.overlayElement?.children[0] as HTMLElement;
+
     panel.positionClasses$ = panel.positionStrategy['positionChanges']?.pipe(
       throttleTime(200, undefined, {
         leading: true,
@@ -91,13 +101,13 @@ export class PanelService {
         if (!panel.overlayRef) {
           return;
         }
-        const elem = panel.overlayRef.overlayElement.children[0];
-        elem.classList.remove('panel-above', 'panel-below');
+
+        panel.panelElement.classList.remove('panel-above', 'panel-below');
 
         if (positionClassList['panel-above']) {
-          elem.classList.add('panel-above');
+          panel.panelElement.classList.add('panel-above');
         } else {
-          elem.classList.add('panel-below');
+          panel.panelElement.classList.add('panel-below');
         }
       })
     );
@@ -108,15 +118,30 @@ export class PanelService {
         filter((event: DOMMouseEvent) => {
           return (
             new Date().getTime() - panel.created > 200 &&
-            document.contains(panel.overlayRef.overlayElement) &&
-            !getEventPath(event).includes(panel.overlayRef.overlayElement) &&
-            !getEventPath(event).includes(
-              this.getOriginElement(panel.overlayOrigin)
-            )
+            document.contains(panel.overlayElement) &&
+            !getEventPath(event).includes(panel.overlayElement) &&
+            !getEventPath(event).includes(panel.originElement)
           );
         })
       )
     );
+
+    this.zone.runOutsideAngular(() => {
+      panel.focusOut$ = merge(
+        fromEvent(panel.originElement, 'focusout'),
+        fromEvent(panel.panelElement, 'focusout')
+      ).pipe(
+        filter((event: DOMFocusEvent) => {
+          return (
+            event.relatedTarget &&
+            !(
+              panel.panelElement.contains(event.relatedTarget) ||
+              panel.originElement.contains(event.relatedTarget)
+            )
+          );
+        })
+      );
+    });
 
     return panel;
   }
