@@ -1,5 +1,9 @@
 import {
-  Component, EventEmitter, HostBinding, Input, Output
+  Component,
+  EventEmitter,
+  HostBinding,
+  Input,
+  Output
 } from '@angular/core';
 
 import { Icon } from '../../icons/icon.interface';
@@ -13,7 +17,6 @@ import { InfoStripIconSize, InfoStripIconType } from './info-strip.enum';
   styleUrls: ['./info-strip.component.scss'],
 })
 export class InfoStripComponent {
-
   @HostBinding('attr.data-type') @Input() iconType: InfoStripIconType =
     InfoStripIconType.information;
 
@@ -26,5 +29,4 @@ export class InfoStripComponent {
 
   readonly iconSizes = InfoStripIconSize;
   readonly iconsDic: Record<InfoStripIconType, Icon> = INFOSTRIP_ICON_DICT;
-
 }
