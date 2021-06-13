@@ -1,7 +1,7 @@
+import { Icon } from '../../icons/icon.interface';
+import { Icons } from '../../icons/icons.enum';
 import { SelectGroupOption, SelectOption } from '../../lists/list.interface';
 import { MenuItem } from '../../navigation/menu/menu.interface';
-import { Icons } from '../../icons/icons.enum';
-import { Icon } from '../../icons/icon.interface';
 
 export interface MultiSearchKeyMap {
   key?: string;
@@ -16,6 +16,7 @@ export interface MultiSearchMatchResult {
   index: [number, number];
   highlightedValue?: string;
   highlightedSearchValue?: string;
+  matchLength?: number;
 }
 
 export interface MultiSearchOptionMenuItem extends MenuItem<MultiSearchOption> {

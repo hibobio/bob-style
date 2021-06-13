@@ -69,8 +69,8 @@
                    [type]="tooltipType.material">
 
                 <span class="bms-option-label"
-                      *ngIf="option[group.keyMap?.label || keyMapDef.label]">
-                  {{ option[group.keyMap?.label || keyMapDef.label] }} >
+                      *ngIf="option[group.keyMap?.label || keyMapDef.label]"
+                      [innerHTML]="option[group.keyMap?.label || keyMapDef.label] + ' >'">
                 </span>
 
                 <span class="bms-option-value"
