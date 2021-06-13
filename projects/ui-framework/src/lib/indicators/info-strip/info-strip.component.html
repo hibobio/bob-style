@@ -5,7 +5,7 @@
 
 <div class="flx content flx-grow"
      [ngClass]="fullWidth
-        ? 'flx-row flx-row-align-y full_width'
+        ? 'flx-row flx-row-align-y full-width'
         : 'flx-col flx-col-align-y'">
   <p *ngIf="text"
      class="mrg-0 pre-wrap"
@@ -16,5 +16,5 @@
   <b-link *ngIf="link"
           [config]="link"
           (clicked)="linkClicked.emit()"
-          [ngClass]="fullWidth && 'mrg-l-8'"></b-link>
+          [class.mrg-l-8]="fullWidth"></b-link>
 </div>

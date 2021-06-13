@@ -7,11 +7,11 @@
 
   display: flex;
 
-  &[full-width='false'] {
+  &[data-full-width='false'] {
     border-radius: $border-radius;
   }
 
-  .full_width {
+  .full-width {
     justify-content: flex-start;
   }
   &[data-type='warning'] {
