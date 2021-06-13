@@ -9,6 +9,6 @@ export interface PagerConfig {
 export interface PagerState<T = any> {
   currentPage: number;
   sliceSize: number;
-  currentSlice: number[] | T[];
+  currentSlice: [number, number];
   offset: number;
 }

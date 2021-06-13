@@ -41,8 +41,7 @@ export class PagerComponent<T = any> implements OnInit {
     this.initSliceConfigAndOptions(config);
 
     if (this.items) {
-      this.initViewModel();
-      this.emitChange();
+      this.resetState();
     }
   }
   public config: PagerConfig;
@@ -58,8 +57,7 @@ export class PagerComponent<T = any> implements OnInit {
       this.items = items;
 
       if (this.config) {
-        this.initViewModel();
-        this.emitChange();
+        this.resetState();
       }
     }
   }
@@ -88,7 +86,7 @@ export class PagerComponent<T = any> implements OnInit {
 
   public totalItems: number;
   public totalPages: number;
-  public currentSlice: number[];
+  public currentSlice: [number, number];
   public sliceOptions: SelectGroupOption[];
   public pagesViewModel: number[];
   public sliceInfoWidth: string = null;
@@ -147,7 +145,7 @@ export class PagerComponent<T = any> implements OnInit {
     this.emitChange('slicesize');
   }
 
-  public resetState() {
+  private resetState() {
     this.initViewModel();
     this.emitChange();
   }
@@ -211,7 +209,7 @@ export class PagerComponent<T = any> implements OnInit {
       this.pageChange.emit(this.currentPage);
     }
     if (which === 'slice' || which === 'all') {
-      this.sliceChange.emit(this.getCurrentSlice());
+      this.sliceChange.emit(this.getCurrentItemsSlice());
     }
     if (which === 'slicesize') {
       this.sliceSizeChange.emit(this.config.sliceSize);
@@ -220,15 +218,15 @@ export class PagerComponent<T = any> implements OnInit {
     this.stateChange.emit({
       currentPage: this.currentPage,
       sliceSize: this.config.sliceSize,
-      currentSlice: this.getCurrentSlice(),
-      offset: this.currentPage * this.config.sliceSize
+      currentSlice: this.currentSlice,
+      offset: this.currentPage * this.config.sliceSize,
     });
   }
 
-  private getCurrentSlice(): number[] | T[] {
+  private getCurrentItemsSlice(): number[] | T[] {
     return isArray(this.items)
       ? this.items.slice(...this.currentSlice)
-      : this.currentSlice
+      : this.currentSlice;
   }
 
   public pageButtonsTrackBy(index: number, page: number): number {

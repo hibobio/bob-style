@@ -70,3 +70,7 @@
     margin-bottom: -2px;
   }
 }
+
+:host.has-label .bfe-wrap .bfe-input[data-placeholder]:before {
+  opacity: 1;
+}
