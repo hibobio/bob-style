@@ -8,6 +8,10 @@
   border-radius: $border-radius;
   display: flex;
 
+  .full_width {
+    border-radius: 0;
+    justify-content: flex-start;
+  }
   &[data-type='warning'] {
     background-color: rgba($color-warn, 0.1);
     color: $color3_darker;
