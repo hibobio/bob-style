@@ -105,7 +105,7 @@ export abstract class MultiSearchBaseElement
 
     if (
       !relatedTarget ||
-      (!this.panel?.overlayRef?.overlayElement.contains(relatedTarget) &&
+      (!this.panel?.overlayElement.contains(relatedTarget) &&
         !relatedTarget.matches('.clear-input'))
     ) {
       this.closePanel();
@@ -133,10 +133,10 @@ export abstract class MultiSearchBaseElement
   protected focusFirstOption(focusList = false): HTMLElement {
     const elToFocus = (this.lastFocusedOption ||
       (!focusList &&
-        this.panel?.overlayRef?.overlayElement?.querySelector(
+        this.panel?.overlayElement?.querySelector(
           '.bms-option:not(.bms-show-more)'
         )) ||
-      this.panel?.overlayRef?.overlayElement?.children[0]) as HTMLElement;
+      this.panel?.panelElement) as HTMLElement;
 
     elToFocus?.focus();
 

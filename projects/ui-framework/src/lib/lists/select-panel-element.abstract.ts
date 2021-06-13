@@ -250,6 +250,10 @@ export abstract class BaseSelectPanelElement
     this.openPanel();
   }
 
+  togglePanel(): void {
+    !this.panel ? this.openPanel() : this.closePanel();
+  }
+
   openPanel(): void {
     this.panel = this.listPanelSrvc.openPanel({
       self: this,
