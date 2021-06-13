@@ -19,10 +19,10 @@ import { InfoStripIconSize, InfoStripIconType } from './info-strip.enum';
 export class InfoStripComponent {
   @HostBinding('attr.data-type') @Input() iconType: InfoStripIconType =
     InfoStripIconType.information;
+  @HostBinding('attr.full-width') @Input() fullWidth = false;
 
   @Input() link: Link;
   @Input() text: string;
-  @Input() fullWidth: boolean;
   @Input() iconSize: InfoStripIconSize = InfoStripIconSize.large;
 
   @Output() linkClicked: EventEmitter<void> = new EventEmitter();
