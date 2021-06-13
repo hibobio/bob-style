@@ -3,7 +3,10 @@
         [size]="iconSize">
 </b-icon>
 
-<div class="content flx-col flx-grow flx-col-align-y">
+<div class="flx content flx-grow"
+     [ngClass]="fullWidth
+        ? 'flx-row flx-row-align-y full-width'
+        : 'flx-col flx-col-align-y'">
   <p *ngIf="text"
      class="mrg-0 pre-wrap"
      [innerHTML]="text"></p>
@@ -12,5 +15,6 @@
 
   <b-link *ngIf="link"
           [config]="link"
-          (clicked)="linkClicked.emit()"></b-link>
+          (clicked)="linkClicked.emit()"
+          [class.mrg-l-8]="fullWidth"></b-link>
 </div>
