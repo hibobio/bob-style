@@ -22,6 +22,7 @@ const templateForNotes = `<b-pager  [items]="items"
             [config]="config"
             (pageChange)="onPageChange($event)"
             (sliceChange)="onSliceChange($event)"
+            (stateChange)="onStateChange($event)"
             (sliceSizeChange)="onSliceSizeChange($event)">
 </b-pager>`;
 
@@ -42,10 +43,12 @@ const storyTemplate = `
                   sliceStep: config.sliceStep,
                   sliceMax: config.sliceMax,
                   sliceSize: config.sliceSize,
-                  showSliceSizeSelect: showSliceSizeSelect
+                  showSliceSizeSelect: showSliceSizeSelect,
+                  resetOnSliceSizeChange: resetOnSliceSizeChange
                 }"
                 (pageChange)="onPageChange($event)"
                 (sliceChange)="onSliceChange($event)"
+                (stateChange)="onStateChange($event)"
                 (sliceSizeChange)="onSliceSizeChange($event)">
     </b-pager>
   </div>
@@ -73,6 +76,7 @@ const note = `
   (sliceChange) |  EventEmitter<wbr>&lt;number[] / any[]&gt; | if a number was provided for [items] (that is considered to be your items array length), the output emits current slice indexes;<br>\
   if you provided your data array as [items], the output emits a slice of your data array ('current page items') | &nbsp;
   (sliceSizeChange) | number | emits on slice size change (from the Select) | &nbsp;
+  (stateChange) | PagerState | combination of currentPage, slice, sliceSize, offset | &nbsp;
 
   --------------------------------
 
@@ -113,13 +117,21 @@ const note = `
         (sliceChange)="currentSlice = $event"></b-pager>
   ~~~
 
-
-  #### interface: PagerConfig
+  #### interface: PagerState
   Name | Type | Description
   --- | --- | ---
-  sliceSize | number | current items per page
-  sliceMax | number | max items per page
-  sliceStep | number | items per page step for items-per-page Select
+  currentPage | number | current page
+  currentSlice | number[] | current slice [start inclusive index, end exclusive index]
+  sliceSize | number | current slice size; limit (API usage)
+  offset | number | offset (API usage)
+
+  #### interface: PagerConfig
+  Name | Type | Description | Default
+  --- | --- | --- | ---
+  sliceSize | number | current items per page | &nbsp;
+  sliceMax | number | max items per page | &nbsp;
+  sliceStep | number | items per page step for items-per-page Select | &nbsp;
+  resetOnSliceSizeChange | boolean | should reset to first page on slice size change | false
 
   #### const: PAGER<sub>-</sub>CONFIG<sub>-</sub>DEF
   ~~~
@@ -174,10 +186,12 @@ story.add(
         }),
 
         showSliceSizeSelect: boolean('showSliceSizeSelect', true),
+        resetOnSliceSizeChange: boolean('resetOnSliceSizeChange', false),
 
         onSliceChange: action('sliceChange'),
         onPageChange: action('pageChange'),
         onSliceSizeChange: action('sliceSizeChange'),
+        onStateChange: action('stateChange'),
       },
       moduleMetadata: {
         imports: [
