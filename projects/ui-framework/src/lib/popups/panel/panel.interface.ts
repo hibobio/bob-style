@@ -18,7 +18,11 @@ import {
 } from '@angular/core';
 
 import { BackdropClickMode } from '../../lists/list.enum';
-import { DOMMouseEvent, OverlayPositionClasses } from '../../types';
+import {
+  DOMFocusEvent,
+  DOMMouseEvent,
+  OverlayPositionClasses,
+} from '../../types';
 import { PanelDefaultPosVer } from './panel.enum';
 
 export interface CreatePanelConfig<T = unknown> {
@@ -53,9 +57,14 @@ export interface Panel<T = unknown>
 
   positionClasses$: Observable<OverlayPositionClasses>;
   backdropClick$: Observable<DOMMouseEvent>;
+  focusOut$?: Observable<DOMFocusEvent>;
 
   subs?: Subscription[];
   backdropClickMode?: BackdropClickMode;
+
+  originElement?: HTMLElement;
+  overlayElement?: HTMLElement;
+  panelElement?: HTMLElement;
 
   [key: string]: any;
 }

@@ -1,5 +1,5 @@
 import { action } from '@storybook/addon-actions';
-import { object, select, text, withKnobs } from '@storybook/addon-knobs';
+import { boolean, object, select, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 
 import { ComponentGroupType } from '../../consts';
@@ -17,15 +17,17 @@ const template = `<b-info-strip
         [iconType]="iconType"
         [iconSize]="iconSize"
         [link]="link"
+        [fullWidth]="fullWidth"
         [text]="text"
         (linkClicked)="onLinkClick()">
 </b-info-strip>`;
 
 const template2 = `<b-info-strip
+        [fullWidth]="fullWidth"
         [iconType]="infoStripIconType.warning"
         [iconSize]="infoStripIconSize.normal"
         [text]="'Please agree with everything I say'">
-    <b-checkbox [label]="'I agree with everything you say'" class="mrg-t-8"></b-checkbox>
+    <b-checkbox [label]="'I agree with everything you say'" [ngClass]="fullWidth ? 'mrg-l-8' : 'mrg-t-8'"></b-checkbox>
 </b-info-strip>`;
 
 const storyTemplate = `<b-story-book-layout [title]="'Info Strip'">
@@ -79,6 +81,7 @@ story.add(
           InfoStripIconSize.large
         ),
         text: text('text', 'Place your info text here'),
+        fullWidth: boolean('fullWidth', false),
         link: object('link', {
           text: 'Click here',
           url: 'https://app.hibob.com',

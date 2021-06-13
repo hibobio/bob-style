@@ -92,7 +92,7 @@ export class PanelComponent implements OnInit, OnDestroy {
   }
 
   onTriggerClick(): void {
-    this.openPanel();
+    !this.panel ? this.openPanel() : this.closePanel();
   }
 
   onMouseEnter(): void {

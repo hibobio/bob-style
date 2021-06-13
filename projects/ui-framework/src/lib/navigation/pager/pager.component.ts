@@ -21,7 +21,7 @@ import {
 } from '../../services/utils/functional-utils';
 import { DOMMouseEvent } from '../../types';
 import { PAGER_CONFIG_DEF } from './pager.const';
-import { PagerConfig } from './pager.interface';
+import { PagerConfig, PagerState } from './pager.interface';
 import { PagerService } from './pager.service';
 
 @Component({
@@ -84,6 +84,7 @@ export class PagerComponent<T = any> implements OnInit {
   @Output() sliceChange: EventEmitter<number[] | T[]> = new EventEmitter();
   @Output() pageChange: EventEmitter<number> = new EventEmitter();
   @Output() sliceSizeChange: EventEmitter<number> = new EventEmitter();
+  @Output() stateChange: EventEmitter<PagerState<T>> = new EventEmitter();
 
   public totalItems: number;
   public totalPages: number;
@@ -101,8 +102,7 @@ export class PagerComponent<T = any> implements OnInit {
       this.initSliceConfigAndOptions();
     }
     if (!this.pagesViewModel) {
-      this.initViewModel();
-      this.emitChange();
+      this.resetState();
     }
   }
 
@@ -138,10 +138,18 @@ export class PagerComponent<T = any> implements OnInit {
     this.config.sliceSize = value.selectedIDs[0] as number;
     this.totalPages = Math.ceil(this.totalItems / this.config.sliceSize);
 
-    const newPage = Math.floor(currentSliceStart / this.config.sliceSize);
+    const newPage =
+      this.config.resetOnSliceSizeChange === true
+        ? 0
+        : Math.floor(currentSliceStart / this.config.sliceSize);
 
-    this.changePage(newPage);
+    this.changePage(newPage, false);
     this.emitChange('slicesize');
+  }
+
+  public resetState() {
+    this.initViewModel();
+    this.emitChange();
   }
 
   private changePage(newPage: number, emit = true): void {
@@ -199,19 +207,28 @@ export class PagerComponent<T = any> implements OnInit {
   private emitChange(
     which: 'slice' | 'slicesize' | 'page' | 'all' = 'all'
   ): void {
-    if (which === 'page' || which === 'all') {
+    if (which === 'page' || which === 'slicesize' || which === 'all') {
       this.pageChange.emit(this.currentPage);
     }
     if (which === 'slice' || which === 'all') {
-      this.sliceChange.emit(
-        isArray(this.items)
-          ? this.items.slice(...this.currentSlice)
-          : this.currentSlice
-      );
+      this.sliceChange.emit(this.getCurrentSlice());
     }
     if (which === 'slicesize') {
       this.sliceSizeChange.emit(this.config.sliceSize);
     }
+
+    this.stateChange.emit({
+      currentPage: this.currentPage,
+      sliceSize: this.config.sliceSize,
+      currentSlice: this.getCurrentSlice(),
+      offset: this.currentPage * this.config.sliceSize
+    });
+  }
+
+  private getCurrentSlice(): number[] | T[] {
+    return isArray(this.items)
+      ? this.items.slice(...this.currentSlice)
+      : this.currentSlice
   }
 
   public pageButtonsTrackBy(index: number, page: number): number {
