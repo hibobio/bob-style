@@ -19,7 +19,7 @@ import { AvatarSize } from '../../avatar/avatar/avatar.enum';
 import { Keys } from '../../enums';
 import { InputTypes } from '../../form-elements/input/input.enum';
 // tslint:disable-next-line: max-line-length
-import { FormElementKeyboardCntrlService } from '../../form-elements/services/keyboard-cntrl.service';
+import { FormElementKeyboardCntrlService, InputCursorState } from '../../form-elements/services/keyboard-cntrl.service';
 import { Emoji } from '../../popups/emoji/emoji.interface';
 import { HTML_TEST } from '../../services/html/html-parser.const';
 import {
@@ -97,7 +97,7 @@ export class EditCommentComponent
   public set inputValue(value: string) {
     this.input && (this.input[this.isHtml ? 'innerHTML' : 'value'] = value);
   }
-  private lastCaretInputCommentPosition: number;
+  private lastInputCursorState: InputCursorState;
 
   public tribute: TributeInstance;
 
@@ -161,8 +161,8 @@ export class EditCommentComponent
   }
 
   addEmoji(code: Emoji): void {
-    const textBeforeEmoji = this.inputValue.slice(0, this.lastCaretInputCommentPosition);
-    const textAfterEmoji = this.inputValue.slice(this.lastCaretInputCommentPosition)
+    const textBeforeEmoji = this.inputValue.slice(0, this.lastInputCursorState.selectionStart);
+    const textAfterEmoji = this.inputValue.slice(this.lastInputCursorState.selectionStart)
     this.inputValue = textBeforeEmoji + code.icon + textAfterEmoji;
   }
 
@@ -201,8 +201,8 @@ export class EditCommentComponent
 
   onBlur(): void {
     if (!this.isHtml) {
-      this.lastCaretInputCommentPosition = this.kbrdCntrlSrvc.
-      getInputCursorState(this.commentInput.nativeElement as HTMLTextAreaElement).selectionStart;
+      this.lastInputCursorState = this.kbrdCntrlSrvc.
+      getInputCursorState(this.commentInput.nativeElement as HTMLTextAreaElement);
     }
     if (this.updateOnBlur) {
       this.updateCommentAndResetValue();
