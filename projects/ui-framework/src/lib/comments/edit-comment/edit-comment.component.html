@@ -6,7 +6,7 @@
 <div [attr.data-type]="type" class="bfe-wrap text-section flx-grow">
   <div class="flx text-area-wrapper" *ngIf="!isHtml">
     <textarea #commentInput
-            class="bfe-input bfe-textarea"
+            class="bfe-input bfe-textarea scroll-visible-alt"
             [attr.placeholder]="placeholder || null"
             [attr.data-empty]="!value?.length"
             [attr.has-emoji]="canDisplayEmoji"

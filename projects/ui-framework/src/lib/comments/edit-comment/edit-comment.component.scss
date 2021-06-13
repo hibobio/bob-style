@@ -30,6 +30,11 @@
     &[has-emoji='true'] {
       overflow: hidden;
     }
+    &.textarea-nowrap {
+    overflow: unset;
+    overflow-x: scroll;
+    white-space: nowrap;
+    }
   }
 }
 

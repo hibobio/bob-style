@@ -10,6 +10,7 @@ import {
   OnChanges,
   OnDestroy,
   Output,
+  Renderer2,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
@@ -53,7 +54,8 @@ export class EditCommentComponent
   constructor(
     private kbrdCntrlSrvc: FormElementKeyboardCntrlService,
     private mentionsService: MentionsService,
-    private commentsUtilService: CommentsUtilService
+    private commentsUtilService: CommentsUtilService,
+    private renderer: Renderer2
   ) {}
 
   @ViewChild('commentInput', { static: false }) commentInput: ElementRef<
@@ -142,13 +144,20 @@ export class EditCommentComponent
 
   ngAfterContentChecked() {
     if (this.type !== CommentType.inputRadius || !this.commentInput) { return; }
+    this.setTextAreaHeight();
+  }
+
+  private setTextAreaHeight(): void {
     const textarea = this.commentInput.nativeElement as HTMLTextAreaElement;
     textarea.style.height = 'auto';
-    if (textarea.value.split(/\r*\n/).length <= 1) {
-      textarea.style.height = '40px'
+    this.renderer.addClass(textarea, 'textarea-nowrap');
+    const isLongLineString = textarea.scrollWidth > textarea.offsetWidth;
+    this.renderer.removeClass(textarea, 'textarea-nowrap');
+    if (textarea.value.split(/\r*\n/).length > 1 || isLongLineString) {
+      textarea.style.height = textarea.scrollHeight + 'px';      
       return;
     }
-    textarea.style.height = textarea.scrollHeight + 'px';      
+    textarea.style.height = '40px'
   }
 
   addEmoji(code: Emoji): void {
