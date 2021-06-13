@@ -263,13 +263,10 @@ export class ColorPickerComponent
     });
 
     this.panel &&
-      setCssProps(
-        this.panel.overlayRef.overlayElement.children[0] as HTMLElement,
-        {
-          '--circle-border-color': avatarBorderColor,
-          '--cursor-border-color': cursorColor,
-        }
-      );
+      setCssProps(this.panel.panelElement, {
+        '--circle-border-color': avatarBorderColor,
+        '--cursor-border-color': cursorColor,
+      });
   }
 
   public openPanel(): void {

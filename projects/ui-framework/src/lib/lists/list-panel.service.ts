@@ -1,30 +1,32 @@
-import {
-  Injectable,
-  NgZone,
-  ViewContainerRef,
-  TemplateRef,
-  ChangeDetectorRef,
-  EventEmitter,
-} from '@angular/core';
+import { race, Subscription } from 'rxjs';
+import { filter, map, pairwise, tap, throttleTime } from 'rxjs/operators';
+
 import {
   CdkOverlayOrigin,
-  OverlayRef,
   ConnectedPosition,
+  OverlayRef,
 } from '@angular/cdk/overlay';
-import { throttleTime, filter, map, pairwise, tap } from 'rxjs/operators';
-import { race, Subscription } from 'rxjs';
+import {
+  ChangeDetectorRef,
+  EventEmitter,
+  Injectable,
+  NgZone,
+  TemplateRef,
+  ViewContainerRef,
+} from '@angular/core';
+
 import { Keys } from '../enums';
-import { ScrollEvent } from '../services/utils/utils.interface';
-import { MobileService } from '../services/utils/mobile.service';
-import { DOMhelpers } from '../services/html/dom-helpers.service';
-import { UtilsService } from '../services/utils/utils.service';
 import { PanelDefaultPosVer } from '../popups/panel/panel.enum';
-import { OverlayPositionClasses } from '../types';
-import { filterKey } from '../services/utils/rxjs.operators';
-import { PanelService } from '../popups/panel/panel.service';
 import { CreatePanelConfig, Panel } from '../popups/panel/panel.interface';
-import { BackdropClickMode } from './list.enum';
+import { PanelService } from '../popups/panel/panel.service';
+import { DOMhelpers } from '../services/html/dom-helpers.service';
 import { unsubscribeArray } from '../services/utils/functional-utils';
+import { MobileService } from '../services/utils/mobile.service';
+import { filterKey } from '../services/utils/rxjs.operators';
+import { ScrollEvent } from '../services/utils/utils.interface';
+import { UtilsService } from '../services/utils/utils.service';
+import { OverlayPositionClasses } from '../types';
+import { BackdropClickMode } from './list.enum';
 
 export interface OverlayEnabledComponent {
   viewContainerRef: ViewContainerRef;
@@ -108,15 +110,14 @@ export class ListPanelService {
       showBackdrop: true,
     });
 
-    const inputWidth = panel.overlayOrigin.elementRef.nativeElement.offsetWidth;
+    const inputWidth = panel.originElement.offsetWidth;
+
     panel.overlayRef.updateSize({
       width: inputWidth,
       height: 360,
     });
 
-    const panelElem = panel.overlayRef.overlayElement
-      .children[0] as HTMLElement;
-    this.DOM.setCssProps(panelElem, {
+    this.DOM.setCssProps(panel.panelElement, {
       '--input-width': inputWidth + 'px',
     });
 
@@ -152,7 +153,9 @@ export class ListPanelService {
           filter(
             (scrollArr: number[]) => Math.abs(scrollArr[0] - scrollArr[1]) > 20
           )
-        )
+        ),
+
+        panel.focusOut$
         //
       ).subscribe(() => {
         this.zone.run(() => {
