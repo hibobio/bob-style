@@ -5,31 +5,34 @@
   min-width: 0;
 }
 
-[data-type='secondary'] {
+:host[data-type='secondary'] {
+  .text-section {
     background: $grey-100;
     border-radius: 32px;
-    &.text-section {
       &:before,
       &:after {
         border: unset
       }
-    }
     .text-area-wrapper {
       b-emoji {
         margin-right: 8px;
       }
+      .bfe-textarea {
+        overflow: hidden;
+        padding: 11px 20px;
+        height: unset;
+        min-height: unset;
+        max-height: unset;
+      }
     }
   }
+}
 
 .text-area-wrapper {
   width: 100%;
   min-height: 42px;
   .bfe-textarea {
     flex-grow: 1;
-    &[data-type='secondary'],
-    &[data-emoji='true'] {
-      overflow: hidden;
-    }
     &.textarea-nowrap {
     overflow: unset;
     overflow-x: scroll;
@@ -52,16 +55,12 @@
     transition-duration: 0.3s;
   }
 
-  &:focus:not([data-type='secondary']),
-  &[data-empty='false']:not([data-type='secondary'])
+  &:focus,
+  &[data-empty='false']
   {
     height: times8(10);
     min-height: times8(10);
     max-height: times8(10);
-  }
-
-  &[data-type='secondary'] {
-    padding: 11px 20px;
   }
 
   &[data-placeholder][data-empty='false'] {
