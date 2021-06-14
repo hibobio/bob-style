@@ -35,6 +35,9 @@ export class HorizontalLayoutComponent
   @ViewChild(CardsLayoutComponent, { static: true })
   private cardsLayout: CardsLayoutComponent;
 
+  @ViewChild('lastItem', { static: true })
+  private lastItem: ElementRef<HTMLElement>;
+
   readonly buttonType = ButtonType;
   readonly buttonSize = ButtonSize;
   readonly cardType: CardType.small;
@@ -62,7 +65,7 @@ export class HorizontalLayoutComponent
       .getCardsInRow$()
       .pipe(takeUntil(this.onDestroyNotifier$))
       .subscribe((data) => {
-        this.itemsPerRow = data;
+        this.itemsPerRow = this.lastItem.nativeElement.childNodes.length && data > 1  ? data - 1 : data;
         this.cdr.detectChanges();
 
         const cardsList = this.cardsLayout.hostElRef.nativeElement
