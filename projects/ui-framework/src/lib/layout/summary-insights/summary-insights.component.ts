@@ -13,5 +13,28 @@ import { SummaryInsight } from './summary-insights.interface';
 export class SummaryInsightsComponent extends ContentTemplateConsumer {
   public readonly type = SummaryInsightType;
 
-  @Input() data: SummaryInsight[];
+  private _data: SummaryInsight[];
+
+  @Input() set data(data: SummaryInsight[]) {
+    this._data = data?.map((item) => {
+      if (item.type === SummaryInsightType.labelValue) {
+        item.data = {
+          labelClass: {
+            flx: false,
+            blk: true,
+          },
+          valueClass: {
+            flx: false,
+            blk: true,
+          },
+          ...item.data,
+        };
+      }
+      return item;
+    });
+  }
+
+  get data(): SummaryInsight[] {
+    return this._data;
+  }
 }
