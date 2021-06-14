@@ -10,13 +10,11 @@
                  [swap]="!item.data.type">
     <ng-container label-tooltip
                   *ngTemplateOutlet="getContentTemplate('labelTooltip');
-                  context: {
-                  data: item.data.labelDescription }">
+                  context: { data: item.data.labelDescription }">
     </ng-container>
     <ng-container value-tooltip
                   *ngTemplateOutlet="getContentTemplate('valueTooltip');
-                  context: {
-                  data: item.data.valueDescription }">
+                  context: { data: item.data.valueDescription }">
     </ng-container>
   </b-label-value>
 
@@ -43,9 +41,8 @@
 
   <div *ngIf="item.type === type.custom"
        class="bsi-item bsi-item-custom flx flx-center">
-    <ng-container label-tooltip
-                  *ngTemplateOutlet="getContentTemplate('item');
-              context: {data: item.data||{}}">
+    <ng-container *ngTemplateOutlet="getContentTemplate('item');
+              context: { data: item.data }">
     </ng-container>
   </div>
 

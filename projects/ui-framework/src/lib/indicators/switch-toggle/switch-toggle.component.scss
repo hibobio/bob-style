@@ -32,8 +32,6 @@
 }
 
 :host ::ng-deep {
-  cursor: pointer;
-
   .mat-slide-toggle-ripple.mat-ripple {
     display: none;
   }
@@ -149,5 +147,18 @@
   .mat-slide-toggle-bar {
     margin-left: 8px;
     margin-right: auto;
+  }
+}
+
+:host.disabled ::ng-deep {
+  cursor: default;
+
+  .mat-slide-toggle-bar {
+    cursor: not-allowed;
+  }
+
+  .mat-slide-toggle-thumb-container,
+  .mat-slide-toggle-thumb {
+    pointer-events: none;
   }
 }
