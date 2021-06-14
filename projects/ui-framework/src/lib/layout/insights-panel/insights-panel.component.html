@@ -41,7 +41,7 @@
 
 </ng-template>
 
-<div class="flx-col flx-grow flx-spread scroll-visible"
+<div class="flx-col flx-grow scroll-visible"
      *ngIf="config.collapsible === false || isExpanded ||
      config.showMoreAfterItem > 0">
 
@@ -53,8 +53,7 @@
       <ng-container *ngTemplateOutlet="item; context: {
                         insight: insight,
                         last: !isExpanded && index+1 === config.showMoreAfterItem,
-                        hasShowMore: !isExpanded && index+1 ===
-                        config.showMoreAfterItem,
+                        hasShowMore: !isExpanded && index+1 === config.showMoreAfterItem && data.length > config.showMoreAfterItem,
                         hasShowLess: false
                       }">
       </ng-container>
