@@ -53,7 +53,7 @@
       <ng-container *ngTemplateOutlet="item; context: {
                         insight: insight,
                         last: !isExpanded && index+1 === config.showMoreAfterItem,
-                        hasShowMore: !isExpanded && index+1 === config.showMoreAfterItem && data.length > 1,
+                        hasShowMore: !isExpanded && index+1 === config.showMoreAfterItem && data.length > config.showMoreAfterItem,
                         hasShowLess: false
                       }">
       </ng-container>

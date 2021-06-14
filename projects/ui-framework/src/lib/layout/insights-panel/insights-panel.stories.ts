@@ -142,7 +142,8 @@ story.add(
         showMoreAfterItem: number('showMoreAfterItem', 1, {}, 'Props'),
         expandButtonText: text('expandButtonText', 'Insights', 'Props'),
         readMoreLinkText: text('readMoreLinkText', 'Read More', 'Props'),
-        data: object('data', data, 'Data'),
+        data: data,
+        dataNotes: object('data', data, 'Data'),
         onExpand: action('expanded'),
       },
       moduleMetadata: {
