@@ -48,14 +48,31 @@ export const summaryInsightsDataMock = [
       },
     },
   },
+  // {
+  //   type: SummaryInsightType.progressBar,
+  //   data: {
+  //     data: {
+  //       value: values[++idx],
+  //       headerTextPrimary: things[idx],
+  //       color: colors[idx],
+  //     },
+  //   },
+  // },
   {
-    type: SummaryInsightType.progressBar,
+    type: SummaryInsightType.custom,
     data: {
-      data: {
-        value: values[++idx],
-        headerTextPrimary: things[idx],
-        color: colors[idx],
+      name: 'donut-chart',
+      donutSize: 'medium',
+      text: '?',
+      labelValue: {
+        label: 'Fruit',
+        value: '10',
       },
+      data: [
+        ['Apples', 8],
+        ['Oranges', 1],
+        ['Bananas', 3],
+      ],
     },
   },
 ];

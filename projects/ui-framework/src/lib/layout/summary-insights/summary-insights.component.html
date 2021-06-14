@@ -41,4 +41,12 @@
     </b-progress-bar>
   </div>
 
+  <div *ngIf="item.type === type.custom"
+       class="bsi-item bsi-item-custom flx flx-center">
+    <ng-container label-tooltip
+                  *ngTemplateOutlet="getContentTemplate('item');
+              context: {data: item.data||{}}">
+    </ng-container>
+  </div>
+
 </ng-container>

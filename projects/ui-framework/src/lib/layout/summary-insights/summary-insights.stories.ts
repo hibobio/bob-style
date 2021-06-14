@@ -2,9 +2,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { object, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 
+import { ChartsModule } from '../../../../bob-charts/src/charts/charts.module';
 import { ComponentGroupType } from '../../consts';
 import { ContentTemplateModule } from '../../services/utils/contentTemplate.directive';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { LabelValueModule } from '../../typography/label-value/label-value.module';
 import {
   summaryInsightsDataMock,
   summaryInsightsDataMock2,
@@ -17,6 +19,22 @@ const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
 
 const template1 = `<b-summary-insights
     [data]="data">
+
+    <ng-container *contentTemplate="let data=data; name:'item'">
+      <b-donut-text-chart
+          [donutSize]="data?.donutSize"
+          [data]="data?.data"
+          [name]="data?.name"
+          [legend]="false">
+            <span>{{data?.text}}</span>
+      </b-donut-text-chart>
+      <b-label-value class="mrg-l-12"
+                [labelValue]="data?.labelValue"
+                type="10"
+                swap="true">
+      </b-label-value>
+    </ng-container>
+
 </b-summary-insights>
 
 <b-summary-insights
@@ -125,6 +143,8 @@ story.add(
           StoryBookLayoutModule,
           SummaryInsightsModule,
           ContentTemplateModule,
+          ChartsModule,
+          LabelValueModule,
         ],
       },
     };
