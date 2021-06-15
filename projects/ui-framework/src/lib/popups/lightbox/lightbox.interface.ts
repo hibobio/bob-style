@@ -11,8 +11,9 @@ export interface LightboxConfig {
   video?: string | SafeResourceUrl;
   iframe?: string | SafeResourceUrl;
   fillScreen?: boolean;
+  noOverlayPadding?: boolean;
   disableClose?: boolean;
-  disableCloseButton?: boolean;
+  hideCloseButton?: boolean;
   closeOnBackdropClick?: boolean;
 }
 
