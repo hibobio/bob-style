@@ -294,7 +294,7 @@ export class FilterBarTestComponent implements OnInit {
 
   @ViewChild('qfl') private qfl: QuickFilterLayoutComponent;
 
-  public quickFilters: QuickFilterConfig[] = QFconfig;
+  public quickFilters: Partial<QuickFilterConfig>[] = QFconfig;
 
   public qflShown = true;
   public allShown = true;
