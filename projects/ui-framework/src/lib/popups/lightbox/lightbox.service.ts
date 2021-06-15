@@ -58,6 +58,7 @@ export class LightboxService {
 
     try {
       this.lightbox.config = {
+        noOverlayPadding: false,
         ...config,
         image:
           config.image &&
@@ -71,7 +72,17 @@ export class LightboxService {
             : this.url.validateVideoUrl(config.video as string)),
       };
 
-      this.lightbox.overlayRef = this.overlay.create(this.overlayConfig);
+      const overlayConfig = this.lightbox.config.noOverlayPadding
+        ? {
+            ...this.overlayConfig,
+            panelClass: [
+              this.overlayConfig.panelClass as string,
+              'b-lightbox-panel-no-padding',
+            ],
+          }
+        : this.overlayConfig;
+
+      this.lightbox.overlayRef = this.overlay.create(overlayConfig);
       lightboxPortal = new ComponentPortal(LightboxComponent);
       this.lightbox.lightboxComponentRef = this.lightbox.overlayRef.attach(
         lightboxPortal
