@@ -68,3 +68,7 @@
     transform: scale(1.16);
   }
 }
+
+::ng-deep .mat-tooltip.summary-insights-tooltip {
+  max-width: 280px;
+}
