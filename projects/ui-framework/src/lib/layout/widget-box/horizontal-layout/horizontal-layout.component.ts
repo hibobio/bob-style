@@ -53,6 +53,7 @@ export class HorizontalLayoutComponent
 
   ngAfterContentInit(): void {
     this.setItemsPerRow();
+    !this.hasLastItem && this.lastItem.nativeElement.remove();
   }
 
   toggleShowAll(showAll: boolean): void {
@@ -60,12 +61,16 @@ export class HorizontalLayoutComponent
     this.cdr.detectChanges();
   }
 
+  private get hasLastItem(): boolean {
+    return !!this.lastItem.nativeElement.childNodes.length;
+  }
+
   private setItemsPerRow(): void {
     this.cardsLayout
       .getCardsInRow$()
       .pipe(takeUntil(this.onDestroyNotifier$))
       .subscribe((data) => {
-        this.itemsPerRow = this.lastItem.nativeElement.childNodes.length && data > 1  ? data - 1 : data;
+        this.itemsPerRow = this.hasLastItem && data > 1  ? data - 1 : data;
         this.cdr.detectChanges();
 
         const cardsList = this.cardsLayout.hostElRef.nativeElement
