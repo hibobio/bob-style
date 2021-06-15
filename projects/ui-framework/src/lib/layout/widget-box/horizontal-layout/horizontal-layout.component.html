@@ -11,9 +11,12 @@
     <ng-container *ngTemplateOutlet="contentTemplate; context: { item: item, index: i }">
     </ng-container>
   </div>
+  <div #lastItem>
+    <ng-content select="[lastItem]"></ng-content>
+  </div>
 </b-cards>
 
-<b-widget-box-expand *ngIf="items?.length > itemsPerRow"
+<b-widget-box-expand *ngIf="!swiper && items?.length > itemsPerRow"
   class="flx-col brd-t pad-4" 
   (clicked)="toggleShowAll($event)">
 </b-widget-box-expand>
