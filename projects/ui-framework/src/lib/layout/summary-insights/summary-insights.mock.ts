@@ -1,4 +1,4 @@
-import { mockThings, mockTime } from '../../mock.const';
+import { mockText, mockThings, mockTime } from '../../mock.const';
 import { ColorPalette } from '../../services/color-service/color-palette.enum';
 import {
   makeArray,
@@ -35,6 +35,8 @@ export const summaryInsightsDataMock = [
         headerTextSecondary: things[idx],
         color: colors[idx],
       },
+
+      tooltip: mockText(10),
     },
   },
   {
@@ -46,6 +48,8 @@ export const summaryInsightsDataMock = [
         headerTextSecondary: things[idx],
         color: colors[idx],
       },
+
+      tooltip: mockText(10),
     },
   },
   // {

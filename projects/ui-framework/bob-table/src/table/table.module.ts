@@ -30,11 +30,11 @@ import { TableComponent } from './table/table.component';
 @NgModule({
   declarations: [
     TableComponent,
+    TreeDirective,
     AvatarCellComponent,
     ActionsCellComponent,
     TableActionsWrapperComponent,
     CircleIconAndLabelComponent,
-    TreeDirective,
     CellRenderersWrapperComponent,
   ],
   providers: [TableUtilsService],
@@ -50,8 +50,9 @@ import { TableComponent } from './table/table.component';
     AgGridModule.withComponents([
       AvatarCellComponent,
       ActionsCellComponent,
-      ActionsCellComponent,
       CircleIconAndLabelComponent,
+      TableActionsWrapperComponent,
+      CellRenderersWrapperComponent,
     ]),
     IconsModule,
     PagerModule,
@@ -63,8 +64,15 @@ import { TableComponent } from './table/table.component';
     TreeDirective,
     AvatarCellComponent,
     ActionsCellComponent,
-    TableActionsWrapperComponent,
     CircleIconAndLabelComponent,
+    TableActionsWrapperComponent,
+    CellRenderersWrapperComponent,
+  ],
+  entryComponents: [
+    AvatarCellComponent,
+    ActionsCellComponent,
+    CircleIconAndLabelComponent,
+    TableActionsWrapperComponent,
     CellRenderersWrapperComponent,
   ],
 })

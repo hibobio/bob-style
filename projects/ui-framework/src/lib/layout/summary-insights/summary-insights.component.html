@@ -4,6 +4,8 @@
 
   <b-label-value *ngIf="item.type === type.labelValue"
                  class="bsi-item flx-col-align-y"
+                 [matTooltip]="item.data.tooltip"
+                 matTooltipClass="summary-insights-tooltip"
                  [ngClass]="!last&&['brd-r','mrg-r-16']"
                  [labelValue]="item.data"
                  [type]="item.data.type||'10'"
@@ -20,6 +22,8 @@
 
   <b-progress-donut *ngIf="item.type === type.progressDonut"
                     class="bsi-item"
+                    [matTooltip]="item.data.tooltip"
+                    matTooltipClass="summary-insights-tooltip"
                     [ngClass]="!last&&['brd-r','mrg-r-16']"
                     [type]="item.data.type||'primary'"
                     [size]="item.data.size||'medium'"
@@ -32,7 +36,9 @@
   <div *ngIf="item.type === type.progressBar"
        class="bsi-item flx flx-grow flx-row-align-y"
        [ngClass]="!last&&['brd-r','mrg-r-16']">
-    <b-progress-bar [type]="item.data.type||'secondary'"
+    <b-progress-bar [matTooltip]="item.data.tooltip"
+                    matTooltipClass="summary-insights-tooltip"
+                    [type]="item.data.type||'secondary'"
                     [size]="item.data.size||'small'"
                     [data]="item.data.data"
                     [config]="item.data.config||{reverseTextLocation:true}">
@@ -40,7 +46,9 @@
   </div>
 
   <div *ngIf="item.type === type.custom"
-       class="bsi-item bsi-item-custom flx flx-center">
+       class="bsi-item bsi-item-custom flx flx-center"
+       [matTooltip]="item.data.tooltip"
+       matTooltipClass="summary-insights-tooltip">
     <ng-container *ngTemplateOutlet="getContentTemplate('item');
               context: { data: item.data }">
     </ng-container>
