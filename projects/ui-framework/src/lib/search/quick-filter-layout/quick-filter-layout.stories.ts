@@ -1,34 +1,33 @@
-import { storiesOf } from '@storybook/angular';
-import { boolean, object, withKnobs } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
-import { ComponentGroupType } from '../../consts';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { QuickFilterLayoutModule } from './quick-filter-layout.module';
-import { MultiSelectModule } from '../../lists/multi-select/multi-select.module';
-import { SingleSelectModule } from '../../lists/single-select/single-select.module';
-import { DateRangePickerModule } from '../../form-elements/date-picker/date-range-picker/date-range-picker.module';
+import { action } from '@storybook/addon-actions';
+import { boolean, object, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
-import {
-  mockThings,
-  mockAnimals,
-  mockName,
-  mockHobbies,
-} from '../../mock.const';
-import { simpleUID } from '../../services/utils/functional-utils';
 import { ButtonsModule } from '../../buttons/buttons.module';
-import { QuickFilterConfig } from '../quick-filter/quick-filter.interface';
+import { ComponentGroupType } from '../../consts';
+import { DateRangePickerModule } from '../../form-elements/date-picker/date-range-picker/date-range-picker.module';
+import { BDateAdapterMock } from '../../form-elements/date-picker/dateadapter.mock';
+import { DatepickerType } from '../../form-elements/date-picker/datepicker.enum';
+import { InputTypes } from '../../form-elements/input/input.enum';
 import { InputModule } from '../../form-elements/input/input.module';
 import { SocialModule } from '../../form-elements/social/social.module';
-import { TimePickerModule } from '../../form-elements/timepicker/timepicker.module';
-import { InputTypes } from '../../form-elements/input/input.enum';
-// tslint:disable-next-line: max-line-length
 import { SplitInputSingleSelectModule } from '../../form-elements/split-input-single-select/split-input-single-select.module';
+import { TimePickerModule } from '../../form-elements/timepicker/timepicker.module';
 import { LinkColor } from '../../indicators/link/link.enum';
-import { DatepickerType } from '../../form-elements/date-picker/datepicker.enum';
-
-import { BDateAdapterMock } from '../../form-elements/date-picker/dateadapter.mock';
-import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
+import { MultiSelectModule } from '../../lists/multi-select/multi-select.module';
+import { SingleSelectModule } from '../../lists/single-select/single-select.module';
+import {
+  mockAnimals,
+  mockHobbies,
+  mockName,
+  mockThings,
+} from '../../mock.const';
+import { simpleUID } from '../../services/utils/functional-utils';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { QuickFilterConfig } from '../quick-filter/quick-filter.interface';
+import { QuickFilterLayoutModule } from './quick-filter-layout.module';
 
 const story = storiesOf(ComponentGroupType.Search, module).addDecorator(
   withKnobs
@@ -210,7 +209,7 @@ const items = optionsFromList(mockThings(), 'Things');
 
 const animals = optionsFromList(mockAnimals(), 'Animals');
 
-const quickFilters: QuickFilterConfig[] = [
+const quickFilters: Partial<QuickFilterConfig>[] = [
   {
     key: 'name',
     label: 'Your name',

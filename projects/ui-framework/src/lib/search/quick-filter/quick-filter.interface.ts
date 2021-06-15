@@ -1,11 +1,12 @@
-import { SelectGroupOption } from '../../lists/list.interface';
-import { QuickFilterSelectType } from './quick-filter.enum';
 import { ListChange } from '../../lists/list-change/list-change';
 import { SelectMode } from '../../lists/list.enum';
+import { SelectGroupOption } from '../../lists/list.interface';
+import { QuickFilterSelectType } from './quick-filter.enum';
 
 export interface QuickFilterConfig {
   key: string;
-  selectType?: QuickFilterSelectType;
+  selectType: QuickFilterSelectType;
+
   selectMode?: SelectMode;
   options?: SelectGroupOption[];
   optionsDefault?: SelectGroupOption[];
