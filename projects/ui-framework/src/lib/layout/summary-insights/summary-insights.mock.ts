@@ -1,4 +1,4 @@
-import { mockThings, mockTime } from '../../mock.const';
+import { mockText, mockThings, mockTime } from '../../mock.const';
 import { ColorPalette } from '../../services/color-service/color-palette.enum';
 import {
   makeArray,
@@ -35,6 +35,8 @@ export const summaryInsightsDataMock = [
         headerTextSecondary: things[idx],
         color: colors[idx],
       },
+
+      tooltip: mockText(10),
     },
   },
   {
@@ -46,16 +48,35 @@ export const summaryInsightsDataMock = [
         headerTextSecondary: things[idx],
         color: colors[idx],
       },
+
+      tooltip: mockText(10),
     },
   },
+  // {
+  //   type: SummaryInsightType.progressBar,
+  //   data: {
+  //     data: {
+  //       value: values[++idx],
+  //       headerTextPrimary: things[idx],
+  //       color: colors[idx],
+  //     },
+  //   },
+  // },
   {
-    type: SummaryInsightType.progressBar,
+    type: SummaryInsightType.custom,
     data: {
-      data: {
-        value: values[++idx],
-        headerTextPrimary: things[idx],
-        color: colors[idx],
+      name: 'donut-chart',
+      donutSize: 'medium',
+      text: '?',
+      labelValue: {
+        label: 'Fruit',
+        value: '10',
       },
+      data: [
+        ['Apples', 8],
+        ['Oranges', 1],
+        ['Bananas', 3],
+      ],
     },
   },
 ];

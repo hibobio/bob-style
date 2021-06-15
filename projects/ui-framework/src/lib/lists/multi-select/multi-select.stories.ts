@@ -75,7 +75,8 @@ const template = `
                 (selectCancelled)="selectCancelled($event)">
 
     <b-text-button footerAction
-        [text]="'Action'">
+        [text]="'Action'"
+        (clicked)="bms.listActionsState={apply:{disabled:false}}">
     </b-text-button>
 </b-multi-select>
 

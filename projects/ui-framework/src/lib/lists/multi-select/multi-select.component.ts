@@ -27,7 +27,7 @@ import { LIST_ACTIONS_DEF } from '../list-footer/list-footer.const';
 import { ListPanelService } from '../list-panel.service';
 import { ListModelService } from '../list-service/list-model.service';
 import { SelectType } from '../list.enum';
-import { SelectOption } from '../list.interface';
+import { ListFooterActionsState, SelectOption } from '../list.interface';
 import { BaseSelectPanelElement } from '../select-panel-element.abstract';
 
 @Component({
@@ -90,6 +90,7 @@ export class MultiSelectComponent extends BaseSelectPanelElement {
   @Output() selectCancelled: EventEmitter<ListChange> = new EventEmitter();
 
   public valueShowcase: ShowcaseInputItem[];
+  public listActionsState: ListFooterActionsState;
 
   onApply(): void {
     if (this.listChange) {

@@ -132,6 +132,15 @@ export abstract class BaseListElement
     return this.selectedIDs;
   }
 
+  @Input('listActionsState') set setListActionsState(
+    state: ListFooterActionsState
+  ) {
+    this.listActionsState = {
+      ...this.listActionsState,
+      ...state,
+    };
+  }
+
   @HostBinding('attr.data-size') @Input() size = FormElementSize.regular;
 
   @Output()

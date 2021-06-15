@@ -150,11 +150,11 @@ export class PanelService {
     panel: Panel<T>,
     portal?: ComponentPortal<T> | TemplatePortal<T>
   ): ComponentRef<T> {
-    const componetRef: ComponentRef<T> = panel.overlayRef.attach(
+    const componentRef: ComponentRef<T> = panel.overlayRef.attach(
       portal || panel.portal
     );
     panel.overlayRef.updatePosition();
-    return componetRef;
+    return componentRef;
   }
 
   destroyPanel(panel: Panel): void {

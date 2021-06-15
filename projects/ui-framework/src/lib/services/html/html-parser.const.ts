@@ -111,7 +111,7 @@ export const HTML_CLEANUP_REPLACERS: {
   },
 
   whiteSpace: {
-    find: [/([^\s.,;\-:])\s+([.,;])/gi, /\s+/gi],
+    find: [/([^\s.,;\-:])\s+([.,;]\s+)/gi, /\s+/gi],
     replaceWith: ['$1$2', ' '],
   },
 
