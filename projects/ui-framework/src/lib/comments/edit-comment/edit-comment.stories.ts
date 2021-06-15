@@ -87,7 +87,7 @@ story.add(
         content: text('content', 'First comment!', 'Props'),
         name: text('name', name, 'Props'),
         avatar: text('avatar', avatar, 'Props'),
-        type: select('type', Types, Types.primary, 'Props'),
+        type: select('type', Object.values(Types).slice(0,2), Types.primary, 'Props'),
         showEmoji: boolean('showEmoji', true, 'Props'),
         placeholder: text('placeholder', 'Write your comment here.', 'Props'),
         autoFocus: boolean('autoFocus', true, 'Props'),

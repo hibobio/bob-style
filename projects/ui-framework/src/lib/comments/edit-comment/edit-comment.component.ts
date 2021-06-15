@@ -143,7 +143,7 @@ export class EditCommentComponent
   }
 
   ngAfterContentChecked() {
-    if (this.type !== Types.secondary || !this.commentInput) { return; }
+    if (!this.commentInput || this.commentInput.nativeElement.isContentEditable) { return; }
     this.setTextAreaHeight();
   }
 
@@ -176,6 +176,8 @@ export class EditCommentComponent
 
   onInputChange(): void {
     this.value = this.inputValue;
+    if (this.commentInput.nativeElement.isContentEditable) { return; }
+    this.setTextAreaHeight();
   }
 
   enterPress(event: Event | KeyboardEvent): void;
