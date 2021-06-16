@@ -1,6 +1,6 @@
-<div class="b-display-2 clr-negative-500 text-center mrg-b-16">{{title}}</div>
-<div class="flx flx-wrap flx-row-align-x">
-  <span class="b-display-4 clr-negative-500 mrg-x-8"
+<div class="header b-display-2 clr-negative-500 text-center mrg-b-13">{{title}}</div>
+<div class="main-content text-center">
+  <span class="data-item b-display-4 clr-negative-500 mrg-x-8"
         *ngFor="let item of items"
         [class.clickable]="item.action"
         [innerHTML]="item.label"
@@ -8,7 +8,7 @@
   </span>
 </div>
 
-<b-text-button class="text-center mrg-t-24" [button]="buttonConfig">
-    <span class="button-text b-display-4">{{buttonText}}</span>
+<b-text-button class="text-center" [button]="buttonConfig">
+    <strong b-bold-body>{{buttonText}}</strong>
     <b-icon [config]="linkIconConfig"></b-icon>
 </b-text-button>
