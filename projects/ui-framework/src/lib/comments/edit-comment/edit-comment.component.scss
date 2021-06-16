@@ -39,11 +39,6 @@
   min-height: 42px;
   .bfe-textarea {
     flex-grow: 1;
-    &.textarea-nowrap {
-    overflow: unset;
-    overflow-x: scroll;
-    white-space: nowrap;
-    }
   }
 }
 

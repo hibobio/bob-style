@@ -142,16 +142,10 @@ export class EditCommentComponent
   }
 
   private setTextAreaHeight(): void {
-     const textarea = this.commentInput.nativeElement as HTMLTextAreaElement;
+    const textarea = this.commentInput.nativeElement as HTMLTextAreaElement;
+    textarea.rows = 1;
     textarea.style.height = 'auto';
-    this.renderer.addClass(textarea, 'textarea-nowrap');
-    const isLongLineString = textarea.scrollWidth > textarea.offsetWidth;
-    this.renderer.removeClass(textarea, 'textarea-nowrap');
-    if (textarea.value.split(/\r*\n/).length > 1 || isLongLineString) {
-      textarea.style.height = textarea.scrollHeight + 'px';      
-      return;
-    }
-    textarea.style.height = '40px'
+    textarea.style.height = textarea.scrollHeight + 'px';
   }
 
   addEmoji(code: Emoji): void {
