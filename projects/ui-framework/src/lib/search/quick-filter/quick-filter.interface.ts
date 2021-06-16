@@ -5,7 +5,7 @@ import { QuickFilterSelectType } from './quick-filter.enum';
 
 export interface QuickFilterConfig {
   key: string;
-  selectType: QuickFilterSelectType;
+  selectType?: QuickFilterSelectType;
 
   selectMode?: SelectMode;
   options?: SelectGroupOption[];
@@ -17,6 +17,7 @@ export interface QuickFilterConfig {
   label?: string;
   placeholder?: string;
   disabled?: boolean;
+
   [k: string]: any;
 }
 

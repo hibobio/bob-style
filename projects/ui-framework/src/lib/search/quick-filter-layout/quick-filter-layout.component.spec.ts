@@ -167,7 +167,7 @@ const QFconfig = [
 class TestComponent {
   constructor() {}
 
-  public quickFilters: Partial<QuickFilterConfig>[] = QFconfig;
+  public quickFilters: QuickFilterConfig[] = QFconfig;
 
   public showResetFilter = true;
 
