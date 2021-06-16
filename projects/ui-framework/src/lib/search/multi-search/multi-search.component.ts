@@ -17,6 +17,7 @@ import {
   getMatcher,
   isFunction,
   isKey,
+  padWith0,
 } from '../../services/utils/functional-utils';
 import { DOMKeyboardEvent, DOMMouseEvent } from '../../types';
 import { MultiSearchBaseElement } from './multi-search.abstract';
@@ -304,14 +305,20 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
 
           options.sort((a, b) => {
             return a.searchMatch.index[0] !== b.searchMatch.index[0]
-              ? a.searchMatch.index[0] +
-                  (a.searchMatch.matchLength - searchValue.length) -
-                  (b.searchMatch.index[0] +
-                    (b.searchMatch.matchLength - searchValue.length))
-              : a.searchMatch.index[1] +
-                  (a.searchMatch.matchLength - searchValue.length) -
-                  (b.searchMatch.index[1] +
-                    (b.searchMatch.matchLength - searchValue.length));
+              ? `${padWith0(a.searchMatch.matchLength)}${padWith0(
+                  a.searchMatch.index[0]
+                )}`.localeCompare(
+                  `${padWith0(b.searchMatch.matchLength)}${padWith0(
+                    b.searchMatch.index[0]
+                  )}`
+                )
+              : `${padWith0(a.searchMatch.matchLength)}${padWith0(
+                  a.searchMatch.index[1]
+                )}`.localeCompare(
+                  `${padWith0(b.searchMatch.matchLength)}${padWith0(
+                    b.searchMatch.index[1]
+                  )}`
+                );
           });
 
           msgo.push({

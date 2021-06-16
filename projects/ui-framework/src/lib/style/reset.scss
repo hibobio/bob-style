@@ -100,6 +100,11 @@ textarea {
   font: inherit;
 }
 
+[contenteditable] {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
 [disabled] {
   cursor: default;
 }

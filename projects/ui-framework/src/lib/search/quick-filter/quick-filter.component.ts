@@ -78,7 +78,9 @@ export class QuickFilterComponent implements OnChanges {
       [QuickFilterSelectType.singleSelect]: this.singleSelect,
       [QuickFilterSelectType.multiSelect]: this.multiSelect,
     };
-    return referenceElement[this.quickFilterConfig.selectType];
+    return referenceElement[
+      this.quickFilterConfig.selectType || QuickFilterSelectType.singleSelect
+    ];
   }
 
   private emitChangeEvent(listChange: ListChange): void {
