@@ -11,3 +11,4 @@ export interface CommentItem {
 export interface CommentItemDto {
   content: string;
 }
+

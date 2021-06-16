@@ -4,19 +4,22 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  HostBinding,
   Input,
   OnChanges,
   OnDestroy,
   Output,
+  Renderer2,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
 
 import { AvatarSize } from '../../avatar/avatar/avatar.enum';
-import { Keys } from '../../enums';
+import { Keys, Types } from '../../enums';
 import { InputTypes } from '../../form-elements/input/input.enum';
 // tslint:disable-next-line: max-line-length
-import { FormElementKeyboardCntrlService } from '../../form-elements/services/keyboard-cntrl.service';
+import { FormElementKeyboardCntrlService, InputCursorState } from '../../form-elements/services/keyboard-cntrl.service';
+import { Emoji } from '../../popups/emoji/emoji.interface';
 import { HTML_TEST } from '../../services/html/html-parser.const';
 import {
   MentionsOption,
@@ -50,7 +53,8 @@ export class EditCommentComponent
   constructor(
     private kbrdCntrlSrvc: FormElementKeyboardCntrlService,
     private mentionsService: MentionsService,
-    private commentsUtilService: CommentsUtilService
+    private commentsUtilService: CommentsUtilService,
+    private renderer: Renderer2
   ) {}
 
   @ViewChild('commentInput', { static: false }) commentInput: ElementRef<
@@ -64,7 +68,8 @@ export class EditCommentComponent
   @Input() updateOnBlur = false;
 
   @Input() public mentionsList: MentionsOption[];
-
+  @Input() showEmoji = false; 
+  @HostBinding('attr.data-type') @Input() type: Types = Types.primary 
   @Output()
   sendComment: EventEmitter<CommentItemDto> = new EventEmitter();
 
@@ -91,6 +96,7 @@ export class EditCommentComponent
   public set inputValue(value: string) {
     this.input && (this.input[this.isHtml ? 'innerHTML' : 'value'] = value);
   }
+  private lastInputCursorState: InputCursorState;
 
   public tribute: TributeInstance;
 
@@ -135,12 +141,31 @@ export class EditCommentComponent
     this.inputValue = this.value;
   }
 
+  private setTextAreaHeight(): void {
+    const textarea = this.commentInput.nativeElement as HTMLTextAreaElement;
+    textarea.rows = 1;
+    textarea.style.height = 'auto';
+    textarea.style.height = textarea.scrollHeight + 'px';
+  }
+
+  addEmoji(code: Emoji): void {
+    const textBeforeEmoji = this.inputValue.slice(0, this.lastInputCursorState.selectionStart);
+    const textAfterEmoji = this.inputValue.slice(this.lastInputCursorState.selectionStart)
+    this.inputValue = textBeforeEmoji + code.icon + textAfterEmoji;
+  }
+
+  get canDisplayEmoji(): boolean {
+    return this.showEmoji && this.type == Types.secondary;
+  }
+
   focus() {
     this.input.focus();
   }
 
   onInputChange(): void {
     this.value = this.inputValue;
+    if (this.commentInput.nativeElement.isContentEditable) { return; }
+    this.setTextAreaHeight();
   }
 
   enterPress(event: Event | KeyboardEvent): void;
@@ -161,10 +186,17 @@ export class EditCommentComponent
     if (eventHasMetaKey(event) && !this.isHtml) {
       event.preventDefault();
       this.kbrdCntrlSrvc.insertNewLineAtCursor(<HTMLTextAreaElement>this.input);
+      if (this.type === Types.secondary) {
+        this.setTextAreaHeight();
+      }
     }
   }
 
   onBlur(): void {
+    if (!this.isHtml) {
+      this.lastInputCursorState = this.kbrdCntrlSrvc.
+      getInputCursorState(this.commentInput.nativeElement as HTMLTextAreaElement);
+    }
     if (this.updateOnBlur) {
       this.updateCommentAndResetValue();
     }
