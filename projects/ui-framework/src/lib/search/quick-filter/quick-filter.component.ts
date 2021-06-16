@@ -17,6 +17,7 @@ import { MultiSelectComponent } from '../../lists/multi-select/multi-select.comp
 import { SingleSelectComponent } from '../../lists/single-select/single-select.component';
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
 import { hasChanges } from '../../services/utils/functional-utils';
+import { Require } from '../../types';
 import { QuickFilterSelectType } from './quick-filter.enum';
 import {
   QuickFilterChangeEvent,
@@ -44,7 +45,7 @@ export class QuickFilterComponent implements OnChanges {
   multiSelect: TemplateRef<MultiSelectComponent>;
 
   @Input() size: FormElementSize = FormElementSize.regular;
-  @Input() quickFilterConfig: QuickFilterConfig;
+  @Input() quickFilterConfig: Require<QuickFilterConfig, 'selectType' | 'key'>;
   @Output()
   filterChange: EventEmitter<QuickFilterChangeEvent> = new EventEmitter();
 

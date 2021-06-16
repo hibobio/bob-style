@@ -67,7 +67,7 @@ export class QuickFilterLayoutComponent
   @ContentChildren(BaseButtonElement, { read: ElementRef })
   public actionButtons: QueryList<ElementRef>;
 
-  @Input() quickFilters: Partial<QuickFilterConfig>[];
+  @Input() quickFilters: QuickFilterConfig[];
   @Input() showResetFilter = false;
 
   @Output()
@@ -96,9 +96,7 @@ export class QuickFilterLayoutComponent
         keyBy(changes.quickFilters.currentValue, 'key')
       );
 
-      this.assignFormCompAttrs(
-        Object.values(updatedCompProps) as QuickFilterConfig[]
-      );
+      this.assignFormCompAttrs(Object.values(updatedCompProps));
 
       this.initValue(
         Object.keys(updatedCompProps).map((key) =>
@@ -185,7 +183,7 @@ export class QuickFilterLayoutComponent
   }
 
   private assignFormCompAttrs(
-    quickFilters: Partial<QuickFilterConfig>[] = this.quickFilters,
+    quickFilters: QuickFilterConfig[] = this.quickFilters,
     formComp: BaseFormElement | BaseFormElement[] = null
   ): void {
     (formComp ? asArray(formComp) : this.formComponents.toArray()).forEach(
