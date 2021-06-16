@@ -13,17 +13,23 @@
       &:after {
         border: unset
       }
-    .text-area-wrapper {
-      b-emoji {
-        margin-right: 8px;
-      }
-      .bfe-textarea {
-        overflow: hidden;
-        padding: 11px 20px;
-        height: unset;
-        min-height: unset;
-        max-height: unset;
-      }
+   }
+   .bfe-textarea {
+    overflow: hidden;
+   }
+   .text-area-wrapper {
+    padding: 0 5px;
+   }
+}
+
+:host[data-type='primary'] {
+  .bfe-input {
+    &:focus,
+    &[data-empty='false']
+    {
+      height: times8(10);
+      min-height: times8(10);
+      max-height: times8(10);
     }
   }
 }
@@ -55,14 +61,6 @@
     transition-duration: 0.3s;
   }
 
-  &:focus,
-  &[data-empty='false']
-  {
-    height: times8(10);
-    min-height: times8(10);
-    max-height: times8(10);
-  }
-
   &[data-placeholder][data-empty='false'] {
     &:before {
       color: transparent;
@@ -73,4 +71,5 @@
 b-emoji {
     display: flex;
     align-items: flex-end;
+    margin-right: 8px;
 }
