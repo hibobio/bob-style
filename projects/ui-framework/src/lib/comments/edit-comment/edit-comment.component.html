@@ -10,7 +10,7 @@
             [attr.placeholder]="placeholder || null"
             [attr.data-empty]="!value?.length"
             (blur)="onBlur()"
-            (keydown)="enterPress($event)"
+            (keydown)="enterPress($event)" 
             (input)="onInputChange()"></textarea>
 
         <b-emoji *ngIf="canDisplayEmoji" class="mrg-r-4"
