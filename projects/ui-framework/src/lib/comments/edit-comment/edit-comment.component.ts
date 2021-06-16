@@ -1,5 +1,4 @@
 import {
-  AfterContentChecked,
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
@@ -50,7 +49,7 @@ import { CommentsUtilService } from '../comments.service';
   providers: [CommentsUtilService],
 })
 export class EditCommentComponent
-  implements OnChanges, AfterViewInit, OnDestroy, AfterContentChecked {
+  implements OnChanges, AfterViewInit, OnDestroy {
   constructor(
     private kbrdCntrlSrvc: FormElementKeyboardCntrlService,
     private mentionsService: MentionsService,
@@ -142,13 +141,8 @@ export class EditCommentComponent
     this.inputValue = this.value;
   }
 
-  ngAfterContentChecked() {
-    if (!this.commentInput || this.commentInput.nativeElement.isContentEditable) { return; }
-    this.setTextAreaHeight();
-  }
-
   private setTextAreaHeight(): void {
-    const textarea = this.commentInput.nativeElement as HTMLTextAreaElement;
+     const textarea = this.commentInput.nativeElement as HTMLTextAreaElement;
     textarea.style.height = 'auto';
     this.renderer.addClass(textarea, 'textarea-nowrap');
     const isLongLineString = textarea.scrollWidth > textarea.offsetWidth;
@@ -198,6 +192,9 @@ export class EditCommentComponent
     if (eventHasMetaKey(event) && !this.isHtml) {
       event.preventDefault();
       this.kbrdCntrlSrvc.insertNewLineAtCursor(<HTMLTextAreaElement>this.input);
+      if (this.type === Types.secondary) {
+        this.setTextAreaHeight();
+      }
     }
   }
 
