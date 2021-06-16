@@ -6,7 +6,7 @@
   align-items: center;
   background-color: rgba($negative-500, 0.05);
   border-radius: 8px;
-  padding: 40px 28px 32px;
+  padding: times8(5) times8(4) times8(4);
 }
 
 .header {
@@ -15,17 +15,18 @@
 
 .main-content { 
   flex-grow: 1;
-  line-height: 2.2;
+  line-height: 1.7;
 
   .data-item {
     display: inline-block;
+    position: relative;
+    font-family: var(--display-font-family);
+    font-size: 16px;
+
     ::ng-deep & > span {
       font-weight: 800;
+      font-size: 18px;
     }
-  }
-
-  .b-display-4 {
-    position: relative;
 
     &.clickable:hover {
       text-decoration: underline;
@@ -36,6 +37,7 @@
       content: '\2219';
       position: absolute;
       right: -10px;
+      top: 2px;
     }
   }
 }
