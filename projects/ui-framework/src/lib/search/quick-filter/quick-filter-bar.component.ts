@@ -25,6 +25,7 @@ import {
   cloneDeepSimpleObject,
   hasChanges,
 } from '../../services/utils/functional-utils';
+import { Require } from '../../types';
 import {
   QuickFilterBarChangeEvent,
   QuickFilterChangeEvent,
@@ -67,7 +68,7 @@ export class QuickFilterBarComponent implements OnChanges, AfterViewInit {
   @ViewChild('suffix') suffix: ElementRef<HTMLElement>;
 
   @HostBinding('attr.data-size') @Input() size = FormElementSize.regular;
-  @Input() quickFilters: QuickFilterConfig[];
+  @Input() quickFilters: Require<QuickFilterConfig, 'selectType' | 'key'>[];
   @Input() showResetFilter = false;
   @Output()
   filtersChange: EventEmitter<QuickFilterBarChangeEvent> = new EventEmitter();

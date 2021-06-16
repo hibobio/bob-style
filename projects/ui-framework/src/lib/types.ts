@@ -5,6 +5,26 @@ import {
   ColorsMain,
 } from './services/color-service/color-palette.enum';
 
+/**
+ * `Optional<SomeThing>` - same as Partial<SomeThing> (makes all properties optional)
+ * `Optional<SomeThing, 'pOne'|'pTwo'>` - makes some propeties optional
+ */
+export type Optional<T extends object, K extends keyof T = keyof T> = Omit<
+  T,
+  K
+> &
+  Partial<Pick<T, K>>;
+
+/**
+ * Same as built-in Requred, but can make specific props required:
+ * `Require<SomeThing, 'thing'>`
+ */
+export type Require<T extends object, K extends keyof T = keyof T> = Omit<
+  T,
+  K
+> &
+  Required<Pick<T, K>>;
+
 export interface GenericObject<T = any> {
   [key: string]: T;
 }

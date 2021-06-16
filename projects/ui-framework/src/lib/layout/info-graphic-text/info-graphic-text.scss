@@ -2,31 +2,42 @@
 
 :host {
   display: flex;
-  flex-direction: column;
+  flex-direction: column; 
   align-items: center;
   background-color: rgba($negative-500, 0.05);
   border-radius: 8px;
-  padding: times8(5) times8(4);
+  padding: 40px 28px 32px;
 }
 
-.flx.flx-wrap .b-display-4 {
-  position: relative;
-
-  &.clickable:hover {
-    text-decoration: underline;
-    cursor: pointer;
-  }
-
-  &::after {
-    content: '\2219';
-    position: absolute;
-    right: -10px;
-  }
+.header {
+  height: 49px;
 }
 
-.button-text {
-  color: $negative-500;
-  font-weight: $font-weight-display-2;
+.main-content { 
+  flex-grow: 1;
+  line-height: 2.2;
+
+  .data-item {
+    display: inline-block;
+    ::ng-deep & > span {
+      font-weight: 800;
+    }
+  }
+
+  .b-display-4 {
+    position: relative;
+
+    &.clickable:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    &::after {
+      content: '\2219';
+      position: absolute;
+      right: -10px;
+    }
+  }
 }
 
 b-icon {
@@ -34,8 +45,6 @@ b-icon {
   top: 1px;
 }
 
-:host ::ng-deep {
-  .b-display-4 > span {
-    font-weight: 800;
-  }
+b-text-button {
+  flex-shrink: 0;
 }
