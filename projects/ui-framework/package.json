@@ -21,7 +21,7 @@
     "date-fns": "^2.9.0",
     "tributejs": "^4.1.1",
     "ngx-color-picker": "^11.0.0",
-    "froala-editor": "^3.2.6",
+    "froala-editor": "^4.0.1",
     "xss": "^1.0.7"
   },
   "browserslist": [

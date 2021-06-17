@@ -544,7 +544,7 @@ export interface Events {
   on(
     name: string,
     callback: (event: Event) => void | boolean,
-    first: boolean
+    first?: boolean
   ): object;
   trigger(name: string, args: any[], force: boolean): object;
 }

@@ -1,14 +1,15 @@
-import { BlotType } from './rte.enum';
 import {
-  joinArrays,
   HTML_CLEANUP_REPLACERS,
   HtmlCleanupReplacer,
+  joinArrays,
   SANITIZER_ALLOWED_ATTRS,
-  SANITIZER_ALLOWED_TAGS,
   SANITIZER_ALLOWED_STYLE_PROPS,
+  SANITIZER_ALLOWED_TAGS,
 } from 'bob-style';
+
 import { FroalaOptions } from './froala.interface';
-import { TributeOptions, TributeItem } from './tribute.interface';
+import { BlotType } from './rte.enum';
+import { TributeItem, TributeOptions } from './tribute.interface';
 
 export const RTE_CONTROLS_DEF = joinArrays(
   [
@@ -183,6 +184,7 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
     'save',
     'url',
     'emoticons',
+
     // 'fontFamily',
     // 'table',
     // 'video',

@@ -9,10 +9,9 @@
      [id]="id"
      [ngClass]="{focused: inputFocused}"
      [ngStyle]="{'min-height': minHeight ? minHeight + 'px' : null}">
+
   <div #editor
-       class="brte-wrap"
-       [froalaEditor]="options"
-       [(froalaModel)]="editorValue"></div>
+       class="brte-wrap"></div>
 
   <b-single-select-panel *ngIf="!disabled && placeholdersEnabled()"
                          #placeholderPanel
