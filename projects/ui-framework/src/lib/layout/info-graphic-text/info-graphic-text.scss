@@ -50,4 +50,8 @@ b-icon {
 b-text-button {
   flex-shrink: 0;
   padding-top: times8(2);
+  color: var(--negative-500) !important;
+  ::ng-deep b-icon > .b-icon::before {
+    color: var(--negative-500);
+  }
 }
