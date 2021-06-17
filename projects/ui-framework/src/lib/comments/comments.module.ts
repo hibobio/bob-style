@@ -6,6 +6,7 @@ import { AvatarModule } from '../avatar/avatar/avatar.module';
 import { ButtonsModule } from '../buttons/buttons.module';
 import { InputModule } from '../form-elements/input/input.module';
 import { MenuModule } from '../navigation/menu/menu.module';
+import { EmojiModule } from '../popups/emoji/emoji.module';
 import { FiltersModule } from '../services/filters/filters.module';
 import { EventManagerPlugins } from '../services/utils/eventManager.plugins';
 import { TypographyModule } from '../typography/typography.module';
@@ -28,6 +29,7 @@ import { EditCommentComponent } from './edit-comment/edit-comment.component';
     MatTooltipModule,
     ButtonsModule,
     MenuModule,
+    EmojiModule
   ],
   exports: [EditCommentComponent, CommentListComponent],
   providers: [EventManagerPlugins[0]],
