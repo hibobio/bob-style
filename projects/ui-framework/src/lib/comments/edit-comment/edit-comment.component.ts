@@ -179,6 +179,9 @@ export class EditCommentComponent
       this.input.blur();
       if (!this.updateOnBlur) {
         this.updateCommentAndResetValue();
+        if (this.isFlexHeight) {
+        this.setTextAreaHeight();
+        }
       }
       return;
     }
@@ -186,10 +189,14 @@ export class EditCommentComponent
     if (eventHasMetaKey(event) && !this.isHtml) {
       event.preventDefault();
       this.kbrdCntrlSrvc.insertNewLineAtCursor(<HTMLTextAreaElement>this.input);
-      if (this.type === Types.secondary) {
+      if (this.isFlexHeight) {
         this.setTextAreaHeight();
       }
     }
+  }
+
+  private get isFlexHeight(): boolean {
+    return this.type === Types.secondary && !this.commentInput.nativeElement.isContentEditable;
   }
 
   onBlur(): void {
