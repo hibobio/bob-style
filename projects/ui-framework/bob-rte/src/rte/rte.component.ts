@@ -1,11 +1,11 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
   forwardRef,
   HostListener,
+  NgZone,
   OnDestroy,
   OnInit,
 } from '@angular/core';
@@ -64,8 +64,9 @@ import { RTEMode } from './rte.enum';
 })
 export class RichTextEditorComponent
   extends RTEbaseElement
-  implements OnInit, AfterViewInit, OnDestroy {
+  implements OnInit, OnDestroy {
   constructor(
+    protected zone: NgZone,
     protected cd: ChangeDetectorRef,
     protected placeholdersConverter: PlaceholdersConverterService,
     protected parserService: HtmlParserHelpers,
@@ -76,6 +77,7 @@ export class RichTextEditorComponent
     protected sanitizer: SanitizerService
   ) {
     super(
+      zone,
       cd,
       placeholdersConverter,
       parserService,
@@ -103,86 +105,98 @@ export class RichTextEditorComponent
     this.options.events = {
       //
       initialized: () => {
-        this.toolbarButtons = this.getEditorElement(
-          'button[title]'
-        ) as HTMLElement[];
+        try {
+          this.editorValue && this.setHtml(this.editorValue);
 
-        this.editor = this.getEditor();
+          this.toolbarButtons = this.getEditorElement(
+            'button[title]'
+          ) as HTMLElement[];
 
-        if (this.options.tooltips === false && this.toolbarButtons) {
-          this.toolbarButtons.forEach((b) => {
-            b.setAttribute('aria-label', b.getAttribute('title'));
-            b.removeAttribute('title');
-          });
-        }
-
-        this.updateToolbar();
-
-        this.editor.events.on(
-          'keydown',
-          (event: DOMKeyboardEvent) => {
-            return this.keydownHandler(event);
-          },
-          true
-        );
-
-        // init emojis
-
-        if (this.editor.opts.emoticonsSet[6]['id'] === 'symbols') {
-          this.editor.opts.emoticonsSet.forEach((set, index) => {
-            set.code = EMOJI_DATA[index].code;
-          });
-          this.editor.opts.emoticonsSet.splice(6, 1);
-        }
-
-        // init mentions
-        if (this.mentionsEnabled()) {
-          if (this.tribute) {
-            this.tribute.attach(this.getEditorTextbox());
+          if (this.options.tooltips === false && this.toolbarButtons) {
+            this.toolbarButtons.forEach((b) => {
+              b.setAttribute('aria-label', b.getAttribute('title'));
+              b.removeAttribute('title');
+            });
           }
 
-          this.getEditorTextbox().addEventListener('tribute-replaced', () => {
-            this.editor.events.trigger('contentChanged', [], true);
-          });
-        }
+          this.updateToolbar();
 
-        // init pasteAsText && removeFormat
-        if (this.toolbarButtons) {
-          const buttons = this.toolbarButtons.filter((b) => {
-            const title = b.getAttribute('aria-label').toLowerCase();
-            return title.startsWith('paste') || title.startsWith('remove');
-          });
+          this.editor.events.on(
+            'keydown',
+            (event: DOMKeyboardEvent) => {
+              return this.keydownHandler(event);
+            },
+            true
+          );
 
-          buttons.forEach((b) => {
-            const title = b.getAttribute('aria-label');
-            const span = b.children[0];
-            if (!title || !span) {
-              return;
+          // init emojis
+
+          if (this.editor.opts.emoticonsSet[6]['id'] === 'symbols') {
+            this.editor.opts.emoticonsSet.forEach((set, index) => {
+              set.code = EMOJI_DATA[index].code;
+            });
+            this.editor.opts.emoticonsSet.splice(6, 1);
+          }
+
+          // init mentions
+          if (this.mentionsEnabled()) {
+            if (this.tribute) {
+              this.tribute.attach(this.getEditorTextbox());
             }
 
-            span.setAttribute(
-              'data-tooltip',
-              title.toLowerCase().startsWith('paste')
-                ? title + '\n(disabled)'
-                : title
-            );
-            span.setAttribute('data-tooltip-wrap', 'pre');
-            span.setAttribute('data-tooltip-align', 'center');
-          });
+            this.getEditorTextbox().addEventListener('tribute-replaced', () => {
+              this.editor.events.trigger('contentChanged', [], true);
+            });
+          }
+
+          // init pasteAsText && removeFormat
+          if (this.toolbarButtons) {
+            const buttons = this.toolbarButtons.filter((b) => {
+              const title = b.getAttribute('aria-label').toLowerCase();
+              return title.startsWith('paste') || title.startsWith('remove');
+            });
+
+            buttons.forEach((b) => {
+              const title = b.getAttribute('aria-label');
+              const span = b.children[0];
+              if (!title || !span) {
+                return;
+              }
+
+              span.setAttribute(
+                'data-tooltip',
+                title.toLowerCase().startsWith('paste')
+                  ? title + '\n(disabled)'
+                  : title
+              );
+              span.setAttribute('data-tooltip-wrap', 'pre');
+              span.setAttribute('data-tooltip-align', 'center');
+            });
+          }
+
+          // implementing baseFormElement input ref and focus method
+          this.input = {
+            nativeElement: {
+              focus: this.editor.events.focus,
+            },
+          } as ElementRef;
+
+          this.updateLength();
+
+          if (this.focusOnInit) {
+            this.focus();
+          }
+        } catch (error) {
+          log.err(error, 'RTE: initialized');
         }
+      },
 
-        // implementing baseFormElement input ref and focus method
-        this.input = {
-          nativeElement: {
-            focus: this.editor.events.focus,
-          },
-        } as ElementRef;
-
-        this.updateLength();
-
-        if (this.focusOnInit) {
-          this.focus();
-        }
+      mousedown: () => {
+        this.zone.runOutsideAngular(() => {
+          setTimeout(() => {
+            this.onTouched();
+          }, 0);
+        });
       },
 
       contentChanged: () => {
@@ -243,26 +257,30 @@ export class RichTextEditorComponent
         if (!this.inputFocused) {
           return;
         }
-        event.preventDefault();
-        this.editor.selection.save();
+        try {
+          event.preventDefault();
+          this.editor.selection.save();
 
-        const clipboardData: DataTransfer =
-          event.clipboardData || event['originalEvent'].clipboardData;
+          const clipboardData: DataTransfer =
+            event.clipboardData || event['originalEvent'].clipboardData;
 
-        const content = this.editor.html.getSelected();
+          const content = this.editor.html.getSelected();
 
-        const html =
-          chainCall(
-            this.outputTransformers,
-            this.parserService.removeElements(content, '.fr-marker')
-          ) + '<span data-bob-rte="true"></span>';
+          const html =
+            chainCall(
+              this.outputTransformers,
+              this.parserService.removeElements(content, '.fr-marker')
+            ) + '<span data-bob-rte="true"></span>';
 
-        const plainText = this.parserService.getPlainText(html);
+          const plainText = this.parserService.getPlainText(html);
 
-        clipboardData.setData('text/html', html);
-        clipboardData.setData('text/plain', plainText);
+          clipboardData.setData('text/html', html);
+          clipboardData.setData('text/plain', plainText);
 
-        this.editor.selection.restore();
+          this.editor.selection.restore();
+        } catch (error) {
+          log.err(error, 'RTE: window.copy');
+        }
       },
 
       'paste.before': (event: ClipboardEvent) => {
@@ -331,8 +349,8 @@ export class RichTextEditorComponent
       'commands.after': (cmd: string) => {
         if (cmd === 'linkInsert') {
           const link = this.editor.link.get() as HTMLElement;
-          link.setAttribute('spellcheck', 'false');
-          link.classList.add('fr-deletable');
+          link?.setAttribute('spellcheck', 'false');
+          link?.classList.add('fr-deletable');
         }
       },
 
@@ -382,35 +400,38 @@ export class RichTextEditorComponent
 
       // link popup mods
       'popups.show.link.insert': () => {
-        const linkPopupSubmit = this.getEditorElement(
-          '.fr-layer[class*="fr-link-insert"] .fr-command.fr-submit'
-        ) as HTMLElement;
+        try {
+          const linkPopupSubmit = this.getEditorElement(
+            '.fr-layer[class*="fr-link-insert"] .fr-command.fr-submit'
+          ) as HTMLElement;
 
-        if (linkPopupSubmit) {
-          linkPopupSubmit.dataset.cmdText = linkPopupSubmit.innerHTML
-            .toLowerCase()
-            .trim();
+          if (linkPopupSubmit) {
+            linkPopupSubmit.dataset.cmdText = linkPopupSubmit.innerHTML
+              .toLowerCase()
+              .trim();
+          }
+
+          const inputs = asArray(
+            this.getEditorElement(
+              '.fr-layer[class*="fr-link-insert"] input[type="text"]'
+            )
+          ) as HTMLInputElement[];
+
+          inputs.forEach((inputEl: HTMLInputElement) => {
+            // inputEl.placeholder = inputEl.nextSibling.textContent;
+            inputEl.autocomplete = 'off';
+            inputEl.removeAttribute('id');
+            inputEl.blur();
+          });
+          // inputs[0]?.focus();
+          inputs[1]?.focus();
+          //
+        } catch (error) {
+          log.err(error, 'RTE: popups.show.link.insert');
         }
-
-        const inputs = asArray(
-          this.getEditorElement(
-            '.fr-layer[class*="fr-link-insert"] input[type="text"]'
-          )
-        ) as HTMLInputElement[];
-
-        inputs.forEach((inputEl: HTMLInputElement) => {
-          // inputEl.placeholder = inputEl.nextSibling.textContent;
-          inputEl.autocomplete = 'off';
-          inputEl.removeAttribute('id');
-          inputEl.blur();
-        });
-        // inputs[0]?.focus();
-        inputs[1]?.focus();
       },
     };
   }
-
-  ngAfterViewInit(): void {}
 
   ngOnDestroy(): void {
     if (this.tribute) {
@@ -419,6 +440,8 @@ export class RichTextEditorComponent
 
     // remove event listeners
     this.getEditorTextbox().outerHTML = this.getEditorTextbox().outerHTML;
+
+    super.ngOnDestroy();
   }
 
   private focusHandler(event: DOMFocusEvent<HTMLInputElement>): void {
@@ -438,32 +461,36 @@ export class RichTextEditorComponent
   }
 
   private clicksHandler(event: DOMMouseEvent): void {
-    const target = event?.target;
+    try {
+      const target = event?.target;
 
-    this.closeMentions();
+      this.closeMentions();
 
-    if (!target) {
-      return;
-    }
-
-    // placeholders related
-    if (target.className.includes('placeholder-panel-trigger')) {
-      this.editor.undo.saveStep();
-      this.editor.events.disableBlur();
-    }
-
-    // prevent mentions link clicks
-    if (
-      target.className.includes('mention') ||
-      target.getAttributeNames().join(' ').includes('mention')
-    ) {
-      event.stopPropagation();
-      if (!eventHasMetaKey(event)) {
-        event.preventDefault();
+      if (!target) {
+        return;
       }
-      this.editor.selection.save();
-      this.editor.toolbar.enable();
-      this.editor.selection.restore();
+
+      // placeholders related
+      if (target.className.includes('placeholder-panel-trigger')) {
+        this.editor.undo.saveStep();
+        this.editor.events.disableBlur();
+      }
+
+      // prevent mentions link clicks
+      if (
+        target.className.includes('mention') ||
+        target.getAttributeNames().join(' ').includes('mention')
+      ) {
+        event.stopPropagation();
+        if (!eventHasMetaKey(event)) {
+          event.preventDefault();
+        }
+        this.editor.selection.save();
+        this.editor.toolbar.enable();
+        this.editor.selection.restore();
+      }
+    } catch (error) {
+      log.err(error, 'RTE: clicksHandler');
     }
   }
 

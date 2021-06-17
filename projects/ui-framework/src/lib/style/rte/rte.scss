@@ -52,7 +52,11 @@ $rte-icon-color-hover: darken($grey-700, 5%);
 
 .fr-box[class] .fr-element,
 .fr-view {
-  @include BodyFont($size: var(--rte-font-size-normal), $color: $display-text-color, $lineHeight: null);
+  @include BodyFont(
+    $size: var(--rte-font-size-normal),
+    $color: $display-text-color,
+    $lineHeight: null
+  );
 }
 
 .fr-toolbar,
@@ -176,7 +180,14 @@ $rte-icon-color-hover: darken($grey-700, 5%);
 .fr-toolbar .fr-command.fr-btn svg,
 .fr-toolbar .fr-command.fr-btn.fr-dropdown svg,
 .fr-toolbar .fr-command.fr-btn svg.fr-svg,
-.fr-command.fr-btn + .fr-dropdown-menu .fr-dropdown-wrapper .fr-dropdown-content ul.fr-dropdown-list li a svg {
+.fr-command.fr-btn
+  + .fr-dropdown-menu
+  .fr-dropdown-wrapper
+  .fr-dropdown-content
+  ul.fr-dropdown-list
+  li
+  a
+  svg {
   transition: none;
   fill: $rte-icon-color;
   @include size($rte-icon-size);
@@ -205,7 +216,13 @@ $rte-icon-color-hover: darken($grey-700, 5%);
 }
 
 .fr-command,
-.fr-command.fr-btn + .fr-dropdown-menu .fr-dropdown-wrapper .fr-dropdown-content ul.fr-dropdown-list li a {
+.fr-command.fr-btn
+  + .fr-dropdown-menu
+  .fr-dropdown-wrapper
+  .fr-dropdown-content
+  ul.fr-dropdown-list
+  li
+  a {
   font-size: $font-size-body;
   color: $rte-icon-color;
 
@@ -270,12 +287,32 @@ $rte-icon-color-hover: darken($grey-700, 5%);
   }
 }
 
-.fr-command + .fr-dropdown-menu .fr-dropdown-wrapper .fr-dropdown-content ul.fr-dropdown-list li a:hover svg,
-.fr-command + .fr-dropdown-menu .fr-dropdown-wrapper .fr-dropdown-content ul.fr-dropdown-list li a:focus svg {
+.fr-command
+  + .fr-dropdown-menu
+  .fr-dropdown-wrapper
+  .fr-dropdown-content
+  ul.fr-dropdown-list
+  li
+  a:hover
+  svg,
+.fr-command
+  + .fr-dropdown-menu
+  .fr-dropdown-wrapper
+  .fr-dropdown-content
+  ul.fr-dropdown-list
+  li
+  a:focus
+  svg {
   fill: $rte-icon-color-hover;
 }
 
-.fr-command.fr-btn + .fr-dropdown-menu .fr-dropdown-wrapper .fr-dropdown-content ul.fr-dropdown-list li a.fr-active {
+.fr-command.fr-btn
+  + .fr-dropdown-menu
+  .fr-dropdown-wrapper
+  .fr-dropdown-content
+  ul.fr-dropdown-list
+  li
+  a.fr-active {
   background-color: transparent;
 
   & > svg {
@@ -291,7 +328,13 @@ $rte-icon-color-hover: darken($grey-700, 5%);
   }
 }
 
-.fr-command.fr-btn + .fr-dropdown-menu .fr-dropdown-wrapper .fr-dropdown-content ul.fr-dropdown-list li a {
+.fr-command.fr-btn
+  + .fr-dropdown-menu
+  .fr-dropdown-wrapper
+  .fr-dropdown-content
+  ul.fr-dropdown-list
+  li
+  a {
   padding: 0 10px;
 }
 
@@ -304,7 +347,11 @@ $rte-icon-color-hover: darken($grey-700, 5%);
   transition: none;
 }
 
-.fr-command.fr-btn + .fr-dropdown-menu .fr-dropdown-wrapper .fr-dropdown-content ul.fr-dropdown-list {
+.fr-command.fr-btn
+  + .fr-dropdown-menu
+  .fr-dropdown-wrapper
+  .fr-dropdown-content
+  ul.fr-dropdown-list {
   min-width: 0;
 }
 
@@ -392,15 +439,15 @@ $rte-icon-color-hover: darken($grey-700, 5%);
     align-items: center;
     padding: 0;
     margin-bottom: times8(2);
+    min-height: $wrap-height;
 
     &[style*='block'] {
       display: flex !important;
     }
 
     input[type='text'] {
-      @include input-basics;
+      @include input-basics($height: null);
       background-color: $white;
-      min-height: $wrap-height;
       border: 1px solid $input-border-color;
       border-radius: $border-radius;
       transition: box-shadow 0.2s, border-color 0.2s;
@@ -559,7 +606,13 @@ $empticons-panel-max-width: 235px;
 
 // font-size popup
 
-.fr-command.fr-btn + .fr-dropdown-menu .fr-dropdown-wrapper .fr-dropdown-content ul.fr-dropdown-list li a {
+.fr-command.fr-btn
+  + .fr-dropdown-menu
+  .fr-dropdown-wrapper
+  .fr-dropdown-content
+  ul.fr-dropdown-list
+  li
+  a {
   font-size: 0px;
 
   &:before {
@@ -639,12 +692,22 @@ $empticons-panel-max-width: 235px;
 
 .fr-toolbar {
   [data-cmd='leftToRight'] {
-    @include b-icon($icon: 'dir-rtl', $size: small, $color: null, $hover: false);
+    @include b-icon(
+      $icon: 'dir-rtl',
+      $size: small,
+      $color: null,
+      $hover: false
+    );
     display: none;
   }
 
   [data-cmd='rightToLeft'] {
-    @include b-icon($icon: 'dir-ltr', $size: small, $color: null, $hover: false);
+    @include b-icon(
+      $icon: 'dir-ltr',
+      $size: small,
+      $color: null,
+      $hover: false
+    );
 
     &.fr-active {
       display: none;

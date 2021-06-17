@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { SelectGroupOption, isNotEmptyArray, SelectOption } from 'bob-style';
+
+import { isNotEmptyArray, SelectGroupOption, SelectOption } from 'bob-style';
 
 @Injectable({
   providedIn: 'root',
@@ -82,7 +83,7 @@ export class PlaceholdersConverterService {
   }
 
   public getGroupName(placeholders: SelectGroupOption[], id: string): string {
-    const groupId = id.split(this.separator).filter(Boolean)[0];
+    const groupId = id?.split(this.separator).filter(Boolean)[0];
     const group = placeholders.find((g) => g.key === groupId);
     return group ? group.groupName : null;
   }

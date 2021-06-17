@@ -1,11 +1,16 @@
+import FroalaEditor from 'froala-editor';
+
 import {
+  AfterViewInit,
   ChangeDetectorRef,
   Directive,
   ElementRef,
   EventEmitter,
   HostBinding,
   Input,
+  NgZone,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
@@ -45,7 +50,6 @@ import {
 } from 'bob-style';
 
 import { FroalaEditorInstance, FroalaOptions } from './froala.interface';
-import { FroalaEditorDirective } from './froala/editor.directive';
 import { PlaceholdersConverterService } from './placeholders.service';
 import { RteUtilsService } from './rte-utils.service';
 import {
@@ -72,8 +76,9 @@ import { TributeInstance } from './tribute.interface';
 // tslint:disable-next-line: directive-class-suffix
 export abstract class RTEbaseElement
   extends BaseFormElement
-  implements OnChanges, OnInit {
+  implements OnChanges, OnInit, AfterViewInit, OnDestroy {
   constructor(
+    protected zone: NgZone,
     protected cd: ChangeDetectorRef,
     protected placeholdersConverter: PlaceholdersConverterService,
     protected parserService: HtmlParserHelpers,
@@ -91,12 +96,11 @@ export abstract class RTEbaseElement
   }
 
   public tribute: TributeInstance;
-  public editor: FroalaEditorInstance;
+
   protected toolbarButtons: HTMLElement[];
   protected pasteTransformers: Func[] = [];
 
   public length = 0;
-  public editorValue: string;
   public plchldrPnlTrgrFocused = false;
 
   readonly plchldrPanelPosition = PanelDefaultPosVer.belowRight;
@@ -113,8 +117,28 @@ export abstract class RTEbaseElement
     pasteAsText: false,
   };
 
-  @ViewChild('editor', { read: FroalaEditorDirective, static: true })
-  protected editorDirective: FroalaEditorDirective;
+  private _editor: FroalaEditorInstance;
+  private _editorValue: string;
+  public set editor(editor) {
+    this._editor = editor;
+  }
+  public get editor() {
+    return this._editor;
+  }
+  protected get editorInitialized() {
+    return Boolean(this.editor);
+  }
+  set editorValue(value: string) {
+    this._editorValue !== value && this.setHtml(value);
+    this._editorValue = value;
+  }
+  get editorValue(): string {
+    return this._editorValue;
+  }
+
+  @ViewChild('editor', { read: ElementRef, static: true })
+  protected editorElRef: ElementRef<HTMLElement>;
+
   @ViewChild('placeholderPanel')
   protected placeholderPanel: SingleSelectPanelComponent;
   public input: ElementRef<HTMLInputElement>;
@@ -179,189 +203,206 @@ export abstract class RTEbaseElement
       this.editorValue = cloneValue(this.baseValue);
     }
 
-    setTimeout(() => {
-      this.updateLength();
+    this.zone.runOutsideAngular(() => {
+      setTimeout(() => {
+        this.updateLength();
 
-      if (!this.cd['destroyed']) {
-        this.cd.detectChanges();
-      }
-    }, 0);
+        if (!this.cd['destroyed']) {
+          this.cd.detectChanges();
+        }
+      }, 0);
+    });
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
-    applyChanges(
-      this,
-      changes,
-      {
-        minHeight: RTE_MINHEIGHT_DEF,
-        maxHeight: RTE_MAXHEIGHT_DEF,
-        controls: RTE_CONTROLS_DEF,
-        disableControls: RTE_DISABLE_CONTROLS_DEF,
-      },
-      ['options', 'value'],
-      true
-    );
-
-    if (this.type === RTEType.singleLine) {
-      this.mode = RTEMode.plainText;
-    }
-
-    if (hasChanges(changes, ['options'], true)) {
-      this.updateEditorOptions(merge(RTE_OPTIONS_DEF, this.options));
-    }
-
-    if (
-      firstChanges(changes, ['type', 'mode']) &&
-      this.mode === RTEMode.plainText
-    ) {
-      this.updateEditorOptions({
-        shortcutsEnabled: [],
-        pluginsEnabled: [],
-      });
-    }
-
-    if (
-      changes.placeholder ||
-      (changes.label && this.hideLabelOnFocus) ||
-      changes.hideLabelOnFocus ||
-      (changes.required && this.hideLabelOnFocus)
-    ) {
-      this.updateEditorOptions(
+    try {
+      applyChanges(
+        this,
+        changes,
         {
-          placeholderText:
-            this.hideLabelOnFocus && this.label
-              ? !this.required
-                ? this.label
-                : this.label + '*'
-              : this.placeholder || ' ',
+          minHeight: RTE_MINHEIGHT_DEF,
+          maxHeight: RTE_MAXHEIGHT_DEF,
+          controls: RTE_CONTROLS_DEF,
+          disableControls: RTE_DISABLE_CONTROLS_DEF,
         },
-        () => {
-          this.editor.placeholder.refresh();
-        }
+        ['options', 'value'],
+        true
       );
-    }
 
-    if (hasChanges(changes, ['minHeight', 'maxHeight', 'type'])) {
-      this.minHeight = this.type !== RTEType.singleLine && this.minHeight;
-
-      this.updateEditorOptions(
-        {
-          heightMin:
-            this.minHeight && this.type !== RTEType.singleLine
-              ? this.minHeight - RTE_TOOLBAR_HEIGHT
-              : null,
-          heightMax:
-            this.maxHeight && this.type !== RTEType.singleLine
-              ? this.maxHeight - RTE_TOOLBAR_HEIGHT
-              : null,
-        },
-        () => {
-          this.editor.size.refresh();
-        }
-      );
-      this.DOM.setCssProps(this.host.nativeElement, {
-        '--popup-max-height':
-          this.type !== RTEType.singleLine
-            ? Math.max(150, this.maxHeight || RTE_MAXHEIGHT_DEF) + 'px'
-            : null,
-      });
-    }
-
-    if (hasChanges(changes, ['controls', 'disableControls', 'type', 'mode'])) {
-      this.initControls();
-      this.updateToolbar();
-      this.cntrlsInited = true;
-    }
-
-    if (
-      hasChanges(changes, ['placeholderList', 'mode', 'type']) ||
-      (this.inputTransformers.length === 0 && !notFirstChanges(changes))
-    ) {
-      this.initTransformers();
-    }
-
-    if (changes.mentionsList && this.mentionsEnabled()) {
-      if (!this.tribute) {
-        this.initMentions();
-
-        if (this.getEditorTextbox()) {
-          this.tribute.attach(this.getEditorTextbox());
-        }
-      } else {
-        this.tribute.hideMenu();
-        this.tribute.collection[0].values = this.mentionsList;
+      if (this.type === RTEType.singleLine) {
+        this.mode = RTEMode.plainText;
       }
-    }
 
-    if (
-      hasChanges(changes, ['value', 'mode']) ||
-      (changes.placeholderList && this.editorValue !== undefined)
-    ) {
-      this.writeValue(this.value, true, true);
+      if (hasChanges(changes, ['options'], true)) {
+        this.updateEditorOptions(merge(RTE_OPTIONS_DEF, this.options));
+      }
 
-      this.transmitValue(this.editorValue, {
-        eventType: [InputEventType.onWrite],
-        updateValue: true,
-      });
-    }
+      if (
+        firstChanges(changes, ['type', 'mode']) &&
+        this.mode === RTEMode.plainText
+      ) {
+        this.updateEditorOptions({
+          shortcutsEnabled: [],
+          pluginsEnabled: [],
+        });
+      }
 
-    if (notFirstChanges(changes) && !this.cd['destroyed']) {
-      this.cd.detectChanges();
+      if (
+        changes.placeholder ||
+        (changes.label && this.hideLabelOnFocus) ||
+        changes.hideLabelOnFocus ||
+        (changes.required && this.hideLabelOnFocus)
+      ) {
+        this.updateEditorOptions(
+          {
+            placeholderText:
+              this.hideLabelOnFocus && this.label
+                ? !this.required
+                  ? this.label
+                  : this.label + '*'
+                : this.placeholder || ' ',
+          },
+          () => {
+            this.editor.placeholder.refresh();
+          }
+        );
+      }
+
+      if (hasChanges(changes, ['minHeight', 'maxHeight', 'type'])) {
+        this.minHeight = this.type !== RTEType.singleLine && this.minHeight;
+
+        this.updateEditorOptions(
+          {
+            heightMin:
+              this.minHeight && this.type !== RTEType.singleLine
+                ? this.minHeight - RTE_TOOLBAR_HEIGHT
+                : null,
+            heightMax:
+              this.maxHeight && this.type !== RTEType.singleLine
+                ? this.maxHeight - RTE_TOOLBAR_HEIGHT
+                : null,
+          },
+          () => {
+            this.editor.size.refresh();
+          }
+        );
+        this.DOM.setCssProps(this.host.nativeElement, {
+          '--popup-max-height':
+            this.type !== RTEType.singleLine
+              ? Math.max(150, this.maxHeight || RTE_MAXHEIGHT_DEF) + 'px'
+              : null,
+        });
+      }
+
+      if (
+        hasChanges(changes, ['controls', 'disableControls', 'type', 'mode'])
+      ) {
+        this.initControls();
+        this.updateToolbar();
+        this.cntrlsInited = true;
+      }
+
+      if (
+        hasChanges(changes, ['placeholderList', 'mode', 'type']) ||
+        (this.inputTransformers.length === 0 && !notFirstChanges(changes))
+      ) {
+        this.initTransformers();
+      }
+
+      if (changes.mentionsList && this.mentionsEnabled()) {
+        if (!this.tribute) {
+          this.initMentions();
+
+          if (this.getEditorTextbox()) {
+            this.tribute.attach(this.getEditorTextbox());
+          }
+        } else {
+          this.tribute.hideMenu();
+          this.tribute.collection[0].values = this.mentionsList;
+        }
+      }
+
+      if (
+        hasChanges(changes, ['value', 'mode']) ||
+        (changes.placeholderList && this.editorValue !== undefined)
+      ) {
+        this.writeValue(this.value, true, true);
+
+        this.transmitValue(this.editorValue, {
+          eventType: [InputEventType.onWrite],
+          updateValue: true,
+        });
+      }
+
+      if (notFirstChanges(changes) && !this.cd['destroyed']) {
+        this.cd.detectChanges();
+      }
+    } catch (error) {
+      log.err(error, 'RTE: ngOnChanges');
     }
   }
 
   public ngOnInit(): void {
-    initDirectionControl();
-    initMentionsControl();
-    initPasteAsTextControl(this.miscControlsState);
-    initRemoveFormatControl({
-      parserService: this.parserService,
-      placeholdersConverter: this.placeholdersConverter,
-      placeholderList: this.placeholderList,
-      placeholdersEnabled: this.placeholdersEnabled(),
-    });
+    try {
+      initDirectionControl();
+      initMentionsControl();
+      initPasteAsTextControl(this.miscControlsState);
+      initRemoveFormatControl({
+        parserService: this.parserService,
+        placeholdersConverter: this.placeholdersConverter,
+        placeholderList: this.placeholderList,
+        placeholdersEnabled: this.placeholdersEnabled(),
+      });
 
-    if (!this.cntrlsInited) {
-      this.initControls();
-      this.updateToolbar();
-      this.cntrlsInited = true;
+      if (!this.cntrlsInited) {
+        this.initControls();
+        this.updateToolbar();
+        this.cntrlsInited = true;
+      }
+      if (this.inputTransformers.length === 0) {
+        this.initTransformers();
+      }
+
+      this.DOM.setCssProps(this.host.nativeElement, {
+        '--translation-small': `'${this.translate.instant(
+          'bob-style.rte.font-size.small'
+        )}'`,
+        '--translation-normal': `'${this.translate.instant(
+          'bob-style.rte.font-size.normal'
+        )}'`,
+        '--translation-large': `'${this.translate.instant(
+          'bob-style.rte.font-size.large'
+        )}'`,
+        '--translation-huge': `'${this.translate.instant(
+          'bob-style.rte.font-size.huge'
+        )}'`,
+        '--translation-insert': `'${this.translate.instant(
+          'bob-style.rte.link.insert'
+        )}'`,
+        '--translation-update': `'${this.translate.instant(
+          'bob-style.rte.link.update'
+        )}'`,
+        '--translation-url': `'${this.translate.instant(
+          'bob-style.rte.link.url'
+        )}'`,
+        '--translation-text': `'${this.translate.instant(
+          'bob-style.rte.link.text'
+        )}'`,
+
+        '--link-label-wch':
+          Math.max(
+            this.translate.instant('bob-style.rte.link.url').length,
+            this.translate.instant('bob-style.rte.link.text').length
+          ) + 1,
+      });
+    } catch (error) {
+      log.err(error, 'RTE: ngOnInit');
     }
-    if (this.inputTransformers.length === 0) {
-      this.initTransformers();
-    }
+  }
 
-    this.DOM.setCssProps(this.host.nativeElement, {
-      '--translation-small': `'${this.translate.instant(
-        'bob-style.rte.font-size.small'
-      )}'`,
-      '--translation-normal': `'${this.translate.instant(
-        'bob-style.rte.font-size.normal'
-      )}'`,
-      '--translation-large': `'${this.translate.instant(
-        'bob-style.rte.font-size.large'
-      )}'`,
-      '--translation-huge': `'${this.translate.instant(
-        'bob-style.rte.font-size.huge'
-      )}'`,
-      '--translation-insert': `'${this.translate.instant(
-        'bob-style.rte.link.insert'
-      )}'`,
-      '--translation-update': `'${this.translate.instant(
-        'bob-style.rte.link.update'
-      )}'`,
-      '--translation-url': `'${this.translate.instant(
-        'bob-style.rte.link.url'
-      )}'`,
-      '--translation-text': `'${this.translate.instant(
-        'bob-style.rte.link.text'
-      )}'`,
-
-      '--link-label-wch':
-        Math.max(
-          this.translate.instant('bob-style.rte.link.url').length,
-          this.translate.instant('bob-style.rte.link.text').length
-        ) + 1,
-    });
+  // empty method to override one in BaseFormElement
+  ngAfterViewInit(): void {
+    this.createEditor();
   }
 
   public placeholdersEnabled(): boolean {
@@ -404,17 +445,13 @@ export abstract class RTEbaseElement
     this.tribute = this.rteUtilsService.getTributeInstance(this.mentionsList);
   }
 
-  public getEditor(): FroalaEditorInstance {
-    return this.editorDirective['_editor'] as FroalaEditorInstance;
-  }
-
   public getEditorElement(selector = null): HTMLElement | HTMLElement[] {
     if (!selector) {
-      return this.editorDirective['_element'] as HTMLElement;
+      return this.editorElRef.nativeElement;
     }
 
     const requestedElements = Array.from(
-      (this.host.nativeElement as HTMLElement).querySelectorAll(
+      this.host.nativeElement.querySelectorAll(
         selector
       ) as NodeListOf<HTMLElement>
     );
@@ -425,23 +462,27 @@ export abstract class RTEbaseElement
   }
 
   protected getEditorTextbox(): HTMLElement {
-    return this.getEditor() && (this.getEditor().el as HTMLElement);
+    return this.editor?.el;
   }
 
   protected updateToolbar(): void {
     if (this.toolbarButtons) {
-      if (isEmptyArray(this.controls) || this.mode === RTEMode.plainText) {
-        this.editor.toolbar.hide();
-      } else {
-        this.toolbarButtons.forEach((b) => {
-          const cmd = b.getAttribute('data-cmd') as BlotType;
-          if (!this.controls.includes(cmd)) {
-            b.setAttribute('hidden', 'true');
-          } else {
-            b.removeAttribute('hidden');
-          }
-        });
-        this.editor.toolbar.show();
+      try {
+        if (isEmptyArray(this.controls) || this.mode === RTEMode.plainText) {
+          this.editor.toolbar.hide();
+        } else {
+          this.toolbarButtons.forEach((b) => {
+            const cmd = b.getAttribute('data-cmd') as BlotType;
+            if (!this.controls.includes(cmd)) {
+              b.setAttribute('hidden', 'true');
+            } else {
+              b.removeAttribute('hidden');
+            }
+          });
+          this.editor.toolbar.show();
+        }
+      } catch (error) {
+        log.err(error, 'RTE: updateToolbar');
       }
     }
   }
@@ -453,8 +494,8 @@ export abstract class RTEbaseElement
     if (isNotEmptyObject(options)) {
       Object.assign(this.options, options);
 
-      if (this.getEditor()) {
-        Object.assign(this.getEditor().opts, options);
+      if (this.editor) {
+        Object.assign(this.editor.opts, options);
 
         if (callback) {
           callback();
@@ -483,5 +524,36 @@ export abstract class RTEbaseElement
     return selection == null || selection.rangeCount <= 0
       ? null
       : selection.getRangeAt(0);
+  }
+
+  protected createEditor() {
+    !this.editorInitialized &&
+      this.zone.runOutsideAngular(() => {
+        try {
+          this.editor = new FroalaEditor(
+            this.editorElRef.nativeElement,
+            this.options
+          );
+        } catch (error) {
+          log.err(error, 'RTE: createEditor');
+        }
+      });
+  }
+
+  protected setHtml(value: string): void {
+    if (this.editorInitialized) {
+      try {
+        this.editor.html?.set(value);
+        this.editor.undo?.reset();
+        this.editor.undo?.saveStep();
+      } catch (error) {
+        log.err(error, 'RTE: setHtml');
+      }
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.editor?.destroy();
+    this.editor = undefined;
   }
 }

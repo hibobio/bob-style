@@ -29,8 +29,8 @@ export const initPasteAsTextControl = (controlsState: {
           btns[0].children[0]?.setAttribute(
             'data-tooltip',
             btns[0].children[0]
-              .getAttribute('data-tooltip')
-              .split('(')[0]
+              ?.getAttribute('data-tooltip')
+              ?.split('(')[0]
               .trim() + '\n(enabled)'
           );
         } else {
@@ -39,13 +39,13 @@ export const initPasteAsTextControl = (controlsState: {
           btns[0].children[0]?.setAttribute(
             'data-tooltip',
             btns[0].children[0]
-              .getAttribute('data-tooltip')
-              .split('(')[0]
+              ?.getAttribute('data-tooltip')
+              ?.split('(')[0]
               .trim() + '\n(disabled)'
           );
         }
       } catch (e) {
-        log.err(e, 'RTE PasteAsTextControl');
+        log.err(e, 'RTE: PasteAsTextControl');
       }
     },
   });

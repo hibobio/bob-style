@@ -1,14 +1,15 @@
-import { BlotType } from './rte.enum';
 import {
-  joinArrays,
   HTML_CLEANUP_REPLACERS,
   HtmlCleanupReplacer,
+  joinArrays,
   SANITIZER_ALLOWED_ATTRS,
-  SANITIZER_ALLOWED_TAGS,
   SANITIZER_ALLOWED_STYLE_PROPS,
+  SANITIZER_ALLOWED_TAGS,
 } from 'bob-style';
+
 import { FroalaOptions } from './froala.interface';
-import { TributeOptions, TributeItem } from './tribute.interface';
+import { BlotType } from './rte.enum';
+import { TributeItem, TributeOptions } from './tribute.interface';
 
 export const RTE_CONTROLS_DEF = joinArrays(
   [
@@ -109,10 +110,12 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
   shortcutsHint: false,
   placeholderText: '',
 
+  imageUpload: false,
   imageDefaultAlign: 'left',
   imageDefaultWidth: 600,
   imageMaxSize: 1024 * 1024 * 3,
   imageMinWidth: 100,
+  imageMove: false,
 
   videoDefaultAlign: 'left',
   videoDefaultWidth: 600,
@@ -155,8 +158,9 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
   toolbarInline: false,
   toolbarVisibleWithoutSelection: true,
 
+  quickInsertEnabled: false,
+
   shortcutsEnabled: [
-    'show',
     'bold',
     'italic',
     'underline',
@@ -165,43 +169,17 @@ export const RTE_OPTIONS_DEF: FroalaOptions = {
     'outdent',
     'undo',
     'redo',
-    'insertImage',
     'createLink',
   ],
 
   pluginsEnabled: [
     'align',
-    'charCounter',
-    'colors',
+    'emoticons',
     'fontSize',
-    'inlineStyle',
-    'inlineClass',
     'link',
     'lists',
-    'paragraphFormat',
-    'paragraphStyle',
-    'save',
     'url',
     'emoticons',
-    // 'fontFamily',
-    // 'table',
-    // 'video',
-    // 'image',
-    // 'imageTUI',
-    // 'imageManager',
-    // 'wordPaste',
-    // 'embedly',
-    // 'codeBeautifier',
-    // 'lineHeight',
-    // 'codeView',
-    // 'draggable',
-    // 'entities',
-    // 'file',
-    // 'fontAwesome',
-    // 'fullscreen',
-    // 'lineBreaker',
-    // 'quickInsert',
-    // 'quote',
   ],
 
   emoticonsUseImage: false,
