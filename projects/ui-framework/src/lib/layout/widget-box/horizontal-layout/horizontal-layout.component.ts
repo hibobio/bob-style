@@ -2,6 +2,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import {
+  AfterContentInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -25,13 +26,13 @@ import { ContentTemplateConsumer } from '../../../services/utils/contentTemplate
 })
 export class HorizontalLayoutComponent
   extends ContentTemplateConsumer
-  implements OnDestroy {
+  implements OnDestroy, AfterContentInit {
   showAll: boolean;
   itemsPerRow: number;
 
   @Input() items: any[];
   @Input() cardWidth: number;
-  @Input() swiper: boolean = false;
+  @Input() swiper = false;
   @ViewChild(CardsLayoutComponent, { static: true })
   private cardsLayout: CardsLayoutComponent;
 
@@ -62,7 +63,7 @@ export class HorizontalLayoutComponent
   }
 
   private get hasLastItem(): boolean {
-    return !!this.lastItem.nativeElement.childNodes.length;
+    return !!this.lastItem.nativeElement.children.length;
   }
 
   private setItemsPerRow(): void {
