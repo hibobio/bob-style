@@ -1,11 +1,10 @@
-import 'froala-editor/js/plugins/font_size.min.js';
-// import './froala/link.min.js';
-import 'froala-editor/js/plugins/link.min.js';
 import 'froala-editor/js/plugins/align.min.js';
+import 'froala-editor/js/plugins/emoticons.min.js';
+import 'froala-editor/js/plugins/font_size.min.js';
+// import 'froala-editor/js/plugins/link.min.js';
+import './froala/link.min.js';
 import 'froala-editor/js/plugins/lists.min.js';
 import 'froala-editor/js/plugins/url.min.js';
-// import 'froala-editor/js/plugins/char_counter.min.js';
-import 'froala-editor/js/plugins/emoticons.min.js';
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
