@@ -1,0 +1,46 @@
+@import '../../style/common-imports';
+@import '../../style/icons.mixin';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  max-width: max-content;
+
+  &[data-type='warning'] {
+    --bg-color: #{rgba($color-warn, 0.1)};
+    --txt-color: #{$color3_darker};
+  }
+
+  &[data-type='information'] {
+    --bg-color: #{rgba($inform-600, 0.1)};
+    --bg-color-2: #{rgba($inform-600, 0.2)};
+    --txt-color: #{$color9_darker};
+  }
+
+  &[data-type='error'] {
+    --bg-color: #{rgba($color-error, 0.1)};
+    --txt-color: #{$color1_darker};
+  }
+
+  &[data-type='success'] {
+    --bg-color: #{rgba($positive-600, 0.1)};
+    --txt-color: #{$color7_darker};
+  }
+
+  .wrapper {
+    border-radius: $border-radius;
+    background-color: var(--bg-color);
+    color: var(--txt-color);
+
+    .collaps-trigger {
+      background-color: var(--bg-color-2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      cursor: pointer;
+      width: 36px;
+    }
+  }
+}
