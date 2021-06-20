@@ -11,13 +11,40 @@
   max-width: max-content;
   height: fit-content;
 
+  &[data-type='warning'] {
+    --bg-color: #{rgba($color-warn, 0.1)};
+    --bg-color-2: #{rgba($color-warn, 0.2)};
+    --txt-color: #{$color3_darker};
+  }
+
+  &[data-type='information'] {
+    --bg-color: #{rgba($inform-600, 0.1)};
+    --bg-color-2: #{rgba($inform-600, 0.2)};
+    --txt-color: #{$color9_darker};
+  }
+
+  &[data-type='error'] {
+    --bg-color: #{rgba($color-error, 0.1)};
+    --bg-color-2: #{rgba($color-error, 0.2)};
+    --txt-color: #{$color1_darker};
+  }
+
+  &[data-type='success'] {
+    --bg-color: #{rgba($positive-600, 0.1)};
+    --bg-color-2: #{rgba($positive-600, 0.2)};
+    --txt-color: #{$color7_darker};
+  }
+
+  background-color: var(--bg-color);
+  color: var(--txt-color);
+
   .side-button {
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     width: times8(4);
-    background-color: #{rgba($inform-600, 0.2)};
+    background-color: var(--bg-color-2);
 
     .side-button-text {
       text-transform: uppercase;
@@ -26,29 +53,6 @@
       margin-top: times8(4);
     }
   }
-
-  &[data-type='warning'] {
-    --bg-color: #{rgba($color-warn, 0.1)};
-    --txt-color: #{$color3_darker};
-  }
-
-  &[data-type='information'] {
-    --bg-color: #{rgba($inform-600, 0.1)};
-    --txt-color: #{$color9_darker};
-  }
-
-  &[data-type='error'] {
-    --bg-color: #{rgba($color-error, 0.1)};
-    --txt-color: #{$color1_darker};
-  }
-
-  &[data-type='success'] {
-    --bg-color: #{rgba($positive-600, 0.1)};
-    --txt-color: #{$color7_darker};
-  }
-
-  background-color: var(--bg-color);
-  color: var(--txt-color);
 
   .btn-minimize ::ng-deep {
     button {
