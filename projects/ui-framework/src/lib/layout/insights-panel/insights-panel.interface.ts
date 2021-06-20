@@ -17,7 +17,6 @@ export interface InsightsPanelConfig {
   maxLines?: number;
   expandButtonText?: string;
   readMoreLinkText?: string;
-
   headingClass?: string | string[] | NgClass;
   headingStyle?: GenericObject<string>;
   sectionClass?: string | string[] | NgClass;

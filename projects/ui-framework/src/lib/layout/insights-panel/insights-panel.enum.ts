@@ -4,3 +4,8 @@ export enum InsightsPanelType {
   error = 'error',
   success = 'success'
 }
+
+export enum insightsButtonType {
+  normal = 'normal',
+  side = 'side'
+}

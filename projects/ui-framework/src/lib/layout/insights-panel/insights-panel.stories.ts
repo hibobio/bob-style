@@ -15,7 +15,7 @@ import { Icons } from '../../icons/icons.enum';
 import { mockText } from '../../mock.const';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { TypographyModule } from '../../typography/typography.module';
-import { InsightsPanelType } from './insights-panel.enum';
+import { insightsButtonType, InsightsPanelType } from './insights-panel.enum';
 import { InsightsPanelModule } from './insights-panel.module';
 
 const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
@@ -23,11 +23,14 @@ const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
 );
 
 const type = Object.values(InsightsPanelType);
+const btnType = Object.values(insightsButtonType);
 
 const template1 = `
+  <div style="height: 400px">
   <b-insights-panel class="mrg-l-auto"
         [type]="type"
         [data]="data"
+        [buttonType]="buttonType"
         [config]="{
           collapsible:collapsible,
           showMoreAfterItem:showMoreAfterItem,
@@ -39,6 +42,7 @@ const template1 = `
         [expanded]="expanded"
         (expanded)="onExpand($event ? 'yes' : 'no')"
   ></b-insights-panel>
+</div>
 `;
 
 const templateForNotes = `
@@ -120,6 +124,7 @@ story.add(
       template: storyTemplate,
       props: {
         type: select('type', type, InsightsPanelType.information, 'Props'),
+        buttonType: select('buttonType', btnType, insightsButtonType.normal, 'Props'),
         expanded: boolean('expanded', false, 'Props'),
         collapsible: boolean('collapsible', false, 'Props'),
         icon: select(

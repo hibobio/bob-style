@@ -13,7 +13,7 @@ import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
 import { Button } from '../../buttons/buttons.interface';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { INSIGHTS_PANEL_CONFIG_DEF } from './insights-panel.const';
-import { InsightsPanelType } from './insights-panel.enum';
+import { insightsButtonType, InsightsPanelType } from './insights-panel.enum';
 import {
   InsightsPanelConfig,
   InsightsPanelData,
@@ -26,6 +26,8 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InsightsPanelComponent {
+  public isInnerContentShowing = true;
+
   constructor(
     private cdr: ChangeDetectorRef,
     private translate: TranslateService
@@ -37,12 +39,13 @@ export class InsightsPanelComponent {
       readMoreLinkText: this.translate.instant('common.read_more'),
     };
   }
-
+  readonly insightsButtonTypes = insightsButtonType;
   readonly iconSizes = IconSize;
   readonly iconTypes = Icons;
 
   @Input() data: InsightsPanelData[];
   @Input('expanded') isExpanded = true;
+  @Input('buttonType') btnType: insightsButtonType = insightsButtonType.normal
 
   @Input('config') set setConfig(config: InsightsPanelConfig) {
     this.config = { ...this.config, ...config };
@@ -70,6 +73,12 @@ export class InsightsPanelComponent {
 
   public onExpandClick(): void {
     this.expanded.emit((this.isExpanded = !this.isExpanded));
+    this.cdr.detectChanges();
+  }
+
+  public onSideToggleClick() {
+    this.isInnerContentShowing = !this.isInnerContentShowing;
+    console.log('this.isInnerContentShowing', this.isInnerContentShowing);
     this.cdr.detectChanges();
   }
 }

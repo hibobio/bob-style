@@ -1,4 +1,5 @@
-<b-button *ngIf="config.collapsible!==false && !config.showMoreAfterItem"
+<b-button *ngIf="btnType === insightsButtonTypes.normal &&
+          config.collapsible!==false && !config.showMoreAfterItem"
           class="btn-minimize clr-inherit uppercase mrg-l-auto"
           [ngClass]="{'mrg-t-8': isExpanded}"
           [button]="expandButtonConf"
@@ -6,6 +7,8 @@
           [icon]="isExpanded ? iconTypes.contract : iconTypes.expand"
           (clicked)="onExpandClick()">
 </b-button>
+
+
 
 <ng-template #item
              let-insight="insight"
@@ -41,40 +44,47 @@
 
 </ng-template>
 
-<div class="flx-col flx-grow scroll-visible"
-     *ngIf="config.collapsible === false || isExpanded ||
+<div class="flx-row">
+  <div *ngIf="btnType === insightsButtonTypes.side"
+       class="side-button flx-row mrg-r-16"
+       (click)="onSideToggleClick()">
+    <b-icon [icon]="expanded ? iconTypes.chevron_left : iconTypes.chevron_right"></b-icon>
+  </div>
+  <div *ngIf="isInnerContentShowing" class="inner-content">
+    <div class="flx-col flx-grow scroll-visible pad-y-32"
+         *ngIf="config.collapsible === false || isExpanded ||
      config.showMoreAfterItem > 0">
-
-  <ng-container *ngIf="config.showMoreAfterItem>0">
-    <ng-container *ngFor="let insight of (data | slice:0:config.showMoreAfterItem);
+      <ng-container *ngIf="config.showMoreAfterItem>0">
+        <ng-container *ngFor="let insight of (data | slice:0:config.showMoreAfterItem);
                           let last = last;
                           let index=index;
                           trackBy: ('$index' | trackByProp)">
-      <ng-container *ngTemplateOutlet="item; context: {
+          <ng-container *ngTemplateOutlet="item; context: {
                         insight: insight,
                         last: !isExpanded && index+1 === config.showMoreAfterItem,
                         hasShowMore: !isExpanded && index+1 === config.showMoreAfterItem && data.length > config.showMoreAfterItem,
                         hasShowLess: false
                       }">
+          </ng-container>
+        </ng-container>
       </ng-container>
-    </ng-container>
-  </ng-container>
 
-  <ng-container
-                *ngIf="!config.showMoreAfterItem || (config.showMoreAfterItem && isExpanded)">
-    <ng-container *ngFor="let insight of (data |
+      <ng-container
+        *ngIf="!config.showMoreAfterItem || (config.showMoreAfterItem && isExpanded)">
+        <ng-container *ngFor="let insight of (data |
                   slice:(config.showMoreAfterItem||0)
                   :(config.showMoreAfterItem && !isExpanded ?
                   config.showMoreAfterItem : undefined));
                   let last = last; trackBy: ('$index' | trackByProp)">
-      <ng-container *ngTemplateOutlet="item; context: {
+          <ng-container *ngTemplateOutlet="item; context: {
                         insight: insight,
                         last: last,
                         hasShowMore: false,
                         hasShowLess: config.showMoreAfterItem>0
                       }">
+          </ng-container>
+        </ng-container>
       </ng-container>
-    </ng-container>
-  </ng-container>
-
+    </div>
+  </div>
 </div>
