@@ -46,7 +46,7 @@ export class CardsLayoutComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   @ViewChild('cardsList', { static: true })
-  private cardsList: ElementRef<HTMLElement>;
+  public cardsList: ElementRef<HTMLElement>;
 
   @Input() alignCenter: boolean | 'auto' = false;
   @Input() mobileSwiper = false;

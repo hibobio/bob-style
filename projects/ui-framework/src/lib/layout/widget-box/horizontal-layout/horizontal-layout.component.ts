@@ -17,6 +17,12 @@ import { CardsLayoutComponent } from '../../../cards/cards-layout/cards-layout.c
 import { CardType } from '../../../cards/cards.enum';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { ContentTemplateConsumer } from '../../../services/utils/contentTemplate.directive';
+import { Icons } from '../../../icons/icons.enum';
+
+enum Direction {
+  next = 1,
+  prev = -1,
+}
 
 @Component({
   selector: 'b-horizontal-layout',
@@ -29,20 +35,26 @@ export class HorizontalLayoutComponent
   implements OnDestroy, AfterContentInit {
   showAll: boolean;
   itemsPerRow: number;
+  showPrev: boolean;
+  showNext: boolean;
 
   @Input() items: any[];
   @Input() cardWidth: number;
   @Input() swiper = false;
+
   @ViewChild(CardsLayoutComponent, { static: true })
   private cardsLayout: CardsLayoutComponent;
-
   @ViewChild('lastItem', { static: true })
   private lastItem: ElementRef<HTMLElement>;
-
-  readonly buttonType = ButtonType;
-  readonly buttonSize = ButtonSize;
-  readonly cardType: CardType.small;
+  private cardsList: HTMLElement;
+  private scrollLeftMax: number;
   private onDestroyNotifier$ = new Subject();
+  
+  readonly buttonType = ButtonType;
+  readonly buttonSize = ButtonSize.large;
+  readonly icons = Icons;
+  readonly cardType: CardType.small;
+  readonly direction = Direction;
 
   constructor(
     private elRef: ElementRef<HTMLElement>,
@@ -74,12 +86,12 @@ export class HorizontalLayoutComponent
         this.itemsPerRow = this.hasLastItem && data > 1  ? data - 1 : data;
         this.cdr.detectChanges();
 
-        const cardsList = this.cardsLayout.hostElRef.nativeElement
-          .firstElementChild as HTMLElement;
-        const itemHeight = (cardsList.firstElementChild as HTMLElement)
-          .offsetHeight;
+        this.cardsList = this.cardsLayout.cardsList.nativeElement;
+        this.scrollLeftMax = this.cardsList.scrollWidth - this.cardsList.clientWidth;
+        this.showNext = this.scrollLeftMax > 0;
+        const itemHeight = (this.cardsList.firstElementChild as HTMLElement).offsetHeight;
 
-        this.DOM.setCssProps(cardsList, {
+        this.DOM.setCssProps(this.cardsList, {
           '--item-height': `${itemHeight}px`,
         });
       });
@@ -89,9 +101,14 @@ export class HorizontalLayoutComponent
     return !!(this.showAll && this.items?.length > this.itemsPerRow * 2);
   }
 
-  // public scroll(): void {// TODO: programmatically scrolling
-  //   this.cards.nativeElement.scrollLeft += 100;
-  // }
+  public onScrollClick(dir: Direction): void {
+    const cardWidth = this.cardWidth || 150;
+    const cardsCountToScroll = 2;
+
+    this.cardsList.scrollLeft += cardWidth * cardsCountToScroll * dir;
+    this.showNext = this.cardsList.scrollLeft < this.scrollLeftMax;
+    this.showPrev = this.cardsList.scrollLeft > 0;
+  }
 
   ngOnDestroy(): void {
     this.onDestroyNotifier$.next();
