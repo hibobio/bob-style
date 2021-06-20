@@ -46,12 +46,15 @@
 
 <div class="flx-row">
   <div *ngIf="btnType === insightsButtonTypes.side"
-       class="side-button flx-row mrg-r-16"
+       class="side-button flx-row"
        (click)="onSideToggleClick()">
-    <b-icon [icon]="expanded ? iconTypes.chevron_left : iconTypes.chevron_right"></b-icon>
+    <div class="flx-col">
+      <b-icon [icon]="expanded ? iconTypes.chevron_left : iconTypes.chevron_right"></b-icon>
+      <span class="side-button-text">{{config.expandButtonText}}</span>
+    </div>
   </div>
   <div *ngIf="isInnerContentShowing" class="inner-content">
-    <div class="flx-col flx-grow scroll-visible pad-y-32"
+    <div  class="flx-col flx-grow scroll-visible pad-32"
          *ngIf="config.collapsible === false || isExpanded ||
      config.showMoreAfterItem > 0">
       <ng-container *ngIf="config.showMoreAfterItem>0">
