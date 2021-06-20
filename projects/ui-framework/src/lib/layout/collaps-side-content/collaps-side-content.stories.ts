@@ -10,16 +10,18 @@ import { CollapsSideContentModule } from './collaps-side-content.module';
 const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(withKnobs);
 
 const template = `
+  <div style="min-height: 400px">
   <b-collaps-side-content #collapsible >
     {{ content }}
     <div style="
-      height: 300px;
-      width: 200px;
+      height: 400px;
+      width: 300px;
       display: flex;
       align-items: center;
       justify-content: center;
       color: grey"> content</div>
   </b-collaps-side-content>
+</div>
 `;
 
 const storyTemplate = `

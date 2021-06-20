@@ -1,5 +1,5 @@
-<div #wrapper class="wrapper flx">
-  <div style="height: {{conteinerHeight}}px"  class="collaps-trigger" (click)="onCollapsClick()">
+<div class="wrapper flx">
+  <div class="collaps-trigger" (click)="onCollapsClick()">
     <b-icon [icon]="collapsed ? config.trigger.icon.expand : config.trigger.icon.collapsed"></b-icon>
   </div>
   <ng-content *ngIf="!collapsed" class="content inl-blk"></ng-content>
