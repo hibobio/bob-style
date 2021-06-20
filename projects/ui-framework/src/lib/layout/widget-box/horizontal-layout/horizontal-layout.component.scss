@@ -3,6 +3,21 @@
 :host {
   display: flex;
   flex-direction: column;
+  position: relative;
+}
+
+.scroll-button {
+  position: absolute;
+  z-index: 999;
+  top: calc(50% - 8px);
+  transform: translateY(-50%);
+
+  &.next {
+    right: 0;
+  }
+  &.prev {
+    left: 0;
+  }
 }
 
 b-cards {
