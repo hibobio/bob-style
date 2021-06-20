@@ -1,10 +1,22 @@
+<b-round-button *ngIf="showPrev"
+  class="scroll-button prev"
+  [size]="buttonSize"
+  [icon]="icons.chevron_left"
+  (clicked)="onScrollClick(direction.prev)">
+</b-round-button>
+<b-round-button *ngIf="showNext"
+  class="scroll-button next"
+  [size]="buttonSize"
+  [icon]="icons.chevron_right"
+  (clicked)="onScrollClick(direction.next)">
+</b-round-button>
+
 <b-cards class="pad-x-16 pad-b-16 scroll-visible-alt" 
   [type]="cardType" 
   [swiper]="swiper"
   [attr.data-scroll]="hasScroll()"
   [cardWidth]="cardWidth"
   >
-  <!-- <input type="button" value="scroll x" (click)="scroll()" style="position: absolute; right: 0; z-index: 999" /> -->
   <ng-content></ng-content>
   <div *ngFor="let item of (showAll ? items : (items | slice:0:itemsPerRow));
     let i = index; trackBy: '$index' | trackByProp">
