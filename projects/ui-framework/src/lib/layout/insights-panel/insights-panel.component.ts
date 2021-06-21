@@ -45,7 +45,6 @@ export class InsightsPanelComponent {
 
   @Input() data: InsightsPanelData[];
   @Input('expanded') isExpanded = true;
-  @Input('buttonType') btnType: insightsButtonType = insightsButtonType.normal
 
   @Input('config') set setConfig(config: InsightsPanelConfig) {
     this.config = { ...this.config, ...config };
@@ -54,6 +53,8 @@ export class InsightsPanelComponent {
 
   @HostBinding('attr.data-type') @Input() type: InsightsPanelType =
     InsightsPanelType.information;
+  @HostBinding('attr.data-collaps-type') @Input('buttonType') btnType: insightsButtonType =
+    insightsButtonType.normal;
 
   @HostBinding('attr.data-expanded') get panelIsExpanded() {
     return (

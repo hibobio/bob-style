@@ -44,14 +44,12 @@
 
 </ng-template>
 
-<div class="flx-row">
+<!--<div class="flx-row">-->
   <div *ngIf="btnType === insightsButtonTypes.side"
-       class="side-button flx-row"
+       class="side-button pad-b-32"
        (click)="onSideToggleClick()">
-    <div class="flx-col">
       <b-icon [icon]="expanded ? iconTypes.chevron_left : iconTypes.chevron_right"></b-icon>
       <span class="side-button-text">{{config.expandButtonText}}</span>
-    </div>
   </div>
   <div *ngIf="isInnerContentShowing" class="inner-content">
     <div  class="flx-col flx-grow scroll-visible pad-32"
@@ -90,4 +88,4 @@
       </ng-container>
     </div>
   </div>
-</div>
+<!--</div>-->
