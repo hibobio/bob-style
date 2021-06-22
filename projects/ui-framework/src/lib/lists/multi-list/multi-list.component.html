@@ -2,7 +2,7 @@
           #search
           [size]="size"
           (searchChange)="searchChange($event)"
-          [ngClass]="{ 'no-result': !listOptions?.length }">
+          [class.no-result]="!listOptions?.length">
 </b-search>
 
 <div [ngStyle]="{
@@ -10,9 +10,7 @@
         minHeight: listMinHeight && listMinHeight + 'px'
       }"
      [attr.aria-readonly]="readonly || null"
-     [ngClass]="{
-       'no-group-header': noGroupHeaders
-      }"
+     [class.no-group-header]="noGroupHeaders"
      class="v-scroll-wrapper">
 
   <div class="empty-state-message option-select option"
@@ -23,16 +21,16 @@
   <div #headers
        class="headers"
        *ngIf="!noGroupHeaders">
-    <div *ngFor="let header of listHeaders; trackBy: headerTrackBy.bind(this)"
+    <div *ngFor="let header of listHeaders; trackBy: ['key','groupName'] | trackByProp"
          class="headers-group">
-      <div [ngClass]="{
-            'clickable': (!header.groupIsOption && options.length > 1) || (header.groupIsOption && !readonly),
+      <div class="option-select header "
+           [ngClass]="{
+            'clickable has-distinct-hover': isHeaderClickable(header),
             'collapsed': header.isCollapsed,
             'focus': focusOption?.isPlaceHolder && isSameGroup(focusOption, header),
             'selected': header.selected,
             'indeterminate': header.indeterminate
-          }"
-           class="option-select header has-distinct-hover">
+          }">
         <span (click)="headerClick(header)"
               class="header-collapse-trigger">
         </span>
@@ -89,6 +87,7 @@
     <div class="options">
       <div (click)="optionClick(option, true)"
            *cdkVirtualFor="let option of listOptions; trackBy: 'id' | trackByProp"
+           class="option-select"
            [ngClass]="{
             'header-placeholder': option.isPlaceHolder,
             'option': !option.isPlaceHolder,
@@ -97,8 +96,7 @@
             'disabled': option.disabled || (!option.selected && max && selectedIDs?.length >= max) || (option.selected
             && min && selectedIDs?.length <= min),
             'single-group-option': options.length === 1
-           }"
-           class="option-select">
+           }">
 
         <span *ngIf="!option.isPlaceHolder && !readonly"
               class="checkbox"

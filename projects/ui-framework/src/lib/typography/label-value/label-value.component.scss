@@ -149,10 +149,13 @@ $BLVTypeMap: (
 .blv-value {
   max-width: 100%;
   min-width: 0;
+
+  .inl {
+    margin-right: $blv-info-tooltip-margin;
+  }
 }
 
 b-info-tooltip {
-  margin-left: $blv-info-tooltip-margin;
   line-height: 0;
 
   &.inl-flx {
@@ -364,6 +367,12 @@ b-info-tooltip {
         filter: brightness(0.65);
       }
     }
+  }
+}
+
+.blv-label {
+  &:last-child {
+    margin-bottom: 0 !important;
   }
 }
 
