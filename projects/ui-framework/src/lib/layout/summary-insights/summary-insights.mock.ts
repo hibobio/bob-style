@@ -85,7 +85,7 @@ export const summaryInsightsDataMock2 = makeArray(6).map((_, i) => ({
   type: SummaryInsightType.labelValue,
   data: {
     label: mockTime(),
-    value: things[++idx],
+    value: things[++idx] + (i === 0 ? ' ' + mockText(3) : ''),
     type: LabelValueType.six,
     labelStyle: {
       fontWeight: 600,

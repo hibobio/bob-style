@@ -17,6 +17,10 @@ const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
   withKnobs
 );
 
+const ex2code = `<b-summary-insights [data]="data"
+    class="bg-grey-100 rounded pad-16
+                brd-0 spread">`;
+
 const template1 = `<b-summary-insights
     [data]="data">
 
@@ -38,7 +42,7 @@ const template1 = `<b-summary-insights
 </b-summary-insights>
 
 <b-summary-insights
-    class="bg-grey-100 rounded pad-16 brd-0 flex-grow mrg-t-32"
+    class="bg-grey-100 rounded pad-16 brd-0 spread mrg-t-32"
     [data]="data2">
 
     <ng-container *contentTemplate="let data=data;">
@@ -48,12 +52,17 @@ const template1 = `<b-summary-insights
       <p class="mrg-0 pre-wrap">{{ data.text}}</p>
     </ng-container>
 
-</b-summary-insights>`;
+</b-summary-insights>
+`;
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Summary Insights'">
-  <div style="text-align:left; max-width:800px">
+  <div style="text-align:left; max-width:800px; display: flex; flex-direction: column;">
     ${template1}
+
+     <br>
+      <textarea style="resize: none;padding: 0;height: 85px;width: 100%;border: 0;background: transparent; margin-left: auto;max-width: 360px;" readonly disabled [value]="ex2code">
+      </textarea>
   </div>
 </b-story-book-layout>
 `;
@@ -68,6 +77,12 @@ const note = `
   ~~~
   ${template1}
   ~~~
+
+  **Note**<br> Customize b-summary-insights with atomic classes:<br>
+  - You can modify the column gap with \`gap-X\` classes (where X is number, dividable by 8 from 0 to 48)<br>
+  - You can remove separators with \`brd-0\` class.<br>
+  - Make items 'grow' with \`spread\` class.
+  <br>
 
   #### Properties
   Name | Type | Description
@@ -136,6 +151,7 @@ story.add(
       props: {
         data: object('data', summaryInsightsDataMock),
         data2: object('data2', summaryInsightsDataMock2),
+        ex2code: ex2code,
       },
       moduleMetadata: {
         imports: [

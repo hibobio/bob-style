@@ -1,27 +1,58 @@
 @import '../../style/common-imports';
 
+$bsi-col-gap: 32px;
+
 :host {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0px, max-content));
+  align-items: flex-start;
+  justify-content: flex-start;
+  grid-gap: var(--gap);
+
+  &:not([class*='gap-']) {
+    --gap: 40px;
+
+    @include mobile($breakpoint-device-lg) {
+      --gap: 32px;
+    }
+  }
 }
 
 .bsi-item {
+  height: 100%;
   max-width: 300px;
-}
+  align-items: flex-start;
+  justify-content: flex-start;
+  position: relative;
 
-.bsi-item:not(:last-child) {
-  padding-right: 40px;
-
-  @include mobile($breakpoint-device-lg) {
-    padding-right: 24px;
+  &:not(:last-child):after {
+    content: '';
+    width: 0px;
+    height: 100%;
+    border-right: 1px solid $border-color;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: calc(var(--gap) / -2);
   }
 }
 
 :host.brd-0 .bsi-item {
   border-width: 0;
+  position: static;
+
+  &:after {
+    display: none;
+  }
 }
 
-:host.flex-grow .bsi-item {
-  flex-grow: 1;
+:host.flex-grow,
+:host.spread {
+  justify-content: space-between;
+
+  .bsi-item {
+    flex-grow: 1;
+  }
 }
 
 .bsi-item b-progress-bar {

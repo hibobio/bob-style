@@ -38,12 +38,12 @@ export const selectAll = (
   }));
 
 const groupNum = 8;
-const optionsNum = 4;
+const optionsNum = 8;
 
 const groupNames: string[] = mockJobs(30);
 
 export const optionsMock: SelectGroupOption[] = [
-  {
+  groupNum > 2 && {
     groupName: 'All',
     key: 'all',
     options: [
@@ -55,7 +55,7 @@ export const optionsMock: SelectGroupOption[] = [
     ],
   },
 
-  {
+  groupNum > 2 && {
     groupName: 'Roles',
     key: 'roles',
     suffixComponent: {
@@ -118,7 +118,7 @@ export const optionsMock: SelectGroupOption[] = [
     ],
   },
 
-  ...makeArray(groupNum + 1).map((group, index) => {
+  ...makeArray(Math.max(1, groupNum - 2)).map((group, index) => {
     if (index === 3) {
       return {
         groupName: 'Human, after all',
@@ -186,7 +186,8 @@ export const optionsMock: SelectGroupOption[] = [
     groupName: 'Group with empty options',
     options: [],
   },
-  {
+
+  groupNum > 2 && {
     groupName: 'Level',
     options: [
       {
@@ -195,4 +196,4 @@ export const optionsMock: SelectGroupOption[] = [
       },
     ],
   },
-];
+].filter(Boolean);

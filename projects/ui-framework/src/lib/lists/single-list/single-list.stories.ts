@@ -90,11 +90,13 @@ const note = `
 
 const options: SelectGroupOption[] = cloneDeep(optionsMock);
 
-options[2].options[1].selected = true;
-options[2].options[3].disabled = true;
-options[2].description = 'How I wish, how I wish you were here...';
-options[3].description =
-  'We are just two lost souls swimming in a fishbowl year after year';
+if (options.length >= 3) {
+  options[2].options[1].selected = true;
+  options[2].options[3].disabled = true;
+  options[2].description = 'How I wish, how I wish you were here...';
+  options[3].description =
+    'We are just two lost souls swimming in a fishbowl year after year';
+}
 
 const options$ = of(options).pipe(delay(1000));
 

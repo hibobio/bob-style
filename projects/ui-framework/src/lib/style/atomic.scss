@@ -496,12 +496,15 @@ clr-positive-500,
   }
   .gap-#{$size} {
     grid-gap: #{$size * 1px}#{$imp};
+    --gap: #{$size * 1px}#{$imp};
   }
   .col-gap-#{$size} {
     grid-column-gap: #{$size * 1px}#{$imp};
+    --gap: #{$size * 1px}#{$imp};
   }
   .row-gap-#{$size} {
     grid-row-gap: #{$size * 1px}#{$imp};
+    --gap: #{$size * 1px}#{$imp};
   }
 }
 

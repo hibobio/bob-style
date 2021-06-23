@@ -1,36 +1,43 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { CommonModule } from '@angular/common';
-import { ScrollingModule } from '@angular/cdk/scrolling';
-import { ListModelService } from '../list-service/list-model.service';
-import { SelectGroupOption } from '../list.interface';
-import { By } from '@angular/platform-browser';
-import { MultiListComponent } from './multi-list.component';
-import { ListKeyboardService } from '../list-service/list-keyboard.service';
-import { ListChangeService } from '../list-change/list-change.service';
-import { MockComponent } from 'ng-mocks';
-import { ListFooterComponent } from '../list-footer/list-footer.component';
-import { CheckboxComponent } from '../../form-elements/checkbox/checkbox.component';
-import {
-  elementsFromFixture,
-  elementFromFixture,
-} from '../../services/utils/test-helpers';
+import { getTestScheduler } from 'jasmine-marbles';
 import { cloneDeep } from 'lodash';
+import { MockComponent } from 'ng-mocks';
+
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { CommonModule } from '@angular/common';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
-  mockTranslatePipe,
-  TranslateServiceProvideMock,
-  mockHighlightPipe,
-  listKeyboardServiceStub,
-  MobileServiceProvideMock,
-  TrackByPropPipeStub,
-} from '../../tests/services.stub.spec';
+  ComponentFixture,
+  flush,
+  TestBed,
+  waitForAsync,
+} from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import { ButtonComponent } from '../../buttons/button/button.component';
+import { TextButtonComponent } from '../../buttons/text-button/text-button.component';
+import { CheckboxComponent } from '../../form-elements/checkbox/checkbox.component';
 import { IconComponent } from '../../icons/icon.component';
 import { SearchComponent } from '../../search/search/search.component';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { TextButtonComponent } from '../../buttons/text-button/text-button.component';
+import { TrackByPropModule } from '../../services/filters/trackByProp.pipe';
 import { simpleChange } from '../../services/utils/functional-utils';
-import { getTestScheduler } from 'jasmine-marbles';
+import {
+  elementFromFixture,
+  elementsFromFixture,
+} from '../../services/utils/test-helpers';
+import {
+  listKeyboardServiceStub,
+  MobileServiceProvideMock,
+  mockHighlightPipe,
+  mockTranslatePipe,
+  TranslateServiceProvideMock,
+} from '../../tests/services.stub.spec';
+import { ListChangeService } from '../list-change/list-change.service';
+import { ListFooterComponent } from '../list-footer/list-footer.component';
+import { ListKeyboardService } from '../list-service/list-keyboard.service';
+import { ListModelService } from '../list-service/list-model.service';
+import { SelectGroupOption } from '../list.interface';
+import { MultiListComponent } from './multi-list.component';
 
 describe('MultiListComponent', () => {
   let component: MultiListComponent;
@@ -63,7 +70,6 @@ describe('MultiListComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [
-          TrackByPropPipeStub,
           MultiListComponent,
           ListFooterComponent,
           mockTranslatePipe,
@@ -74,7 +80,12 @@ describe('MultiListComponent', () => {
           MockComponent(IconComponent),
           MockComponent(SearchComponent),
         ],
-        imports: [CommonModule, NoopAnimationsModule, ScrollingModule],
+        imports: [
+          CommonModule,
+          NoopAnimationsModule,
+          ScrollingModule,
+          TrackByPropModule,
+        ],
         providers: [
           ListModelService,
           ListChangeService,
@@ -449,6 +460,7 @@ describe('MultiListComponent', () => {
       fixture.detectChanges();
       expect(component.selectedIDs).toEqual([1, 2]);
     });
+
     it('should deselect all options in group when deselecting header', () => {
       const headerCheckbox = fixture.debugElement.query(
         By.css('.header .checkbox')
@@ -460,6 +472,7 @@ describe('MultiListComponent', () => {
       fixture.detectChanges();
       expect(component.selectedIDs).toEqual([]);
     });
+
     it('should concat options that are selected and disabled and deselect the rest', () => {
       const testOptionsMock = [
         {
