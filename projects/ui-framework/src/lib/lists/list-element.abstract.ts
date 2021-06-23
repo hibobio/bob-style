@@ -584,6 +584,10 @@ export abstract class BaseListElement
       this.options,
       config.selectedIDs
     );
+
+    if (!this.cd['destroyed']) {
+      this.cd.detectChanges();
+    }
   }
 
   protected getSelectedIDs(

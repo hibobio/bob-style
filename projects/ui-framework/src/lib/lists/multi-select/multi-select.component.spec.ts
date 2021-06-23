@@ -26,6 +26,7 @@ import { IconComponent } from '../../icons/icon.component';
 import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
 import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
 import { SearchComponent } from '../../search/search/search.component';
+import { TrackByPropModule } from '../../services/filters/trackByProp.pipe';
 import { simpleChange } from '../../services/utils/functional-utils';
 import { fakeAsyncFlush } from '../../services/utils/test-helpers';
 import {
@@ -36,7 +37,6 @@ import {
   mockTranslatePipe,
   MutationObservableServiceProvideMock,
   overwriteObservable,
-  TrackByPropPipeStub,
   TranslateServiceProvideMock,
 } from '../../tests/services.stub.spec';
 import { ListChangeService } from '../list-change/list-change.service';
@@ -98,7 +98,6 @@ describe('MultiSelectComponent', () => {
 
       TestBed.configureTestingModule({
         declarations: [
-          TrackByPropPipeStub,
           MultiSelectComponent,
           MultiListComponent,
           ListFooterComponent,
@@ -117,6 +116,7 @@ describe('MultiSelectComponent', () => {
           ScrollingModule,
           OverlayModule,
           TruncateTooltipModule,
+          TrackByPropModule,
         ],
 
         providers: [

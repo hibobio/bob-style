@@ -21,9 +21,9 @@
   <div #headers
        class="headers"
        *ngIf="!noGroupHeaders">
-    <div *ngFor="let header of listHeaders; trackBy: ['key','groupName'] | trackByProp"
+    <div *ngFor="let header of listHeaders; trackBy: 'key' | trackByProp"
          class="headers-group">
-      <div class="option-select header "
+      <div class="option-select header"
            [ngClass]="{
             'clickable has-distinct-hover': isHeaderClickable(header),
             'collapsed': header.isCollapsed,

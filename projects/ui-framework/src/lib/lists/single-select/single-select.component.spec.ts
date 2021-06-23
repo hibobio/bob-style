@@ -1,41 +1,43 @@
+import { cloneDeep } from 'lodash';
+
+import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
+import { Platform } from '@angular/cdk/platform';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { CommonModule } from '@angular/common';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   ComponentFixture,
   fakeAsync,
   flush,
   inject,
+  resetFakeAsyncZone,
   TestBed,
   tick,
-  resetFakeAsyncZone,
   waitForAsync,
 } from '@angular/core/testing';
-import { CommonModule } from '@angular/common';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { SingleSelectComponent } from './single-select.component';
-import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
-import { Platform } from '@angular/cdk/platform';
 import { By } from '@angular/platform-browser';
-import { SelectGroupOption } from '../list.interface';
-import { cloneDeep } from 'lodash';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
-import {
-  mockTranslatePipe,
-  TranslateServiceProvideMock,
-  listKeyboardServiceStub,
-  MobileServiceProvideMock,
-  mockHighlightPipe,
-  MockCompsModule,
-  TrackByPropPipeStub,
-} from '../../tests/services.stub.spec';
-import { ListFooterComponent } from '../list-footer/list-footer.component';
-import { ListModelService } from '../list-service/list-model.service';
-import { ListChangeService } from '../list-change/list-change.service';
-import { ListKeyboardService } from '../list-service/list-keyboard.service';
-import { ScrollingModule } from '@angular/cdk/scrolling';
-import { SingleListComponent } from '../single-list/single-list.component';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { TrackByPropModule } from '../../services/filters/trackByProp.pipe';
 import { simpleChange } from '../../services/utils/functional-utils';
 import { fakeAsyncFlush } from '../../services/utils/test-helpers';
+import {
+  listKeyboardServiceStub,
+  MobileServiceProvideMock,
+  MockCompsModule,
+  mockHighlightPipe,
+  mockTranslatePipe,
+  TranslateServiceProvideMock,
+} from '../../tests/services.stub.spec';
+import { ListChangeService } from '../list-change/list-change.service';
+import { ListFooterComponent } from '../list-footer/list-footer.component';
+import { ListKeyboardService } from '../list-service/list-keyboard.service';
+import { ListModelService } from '../list-service/list-model.service';
+import { SelectGroupOption } from '../list.interface';
 import { compareListChange, mockListChange } from '../lists-test-helpers.spec';
+import { SingleListComponent } from '../single-list/single-list.component';
+import { SingleSelectComponent } from './single-select.component';
 
 describe('SingleSelectComponent', () => {
   let component: SingleSelectComponent;
@@ -70,7 +72,6 @@ describe('SingleSelectComponent', () => {
 
       TestBed.configureTestingModule({
         declarations: [
-          TrackByPropPipeStub,
           SingleSelectComponent,
           SingleListComponent,
           ListFooterComponent,
@@ -83,6 +84,7 @@ describe('SingleSelectComponent', () => {
           ScrollingModule,
           OverlayModule,
           MockCompsModule,
+          TrackByPropModule,
         ],
         providers: [
           ListModelService,

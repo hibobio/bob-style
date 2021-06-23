@@ -1,41 +1,48 @@
-import { ComponentFixture, resetFakeAsyncZone, TestBed, waitForAsync } from '@angular/core/testing';
+import { cloneDeep } from 'lodash';
+import { MockComponent } from 'ng-mocks';
+
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { CommonModule } from '@angular/common';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import {
+  ComponentFixture,
+  resetFakeAsyncZone,
+  TestBed,
+  waitForAsync,
+} from '@angular/core/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
+import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
+import { TextButtonComponent } from '../../buttons/text-button/text-button.component';
+import { ChipListComponent } from '../../chips/chip-list/chip-list.component';
+import { ChipComponent } from '../../chips/chip/chip.component';
+import { Icons } from '../../icons/icons.enum';
+import { ListChange } from '../../lists/list-change/list-change';
+import { ListChangeService } from '../../lists/list-change/list-change.service';
+import { ListFooterComponent } from '../../lists/list-footer/list-footer.component';
+import { ListKeyboardService } from '../../lists/list-service/list-keyboard.service';
+import { ListModelService } from '../../lists/list-service/list-model.service';
+import { MultiListComponent } from '../../lists/multi-list/multi-list.component';
+import { TrackByPropModule } from '../../services/filters/trackByProp.pipe';
+import { makeArray } from '../../services/utils/functional-utils';
+import { NgLetModule } from '../../services/utils/nglet.directive';
 import {
   elementFromFixture,
   elementsFromFixture,
   emptyImgWithText,
 } from '../../services/utils/test-helpers';
-import { MultiListAndChipsComponent } from './multi-list-and-chips.component';
-import { Icons } from '../../icons/icons.enum';
-import { CommonModule } from '@angular/common';
-import { makeArray } from '../../services/utils/functional-utils';
-import { cloneDeep } from 'lodash';
-import { ListChange } from '../../lists/list-change/list-change';
-import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 import {
-  TranslateServiceProvideMock,
-  mockTranslatePipe,
-  mockHighlightPipe,
+  DOMhelpersProvideMock,
   listKeyboardServiceStub,
   MobileServiceProvideMock,
-  TrackByPropPipeStub,
-  DOMhelpersProvideMock,
+  mockHighlightPipe,
+  mockTranslatePipe,
   MutationObservableServiceProvideMock,
-  WindowRefProvideMock,
   NgZoneProvideMock,
+  TranslateServiceProvideMock,
+  WindowRefProvideMock,
 } from '../../tests/services.stub.spec';
-import { ChipListComponent } from '../../chips/chip-list/chip-list.component';
-import { ChipComponent } from '../../chips/chip/chip.component';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { MultiListComponent } from '../../lists/multi-list/multi-list.component';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ScrollingModule } from '@angular/cdk/scrolling';
-import { ListModelService } from '../../lists/list-service/list-model.service';
-import { ListChangeService } from '../../lists/list-change/list-change.service';
-import { ListKeyboardService } from '../../lists/list-service/list-keyboard.service';
-import { ListFooterComponent } from '../../lists/list-footer/list-footer.component';
-import { NgLetModule } from '../../services/utils/nglet.directive';
-import { MockComponent } from 'ng-mocks';
-import { TextButtonComponent } from '../../buttons/text-button/text-button.component';
+import { MultiListAndChipsComponent } from './multi-list-and-chips.component';
 
 describe('MultiListAndChipsComponent', () => {
   let component: MultiListAndChipsComponent;
@@ -45,58 +52,60 @@ describe('MultiListAndChipsComponent', () => {
     resetFakeAsyncZone();
   });
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        MultiListAndChipsComponent,
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [
+          MultiListAndChipsComponent,
 
-        MultiListComponent,
-        ChipListComponent,
-        ChipComponent,
-        MockComponent(AvatarImageComponent),
-        ListFooterComponent,
-        TextButtonComponent,
+          MultiListComponent,
+          ChipListComponent,
+          ChipComponent,
+          MockComponent(AvatarImageComponent),
+          ListFooterComponent,
+          TextButtonComponent,
 
-        TrackByPropPipeStub,
-        mockTranslatePipe,
-        mockHighlightPipe,
-      ],
-      imports: [
-        CommonModule,
-        NoopAnimationsModule,
-        ScrollingModule,
-        NgLetModule,
-      ],
-      providers: [
-        ListModelService,
-        ListChangeService,
-        { provide: ListKeyboardService, useValue: listKeyboardServiceStub },
-        MobileServiceProvideMock(),
-        TranslateServiceProvideMock(),
-        DOMhelpersProvideMock(),
-        MutationObservableServiceProvideMock(),
-        WindowRefProvideMock(),
-        NgZoneProvideMock(),
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
+          mockTranslatePipe,
+          mockHighlightPipe,
+        ],
+        imports: [
+          CommonModule,
+          NoopAnimationsModule,
+          ScrollingModule,
+          NgLetModule,
+          TrackByPropModule,
+        ],
+        providers: [
+          ListModelService,
+          ListChangeService,
+          { provide: ListKeyboardService, useValue: listKeyboardServiceStub },
+          MobileServiceProvideMock(),
+          TranslateServiceProvideMock(),
+          DOMhelpersProvideMock(),
+          MutationObservableServiceProvideMock(),
+          WindowRefProvideMock(),
+          NgZoneProvideMock(),
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(MultiListAndChipsComponent);
+          component = fixture.componentInstance;
+
+          component.inputOptions$ = [] as any;
+
+          component.selectChange.subscribe(() => {});
+          component.changed.subscribe(() => {});
+          component.listOptions$.subscribe(() => {});
+          component.otherList$.subscribe(() => {});
+
+          spyOn(component.selectChange, 'next');
+
+          fixture.autoDetectChanges();
+        });
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(MultiListAndChipsComponent);
-        component = fixture.componentInstance;
-
-        component.inputOptions$ = [] as any;
-
-        component.selectChange.subscribe(() => {});
-        component.changed.subscribe(() => {});
-        component.listOptions$.subscribe(() => {});
-        component.otherList$.subscribe(() => {});
-
-        spyOn(component.selectChange, 'next');
-
-        fixture.autoDetectChanges();
-      });
-  }));
+  );
 
   afterAll(() => {
     [
