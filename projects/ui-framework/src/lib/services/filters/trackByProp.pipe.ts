@@ -34,18 +34,27 @@ export class TrackByPropPipe implements PipeTransform {
   ): TrackByFunction<any> {
     //
     return function <T = any>(index: number, item: T): any {
-      return propKeys === '$index'
-        ? index
-        : isPrimitive(item)
-        ? `${index}__${item}`
-        : isObject(item)
-        ? asArray(propKeys)
-            .map((key) => {
-              const val = objectGetDeepestValid(item, key, index);
-              return isPrimitive(val) ? val : objectStringID(val);
-            })
-            .join('__')
-        : `${index}__${objectStringID(item)}`;
+      let xxx;
+
+      xxx =
+        propKeys === '$index'
+          ? index
+          : isPrimitive(item)
+          ? `${index}__${item}`
+          : isObject(item)
+          ? asArray(propKeys)
+              .map((key) => {
+                const val = objectGetDeepestValid(item, key, index);
+                return isPrimitive(val) ? val : objectStringID(val);
+              })
+              .join('__')
+          : `${index}__${objectStringID(item)}`;
+
+      if (propKeys === 'key') {
+        console.log('trackByProp', xxx);
+      }
+
+      return xxx;
     };
   }
 }
