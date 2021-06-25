@@ -45,7 +45,8 @@ export function InputSubject<T = any>(
 */
 export function InputObservable<T = any>(
   defaultValue: T = undefined,
-  operators: Operator<any, T>[] = [pass]
+  operators: Operator<any, T>[] = [pass],
+  skipUndefinedValue = true,
 ) {
   const subjectSymbol = Symbol();
   const subjectSymbolObservable = Symbol();
@@ -57,7 +58,10 @@ export function InputObservable<T = any>(
           this[subjectSymbol] = new BehaviorSubject<T>(defaultValue);
           this[subjectSymbolObservable] = this[subjectSymbol].asObservable();
         }
-        if (value !== undefined && value !== this[subjectSymbol].getValue()) {
+        if (skipUndefinedValue && value === undefined) {
+          return;
+        }
+        if (value !== this[subjectSymbol].getValue()) {
           this[subjectSymbol].next(value);
         }
       },
