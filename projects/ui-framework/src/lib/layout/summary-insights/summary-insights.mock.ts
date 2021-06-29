@@ -52,16 +52,6 @@ export const summaryInsightsDataMock = [
       tooltip: mockText(10),
     },
   },
-  // {
-  //   type: SummaryInsightType.progressBar,
-  //   data: {
-  //     data: {
-  //       value: values[++idx],
-  //       headerTextPrimary: things[idx],
-  //       color: colors[idx],
-  //     },
-  //   },
-  // },
   {
     type: SummaryInsightType.custom,
     data: {
@@ -77,6 +67,19 @@ export const summaryInsightsDataMock = [
         ['Oranges', 1],
         ['Bananas', 3],
       ],
+    },
+  },
+  {
+    type: SummaryInsightType.progressBar,
+    style: {
+      width: '150px',
+    },
+    data: {
+      data: {
+        value: values[++idx],
+        headerTextPrimary: things[idx],
+        color: colors[idx],
+      },
     },
   },
 ];
