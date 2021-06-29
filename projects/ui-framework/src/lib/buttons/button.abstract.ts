@@ -73,9 +73,12 @@ export abstract class BaseButtonElement
   @HostBinding('attr.data-type') get getButtonType() {
     return this.type || this.typeDefault;
   }
-  @HostBinding('attr.data-size') @Input() public size:
-    | ButtonInputCmnt
-    | ButtonSize = null;
+  @HostBinding('attr.data-has-icon') get hasIcon() {
+    return !!this.icn;
+  }
+  @HostBinding('attr.data-size')
+  @Input()
+  public size: ButtonInputCmnt | ButtonSize = null;
   @HostBinding('attr.data-disabled') @Input() public disabled:
     | ButtonInputCmnt
     | boolean = false;

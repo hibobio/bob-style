@@ -1,14 +1,17 @@
-<b-button *ngIf="btnType === insightsButtonTypes.normal &&
-          config.collapsible!==false && !config.showMoreAfterItem"
-          class="btn-minimize clr-inherit uppercase mrg-l-auto"
-          [ngClass]="{'mrg-t-8': isExpanded}"
+<b-button *ngIf="config.collapsible!==false && !config.showMoreAfterItem"
+          class="clr-inherit uppercase"
+          [ngClass]="config.expandButtonPosition === 'side' ?
+            ('btn-side flx-center')
+          : ('btn-minimize mrg-l-auto')"
           [button]="expandButtonConf"
-          [text]="isExpanded ? null : config.expandButtonText"
-          [icon]="isExpanded ? iconTypes.contract : iconTypes.expand"
+          [icon]="config.expandButtonPosition === 'side' ?
+            (isExpanded ? icons.chevron_right : icons.chevron_left)
+          : (isExpanded ? icons.contract : icons.expand)"
           (clicked)="onExpandClick()">
+  <span *ngIf="!isExpanded || config.expandButtonPosition === 'side'">
+    {{config.expandButtonText}}
+  </span>
 </b-button>
-
-
 
 <ng-template #item
              let-insight="insight"
@@ -36,54 +39,50 @@
 
   <b-text-button *ngIf="(hasShowMore) || (hasShowLess && last)"
                  [ngClass]="{'mrg-t-24': last}"
-                 class="clr-inherit expand-btn"
+                 class="clr-inherit expand-btn icon-right"
+                 [icon]="hasShowMore ? icons.chevron_down : icons.chevron_up"
                  (clicked)="onExpandClick()">
     {{ hasShowMore ? config.showMoreText : config.showLessText }}
-    <b-icon [icon]="hasShowMore ? iconTypes.chevron_down : iconTypes.chevron_up"></b-icon>
   </b-text-button>
 
 </ng-template>
 
-  <div *ngIf="btnType === insightsButtonTypes.side"
-       class="side-button pad-b-32"
-       (click)="onSideToggleClick()">
-      <b-icon [icon]="expanded ? iconTypes.chevron_left : iconTypes.chevron_right"></b-icon>
-      <span class="side-button-text">{{config.expandButtonText}}</span>
-  </div>
-  <div *ngIf="isInnerContentShowing" class="inner-content">
-    <div  class="flx-col flx-grow scroll-visible pad-32"
-         *ngIf="config.collapsible === false || isExpanded ||
-     config.showMoreAfterItem > 0">
-      <ng-container *ngIf="config.showMoreAfterItem>0">
-        <ng-container *ngFor="let insight of (data | slice:0:config.showMoreAfterItem);
+<div class="flx-col flx-grow scroll-visible-alt pad-32"
+     *ngIf="config.collapsible === false || isExpanded ||
+     config.showMoreAfterItem > 0"
+     [ngClass]="config.panelClass"
+     [ngStyle]="config.panelStyle">
+
+  <ng-container *ngIf="config.showMoreAfterItem>0">
+    <ng-container *ngFor="let insight of (data | slice:0:config.showMoreAfterItem);
                           let last = last;
                           let index=index;
                           trackBy: ('$index' | trackByProp)">
-          <ng-container *ngTemplateOutlet="item; context: {
+      <ng-container *ngTemplateOutlet="item; context: {
                         insight: insight,
                         last: !isExpanded && index+1 === config.showMoreAfterItem,
                         hasShowMore: !isExpanded && index+1 === config.showMoreAfterItem && data.length > config.showMoreAfterItem,
                         hasShowLess: false
                       }">
-          </ng-container>
-        </ng-container>
       </ng-container>
+    </ng-container>
+  </ng-container>
 
-      <ng-container
-        *ngIf="!config.showMoreAfterItem || (config.showMoreAfterItem && isExpanded)">
-        <ng-container *ngFor="let insight of (data |
+  <ng-container
+                *ngIf="!config.showMoreAfterItem || (config.showMoreAfterItem && isExpanded)">
+    <ng-container *ngFor="let insight of (data |
                   slice:(config.showMoreAfterItem||0)
                   :(config.showMoreAfterItem && !isExpanded ?
                   config.showMoreAfterItem : undefined));
                   let last = last; trackBy: ('$index' | trackByProp)">
-          <ng-container *ngTemplateOutlet="item; context: {
+      <ng-container *ngTemplateOutlet="item; context: {
                         insight: insight,
                         last: last,
                         hasShowMore: false,
                         hasShowLess: config.showMoreAfterItem>0
                       }">
-          </ng-container>
-        </ng-container>
       </ng-container>
-    </div>
-  </div>
+    </ng-container>
+  </ng-container>
+
+</div>

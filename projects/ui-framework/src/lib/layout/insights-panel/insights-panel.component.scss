@@ -7,94 +7,111 @@
   min-width: 0;
   display: flex;
   justify-content: center;
-  max-width: max-content;
 
-  &[data-collaps-type='side'] {
-    height: 100%;
+  &[data-button-position='top'] {
+    flex-direction: column;
   }
 
   &[data-type='warning'] {
     --bg-color: #{rgba($color-warn, 0.1)};
-    --bg-color-2: #{rgba($color-warn, 0.2)};
     --txt-color: #{$color3_darker};
   }
 
   &[data-type='information'] {
     --bg-color: #{rgba($inform-600, 0.1)};
-    --bg-color-2: #{rgba($inform-600, 0.2)};
     --txt-color: #{$color9_darker};
   }
 
   &[data-type='error'] {
     --bg-color: #{rgba($color-error, 0.1)};
-    --bg-color-2: #{rgba($color-error, 0.2)};
     --txt-color: #{$color1_darker};
   }
 
   &[data-type='success'] {
     --bg-color: #{rgba($positive-600, 0.1)};
-    --bg-color-2: #{rgba($positive-600, 0.2)};
     --txt-color: #{$color7_darker};
   }
 
   background-color: var(--bg-color);
   color: var(--txt-color);
+}
 
-  .side-button {
-    display: flex;
+.btn-minimize,
+.btn-side {
+  ::ng-deep button {
+    font-weight: 500;
+  }
+}
+
+.btn-minimize {
+  ::ng-deep button {
+    font-weight: 500;
+    @include button-icon-right;
+  }
+}
+
+.btn-side {
+  min-width: $button-size-small;
+  width: $button-size-small;
+  background-color: var(--bg-color);
+  overflow: hidden;
+  border-radius: inherit;
+
+  ::ng-deep button[type='button'] {
+    padding: 0;
+    min-width: 0;
+    height: 100%;
+    border-radius: 0;
     flex-direction: column;
-    flex-grow: 1;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    width: times8(4);
-    background-color: var(--bg-color-2);
 
-    .side-button-text {
-      display: flex;
-      text-transform: uppercase;
-      transform: rotate(-90deg);
-      margin-top: times8(4);
+    &:before {
+      margin-right: 0;
+      margin-bottom: 6px;
     }
   }
 
+  ::ng-deep button span {
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+  }
+}
 
-  .btn-minimize ::ng-deep {
+:host[data-button-position='top'][data-expanded='false'] {
+  max-width: max-content;
+  max-height: 30px;
+  cursor: pointer;
+  border-radius: $border-radius;
+
+  ::ng-deep .btn-minimize {
     button {
-      font-weight: 500;
-      @include button-icon-right;
+      @include icon-size(18px);
     }
   }
+}
 
-  &[data-expanded='false'] {
-    max-width: max-content;
-    max-height: 30px;
-    cursor: pointer;
-    border-radius: $border-radius;
+:host[data-button-position='top'][data-expanded='true'] {
+  ::ng-deep .btn-minimize {
+    position: absolute;
+    top: 0;
+    right: 5px;
+    width: 30px;
 
-    ::ng-deep .btn-minimize {
-      button {
-        @include icon-size(18px);
+    button {
+      min-width: 0;
+      padding: 0;
+
+      &:before {
+        margin: 0;
       }
     }
   }
+}
 
-  &[data-expanded='true'] {
-
-    ::ng-deep .btn-minimize {
-      position: absolute;
-      top: 0;
-      right: 5px;
-      width: 30px;
-
-      button {
-        min-width: 0;
-        padding: 0;
-
-        &:before {
-          margin: 0;
-        }
-      }
-    }
+.scroll-visible {
+  &::-webkit-scrollbar-track {
+    background-color: var(--bg-color);
+  }
+  &::-webkit-scrollbar-thumb {
+    border-color: var(--bg-color);
   }
 }

@@ -10,17 +10,18 @@
   @include form-element-margins;
 }
 
-.bfe-label {
+.bst-label {
   @include bFormElement-label;
 }
+
 :host.required.has-label {
-  .bfe-label {
+  .bst-label {
     @include input-required;
   }
 }
 
 :host[data-form-element='true'] {
-  .bfe-wrap {
+  .bst-wrap {
     display: flex;
     align-items: center;
     min-height: $wrap-height;

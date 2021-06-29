@@ -13,7 +13,7 @@ import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
 import { Button } from '../../buttons/buttons.interface';
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
 import { INSIGHTS_PANEL_CONFIG_DEF } from './insights-panel.const';
-import { insightsButtonType, InsightsPanelType } from './insights-panel.enum';
+import { InsightsPanelType } from './insights-panel.enum';
 import {
   InsightsPanelConfig,
   InsightsPanelData,
@@ -39,9 +39,8 @@ export class InsightsPanelComponent {
       readMoreLinkText: this.translate.instant('common.read_more'),
     };
   }
-  readonly insightsButtonTypes = insightsButtonType;
   readonly iconSizes = IconSize;
-  readonly iconTypes = Icons;
+  readonly icons = Icons;
 
   @Input() data: InsightsPanelData[];
   @Input('expanded') isExpanded = true;
@@ -53,8 +52,10 @@ export class InsightsPanelComponent {
 
   @HostBinding('attr.data-type') @Input() type: InsightsPanelType =
     InsightsPanelType.information;
-  @HostBinding('attr.data-collaps-type') @Input('buttonType') btnType: insightsButtonType =
-    insightsButtonType.normal;
+
+  @HostBinding('attr.data-button-position') get expandButtonPosition() {
+    return this.config?.expandButtonPosition || 'top';
+  }
 
   @HostBinding('attr.data-expanded') get panelIsExpanded() {
     return (
@@ -74,12 +75,6 @@ export class InsightsPanelComponent {
 
   public onExpandClick(): void {
     this.expanded.emit((this.isExpanded = !this.isExpanded));
-    this.cdr.detectChanges();
-  }
-
-  public onSideToggleClick() {
-    this.isInnerContentShowing = !this.isInnerContentShowing;
-    console.log('this.isInnerContentShowing', this.isInnerContentShowing);
     this.cdr.detectChanges();
   }
 }

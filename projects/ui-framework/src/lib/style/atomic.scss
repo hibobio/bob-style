@@ -572,3 +572,28 @@ clr-positive-500,
 .b-expand {
   @include animate-expand;
 }
+
+.striped {
+  $s-txt: var(--font-size, 1em);
+  $s-line: 'var(--font-size, 1em) * var(--line-height, 1.5)';
+  $s-gap: '(var(--font-size, 1em) * var(--line-height, 1.5) - var(--font-size, 1em)) / 2';
+
+  background-image: linear-gradient(
+    to bottom,
+    black(0.1) 0px,
+    black(0.1) 1px,
+    transparent 1px,
+    transparent calc(#{$s-gap}),
+    black(0.05) calc(#{$s-gap}),
+    black(0.05) calc(#{$s-gap} + 1px),
+    transparent calc(#{$s-gap} + 1px),
+    transparent calc(#{$s-gap} + #{$s-txt} - 1px),
+    black(0.05) calc(#{$s-gap} + #{$s-txt} - 1px),
+    black(0.05) calc(#{$s-gap} + #{$s-txt}),
+    transparent calc(#{$s-gap} + #{$s-txt}),
+    transparent calc(#{$s-line})
+  );
+
+  background-repeat: repeat-y;
+  background-size: 100% calc(#{$s-line});
+}

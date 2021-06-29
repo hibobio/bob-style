@@ -40,9 +40,7 @@ export class SwitchToggleComponent extends BaseFormElement {
   }
 
   @HostBinding('attr.data-form-element') get isFormElement() {
-    return Boolean(
-      this.formControlName || this.label || this.placeholder || this.required
-    );
+    return Boolean(this.formControlName || this.label || this.required);
   }
 
   @HostBinding('attr.data-label-in-front') @Input() labelInFront = false;
