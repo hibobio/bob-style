@@ -4,6 +4,8 @@
 
   <b-label-value *ngIf="item.type === type.labelValue"
                  class="bsi-item flx-col-align-y"
+                 [ngClass]="item.class"
+                 [ngStyle]="item.style"
                  [matTooltip]="item.data.tooltip"
                  matTooltipClass="summary-insights-tooltip"
                  [labelValue]="item.data"
@@ -21,6 +23,8 @@
 
   <b-progress-donut *ngIf="item.type === type.progressDonut"
                     class="bsi-item"
+                    [ngClass]="item.class"
+                    [ngStyle]="item.style"
                     [matTooltip]="item.data.tooltip"
                     matTooltipClass="summary-insights-tooltip"
                     [type]="item.data.type||'primary'"
@@ -32,7 +36,9 @@
   </b-progress-donut>
 
   <div *ngIf="item.type === type.progressBar"
-       class="bsi-item flx flx-grow flx-row-align-y">
+       class="bsi-item flx flx-grow flx-row-align-y"
+       [ngClass]="item.class"
+       [ngStyle]="item.style">
     <b-progress-bar [matTooltip]="item.data.tooltip"
                     matTooltipClass="summary-insights-tooltip"
                     [type]="item.data.type||'secondary'"
@@ -44,6 +50,8 @@
 
   <div *ngIf="item.type === type.custom"
        class="bsi-item bsi-item-custom flx flx-center"
+       [ngClass]="item.class"
+       [ngStyle]="item.style"
        [matTooltip]="item.data.tooltip"
        matTooltipClass="summary-insights-tooltip">
     <ng-container *ngTemplateOutlet="getContentTemplate('item');

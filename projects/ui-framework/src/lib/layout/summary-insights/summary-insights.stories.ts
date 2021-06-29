@@ -95,6 +95,8 @@ const note = `
   --- | --- | ---
   type | SummaryInsightType | selects item type
   data | LabelValue / ProgressBar / ProgressDonut | for descriptions of interfaces see related components
+  class | string / string[] / NgClass | add class to summary item
+  style | GenericObject | ngStyle-compatible object with css to add to summary item
 
   #### example data
 
