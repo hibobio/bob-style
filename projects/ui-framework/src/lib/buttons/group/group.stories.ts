@@ -70,5 +70,11 @@ story.add(
       imports: [ButtonsModule, IconsModule, StoryBookLayoutModule],
     },
   }),
-  { notes: { markdown: note } }
+  {
+    notes: { markdown: note },
+    knobs: {
+      timestamps: true,
+      escapeHTML: false,
+    },
+  }
 );

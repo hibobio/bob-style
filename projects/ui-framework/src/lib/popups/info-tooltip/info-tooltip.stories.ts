@@ -69,5 +69,11 @@ story.add(
       imports: [InfoTooltipModule, StoryBookLayoutModule],
     },
   }),
-  { notes: { markdown: note } }
+  {
+    notes: { markdown: note },
+    knobs: {
+      timestamps: true,
+      escapeHTML: false,
+    },
+  }
 );

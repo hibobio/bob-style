@@ -1,27 +1,23 @@
-import { storiesOf } from '@storybook/angular';
-import {
-  text,
-  object,
-  withKnobs,
-  boolean,
-  select,
-} from '@storybook/addon-knobs';
-import { ComponentGroupType } from '../../consts';
+import { cloneDeep } from 'lodash';
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { ButtonsModule } from '../../buttons/buttons.module';
-import { Icons } from '../../icons/icons.enum';
-import { MultiSelectPanelModule } from './multi-select-panel.module';
-import { ButtonType } from '../../buttons/buttons.enum';
 import { action } from '@storybook/addon-actions';
 import {
-  selectOptionsMock,
-  selectOptionsMockDef,
-} from './multi-select-panel.mock';
-import { cloneDeep } from 'lodash';
-import { SelectGroupOption } from '../list.interface';
-import { SelectMode } from '../list.enum';
+  boolean,
+  object,
+  select,
+  text,
+  withKnobs,
+} from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
 
+import { ButtonType } from '../../buttons/buttons.enum';
+import { ButtonsModule } from '../../buttons/buttons.module';
+import { ComponentGroupType } from '../../consts';
+import { Icons } from '../../icons/icons.enum';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { SelectMode } from '../list.enum';
+import { SelectGroupOption } from '../list.interface';
 // @ts-ignore: md file and not a module
 import listInterfaceDoc from '../list.interface.md';
 // @ts-ignore: md file and not a module
@@ -30,6 +26,11 @@ import listSelectsPropsDoc from '../lists-selects.properties.md';
 import selectPanelsPropsDoc from '../select-panels.properties.md';
 // @ts-ignore: md file and not a module
 import selectsSelectPanelsPropsDoc from '../selects-select-panels.properties.md';
+import {
+  selectOptionsMock,
+  selectOptionsMockDef,
+} from './multi-select-panel.mock';
+import { MultiSelectPanelModule } from './multi-select-panel.module';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -150,5 +151,11 @@ story.add(
       },
     };
   },
-  { notes: { markdown: note } }
+  {
+    notes: { markdown: note },
+    knobs: {
+      timestamps: true,
+      escapeHTML: false,
+    },
+  }
 );

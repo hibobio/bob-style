@@ -1,13 +1,14 @@
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { storiesOf } from '@storybook/angular';
-import { ComponentGroupType } from '../../consts';
-import { withKnobs } from '@storybook/addon-knobs';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-import { SelectAndViewModule } from './select-and-view.module';
-import { optionsMock } from './select-and-view.mock';
 import { cloneDeep } from 'lodash';
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { action } from '@storybook/addon-actions';
+import { withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ComponentGroupType } from '../../consts';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { optionsMock } from './select-and-view.mock';
+import { SelectAndViewModule } from './select-and-view.module';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -37,7 +38,7 @@ const options = cloneDeep(optionsMock);
 const value = [
   options[0].options[0].id,
   options[1].options[0].id,
-  options[1].options[1].id
+  options[1].options[1].id,
 ];
 
 const valueDefault = [options[2].options[2].id];
@@ -50,15 +51,21 @@ story.add(
       options: options,
       value: value,
       valueDefault: valueDefault,
-      onChanged: action('onChanged')
+      onChanged: action('onChanged'),
     },
     moduleMetadata: {
       imports: [
         StoryBookLayoutModule,
         SelectAndViewModule,
-        BrowserAnimationsModule
-      ]
-    }
+        BrowserAnimationsModule,
+      ],
+    },
   }),
-  { notes: { markdown: note } }
+  {
+    notes: { markdown: note },
+    knobs: {
+      timestamps: true,
+      escapeHTML: false,
+    },
+  }
 );

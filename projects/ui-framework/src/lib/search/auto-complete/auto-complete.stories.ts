@@ -1,15 +1,16 @@
-import { storiesOf } from '@storybook/angular';
-import { withNotes } from '@storybook/addon-notes';
-import { object, text, withKnobs, boolean } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
-import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { TypographyModule } from '../../typography/typography.module';
-import { AutoCompleteModule } from './auto-complete.module';
-import { AutoCompleteOption } from './auto-complete.interface';
+import { action } from '@storybook/addon-actions';
+import { boolean, object, text, withKnobs } from '@storybook/addon-knobs';
+import { withNotes } from '@storybook/addon-notes';
+import { storiesOf } from '@storybook/angular';
+
+import { ComponentGroupType } from '../../consts';
 import { mockText } from '../../mock.const';
 import { randomNumber, simpleUID } from '../../services/utils/functional-utils';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { TypographyModule } from '../../typography/typography.module';
+import { AutoCompleteOption } from './auto-complete.interface';
+import { AutoCompleteModule } from './auto-complete.module';
 
 const story = storiesOf(ComponentGroupType.Search, module)
   .addDecorator(withNotes)
@@ -94,5 +95,11 @@ story.add(
       },
     };
   },
-  { notes: { markdown: note } }
+  {
+    notes: { markdown: note },
+    knobs: {
+      timestamps: true,
+      escapeHTML: false,
+    },
+  }
 );

@@ -1,9 +1,10 @@
-import { storiesOf } from '@storybook/angular';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { ComponentGroupType } from '../../consts';
-import { UtilsService } from './utils.service';
 import { Component } from '@angular/core';
+import { storiesOf } from '@storybook/angular';
+
+import { ComponentGroupType } from '../../consts';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { counter } from './rxjs.operators';
+import { UtilsService } from './utils.service';
 
 const story = storiesOf(ComponentGroupType.Services, module);
 
@@ -84,5 +85,11 @@ story.add(
       },
     };
   },
-  { notes: { markdown: note } }
+  {
+    notes: { markdown: note },
+    knobs: {
+      timestamps: true,
+      escapeHTML: false,
+    },
+  }
 );

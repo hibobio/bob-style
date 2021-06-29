@@ -174,5 +174,11 @@ I'm prepared to let you go.`,
       },
     };
   },
-  { notes: { markdown: note } }
+  {
+    notes: { markdown: note },
+    knobs: {
+      timestamps: true,
+      escapeHTML: false,
+    },
+  }
 );

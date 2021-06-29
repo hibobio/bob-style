@@ -311,7 +311,13 @@ story.add(
       tableData: mockRowData,
       props: { tableGridOptions: { getRowNodeId: (data) => data.id } },
     }),
-  { notes: { markdown: note } }
+  {
+    notes: { markdown: note },
+    knobs: {
+      timestamps: true,
+      escapeHTML: false,
+    },
+  }
 );
 
 story.add(

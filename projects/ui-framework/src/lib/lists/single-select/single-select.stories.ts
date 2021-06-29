@@ -197,5 +197,17 @@ const toAdd = () => ({
   },
 });
 
-story.add('Single select', toAdd, { notes: { markdown: note } });
-story2.add('Single select', toAdd, { notes: { markdown: note } });
+story.add('Single select', toAdd, {
+  notes: { markdown: note },
+  knobs: {
+    timestamps: true,
+    escapeHTML: false,
+  },
+});
+story2.add('Single select', toAdd, {
+  notes: { markdown: note },
+  knobs: {
+    timestamps: true,
+    escapeHTML: false,
+  },
+});

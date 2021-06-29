@@ -1,7 +1,3 @@
-
-
-
-
 // const story = storiesOf(ComponentGroupType.Tooltip, module).addDecorator(
 //   withKnobs
 // );

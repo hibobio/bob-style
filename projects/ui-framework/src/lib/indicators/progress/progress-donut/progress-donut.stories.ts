@@ -237,5 +237,17 @@ const toAdd = () => ({
   },
 });
 
-story.add('Progress Donut', toAdd, { notes: { markdown: note } });
-story2.add('Progress Donut', toAdd, { notes: { markdown: note } });
+story.add('Progress Donut', toAdd, {
+  notes: { markdown: note },
+  knobs: {
+    timestamps: true,
+    escapeHTML: false,
+  },
+});
+story2.add('Progress Donut', toAdd, {
+  notes: { markdown: note },
+  knobs: {
+    timestamps: true,
+    escapeHTML: false,
+  },
+});

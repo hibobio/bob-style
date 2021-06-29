@@ -123,6 +123,24 @@ const toAdd = () => ({
   },
 });
 
-story.add('Legend', toAdd, { notes: { markdown: note } });
-story2.add('Legend', toAdd, { notes: { markdown: note } });
-story3.add('Legend', toAdd, { notes: { markdown: note } });
+story.add('Legend', toAdd, {
+  notes: { markdown: note },
+  knobs: {
+    timestamps: true,
+    escapeHTML: false,
+  },
+});
+story2.add('Legend', toAdd, {
+  notes: { markdown: note },
+  knobs: {
+    timestamps: true,
+    escapeHTML: false,
+  },
+});
+story3.add('Legend', toAdd, {
+  notes: { markdown: note },
+  knobs: {
+    timestamps: true,
+    escapeHTML: false,
+  },
+});

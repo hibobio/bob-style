@@ -1,11 +1,12 @@
-import { storiesOf } from '@storybook/angular';
-import { number, object, withKnobs } from '@storybook/addon-knobs';
-import { ComponentGroupType } from '../../consts';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { EyeCandyModule } from '../eye-candy.module';
 import { action } from '@storybook/addon-actions';
+import { number, object, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ComponentGroupType } from '../../consts';
 import { makeArray } from '../../services/utils/functional-utils';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { EyeCandyModule } from '../eye-candy.module';
 
 const story = storiesOf(ComponentGroupType.EyeCandy, module).addDecorator(
   withKnobs
@@ -64,4 +65,10 @@ const toAdd = () => ({
   },
 });
 
-story.add('Confetti', toAdd, { notes: { markdown: note } });
+story.add('Confetti', toAdd, {
+  notes: { markdown: note },
+  knobs: {
+    timestamps: true,
+    escapeHTML: false,
+  },
+});

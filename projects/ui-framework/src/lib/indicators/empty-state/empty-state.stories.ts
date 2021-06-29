@@ -1,10 +1,11 @@
-import { storiesOf } from '@storybook/angular';
-import { withKnobs, select, text } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
+import { select, text, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
 import { ComponentGroupType } from '../../consts';
+import { Icons } from '../../icons/icons.enum';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { EmptyStateModule } from './empty-state.module';
-import { Icons } from '../../icons/icons.enum';
 
 const story = storiesOf(ComponentGroupType.Indicators, module).addDecorator(
   withKnobs
@@ -78,6 +79,18 @@ const toAdd = () => {
   };
 };
 
-story.add('Empty State', toAdd, { notes: { markdown: note } });
+story.add('Empty State', toAdd, {
+  notes: { markdown: note },
+  knobs: {
+    timestamps: true,
+    escapeHTML: false,
+  },
+});
 
-story2.add('Empty State', toAdd, { notes: { markdown: note } });
+story2.add('Empty State', toAdd, {
+  notes: { markdown: note },
+  knobs: {
+    timestamps: true,
+    escapeHTML: false,
+  },
+});

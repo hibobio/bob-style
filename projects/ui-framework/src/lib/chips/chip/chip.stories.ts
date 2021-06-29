@@ -208,5 +208,11 @@ story.add(
       imports: [ChipModule, StoryBookLayoutModule, AvatarModule, IconsModule],
     },
   }),
-  { notes: { markdown: note } }
+  {
+    notes: { markdown: note },
+    knobs: {
+      timestamps: true,
+      escapeHTML: false,
+    },
+  }
 );

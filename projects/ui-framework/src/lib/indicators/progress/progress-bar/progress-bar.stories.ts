@@ -324,5 +324,17 @@ hideValue = true`,
   },
 });
 
-story.add('Progress Bar', toAdd, { notes: { markdown: note } });
-story2.add('Progress Bar', toAdd, { notes: { markdown: note } });
+story.add('Progress Bar', toAdd, {
+  notes: { markdown: note },
+  knobs: {
+    timestamps: true,
+    escapeHTML: false,
+  },
+});
+story2.add('Progress Bar', toAdd, {
+  notes: { markdown: note },
+  knobs: {
+    timestamps: true,
+    escapeHTML: false,
+  },
+});

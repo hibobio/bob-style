@@ -139,10 +139,22 @@ story.add(
         isInView: false,
       },
       moduleMetadata: {
-        imports: [StoryBookLayoutModule, ClickOutsideModule, WindowKeydownModule, InViewModule, DoubleClickModule],
+        imports: [
+          StoryBookLayoutModule,
+          ClickOutsideModule,
+          WindowKeydownModule,
+          InViewModule,
+          DoubleClickModule,
+        ],
         declarations: [],
       },
     };
   },
-  { notes: { markdown: note } }
+  {
+    notes: { markdown: note },
+    knobs: {
+      timestamps: true,
+      escapeHTML: false,
+    },
+  }
 );

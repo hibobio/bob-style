@@ -1,13 +1,14 @@
-import { storiesOf } from '@storybook/angular';
-import { text, array, boolean, withKnobs } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
-import { ComponentGroupType } from '../../consts';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ChipInputModule } from './chip-input.module';
-import { mockHobbies, mockText } from '../../mock.const';
+import { action } from '@storybook/addon-actions';
+import { array, boolean, text, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
 import { ButtonsModule } from '../../buttons/buttons.module';
+import { ComponentGroupType } from '../../consts';
 import { FormElementsCommonProps } from '../../form-elements/form-elements.stories.common';
+import { mockHobbies, mockText } from '../../mock.const';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { ChipInputModule } from './chip-input.module';
 
 const story = storiesOf(ComponentGroupType.FormElements, module).addDecorator(
   withKnobs
@@ -112,6 +113,18 @@ const toAdd = () => ({
   },
 });
 
-story.add('Chip Input', toAdd, { notes: { markdown: note } });
+story.add('Chip Input', toAdd, {
+  notes: { markdown: note },
+  knobs: {
+    timestamps: true,
+    escapeHTML: false,
+  },
+});
 
-story2.add('Chip Input', toAdd, { notes: { markdown: note } });
+story2.add('Chip Input', toAdd, {
+  notes: { markdown: note },
+  knobs: {
+    timestamps: true,
+    escapeHTML: false,
+  },
+});

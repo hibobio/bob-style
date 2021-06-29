@@ -59,12 +59,12 @@ story.add(
       props: {
         items: [
           {
-            name: "Deep",
-            color: "purple",
+            name: 'Deep',
+            color: 'purple',
           },
           {
-            name: "Simple",
-            color: "red",
+            name: 'Simple',
+            color: 'red',
           },
         ],
       },
@@ -72,10 +72,16 @@ story.add(
         imports: [
           StoryBookLayoutModule,
           BrowserAnimationsModule,
-          WidgetBoxModule
+          WidgetBoxModule,
         ],
       },
     };
   },
-  { notes: { markdown: note } }
+  {
+    notes: { markdown: note },
+    knobs: {
+      timestamps: true,
+      escapeHTML: false,
+    },
+  }
 );

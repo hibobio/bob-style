@@ -1,6 +1,7 @@
-import { storiesOf } from '@storybook/angular';
-import { withKnobs, text, boolean } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
+import { boolean, text, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { SingleSelectComponent } from '../single-select/single-select.component';
@@ -63,5 +64,11 @@ story.add(
       entryComponents: [SingleSelectComponent],
     },
   }),
-  { notes: { markdown: note } }
+  {
+    notes: { markdown: note },
+    knobs: {
+      timestamps: true,
+      escapeHTML: false,
+    },
+  }
 );

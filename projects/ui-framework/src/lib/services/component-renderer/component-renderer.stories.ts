@@ -138,5 +138,17 @@ const toAdd = () => {
   };
 };
 
-story.add('Component Renderer', toAdd, { notes: { markdown: note } });
-story2.add('Component Renderer', toAdd, { notes: { markdown: note } });
+story.add('Component Renderer', toAdd, {
+  notes: { markdown: note },
+  knobs: {
+    timestamps: true,
+    escapeHTML: false,
+  },
+});
+story2.add('Component Renderer', toAdd, {
+  notes: { markdown: note },
+  knobs: {
+    timestamps: true,
+    escapeHTML: false,
+  },
+});

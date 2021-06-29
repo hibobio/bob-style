@@ -1,6 +1,13 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { boolean, object, select, text, withKnobs } from '@storybook/addon-knobs';
+import { action } from '@storybook/addon-actions';
+import {
+  boolean,
+  object,
+  select,
+  text,
+  withKnobs,
+} from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 
 import {
@@ -48,7 +55,6 @@ import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout
 import { TypographyModule } from '../../typography/typography.module';
 import { EE_LAYOUT_CONFIG_BY_TYPE } from './ee-layout.const';
 import { EELayoutModule } from './ee-layout.module';
-import { action } from '@storybook/addon-actions';
 
 const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
   withKnobs
@@ -555,5 +561,11 @@ story.add(
       },
     };
   },
-  { notes: { markdown: note } }
+  {
+    notes: { markdown: note },
+    knobs: {
+      timestamps: true,
+      escapeHTML: false,
+    },
+  }
 );

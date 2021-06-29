@@ -253,6 +253,7 @@ story.add(
   {
     notes: { markdown: note },
     knobs: {
+      timestamps: true,
       escapeHTML: false,
     },
   }

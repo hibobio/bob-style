@@ -1,5 +1,11 @@
 import { action } from '@storybook/addon-actions';
-import { boolean, object, select, text, withKnobs } from '@storybook/addon-knobs';
+import {
+  boolean,
+  object,
+  select,
+  text,
+  withKnobs,
+} from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 
 import { ComponentGroupType } from '../../consts';
@@ -94,5 +100,11 @@ story.add(
       },
     };
   },
-  { notes: { markdown: note } }
+  {
+    notes: { markdown: note },
+    knobs: {
+      timestamps: true,
+      escapeHTML: false,
+    },
+  }
 );

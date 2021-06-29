@@ -1,13 +1,14 @@
+import { action } from '@storybook/addon-actions';
+import { boolean, object, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
-import { boolean, withKnobs, object } from '@storybook/addon-knobs';
+
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { SimpleBarChartModule } from './simple-bar-chart.module';
 import {
   simpleBarChartMockData,
   simpleBarChartMockData2,
 } from './simple-bar-chart.mock';
-import { action } from '@storybook/addon-actions';
+import { SimpleBarChartModule } from './simple-bar-chart.module';
 
 const story = storiesOf(ComponentGroupType.Indicators, module).addDecorator(
   withKnobs
@@ -94,5 +95,17 @@ const toAdd = () => ({
   },
 });
 
-story.add('Simple Bar Chart', toAdd, { notes: { markdown: note } });
-story2.add('Simple Bar Chart', toAdd, { notes: { markdown: note } });
+story.add('Simple Bar Chart', toAdd, {
+  notes: { markdown: note },
+  knobs: {
+    timestamps: true,
+    escapeHTML: false,
+  },
+});
+story2.add('Simple Bar Chart', toAdd, {
+  notes: { markdown: note },
+  knobs: {
+    timestamps: true,
+    escapeHTML: false,
+  },
+});
