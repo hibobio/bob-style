@@ -2,6 +2,7 @@ import {
   ProgressBar,
   ProgressDonut,
 } from '../../indicators/progress/progress.interface';
+import { NgClass } from '../../services/html/html-helpers.interface';
 import { GenericObject } from '../../types';
 import { LabelValue } from '../../typography/label-value/label-value.interface';
 import { SummaryInsightType } from './summary-insights.enum';
@@ -19,4 +20,6 @@ export interface SummaryInsight<
 > {
   type: T;
   data: D & E;
+  class?: string | string[] | NgClass;
+  style?: GenericObject<string>;
 }
