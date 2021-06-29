@@ -26,6 +26,7 @@
 .text-section {
   min-height: $wrap-height;
   min-width: 0;
+  border-radius: 12px;
 
   &:after {
     border-right-color: $grey-100;

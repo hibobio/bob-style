@@ -4,6 +4,7 @@ export interface CommentItem {
   avatar: string;
   content: string;
   name?: string;
+  role?: string;
   date?: string;
   actionConfig?: CommonActionButton;
   menuConfig?: MenuItem[];

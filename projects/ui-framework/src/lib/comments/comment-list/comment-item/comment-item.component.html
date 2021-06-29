@@ -2,7 +2,7 @@
                 [imageSource]="comment?.avatar"
                 [matTooltip]="comment?.name"></b-avatar-image>
 
-<div class="text-section b-body brd rounded bg-grey-100 flx-grow">
+<div class="text-section b-body bg-grey-100 flx-grow">
 
   <b-menu *ngIf="comment?.menuConfig?.length > 0"
           class="comment-menu card-menu mrg-y-4"
@@ -30,12 +30,16 @@
 
     <div class="comment-header mrg-b-6">
       <span *ngIf="comment?.name"
-            class="b-bold-body name clr-grey-700 mrg-r-8">{{comment?.name}}</span>
-      <span class="b-caption date clr-grey-600">{{comment?.date}}</span>
+            class="b-bold-body name clr-grey-700 mrg-r-4">{{comment?.name}}</span>
+       <span *ngIf="comment?.name && comment?.role" class="mrg-r-4">•</span>    
+       <span *ngIf="comment?.role">{{comment.role}}</span> 
     </div>
 
     <div *ngIf="comment?.content"
          class="comment-body pre-line hyphenate"
          #commentContent></div>
+     <div *ngIf="comment?.date">
+      <span class="b-caption date clr-grey-600">{{comment.date}}</span>
+     </div>    
   </div>
 </div>

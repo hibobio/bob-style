@@ -6,6 +6,7 @@ export const COMMENT_ITEM = {
   name: mockName(),
   date: mockDate(),
   content: mockText(5) + ' www.a-link.com ' + mockText(5),
+  role: "role",
   menuConfig: [
     {
       label: 'duplicate',
