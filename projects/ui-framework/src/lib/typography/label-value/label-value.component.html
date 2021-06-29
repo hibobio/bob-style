@@ -7,7 +7,8 @@
    [attr.tabindex]="iconClicked ? 0 : null"></i>
 
 <h6 *ngIf="labelStr"
-    class="blv-label flx"
+    class="blv-label"
+    [class.flx]="labelMaxLines || !labelDescription"
     [ngStyle]="labelStyle"
     [ngClass]="labelClass"
     [class.has-hover]="!!labelClicked"
@@ -16,23 +17,29 @@
     [attr.data-icon-before-color]="iconColor||null"
     [attr.data-icon-before-size]="iconSize||'small'"
     [attr.tabindex]="labelClicked ? 0 : null">
+
   <b-truncate-tooltip *ngIf="labelMaxLines"
                       [maxLines]="labelMaxLines"
                       [type]="tooltipType"
                       [trustCssVars]="true"
                       [expectChanges]="expectChanges"
                       [text]="labelStr"></b-truncate-tooltip>
-  <ng-container *ngIf="!labelMaxLines">{{labelStr}}</ng-container>
+
+  <span *ngIf="!labelMaxLines"
+        class="inl">{{labelStr}}</span>
+
   <b-info-tooltip *ngIf="labelDescription"
                   class="inl-flx"
                   [config]="labelDescription">
     <ng-content select="[label-tooltip]"></ng-content>
   </b-info-tooltip>
+
   <ng-content select="[label]"></ng-content>
 </h6>
 
 <p *ngIf="valueStr"
-   class="blv-value flx"
+   class="blv-value"
+   [class.flx]="valueMaxLines || !valueDescription"
    [ngStyle]="valueStyle"
    [ngClass]="valueClass"
    [class.has-hover]="!!valueClicked"
@@ -41,18 +48,23 @@
    [attr.data-icon-before-size]="iconSize||'small'"
    [attr.data-icon-before-color]="iconColor || null"
    [attr.tabindex]="valueClicked ? 0 : null">
+
   <b-truncate-tooltip *ngIf="valueMaxLines"
                       [maxLines]="valueMaxLines"
                       [type]="tooltipType"
                       [trustCssVars]="true"
                       [expectChanges]="expectChanges"
                       [text]="valueStr"></b-truncate-tooltip>
-  <ng-container *ngIf="!valueMaxLines">{{valueStr}}</ng-container>
+
+  <span *ngIf="!valueMaxLines"
+        class="inl">{{valueStr}}</span>
+
   <b-info-tooltip *ngIf="valueDescription"
                   class="inl-flx"
                   [config]="valueDescription">
     <ng-content select="[value-tooltip]"></ng-content>
   </b-info-tooltip>
+
   <ng-content select="[value]"></ng-content>
 </p>
 

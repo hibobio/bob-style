@@ -1,8 +1,7 @@
 import 'froala-editor/js/plugins/align.min.js';
 import 'froala-editor/js/plugins/emoticons.min.js';
 import 'froala-editor/js/plugins/font_size.min.js';
-// import 'froala-editor/js/plugins/link.min.js';
-import './froala/link.min.js';
+import 'froala-editor/js/plugins/link.min.js';
 import 'froala-editor/js/plugins/lists.min.js';
 import 'froala-editor/js/plugins/url.min.js';
 

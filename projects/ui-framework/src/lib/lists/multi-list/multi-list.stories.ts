@@ -96,7 +96,8 @@ const note = `
 const options: SelectGroupOption[] = cloneDeep(optionsMock);
 const optionsDef = cloneDeep(optionsMockDef);
 
-options[2].description = `Are we human
+if (options.length > 1) {
+  options[2].description = `Are we human
 Or are we dancer?
 My sign is vital
 My hands are cold
@@ -104,8 +105,9 @@ And I'm on my knees
 Looking for the answer
 Are we human
 Or are we dancer?`;
-options[4].description = 'Sit amet en ipsum';
-options[6].description = 'Lorem Dolor sit amet en psium';
+  options[4].description = 'Sit amet en ipsum';
+  options[6].description = 'Lorem Dolor sit amet en psium';
+}
 
 const options$ = of(options).pipe(delay(1000));
 

@@ -59,14 +59,14 @@ export class MultiListComponent extends BaseListElement {
   }
 
   headerClick(header: ListHeader): void {
-    if (header.groupIsOption) {
+    if (header.groupSelectable !== false && header.groupIsOption) {
       super.headerClick(header);
       return;
     }
 
     if (this.options.length > 1 && !header.groupIsOption) {
       this.toggleGroupCollapse(header);
-    } else if (!this.readonly) {
+    } else if (header.groupSelectable !== false && !this.readonly) {
       this.selectGroup(header);
     }
   }
@@ -118,5 +118,12 @@ export class MultiListComponent extends BaseListElement {
       ? this.listOptions.length *
           (FORM_ELEMENT_HEIGHT[this.size] || LIST_EL_HEIGHT)
       : null;
+  }
+
+  isHeaderClickable(header: ListHeader): boolean {
+    return (
+      (!header.groupIsOption && this.options.length > 1) ||
+      (header.groupIsOption && !this.readonly)
+    );
   }
 }

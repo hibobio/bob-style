@@ -1,46 +1,48 @@
+import { MockComponent } from 'ng-mocks';
+
+import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
+import { Platform } from '@angular/cdk/platform';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { CommonModule } from '@angular/common';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   ComponentFixture,
   fakeAsync,
   inject,
-  TestBed,
   resetFakeAsyncZone,
-  waitForAsync,
+  TestBed,
   tick,
+  waitForAsync,
 } from '@angular/core/testing';
-import { MultiSelectPanelComponent } from './multi-select-panel.component';
-import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
-import { Platform } from '@angular/cdk/platform';
-import { SelectGroupOption } from '../list.interface';
-import { MockComponent } from 'ng-mocks';
-import { ChevronButtonComponent } from '../../buttons/chevron-button/chevron-button.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { CommonModule } from '@angular/common';
+
+import { ButtonComponent } from '../../buttons/button/button.component';
+import { ChevronButtonComponent } from '../../buttons/chevron-button/chevron-button.component';
+import { TextButtonComponent } from '../../buttons/text-button/text-button.component';
+import { CheckboxComponent } from '../../form-elements/checkbox/checkbox.component';
 import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
+import { PanelService } from '../../popups/panel/panel.service';
+import { TrackByPropModule } from '../../services/filters/trackByProp.pipe';
+import { fakeAsyncFlush } from '../../services/utils/test-helpers';
 import { UtilsService } from '../../services/utils/utils.service';
 import {
-  utilsServiceStub,
-  mockTranslatePipe,
-  TranslateServiceProvideMock,
-  mockHighlightPipe,
   listKeyboardServiceStub,
   MobileServiceProvideMock,
-  TrackByPropPipeStub,
+  mockHighlightPipe,
+  mockTranslatePipe,
+  TranslateServiceProvideMock,
+  utilsServiceStub,
 } from '../../tests/services.stub.spec';
-import { ScrollingModule } from '@angular/cdk/scrolling';
-import { MultiSelectComponent } from '../multi-select/multi-select.component';
-import { MultiListComponent } from '../multi-list/multi-list.component';
-import { ListFooterComponent } from '../list-footer/list-footer.component';
-import { ListModelService } from '../list-service/list-model.service';
 import { ListChangeService } from '../list-change/list-change.service';
-import { ListKeyboardService } from '../list-service/list-keyboard.service';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { CheckboxComponent } from '../../form-elements/checkbox/checkbox.component';
-import { ButtonComponent } from '../../buttons/button/button.component';
-import { TextButtonComponent } from '../../buttons/text-button/text-button.component';
-import { fakeAsyncFlush } from '../../services/utils/test-helpers';
+import { ListFooterComponent } from '../list-footer/list-footer.component';
 import { ListPanelService } from '../list-panel.service';
-import { PanelService } from '../../popups/panel/panel.service';
+import { ListKeyboardService } from '../list-service/list-keyboard.service';
+import { ListModelService } from '../list-service/list-model.service';
+import { SelectGroupOption } from '../list.interface';
 import { compareListChange, mockListChange } from '../lists-test-helpers.spec';
+import { MultiListComponent } from '../multi-list/multi-list.component';
+import { MultiSelectComponent } from '../multi-select/multi-select.component';
+import { MultiSelectPanelComponent } from './multi-select-panel.component';
 
 describe('MultiSelectPanelComponent', () => {
   let component: MultiSelectPanelComponent;
@@ -76,7 +78,6 @@ describe('MultiSelectPanelComponent', () => {
 
       TestBed.configureTestingModule({
         declarations: [
-          TrackByPropPipeStub,
           MultiSelectPanelComponent,
           MockComponent(ChevronButtonComponent),
           MultiSelectComponent,
@@ -93,6 +94,7 @@ describe('MultiSelectPanelComponent', () => {
           NoopAnimationsModule,
           ScrollingModule,
           OverlayModule,
+          TrackByPropModule,
         ],
         providers: [
           ListPanelService,

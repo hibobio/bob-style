@@ -1,13 +1,34 @@
-import { ComponentFixture, resetFakeAsyncZone, TestBed, waitForAsync } from '@angular/core/testing';
+import { cloneDeep } from 'lodash';
+import { MockComponent } from 'ng-mocks';
+
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { CommonModule } from '@angular/common';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import {
+  ComponentFixture,
+  resetFakeAsyncZone,
+  TestBed,
+  waitForAsync,
+} from '@angular/core/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
+import { SquareButtonComponent } from '../../buttons/square/square.component';
+import { TextButtonComponent } from '../../buttons/text-button/text-button.component';
+import { Icons } from '../../icons/icons.enum';
+import { BasicListComponent } from '../../lists/basic-list/basic-list.component';
+import { ListChange } from '../../lists/list-change/list-change';
+import { ListChangeService } from '../../lists/list-change/list-change.service';
+import { ListFooterComponent } from '../../lists/list-footer/list-footer.component';
+import { ListKeyboardService } from '../../lists/list-service/list-keyboard.service';
+import { ListModelService } from '../../lists/list-service/list-model.service';
+import { MultiListComponent } from '../../lists/multi-list/multi-list.component';
+import { MenuComponent } from '../../navigation/menu/menu.component';
+import { TrackByPropModule } from '../../services/filters/trackByProp.pipe';
+import { makeArray } from '../../services/utils/functional-utils';
 import {
   elementFromFixture,
   elementsFromFixture,
 } from '../../services/utils/test-helpers';
-import { Icons } from '../../icons/icons.enum';
-import { CommonModule } from '@angular/common';
-import { makeArray } from '../../services/utils/functional-utils';
-import { cloneDeep } from 'lodash';
-import { ListChange } from '../../lists/list-change/list-change';
 import {
   DOMhelpersProvideMock,
   listKeyboardServiceStub,
@@ -16,26 +37,12 @@ import {
   mockTranslatePipe,
   MutationObservableServiceProvideMock,
   NgZoneProvideMock,
-  TrackByPropPipeStub,
   TranslateServiceProvideMock,
   WindowRefProvideMock,
 } from '../../tests/services.stub.spec';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { MultiListComponent } from '../../lists/multi-list/multi-list.component';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ScrollingModule } from '@angular/cdk/scrolling';
-import { ListModelService } from '../../lists/list-service/list-model.service';
-import { ListChangeService } from '../../lists/list-change/list-change.service';
-import { ListKeyboardService } from '../../lists/list-service/list-keyboard.service';
-import { ListFooterComponent } from '../../lists/list-footer/list-footer.component';
-import { MultiListAndListComponent } from './multi-list-and-list.component';
-import { SquareButtonComponent } from '../../buttons/square/square.component';
-import { BasicListComponent } from '../../lists/basic-list/basic-list.component';
-import { ListRow } from './multi-list-and-list.interface';
-import { MockComponent } from 'ng-mocks';
-import { MenuComponent } from '../../navigation/menu/menu.component';
-import { TextButtonComponent } from '../../buttons/text-button/text-button.component';
 import { itemID } from '../list.interface';
+import { MultiListAndListComponent } from './multi-list-and-list.component';
+import { ListRow } from './multi-list-and-list.interface';
 
 describe('MultiListAndListComponent', () => {
   let component: MultiListAndListComponent;
@@ -45,54 +52,60 @@ describe('MultiListAndListComponent', () => {
     resetFakeAsyncZone();
   });
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        MultiListAndListComponent,
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [
+          MultiListAndListComponent,
 
-        MultiListComponent,
-        BasicListComponent,
-        MockComponent(MenuComponent),
-        MockComponent(SquareButtonComponent),
-        ListFooterComponent,
-        TextButtonComponent,
+          MultiListComponent,
+          BasicListComponent,
+          MockComponent(MenuComponent),
+          MockComponent(SquareButtonComponent),
+          ListFooterComponent,
+          TextButtonComponent,
 
-        TrackByPropPipeStub,
-        mockTranslatePipe,
-        mockHighlightPipe,
-      ],
-      imports: [CommonModule, NoopAnimationsModule, ScrollingModule],
-      providers: [
-        ListModelService,
-        ListChangeService,
-        { provide: ListKeyboardService, useValue: listKeyboardServiceStub },
-        TranslateServiceProvideMock(),
-        MobileServiceProvideMock(),
-        DOMhelpersProvideMock(),
-        MutationObservableServiceProvideMock(),
-        WindowRefProvideMock(),
-        NgZoneProvideMock(),
-      ],
-      schemas: [NO_ERRORS_SCHEMA],
+          mockTranslatePipe,
+          mockHighlightPipe,
+        ],
+        imports: [
+          CommonModule,
+          NoopAnimationsModule,
+          ScrollingModule,
+          TrackByPropModule,
+        ],
+        providers: [
+          ListModelService,
+          ListChangeService,
+          { provide: ListKeyboardService, useValue: listKeyboardServiceStub },
+          TranslateServiceProvideMock(),
+          MobileServiceProvideMock(),
+          DOMhelpersProvideMock(),
+          MutationObservableServiceProvideMock(),
+          WindowRefProvideMock(),
+          NgZoneProvideMock(),
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(MultiListAndListComponent);
+          component = fixture.componentInstance;
+
+          component.inputOptions$ = [] as any;
+
+          component.selectChange.subscribe(() => {});
+          component.changed.subscribe(() => {});
+          component.listOptions$.subscribe(() => {});
+          component.otherList$.subscribe(() => {});
+          component.listValue$.subscribe(() => {});
+
+          spyOn(component.selectChange, 'next');
+
+          fixture.autoDetectChanges();
+        });
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(MultiListAndListComponent);
-        component = fixture.componentInstance;
-
-        component.inputOptions$ = [] as any;
-
-        component.selectChange.subscribe(() => {});
-        component.changed.subscribe(() => {});
-        component.listOptions$.subscribe(() => {});
-        component.otherList$.subscribe(() => {});
-        component.listValue$.subscribe(() => {});
-
-        spyOn(component.selectChange, 'next');
-
-        fixture.autoDetectChanges();
-      });
-  }));
+  );
 
   afterAll(() => {
     [

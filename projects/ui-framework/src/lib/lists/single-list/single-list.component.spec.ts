@@ -1,31 +1,32 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { CommonModule } from '@angular/common';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MockComponent } from 'ng-mocks';
+import { of } from 'rxjs';
+
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { SingleListComponent } from './single-list.component';
-import { ListModelService } from '../list-service/list-model.service';
-import { SelectGroupOption } from '../list.interface';
+import { CommonModule } from '@angular/common';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { ListKeyboardService } from '../list-service/list-keyboard.service';
-import { ListChangeService } from '../list-change/list-change.service';
-import {} from '../../services/utils/test-helpers';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { TranslateService } from '@ngx-translate/core';
+
+import { ButtonComponent } from '../../buttons/button/button.component';
+import { IconComponent } from '../../icons/icon.component';
+import { SearchComponent } from '../../search/search/search.component';
+import { TrackByPropModule } from '../../services/filters/trackByProp.pipe';
+import { simpleChange } from '../../services/utils/functional-utils';
 import {
+  listKeyboardServiceStub,
+  MobileServiceProvideMock,
+  mockHighlightPipe,
   mockTranslatePipe,
   TranslateServiceProvideMock,
-  listKeyboardServiceStub,
-  mockHighlightPipe,
-  MobileServiceProvideMock,
-  TrackByPropPipeStub,
 } from '../../tests/services.stub.spec';
+import { ListChangeService } from '../list-change/list-change.service';
 import { ListFooterComponent } from '../list-footer/list-footer.component';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { IconComponent } from '../../icons/icon.component';
-import { MockComponent } from 'ng-mocks';
-import { ButtonComponent } from '../../buttons/button/button.component';
-import { SearchComponent } from '../../search/search/search.component';
-import { simpleChange } from '../../services/utils/functional-utils';
-import { TranslateService } from '@ngx-translate/core';
-import { of } from 'rxjs';
+import { ListKeyboardService } from '../list-service/list-keyboard.service';
+import { ListModelService } from '../list-service/list-model.service';
+import { SelectGroupOption } from '../list.interface';
+import { SingleListComponent } from './single-list.component';
 
 describe('SingleListComponent', () => {
   let component: SingleListComponent;
@@ -58,7 +59,6 @@ describe('SingleListComponent', () => {
 
       TestBed.configureTestingModule({
         declarations: [
-          TrackByPropPipeStub,
           SingleListComponent,
           ListFooterComponent,
           mockTranslatePipe,
@@ -67,7 +67,12 @@ describe('SingleListComponent', () => {
           MockComponent(IconComponent),
           MockComponent(SearchComponent),
         ],
-        imports: [CommonModule, NoopAnimationsModule, ScrollingModule],
+        imports: [
+          CommonModule,
+          NoopAnimationsModule,
+          ScrollingModule,
+          TrackByPropModule,
+        ],
         providers: [
           ListModelService,
           ListChangeService,
@@ -485,9 +490,13 @@ describe('SingleListComponent', () => {
         By.css('.clear-selection')
       );
       expect(clearSelection).toBeTruthy();
-      translateServiceStub.get(clearSelection.nativeElement.innerText).subscribe((res) => {
-        expect(res).toEqual(`translated ${clearSelection.nativeElement.innerText}`);
-      })
+      translateServiceStub
+        .get(clearSelection.nativeElement.innerText)
+        .subscribe((res) => {
+          expect(res).toEqual(
+            `translated ${clearSelection.nativeElement.innerText}`
+          );
+        });
     });
     it('should call clearList method  on click', () => {
       spyOn(component, 'clearList').and.callThrough();

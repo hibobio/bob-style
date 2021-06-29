@@ -1,37 +1,38 @@
+import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
+import { Platform } from '@angular/cdk/platform';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { CommonModule } from '@angular/common';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   ComponentFixture,
   fakeAsync,
   inject,
-  TestBed,
   resetFakeAsyncZone,
-  waitForAsync,
+  TestBed,
   tick,
+  waitForAsync,
 } from '@angular/core/testing';
-import { SingleSelectPanelComponent } from './single-select-panel.component';
-import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
-import { Platform } from '@angular/cdk/platform';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { CommonModule } from '@angular/common';
+
 import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
-import { SelectGroupOption } from '../list.interface';
+import { TrackByPropModule } from '../../services/filters/trackByProp.pipe';
+import { fakeAsyncFlush } from '../../services/utils/test-helpers';
 import { UtilsService } from '../../services/utils/utils.service';
 import {
-  utilsServiceStub,
-  mockTranslatePipe,
-  mockHighlightPipe,
-  MobileServiceProvideMock,
-  TranslateServiceProvideMock,
   listKeyboardServiceStub,
-  TrackByPropPipeStub,
+  MobileServiceProvideMock,
+  mockHighlightPipe,
+  mockTranslatePipe,
+  TranslateServiceProvideMock,
+  utilsServiceStub,
 } from '../../tests/services.stub.spec';
-import { ScrollingModule } from '@angular/cdk/scrolling';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ListModelService } from '../list-service/list-model.service';
 import { ListChangeService } from '../list-change/list-change.service';
 import { ListKeyboardService } from '../list-service/list-keyboard.service';
-import { SingleListComponent } from '../single-list/single-list.component';
-import { fakeAsyncFlush } from '../../services/utils/test-helpers';
+import { ListModelService } from '../list-service/list-model.service';
+import { SelectGroupOption } from '../list.interface';
 import { compareGOptions, getOptionsModel } from '../lists-test-helpers.spec';
+import { SingleListComponent } from '../single-list/single-list.component';
+import { SingleSelectPanelComponent } from './single-select-panel.component';
 
 describe('SingleSelectPanelComponent', () => {
   let component: SingleSelectPanelComponent;
@@ -67,7 +68,6 @@ describe('SingleSelectPanelComponent', () => {
 
       TestBed.configureTestingModule({
         declarations: [
-          TrackByPropPipeStub,
           SingleSelectPanelComponent,
           SingleListComponent,
           mockTranslatePipe,
@@ -78,6 +78,7 @@ describe('SingleSelectPanelComponent', () => {
           NoopAnimationsModule,
           ScrollingModule,
           OverlayModule,
+          TrackByPropModule,
         ],
         providers: [
           ListModelService,

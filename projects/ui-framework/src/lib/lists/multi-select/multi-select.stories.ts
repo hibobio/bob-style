@@ -20,7 +20,10 @@ import formElemsPropsDoc from '../../form-elements/form-elements.properties.md';
 import { FormElementsCommonProps } from '../../form-elements/form-elements.stories.common';
 import { Icons } from '../../icons/icons.enum';
 import { mockText } from '../../mock.const';
-import { cloneDeep } from '../../services/utils/functional-utils';
+import {
+  cloneDeep,
+  cloneDeepSimpleObject,
+} from '../../services/utils/functional-utils';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { TypographyModule } from '../../typography/typography.module';
 import { ListModelService } from '../list-service/list-model.service';
@@ -80,8 +83,7 @@ const template = `
     </b-text-button>
 </b-multi-select>
 
-<br><br>
-<button (click)="logData(bms)" type="button">log</button>
+<button *ngIf="false" (click)="logData(bms)" type="button">log</button>
 `;
 
 const templateForNotes = `<b-multi-select [value]="value"
@@ -106,6 +108,10 @@ const templateForNotes = `<b-multi-select [value]="value"
 
 </b-multi-select>`;
 
+const sel2code = `showSingleGroupHeader = false;
+startWithGroupsCollapsed = false;
+options = [{ ..., groupSelectable: false  }]`;
+
 const storyTemplate = `
 <style>
   body,html { overflow: hidden;}
@@ -115,6 +121,17 @@ const storyTemplate = `
 
     <div style="max-width: 350px; min-height: 130vh;">
       ${template}
+
+      <br><br>
+
+      <b-multi-select
+        [options]="options1g"
+        [showSingleGroupHeader]="true"
+        [startWithGroupsCollapsed]="false"
+      ></b-multi-select>
+      <br>
+      <textarea style="resize: none;padding: 0;height: 85px;width: 100%;border: 0;background: transparent;" readonly disabled [value]="options1g_code">
+      </textarea>
     </div>
 
   </b-story-book-layout>
@@ -159,6 +176,16 @@ const options = ListModelService.prototype.selectAll<SelectGroupOption>(
 );
 const optionsDef = cloneDeep(optionsMockDef);
 
+const options1g = [cloneDeepSimpleObject(options[2])];
+options1g[0].groupName = 'Employees';
+options1g[0].suffixComponent = options[1].suffixComponent;
+options1g[0].suffixComponent.attributes.placeholder = 'Include inactive';
+options1g[0].groupSelectable = false;
+options1g[0].options.forEach((o) => {
+  o.selected = o.disabled = false;
+  o.description = null;
+});
+
 const toAdd = () => ({
   template: storyTemplate,
   props: {
@@ -174,32 +201,36 @@ const toAdd = () => ({
     },
     value: select(
       'value',
-      [
-        [
-          options[2].options[0].id,
-          options[2].options[2].id,
-          options[3].options[3].id,
-          options[4].options[2].id,
-        ],
-        [
-          options[3].options[1].id,
-          options[2].options[3].id,
-          options[2].options[2].id,
-          options[4].options[0].id,
-        ],
-        [
-          options[3].options[3].id,
-          options[2].options[2].id,
-          options[4].options[0].id,
-          options[2].options[1].id,
-        ],
-      ],
-      [
-        options[2].options[0].id,
-        options[2].options[2].id,
-        options[3].options[3].id,
-        options[4].options[2].id,
-      ],
+      options.length >= 4
+        ? [
+            [
+              options[2].options[0].id,
+              options[2].options[2].id,
+              options[3].options[3].id,
+              options[4].options[2].id,
+            ],
+            [
+              options[3].options[1].id,
+              options[2].options[3].id,
+              options[2].options[2].id,
+              options[4].options[0].id,
+            ],
+            [
+              options[3].options[3].id,
+              options[2].options[2].id,
+              options[4].options[0].id,
+              options[2].options[1].id,
+            ],
+          ]
+        : [],
+      options.length >= 4
+        ? [
+            options[2].options[0].id,
+            options[2].options[2].id,
+            options[3].options[3].id,
+            options[4].options[2].id,
+          ]
+        : [],
       'Props'
     ),
 
@@ -254,6 +285,9 @@ const toAdd = () => ({
     selectValueChange: action('Value (Selected IDs)'),
     selectModified: action('Options modified'),
     selectCancelled: action('Changes Cancelled'),
+
+    options1g: options1g,
+    options1g_code: sel2code,
   },
   moduleMetadata: {
     imports: [
