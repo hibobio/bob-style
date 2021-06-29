@@ -1,11 +1,12 @@
 import { storiesOf } from '@storybook/angular';
-import { object, withKnobs } from '@storybook/addon-knobs';
+import { object, select, withKnobs } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { ComponentGroupType } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EmojiChipListModule } from './emoji-chip-list.module';
 import { EmojiChip } from './emoji-chip-list.interface';
+import { Types } from '../../enums';
 
 const story = storiesOf(ComponentGroupType.Chips, module).addDecorator(
   withKnobs
@@ -13,6 +14,7 @@ const story = storiesOf(ComponentGroupType.Chips, module).addDecorator(
 
 const template = `<b-emoji-chip-list
     [chips]="chips"
+    [dataType]="type"
     (chipClicked)="chipClicked($event)">
 </b-emoji-chip-list>
 `;
@@ -74,6 +76,7 @@ story.add(
     props: {
       chipClicked: action('chip clicked'),
       chips: object('chips', mock),
+      type: select('type', Object.keys(Types).slice(0, 2), Types.primary)
     },
     moduleMetadata: {
       imports: [

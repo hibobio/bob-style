@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
+import { Types } from '../../enums';
 
 import { isFunction } from '../../services/utils/functional-utils';
 import { EmojiChip } from './emoji-chip-list.interface';
@@ -13,6 +14,7 @@ export class EmojiChipListComponent {
   @Input() chips: EmojiChip[];
   @Output()
   chipClicked: EventEmitter<EmojiChip> = new EventEmitter();
+  @HostBinding('attr.data-type') @Input() dataType: Types = Types.primary;
 
   valueFormatterFn(val): string | number {
     return isFunction(this.valueFormatter) ? this.valueFormatter(val) : val;
