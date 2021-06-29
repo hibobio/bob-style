@@ -1,15 +1,16 @@
-import { storiesOf } from '@storybook/angular';
-import { number, object, select, withKnobs } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
-import { TabsModule } from './tabs.module';
-import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { Tab } from './tabs.interface';
-import { TabsType } from './tabs.enum';
-import { makeArray, simpleUID } from '../../services/utils/functional-utils';
-import { mockHobbies } from '../../mock.const';
+import { action } from '@storybook/addon-actions';
+import { number, object, select, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
 import { AvatarBadge } from '../../avatar/avatar/avatar.enum';
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
+import { mockHobbies } from '../../mock.const';
+import { makeArray, simpleUID } from '../../services/utils/functional-utils';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { TabsType } from './tabs.enum';
+import { Tab } from './tabs.interface';
+import { TabsModule } from './tabs.module';
 
 const story = storiesOf(ComponentGroupType.Navigation, module).addDecorator(
   withKnobs
@@ -89,9 +90,6 @@ story.add(
   },
   {
     notes: { markdown: note },
-    knobs: {
-      timestamps: true,
-      escapeHTML: false,
-    },
+    knobs: STORIES_KNOBS_OPTIONS,
   }
 );

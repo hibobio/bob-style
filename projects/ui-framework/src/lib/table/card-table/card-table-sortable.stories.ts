@@ -9,7 +9,7 @@ import { ButtonComponent } from '../../buttons/button/button.component';
 import { ButtonsModule } from '../../buttons/buttons.module';
 import { ChipComponent } from '../../chips/chip/chip.component';
 import { ChipModule } from '../../chips/chip/chip.module';
-import { ComponentGroupType } from '../../consts';
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
 import { RadioButtonModule } from '../../form-elements/radio-button/radio-button.module';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { CardTableMockData, CardTableMockMetaData } from './card-table.mock';
@@ -253,9 +253,6 @@ story.add(
   },
   {
     notes: { markdown: note },
-    knobs: {
-      timestamps: true,
-      escapeHTML: false,
-    },
+    knobs: STORIES_KNOBS_OPTIONS,
   }
 );

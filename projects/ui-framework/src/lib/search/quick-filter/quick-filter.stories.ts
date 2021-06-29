@@ -4,7 +4,7 @@ import { boolean, object, select, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 
 import { ButtonsModule } from '../../buttons/buttons.module';
-import { ComponentGroupType } from '../../consts';
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
 import { FormElementSize } from '../../form-elements/form-elements.enum';
 import { LinkColor } from '../../indicators/link/link.enum';
 import { mockCities, mockDepartments, mockJobs } from '../../mock.const';
@@ -148,9 +148,6 @@ story.add(
   },
   {
     notes: { markdown: note },
-    knobs: {
-      timestamps: true,
-      escapeHTML: false,
-    },
+    knobs: STORIES_KNOBS_OPTIONS,
   }
 );

@@ -18,7 +18,7 @@ import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { ButtonsModule } from '../../buttons/buttons.module';
 import { CardsModule } from '../../cards/cards.module';
 import { ChipListModule } from '../../chips/chip-list/chip-list.module';
-import { ComponentGroupType } from '../../consts';
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
 import { EyeCandyModule } from '../../eye-candy/eye-candy.module';
 import { Icons } from '../../icons/icons.enum';
 import { ProgressBarModule } from '../../indicators/progress/progress-bar/progress-bar.module';
@@ -563,9 +563,6 @@ story.add(
   },
   {
     notes: { markdown: note },
-    knobs: {
-      timestamps: true,
-      escapeHTML: false,
-    },
+    knobs: STORIES_KNOBS_OPTIONS,
   }
 );

@@ -4,7 +4,7 @@ import { boolean, object, text, withKnobs } from '@storybook/addon-knobs';
 import { withNotes } from '@storybook/addon-notes';
 import { storiesOf } from '@storybook/angular';
 
-import { ComponentGroupType } from '../../consts';
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
 import { mockText } from '../../mock.const';
 import { randomNumber, simpleUID } from '../../services/utils/functional-utils';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
@@ -97,9 +97,6 @@ story.add(
   },
   {
     notes: { markdown: note },
-    knobs: {
-      timestamps: true,
-      escapeHTML: false,
-    },
+    knobs: STORIES_KNOBS_OPTIONS,
   }
 );

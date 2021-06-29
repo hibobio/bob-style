@@ -27,6 +27,11 @@ export enum ComponentGroupType {
   Widgets = 'Widgets',
 }
 
+export const STORIES_KNOBS_OPTIONS = {
+  timestamps: true,
+  escapeHTML: false,
+};
+
 export const mobileBreakpoint = 768;
 
 export const SERVER_DATE_FORMAT = 'yyyy-MM-dd';

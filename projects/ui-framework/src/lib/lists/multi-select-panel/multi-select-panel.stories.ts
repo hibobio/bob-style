@@ -13,7 +13,7 @@ import { storiesOf } from '@storybook/angular';
 
 import { ButtonType } from '../../buttons/buttons.enum';
 import { ButtonsModule } from '../../buttons/buttons.module';
-import { ComponentGroupType } from '../../consts';
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
 import { Icons } from '../../icons/icons.enum';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { SelectMode } from '../list.enum';
@@ -153,9 +153,6 @@ story.add(
   },
   {
     notes: { markdown: note },
-    knobs: {
-      timestamps: true,
-      escapeHTML: false,
-    },
+    knobs: STORIES_KNOBS_OPTIONS,
   }
 );

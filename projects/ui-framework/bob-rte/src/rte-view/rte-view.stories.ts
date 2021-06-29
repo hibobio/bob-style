@@ -5,6 +5,7 @@ import { storiesOf } from '@storybook/angular';
 
 import { ComponentGroupType } from 'bob-style';
 
+import { STORIES_KNOBS_OPTIONS } from '../../../src/lib/consts';
 import { xssMock } from '../../../src/lib/services/utils/xss.mock';
 import { StoryBookLayoutModule } from '../../../src/lib/story-book-layout/story-book-layout.module';
 import { placeholderMock, rteMockHtml } from '../rte/rte.mocks';
@@ -90,9 +91,6 @@ story.add(
   },
   {
     notes: { markdown: note },
-    knobs: {
-      timestamps: true,
-      escapeHTML: false,
-    },
+    knobs: STORIES_KNOBS_OPTIONS,
   }
 );

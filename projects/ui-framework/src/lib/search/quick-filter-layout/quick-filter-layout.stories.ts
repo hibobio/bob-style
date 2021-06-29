@@ -6,7 +6,7 @@ import { storiesOf } from '@storybook/angular';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { ButtonsModule } from '../../buttons/buttons.module';
-import { ComponentGroupType } from '../../consts';
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
 import { DateRangePickerModule } from '../../form-elements/date-picker/date-range-picker/date-range-picker.module';
 import { BDateAdapterMock } from '../../form-elements/date-picker/dateadapter.mock';
 import { DatepickerType } from '../../form-elements/date-picker/datepicker.enum';
@@ -286,9 +286,6 @@ story.add(
   },
   {
     notes: { markdown: note },
-    knobs: {
-      timestamps: true,
-      escapeHTML: false,
-    },
+    knobs: STORIES_KNOBS_OPTIONS,
   }
 );

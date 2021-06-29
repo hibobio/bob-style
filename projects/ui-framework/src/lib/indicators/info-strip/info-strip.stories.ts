@@ -8,7 +8,7 @@ import {
 } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 
-import { ComponentGroupType } from '../../consts';
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
 import { CheckboxModule } from '../../form-elements/checkbox/checkbox.module';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { LinkTarget } from '../link/link.enum';
@@ -102,9 +102,6 @@ story.add(
   },
   {
     notes: { markdown: note },
-    knobs: {
-      timestamps: true,
-      escapeHTML: false,
-    },
+    knobs: STORIES_KNOBS_OPTIONS,
   }
 );

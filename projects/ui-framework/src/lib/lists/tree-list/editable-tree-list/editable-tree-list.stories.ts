@@ -1,21 +1,20 @@
-import { storiesOf } from '@storybook/angular';
-import { withKnobs } from '@storybook/addon-knobs';
-import { ComponentGroupType } from '../../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
-import { boolean, select, number } from '@storybook/addon-knobs';
-import { EditableTreeListModule } from './editable-tree-list.module';
+import { action } from '@storybook/addon-actions';
+import { boolean, number, select, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
 
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../../consts';
 import { simpleUID } from '../../../services/utils/functional-utils';
+import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 import { BTL_KEYMAP_SERVER } from '../tree-list.const';
 import {
   HListMock,
   HListMockSimple,
-  makeRandomList,
   HListMockSingleGroup,
+  makeRandomList,
 } from '../tree-list.mock';
-import { action } from '@storybook/addon-actions';
 import { TreeListModule } from '../tree-list/tree-list.module';
+import { EditableTreeListModule } from './editable-tree-list.module';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -258,9 +257,6 @@ story.add(
   }),
   {
     notes: { markdown: note },
-    knobs: {
-      timestamps: true,
-      escapeHTML: false,
-    },
+    knobs: STORIES_KNOBS_OPTIONS,
   }
 );

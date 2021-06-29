@@ -20,6 +20,7 @@ import {
   SearchModule,
 } from 'bob-style';
 
+import { STORIES_KNOBS_OPTIONS } from '../../../src/lib/consts';
 import { StoryBookLayoutModule } from '../../../src/lib/story-book-layout/story-book-layout.module';
 import { ActionsCellComponent } from './table-cell-components/actions-cell/actions-cell.component';
 import { AvatarCellComponent } from './table-cell-components/avatar-cell/avatar.component';
@@ -313,10 +314,7 @@ story.add(
     }),
   {
     notes: { markdown: note },
-    knobs: {
-      timestamps: true,
-      escapeHTML: false,
-    },
+    knobs: STORIES_KNOBS_OPTIONS,
   }
 );
 
@@ -340,5 +338,5 @@ story.add(
         } as TreeConfig,
       } as any,
     }),
-  { notes: { markdown: treeNotes } }
+  { notes: { markdown: treeNotes }, knobs: STORIES_KNOBS_OPTIONS }
 );

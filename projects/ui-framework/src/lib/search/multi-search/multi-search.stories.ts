@@ -11,7 +11,7 @@ import {
 import { storiesOf } from '@storybook/angular';
 
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
-import { ComponentGroupType } from '../../consts';
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
 import { FormElementSize } from '../../form-elements/form-elements.enum';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { mockSearchData } from './multi-search.mock';
@@ -162,9 +162,6 @@ story.add(
   },
   {
     notes: { markdown: note },
-    knobs: {
-      timestamps: true,
-      escapeHTML: false,
-    },
+    knobs: STORIES_KNOBS_OPTIONS,
   }
 );

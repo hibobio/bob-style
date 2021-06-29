@@ -2,7 +2,7 @@ import { action } from '@storybook/addon-actions';
 import { object, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 
-import { ComponentGroupType } from '../../consts';
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
 import { LinkColor, LinkTarget } from '../../indicators/link/link.enum';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { InfoTooltipModule } from './info-tooltip.module';
@@ -71,9 +71,6 @@ story.add(
   }),
   {
     notes: { markdown: note },
-    knobs: {
-      timestamps: true,
-      escapeHTML: false,
-    },
+    knobs: STORIES_KNOBS_OPTIONS,
   }
 );
