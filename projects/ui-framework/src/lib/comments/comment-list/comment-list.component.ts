@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+
 import { CommentItem } from '../comments.interface';
 
 @Component({
@@ -11,6 +12,6 @@ export class CommentListComponent {
   @Input() comments: CommentItem[];
 
   trackBy(index: number, comment: CommentItem): string {
-    return comment.content;
+    return comment.id || comment.content;
   }
 }

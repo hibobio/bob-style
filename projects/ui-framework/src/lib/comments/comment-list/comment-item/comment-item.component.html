@@ -1,4 +1,5 @@
-<b-avatar-image [size]="avatarSize.mini"
+<b-avatar-image class="mrg-t-4 mrg-r-16"
+                [size]="avatarSize.mini"
                 [imageSource]="comment?.avatar"
                 [matTooltip]="comment?.name"></b-avatar-image>
 
@@ -26,20 +27,21 @@
                    (clicked)="comment.actionConfig.action($event)">
   </b-square-button>
 
-  <div class="comment-content flx-grow">
+  <div class="comment-content flx-grow pad-x-16 pad-t-8 pad-b-12">
 
-    <div class="comment-header mrg-b-6">
-      <span *ngIf="comment?.name"
-            class="b-bold-body name clr-grey-700 mrg-r-4">{{comment?.name}}</span>
-       <span *ngIf="comment?.name && comment?.role" class="mrg-r-4">•</span>    
-       <span *ngIf="comment?.role">{{comment.role}}</span> 
+    <div class="comment-header mrg-b-2">
+      <strong *ngIf="comment?.name"
+              class="name clr-grey-700 mrg-r-4">{{comment?.name}}</strong>
+      <span *ngIf="comment?.name && comment?.role"
+            class="mrg-r-4">•</span>
+      <span *ngIf="comment?.role">{{comment.role}}</span>
     </div>
 
     <div *ngIf="comment?.content"
          class="comment-body pre-line hyphenate"
          #commentContent></div>
-     <div *ngIf="comment?.date">
-      <span class="b-caption date clr-grey-600">{{comment.date}}</span>
-     </div>    
+
+    <div *ngIf="comment?.date"
+         class="date b-caption mrg-t-2 clr-grey-600">{{comment.date}}</div>
   </div>
 </div>

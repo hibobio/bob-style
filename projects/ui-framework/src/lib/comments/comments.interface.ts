@@ -1,6 +1,10 @@
-import { CommonActionButton, MenuItem } from '../navigation/menu/menu.interface';
+import {
+  CommonActionButton,
+  MenuItem,
+} from '../navigation/menu/menu.interface';
 
 export interface CommentItem {
+  id?: string;
   avatar: string;
   content: string;
   name?: string;
@@ -12,4 +16,3 @@ export interface CommentItem {
 export interface CommentItemDto {
   content: string;
 }
-

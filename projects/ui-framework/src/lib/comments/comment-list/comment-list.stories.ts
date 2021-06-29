@@ -9,67 +9,81 @@ import {
   COMMENT_ITEM,
   HTML_COMMENT,
   LONG_COMMENT_ITEM,
+  someComments,
 } from '../comments.mocks';
 import { CommentsModule } from '../comments.module';
 import { CommentListComponent } from './comment-list.component';
-// @ts-ignore
-import * as readme from './README.md';
 
 const story = storiesOf(ComponentGroupType.Comments, module).addDecorator(
   withKnobs
 );
 
+const template = ` <b-comment-list [comments]="comments"></b-comment-list>`;
+
 const storyTemplate = `
 <b-story-book-layout [title]="'Comment List'">
   <div>
-    <b-comment-list [comments]="[cmnt1,cmnt2,cmnt3]"></b-comment-list>
+   ${template}
   </div>
 </b-story-book-layout>
 `;
 
-story
-  .addDecorator(
-    moduleMetadata({
-      declarations: [],
-      imports: [
-        StoryBookLayoutModule,
-        BrowserAnimationsModule,
-        CommentsModule,
+const note = `
+  ## Comment List
+  #### Module
+  *CommentListModule*
 
-        RouterModule.forRoot(
-          [
-            {
-              path: '',
-              component: CommentListComponent,
-            },
-            {
-              path: 'employee-profile/:id',
-              component: CommentListComponent,
-            },
-          ],
-          { useHash: true }
-        ),
-      ],
-      providers: [],
-      schemas: [],
-    })
-  )
-  .add(
-    'Comment list',
-    () => ({
+  ~~~
+  ${template}
+  ~~~
+
+  #### Properties
+  Name | Type | Description | default
+  --- | --- | --- | ---
+  [comments] | CommentItem[] | comments data (including .avatar & .content) | &nbsp;
+
+`;
+
+story.add(
+  'Comment List',
+  () => {
+    return {
       template: storyTemplate,
       props: {
         cmnt1: object('1st comment', COMMENT_ITEM),
-        cmnt2: LONG_COMMENT_ITEM,
-        cmnt3: HTML_COMMENT,
+
+        comments: [
+          COMMENT_ITEM,
+          LONG_COMMENT_ITEM,
+          HTML_COMMENT,
+          ...someComments,
+        ],
       },
-    }),
-    {
-      notes: {
-        markdown: readme.default,
-        markdownOptions: {
-          breaks: true,
-        },
+      moduleMetadata: {
+        declarations: [],
+        imports: [
+          StoryBookLayoutModule,
+          BrowserAnimationsModule,
+          CommentsModule,
+
+          RouterModule.forRoot(
+            [
+              {
+                path: '',
+                component: CommentListComponent,
+              },
+              {
+                path: 'employee-profile/:id',
+                component: CommentListComponent,
+              },
+            ],
+            { useHash: true }
+          ),
+        ],
+        providers: [],
+        schemas: [],
       },
-    }
-  );
+    };
+  },
+  { notes: { markdown: note } }
+);

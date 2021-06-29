@@ -1,22 +1,25 @@
-<b-avatar-image [size]="avatarSize.mini"
+<b-avatar-image class="mrg-t-4 mrg-r-16"
+                [size]="avatarSize.mini"
                 [imageSource]="comment?.avatar"
                 [matTooltip]="comment?.name">
 </b-avatar-image>
 
 <div class="bfe-wrap text-section flx-grow">
-  <div class="flx text-area-wrapper" *ngIf="!isHtml">
+  <div class="flx text-area-wrapper"
+       *ngIf="!isHtml">
     <textarea #commentInput
-            class="bfe-input bfe-textarea scroll-visible-alt"
-            [attr.placeholder]="placeholder || null"
-            [attr.data-empty]="!value?.length"
-            (blur)="onBlur()"
-            (keydown)="enterPress($event)" 
-            (input)="onInputChange()"></textarea>
+              class="bfe-input bfe-textarea scroll-visible-alt"
+              [attr.placeholder]="placeholder || null"
+              [attr.data-empty]="!value?.length"
+              (blur)="onBlur()"
+              (keydown)="enterPress($event)"
+              (input)="onInputChange()"></textarea>
 
-        <b-emoji *ngIf="canDisplayEmoji" class="mrg-r-4"
-            (emojiSelect)="addEmoji($event)">
-            <b-display-2>😀</b-display-2>
-        </b-emoji>
+    <b-emoji *ngIf="canDisplayEmoji"
+             class="mrg-r-4"
+             (emojiSelect)="addEmoji($event)">
+      <b-display-2>😀</b-display-2>
+    </b-emoji>
   </div>
 
   <div #commentInput

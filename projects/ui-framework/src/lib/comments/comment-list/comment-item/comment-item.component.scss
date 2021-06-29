@@ -12,12 +12,10 @@
 }
 
 .comment-content {
-  padding: 11px 15px;
+  line-height: 19.2px;
 }
 
 .comment-body {
-  line-height: 20px;
-
   ::ng-deep a {
     color: $primary-500;
   }
@@ -27,13 +25,4 @@
   min-height: $wrap-height;
   min-width: 0;
   border-radius: 12px;
-
-  &:after {
-    border-right-color: $grey-100;
-    clear: both;
-  }
-
-  &:before {
-    border-right-color: $border-color;
-  }
 }

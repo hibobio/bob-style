@@ -1,3 +1,3 @@
-<b-comment-item class="comment-item"
-                *ngFor="let comment of comments; trackBy: trackBy"
+<b-comment-item *ngFor="let comment of comments; let last = last; trackBy: trackBy"
+                [class.mrg-b-16]="!last"
                 [comment]="comment"></b-comment-item>
