@@ -1,24 +1,25 @@
-import { storiesOf } from '@storybook/angular';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { action } from '@storybook/addon-actions';
 import {
-  withKnobs,
-  object,
-  select,
   boolean,
   number,
+  object,
+  select,
+  withKnobs,
 } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
-import { ComponentGroupType } from '../../consts';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { Icons, IconColor } from '../../icons/icons.enum';
-import { BasicListModule } from './basic-list.module';
-import { MenuModule } from '../../navigation/menu/menu.module';
+import { storiesOf } from '@storybook/angular';
+
+import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
 import { ButtonsModule } from '../../buttons/buttons.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ButtonType, ButtonSize } from '../../buttons/buttons.enum';
-import { basicListItems1, basicListItems2 } from './basic-list.mock';
-import { BasicListType } from './basic-list.enum';
-import { TypographyModule } from '../../typography/typography.module';
+import { ComponentGroupType } from '../../consts';
 import { Types } from '../../enums';
+import { IconColor, Icons } from '../../icons/icons.enum';
+import { MenuModule } from '../../navigation/menu/menu.module';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { TypographyModule } from '../../typography/typography.module';
+import { BasicListType } from './basic-list.enum';
+import { basicListItems1, basicListItems2 } from './basic-list.mock';
+import { BasicListModule } from './basic-list.module';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -160,6 +161,18 @@ const toAdd = () => ({
   },
 });
 
-story.add('Basic list', toAdd, { notes: { markdown: note } });
+story.add('Basic list', toAdd, {
+  notes: { markdown: note },
+  knobs: {
+    timestamps: true,
+    escapeHTML: false,
+  },
+});
 
-story2.add('Basic list', toAdd, { notes: { markdown: note } });
+story2.add('Basic list', toAdd, {
+  notes: { markdown: note },
+  knobs: {
+    timestamps: true,
+    escapeHTML: false,
+  },
+});

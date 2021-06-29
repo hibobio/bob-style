@@ -1,14 +1,15 @@
-import { storiesOf } from '@storybook/angular';
-import { object, withKnobs, select } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
-import { ComponentGroupType } from '../../consts';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AvatarLayoutModule } from './avatar-layout.module';
-import { UtilsService } from '../../services/utils/utils.service';
-import { AvatarModule } from '../avatar/avatar.module';
+import { action } from '@storybook/addon-actions';
+import { object, select, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
 import { mockAvatar, mockName } from '../../mock.const';
+import { UtilsService } from '../../services/utils/utils.service';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { AvatarOrientation, AvatarSize } from '../avatar/avatar.enum';
+import { AvatarModule } from '../avatar/avatar.module';
+import { AvatarLayoutModule } from './avatar-layout.module';
 
 const story = storiesOf(ComponentGroupType.Avatar, module).addDecorator(
   withKnobs
@@ -82,5 +83,8 @@ story.add(
       },
     };
   },
-  { notes: { markdown: note } }
+  {
+    notes: { markdown: note },
+    knobs: STORIES_KNOBS_OPTIONS,
+  }
 );

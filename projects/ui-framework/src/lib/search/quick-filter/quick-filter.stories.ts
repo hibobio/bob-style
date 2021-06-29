@@ -1,21 +1,18 @@
-import { storiesOf } from '@storybook/angular';
-import { boolean, object, withKnobs } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
-import { ComponentGroupType } from '../../consts';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { QuickFilterModule } from './quick-filter.module';
-import { ButtonsModule } from '../../buttons/buttons.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { action } from '@storybook/addon-actions';
+import { boolean, object, select, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ButtonsModule } from '../../buttons/buttons.module';
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
+import { FormElementSize } from '../../form-elements/form-elements.enum';
+import { LinkColor } from '../../indicators/link/link.enum';
+import { mockCities, mockDepartments, mockJobs } from '../../mock.const';
+import { simpleUID } from '../../services/utils/functional-utils';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { QuickFilterSelectType } from './quick-filter.enum';
 import { QuickFilterConfig } from './quick-filter.interface';
-import { mockCities, mockDepartments, mockJobs } from '../../mock.const';
-import {
-  cloneDeepSimpleObject,
-  simpleUID,
-} from '../../services/utils/functional-utils';
-import { LinkColor } from '../../indicators/link/link.enum';
-import { FormElementSize } from '../../form-elements/form-elements.enum';
-import { select } from '@storybook/addon-knobs';
+import { QuickFilterModule } from './quick-filter.module';
 
 const story = storiesOf(ComponentGroupType.Search, module).addDecorator(
   withKnobs
@@ -149,5 +146,8 @@ story.add(
       },
     };
   },
-  { notes: { markdown: note } }
+  {
+    notes: { markdown: note },
+    knobs: STORIES_KNOBS_OPTIONS,
+  }
 );

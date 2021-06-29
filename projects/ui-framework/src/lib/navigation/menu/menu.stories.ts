@@ -5,7 +5,7 @@ import { storiesOf } from '@storybook/angular';
 
 import { ButtonType } from '../../buttons/buttons.enum';
 import { ButtonsModule } from '../../buttons/buttons.module';
-import { ComponentGroupType } from '../../consts';
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
 import { Icons } from '../../icons/icons.enum';
 import { IconsModule } from '../../icons/icons.module';
 import { mockThings } from '../../mock.const';
@@ -278,5 +278,8 @@ story.add(
       },
     };
   },
-  { notes: { markdown: note } }
+  {
+    notes: { markdown: note },
+    knobs: STORIES_KNOBS_OPTIONS,
+  }
 );

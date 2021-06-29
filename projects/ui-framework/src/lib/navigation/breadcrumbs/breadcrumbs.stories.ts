@@ -5,7 +5,7 @@ import { storiesOf } from '@storybook/angular';
 
 import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
 import { ButtonsModule } from '../../buttons/buttons.module';
-import { ComponentGroupType } from '../../consts';
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { BreadcrumbsStepState, BreadcrumbsType } from './breadcrumbs.enum';
 import { BreadcrumbsModule } from './breadcrumbs.module';
@@ -106,5 +106,8 @@ story.add(
       },
     };
   },
-  { notes: { markdown: note } }
+  {
+    notes: { markdown: note },
+    knobs: STORIES_KNOBS_OPTIONS,
+  }
 );

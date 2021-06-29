@@ -2,7 +2,7 @@ import { action } from '@storybook/addon-actions';
 import { object, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 
-import { ComponentGroupType } from '../../consts';
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
 import { LinkColor, LinkTarget } from '../../indicators/link/link.enum';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { InfoTooltipModule } from './info-tooltip.module';
@@ -69,5 +69,8 @@ story.add(
       imports: [InfoTooltipModule, StoryBookLayoutModule],
     },
   }),
-  { notes: { markdown: note } }
+  {
+    notes: { markdown: note },
+    knobs: STORIES_KNOBS_OPTIONS,
+  }
 );

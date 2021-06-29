@@ -4,7 +4,7 @@ import { storiesOf } from '@storybook/angular';
 
 import { AvatarSize } from '../../avatar/avatar/avatar.enum';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
-import { ComponentGroupType } from '../../consts';
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
 import { Icons, IconSize } from '../../icons/icons.enum';
 import { IconsModule } from '../../icons/icons.module';
 import {
@@ -208,5 +208,8 @@ story.add(
       imports: [ChipModule, StoryBookLayoutModule, AvatarModule, IconsModule],
     },
   }),
-  { notes: { markdown: note } }
+  {
+    notes: { markdown: note },
+    knobs: STORIES_KNOBS_OPTIONS,
+  }
 );

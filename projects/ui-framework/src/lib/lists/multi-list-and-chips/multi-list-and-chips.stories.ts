@@ -1,28 +1,35 @@
-import { storiesOf } from '@storybook/angular';
-import { object, withKnobs, text, boolean } from '@storybook/addon-knobs';
-import { ComponentGroupType } from '../../consts';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { cloneDeep } from 'lodash';
+import { of } from 'rxjs';
+import { delay } from 'rxjs/operators';
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {
-  MultiListAndChipsOptionsMock,
-  MultiListAndAvatarChipsOptionsMock,
-  someValues1,
-  someValues2,
-} from './multi-list-and-chips.mock';
-import { MultiListAndChipsModule } from './multi-list-and-chips.module';
 import { action } from '@storybook/addon-actions';
+import {
+  boolean,
+  number,
+  object,
+  select,
+  text,
+  withKnobs,
+} from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ComponentGroupType } from '../../consts';
 import { RadioButtonModule } from '../../form-elements/radio-button/radio-button.module';
 import { Icons } from '../../icons/icons.enum';
-import { number, select } from '@storybook/addon-knobs';
-import { cloneDeep } from 'lodash';
-
 // @ts-ignore: md file and not a module
 import listInterfaceDoc from '../../lists/list.interface.md';
 // @ts-ignore: md file and not a module
 import listSelectsPropsDoc from '../../lists/lists-selects.properties.md';
-import { of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { selectSome } from '../single-list/single-list.mock';
+import {
+  MultiListAndAvatarChipsOptionsMock,
+  MultiListAndChipsOptionsMock,
+  someValues1,
+  someValues2,
+} from './multi-list-and-chips.mock';
+import { MultiListAndChipsModule } from './multi-list-and-chips.module';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -163,4 +170,10 @@ const toAdd = () => ({
   },
 });
 
-story.add('Multi List And Chips', toAdd, { notes: { markdown: note } });
+story.add('Multi List And Chips', toAdd, {
+  notes: { markdown: note },
+  knobs: {
+    timestamps: true,
+    escapeHTML: false,
+  },
+});

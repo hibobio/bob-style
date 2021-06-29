@@ -3,7 +3,7 @@ import { object, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 
 import { ChartsModule } from '../../../../bob-charts/src/charts/charts.module';
-import { ComponentGroupType } from '../../consts';
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
 import { ContentTemplateModule } from '../../services/utils/contentTemplate.directive';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { LabelValueModule } from '../../typography/label-value/label-value.module';
@@ -167,5 +167,8 @@ story.add(
       },
     };
   },
-  { notes: { markdown: note } }
+  {
+    notes: { markdown: note },
+    knobs: STORIES_KNOBS_OPTIONS,
+  }
 );

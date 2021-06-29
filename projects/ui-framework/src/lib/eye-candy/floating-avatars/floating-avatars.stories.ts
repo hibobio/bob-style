@@ -1,11 +1,17 @@
-import { storiesOf } from '@storybook/angular';
-import { object, text, number, withKnobs } from '@storybook/addon-knobs';
-import { ComponentGroupType } from '../../consts';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {
+  boolean,
+  number,
+  object,
+  text,
+  withKnobs,
+} from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ComponentGroupType } from '../../consts';
 import { mockAvatar } from '../../mock.const';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { EyeCandyModule } from '../eye-candy.module';
-import { boolean } from '@storybook/addon-knobs';
 import {
   AVATAR_LOCATIONS_DEF_DESK,
   AVATAR_LOCATIONS_DEF_MOB,
@@ -106,4 +112,10 @@ const toAdd = () => ({
   },
 });
 
-story.add('Floating avatars', toAdd, { notes: { markdown: note } });
+story.add('Floating avatars', toAdd, {
+  notes: { markdown: note },
+  knobs: {
+    timestamps: true,
+    escapeHTML: false,
+  },
+});

@@ -1,26 +1,31 @@
-import { storiesOf } from '@storybook/angular';
-import { boolean, object, text, withKnobs } from '@storybook/addon-knobs';
-import { ComponentGroupType } from '../../consts';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TranslateModule } from '@ngx-translate/core';
+import { action } from '@storybook/addon-actions';
+import {
+  boolean,
+  number,
+  object,
+  text,
+  withKnobs,
+} from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ComponentGroupType } from '../../consts';
+import { RadioButtonModule } from '../../form-elements/radio-button/radio-button.module';
+import { Icons } from '../../icons/icons.enum';
+import { EmptyStateModule } from '../../indicators/empty-state/empty-state.module';
+// @ts-ignore: md file and not a module
+import listInterfaceDoc from '../../lists/list.interface.md';
+// @ts-ignore: md file and not a module
+import listSelectsPropsDoc from '../../lists/lists-selects.properties.md';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { MultiListModule } from '../multi-list/multi-list.module';
 import {
   listViewConfigMock,
   MultiListAndListOptionsMock,
   MultiListAndListPepopleOptionsMock,
   MultiListAndListTimeOffOptionsMock,
 } from './multi-list-and-list.mock';
-import { action } from '@storybook/addon-actions';
-import { RadioButtonModule } from '../../form-elements/radio-button/radio-button.module';
-import { Icons } from '../../icons/icons.enum';
-import { number } from '@storybook/addon-knobs';
-
-// @ts-ignore: md file and not a module
-import listInterfaceDoc from '../../lists/list.interface.md';
-// @ts-ignore: md file and not a module
-import listSelectsPropsDoc from '../../lists/lists-selects.properties.md';
-import { MultiListModule } from '../multi-list/multi-list.module';
-import { EmptyStateModule } from '../../indicators/empty-state/empty-state.module';
-import { TranslateModule } from '@ngx-translate/core';
 import { MultiListAndListModule } from './multi-list-and-list.module';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
@@ -151,4 +156,10 @@ const toAdd = () => ({
   },
 });
 
-story.add('Multi List And List', toAdd, { notes: { markdown: note } });
+story.add('Multi List And List', toAdd, {
+  notes: { markdown: note },
+  knobs: {
+    timestamps: true,
+    escapeHTML: false,
+  },
+});

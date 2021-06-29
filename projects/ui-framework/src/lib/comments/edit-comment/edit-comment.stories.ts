@@ -9,7 +9,7 @@ import {
 } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 
-import { ComponentGroupType } from '../../consts';
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
 import { Types } from '../../enums';
 import { mockAvatar, mockName, mockNames, mockText } from '../../mock.const';
 import { MentionsOption } from '../../services/mentions/mentions.service';
@@ -136,9 +136,6 @@ story.add(
   },
   {
     notes: { markdown: note },
-    knobs: {
-      timestamps: true,
-      escapeHTML: false,
-    },
+    knobs: STORIES_KNOBS_OPTIONS,
   }
 );

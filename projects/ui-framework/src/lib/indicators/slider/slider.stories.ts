@@ -1,15 +1,10 @@
-import { storiesOf } from '@storybook/angular';
-import {
-  text,
-  select,
-  withKnobs,
-  number,
-  boolean,
-} from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
-import { SliderModule } from './slider.module';
-import { ComponentGroupType } from '../../consts';
+import { boolean, number, text, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { SliderModule } from './slider.module';
 
 const story = storiesOf(ComponentGroupType.Indicators, module).addDecorator(
   withKnobs
@@ -79,5 +74,8 @@ story.add(
       },
     };
   },
-  { notes: { markdown: note } }
+  {
+    notes: { markdown: note },
+    knobs: STORIES_KNOBS_OPTIONS,
+  }
 );

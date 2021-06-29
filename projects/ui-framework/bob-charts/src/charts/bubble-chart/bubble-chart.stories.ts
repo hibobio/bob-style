@@ -16,6 +16,7 @@ import {
   BUBBLE_CHART_DATA_MOCK,
 } from '../chart.mock';
 import { ChartLegendPositionEnum } from '../charts.interface';
+import { STORIES_KNOBS_OPTIONS } from '../../../../src/lib/consts';
 
 const story = storiesOf(ComponentGroupType.Charts, module).addDecorator(
   withKnobs
@@ -124,5 +125,8 @@ story.add(
       },
     };
   },
-  { notes: { markdown: note } }
+  {
+    notes: { markdown: note },
+    knobs: STORIES_KNOBS_OPTIONS,
+  }
 );

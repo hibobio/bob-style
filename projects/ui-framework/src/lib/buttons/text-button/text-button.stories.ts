@@ -2,7 +2,7 @@ import { action } from '@storybook/addon-actions';
 import { boolean, select, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 
-import { ComponentGroupType } from '../../consts';
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
 import { Icons } from '../../icons/icons.enum';
 import { IconsModule } from '../../icons/icons.module';
 import { LinkColor } from '../../indicators/link/link.enum';
@@ -110,5 +110,8 @@ story.add(
       imports: [ButtonsModule, IconsModule, StoryBookLayoutModule],
     },
   }),
-  { notes: { markdown: note } }
+  {
+    notes: { markdown: note },
+    knobs: STORIES_KNOBS_OPTIONS,
+  }
 );

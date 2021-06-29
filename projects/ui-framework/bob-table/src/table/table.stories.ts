@@ -20,6 +20,7 @@ import {
   SearchModule,
 } from 'bob-style';
 
+import { STORIES_KNOBS_OPTIONS } from '../../../src/lib/consts';
 import { StoryBookLayoutModule } from '../../../src/lib/story-book-layout/story-book-layout.module';
 import { ActionsCellComponent } from './table-cell-components/actions-cell/actions-cell.component';
 import { AvatarCellComponent } from './table-cell-components/avatar-cell/avatar.component';
@@ -311,7 +312,10 @@ story.add(
       tableData: mockRowData,
       props: { tableGridOptions: { getRowNodeId: (data) => data.id } },
     }),
-  { notes: { markdown: note } }
+  {
+    notes: { markdown: note },
+    knobs: STORIES_KNOBS_OPTIONS,
+  }
 );
 
 story.add(
@@ -334,5 +338,5 @@ story.add(
         } as TreeConfig,
       } as any,
     }),
-  { notes: { markdown: treeNotes } }
+  { notes: { markdown: treeNotes }, knobs: STORIES_KNOBS_OPTIONS }
 );

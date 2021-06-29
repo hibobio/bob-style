@@ -1,11 +1,12 @@
-import { storiesOf } from '@storybook/angular';
-import { withKnobs, text } from '@storybook/addon-knobs';
-import { ComponentGroupType } from '../../consts';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { EmojiModule } from './emoji.module';
+import { text, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
 import { ButtonsModule } from '../../buttons/buttons.module';
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { TruncateTooltipModule } from '../truncate-tooltip/truncate-tooltip.module';
+import { EmojiModule } from './emoji.module';
 
 const story = storiesOf(ComponentGroupType.Popups, module).addDecorator(
   withKnobs
@@ -72,5 +73,8 @@ story.add(
       },
     };
   },
-  { notes: { markdown: note } }
+  {
+    notes: { markdown: note },
+    knobs: STORIES_KNOBS_OPTIONS,
+  }
 );

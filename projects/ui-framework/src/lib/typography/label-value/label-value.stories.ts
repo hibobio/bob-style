@@ -370,6 +370,18 @@ const toAdd = () => {
   };
 };
 
-story.add('Label-Value', toAdd, { notes: { markdown: note } });
+story.add('Label-Value', toAdd, {
+  notes: { markdown: note },
+  knobs: {
+    timestamps: true,
+    escapeHTML: false,
+  },
+});
 
-story2.add('Label-Value', toAdd, { notes: { markdown: note } });
+story2.add('Label-Value', toAdd, {
+  notes: { markdown: note },
+  knobs: {
+    timestamps: true,
+    escapeHTML: false,
+  },
+});

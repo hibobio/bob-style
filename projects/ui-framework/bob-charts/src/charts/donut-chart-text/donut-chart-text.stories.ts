@@ -14,6 +14,7 @@ import { ChartsModule } from '../charts.module';
 import { LINE_CHART_DATA_MOCK, NUMBER_OF_EMPLOYEES } from '../chart.mock';
 import { ChartLegendPositionEnum } from '../charts.interface';
 import { DonutSize, TypographyModule } from 'bob-style';
+import { STORIES_KNOBS_OPTIONS } from '../../../../src/lib/consts';
 
 const story = storiesOf(ComponentGroupType.Charts, module).addDecorator(
   withKnobs
@@ -171,5 +172,8 @@ story.add(
       },
     };
   },
-  { notes: { markdown: note } }
+  {
+    notes: { markdown: note },
+    knobs: STORIES_KNOBS_OPTIONS,
+  }
 );

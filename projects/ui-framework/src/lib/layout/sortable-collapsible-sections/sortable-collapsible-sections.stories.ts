@@ -5,7 +5,7 @@ import { storiesOf } from '@storybook/angular';
 
 import { ButtonType } from '../../buttons/buttons.enum';
 import { ButtonsModule } from '../../buttons/buttons.module';
-import { ComponentGroupType } from '../../consts';
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
 import { TextareaModule } from '../../form-elements/textarea/textarea.module';
 import { IconColor, Icons } from '../../icons/icons.enum';
 import { makeArray, simpleUID } from '../../services/utils/functional-utils';
@@ -159,5 +159,8 @@ story.add(
       },
     };
   },
-  { notes: { markdown: note } }
+  {
+    notes: { markdown: note },
+    knobs: STORIES_KNOBS_OPTIONS,
+  }
 );

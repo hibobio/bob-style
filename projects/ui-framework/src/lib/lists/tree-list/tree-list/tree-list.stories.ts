@@ -1,17 +1,17 @@
-import { storiesOf } from '@storybook/angular';
-import { withKnobs } from '@storybook/addon-knobs';
-import { ComponentGroupType } from '../../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../../consts';
 import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
-import { TreeListModule } from './tree-list.module';
+// @ts-ignore: md file and not a module
+import treeListPropsDoc from '../tree-list.properties.md';
 import { TreeListStoriesCommonProps } from '../tree-list.stories.common';
+import { TreeListModule } from './tree-list.module';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
 );
-
-// @ts-ignore: md file and not a module
-import treeListPropsDoc from '../tree-list.properties.md';
 
 const template = `<b-tree-list
       [type]="type"
@@ -91,5 +91,8 @@ story.add(
       entryComponents: [],
     },
   }),
-  { notes: { markdown: note } }
+  {
+    notes: { markdown: note },
+    knobs: STORIES_KNOBS_OPTIONS,
+  }
 );

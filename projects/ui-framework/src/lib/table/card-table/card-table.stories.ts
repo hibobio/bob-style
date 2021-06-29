@@ -1,18 +1,19 @@
-import { storiesOf } from '@storybook/angular';
-import { object, withKnobs } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CardTableModule } from './card-table.module';
-import { CardTableMockMetaData, CardTableMockData } from './card-table.mock';
-import { ComponentGroupType } from '../../consts';
+import { action } from '@storybook/addon-actions';
+import { object, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { AvatarComponent } from '../../avatar/avatar/avatar.component';
+import { AvatarModule } from '../../avatar/avatar/avatar.module';
+import { ButtonComponent } from '../../buttons/button/button.component';
+import { ButtonsModule } from '../../buttons/buttons.module';
+import { ChipComponent } from '../../chips/chip/chip.component';
+import { ChipModule } from '../../chips/chip/chip.module';
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
 import { RadioButtonModule } from '../../form-elements/radio-button/radio-button.module';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { ChipModule } from '../../chips/chip/chip.module';
-import { ButtonsModule } from '../../buttons/buttons.module';
-import { AvatarModule } from '../../avatar/avatar/avatar.module';
-import { ChipComponent } from '../../chips/chip/chip.component';
-import { ButtonComponent } from '../../buttons/button/button.component';
-import { AvatarComponent } from '../../avatar/avatar/avatar.component';
+import { CardTableMockData, CardTableMockMetaData } from './card-table.mock';
+import { CardTableModule } from './card-table.module';
 
 const story = storiesOf(ComponentGroupType.Tables, module).addDecorator(
   withKnobs
@@ -235,5 +236,8 @@ story.add(
       },
     };
   },
-  { notes: { markdown: note } }
+  {
+    notes: { markdown: note },
+    knobs: STORIES_KNOBS_OPTIONS,
+  }
 );

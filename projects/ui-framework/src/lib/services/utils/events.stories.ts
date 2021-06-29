@@ -1,7 +1,7 @@
 import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/angular';
 
-import { ComponentGroupType } from '../../consts';
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { DoubleClickModule } from './clickDouble.directive';
 import { ClickOutsideModule } from './clickOutside.directive';
@@ -139,10 +139,19 @@ story.add(
         isInView: false,
       },
       moduleMetadata: {
-        imports: [StoryBookLayoutModule, ClickOutsideModule, WindowKeydownModule, InViewModule, DoubleClickModule],
+        imports: [
+          StoryBookLayoutModule,
+          ClickOutsideModule,
+          WindowKeydownModule,
+          InViewModule,
+          DoubleClickModule,
+        ],
         declarations: [],
       },
     };
   },
-  { notes: { markdown: note } }
+  {
+    notes: { markdown: note },
+    knobs: STORIES_KNOBS_OPTIONS,
+  }
 );

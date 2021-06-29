@@ -122,5 +122,17 @@ const toAdd = () => ({
   },
 });
 
-story.add('Tree Select', toAdd, { notes: { markdown: note } });
-story2.add('Tree Select', toAdd, { notes: { markdown: note } });
+story.add('Tree Select', toAdd, {
+  notes: { markdown: note },
+  knobs: {
+    timestamps: true,
+    escapeHTML: false,
+  },
+});
+story2.add('Tree Select', toAdd, {
+  notes: { markdown: note },
+  knobs: {
+    timestamps: true,
+    escapeHTML: false,
+  },
+});

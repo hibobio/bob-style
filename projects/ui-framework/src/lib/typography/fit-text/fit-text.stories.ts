@@ -1,12 +1,13 @@
-import { storiesOf } from '@storybook/angular';
-import { withKnobs, boolean, select } from '@storybook/addon-knobs';
-import { ComponentGroupType } from '../../consts';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { FitTextModule } from './fit-text.module';
-import { mockAnimals, mockCities, mockThings } from '../../mock.const';
 import { action } from '@storybook/addon-actions';
-import { FitTextFontType } from './fit-text.component';
+import { boolean, select, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
+import { mockAnimals, mockCities, mockThings } from '../../mock.const';
 import { randomNumber } from '../../services/utils/functional-utils';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { FitTextFontType } from './fit-text.component';
+import { FitTextModule } from './fit-text.module';
 
 const story = storiesOf(ComponentGroupType.Typography, module).addDecorator(
   withKnobs
@@ -203,5 +204,8 @@ story.add(
       imports: [StoryBookLayoutModule, FitTextModule],
     },
   }),
-  { notes: { markdown: note } }
+  {
+    notes: { markdown: note },
+    knobs: STORIES_KNOBS_OPTIONS,
+  }
 );

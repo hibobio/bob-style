@@ -122,5 +122,17 @@ const toAdd = () => {
   };
 };
 
-story.add('contentTemplate', toAdd, { notes: { markdown: note } });
-story2.add('contentTemplate', toAdd, { notes: { markdown: note } });
+story.add('contentTemplate', toAdd, {
+  notes: { markdown: note },
+  knobs: {
+    timestamps: true,
+    escapeHTML: false,
+  },
+});
+story2.add('contentTemplate', toAdd, {
+  notes: { markdown: note },
+  knobs: {
+    timestamps: true,
+    escapeHTML: false,
+  },
+});

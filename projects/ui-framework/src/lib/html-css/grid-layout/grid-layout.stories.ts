@@ -189,6 +189,18 @@ const toAdd = () => {
   };
 };
 
-story.add('Grid Layout', toAdd, { notes: { markdown: note } });
+story.add('Grid Layout', toAdd, {
+  notes: { markdown: note },
+  knobs: {
+    timestamps: true,
+    escapeHTML: false,
+  },
+});
 
-story2.add('Grid Layout', toAdd, { notes: { markdown: note } });
+story2.add('Grid Layout', toAdd, {
+  notes: { markdown: note },
+  knobs: {
+    timestamps: true,
+    escapeHTML: false,
+  },
+});

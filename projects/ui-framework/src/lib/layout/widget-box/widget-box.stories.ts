@@ -2,7 +2,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 
-import { ComponentGroupType } from '../../consts';
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { WidgetBoxModule } from './widget-box.module';
 
@@ -59,12 +59,12 @@ story.add(
       props: {
         items: [
           {
-            name: "Deep",
-            color: "purple",
+            name: 'Deep',
+            color: 'purple',
           },
           {
-            name: "Simple",
-            color: "red",
+            name: 'Simple',
+            color: 'red',
           },
         ],
       },
@@ -72,10 +72,13 @@ story.add(
         imports: [
           StoryBookLayoutModule,
           BrowserAnimationsModule,
-          WidgetBoxModule
+          WidgetBoxModule,
         ],
       },
     };
   },
-  { notes: { markdown: note } }
+  {
+    notes: { markdown: note },
+    knobs: STORIES_KNOBS_OPTIONS,
+  }
 );

@@ -1,20 +1,26 @@
-import { storiesOf } from '@storybook/angular';
-import { withNotes } from '@storybook/addon-notes';
-import { object, text, withKnobs, number } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
-import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { SideMenuModule } from './side-menu.module';
-import { IconComponent } from '../../icons/icon.component';
-import { IconsModule } from '../../icons/icons.module';
-import { sideMenuMock1, sideMenuMock2 } from './side-menu.mock';
+import { action } from '@storybook/addon-actions';
+import {
+  number,
+  object,
+  select,
+  text,
+  withKnobs,
+} from '@storybook/addon-knobs';
+import { withNotes } from '@storybook/addon-notes';
+import { storiesOf } from '@storybook/angular';
+
 import { ButtonsModule } from '../../../lib/buttons/buttons.module';
-import { SideMenuOption } from './side-menu.interface';
-import { Icons } from '../../icons/icons.enum';
 import { ButtonType } from '../../buttons/buttons.enum';
-import { select } from '@storybook/addon-knobs';
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
+import { IconComponent } from '../../icons/icon.component';
+import { Icons } from '../../icons/icons.enum';
+import { IconsModule } from '../../icons/icons.module';
 import { TruncateTooltipType } from '../../popups/truncate-tooltip/truncate-tooltip.enum';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { SideMenuOption } from './side-menu.interface';
+import { sideMenuMock1, sideMenuMock2 } from './side-menu.mock';
+import { SideMenuModule } from './side-menu.module';
 
 const story = storiesOf(ComponentGroupType.Navigation, module)
   .addDecorator(withNotes)
@@ -208,5 +214,8 @@ story.add(
       },
     };
   },
-  { notes: { markdown: note } }
+  {
+    notes: { markdown: note },
+    knobs: STORIES_KNOBS_OPTIONS,
+  }
 );

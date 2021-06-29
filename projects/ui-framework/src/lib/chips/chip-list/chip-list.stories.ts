@@ -1,24 +1,25 @@
-import { storiesOf } from '@storybook/angular';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { action } from '@storybook/addon-actions';
 import {
-  object,
-  withKnobs,
-  select,
   boolean,
   number,
+  object,
+  select,
+  withKnobs,
 } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
-import { ComponentGroupType } from '../../consts';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import {
-  simpleUID,
-  randomNumber,
-  randomFromArray,
-} from '../../services/utils/functional-utils';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ChipListModule } from './chip-list.module';
-import { ChipType, ChipListAlign, ChipListSelectable } from '../chips.enum';
-import { mockAvatar, mockNames, mockCities } from '../../mock.const';
+import { storiesOf } from '@storybook/angular';
+
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
 import { Icons } from '../../icons/icons.enum';
+import { mockAvatar, mockCities, mockNames } from '../../mock.const';
+import {
+  randomFromArray,
+  randomNumber,
+  simpleUID,
+} from '../../services/utils/functional-utils';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { ChipListAlign, ChipListSelectable, ChipType } from '../chips.enum';
+import { ChipListModule } from './chip-list.module';
 
 const story = storiesOf(ComponentGroupType.Chips, module).addDecorator(
   withKnobs
@@ -232,5 +233,8 @@ story.add(
       imports: [ChipListModule, StoryBookLayoutModule, BrowserAnimationsModule],
     },
   }),
-  { notes: { markdown: note } }
+  {
+    notes: { markdown: note },
+    knobs: STORIES_KNOBS_OPTIONS,
+  }
 );
