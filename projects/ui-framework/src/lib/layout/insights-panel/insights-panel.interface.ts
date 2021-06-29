@@ -11,13 +11,18 @@ export interface InsightsPanelData {
 export interface InsightsPanelConfig {
   collapsible?: boolean;
   showMoreAfterItem?: number | null;
-  showMoreText?: string;
-  showLessText?: string;
+  expandButtonPosition?: 'top' | 'side';
+
   icon?: Icons;
   maxLines?: number;
+
+  showMoreText?: string;
+  showLessText?: string;
   expandButtonText?: string;
   readMoreLinkText?: string;
 
+  panelClass?: string | string[] | NgClass;
+  panelStyle?: GenericObject<string>;
   headingClass?: string | string[] | NgClass;
   headingStyle?: GenericObject<string>;
   sectionClass?: string | string[] | NgClass;

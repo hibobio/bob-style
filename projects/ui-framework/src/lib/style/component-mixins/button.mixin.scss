@@ -125,12 +125,16 @@ $button-size-large: 44px;
   }
 }
 
-@mixin button-icon-right($padding: 15px) {
+@mixin button-icon-right($padding: 15px, $margin: 6px) {
   flex-direction: row-reverse;
-  padding-left: $padding;
-  padding-right: $padding - 3px;
-  &:before {
-    margin-right: 0;
-    margin-left: 6px;
+  @if $padding {
+    padding-left: $padding;
+    padding-right: $padding - 3px;
+  }
+  @if $margin {
+    &:before {
+      margin-right: 0 !important;
+      margin-left: 6px;
+    }
   }
 }

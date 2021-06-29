@@ -10,6 +10,7 @@ import {
 import { storiesOf } from '@storybook/angular';
 
 import { ComponentGroupType } from '../../consts';
+import { SwitchToggleModule } from '../../indicators/switch-toggle/switch-toggle.module';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { FormElementSize } from '../form-elements.enum';
 // @ts-ignore: md file and not a module
@@ -172,7 +173,12 @@ story.add(
         allowedChars: text('allowedChars', ''),
       },
       moduleMetadata: {
-        imports: [BrowserAnimationsModule, InputModule, StoryBookLayoutModule],
+        imports: [
+          BrowserAnimationsModule,
+          InputModule,
+          StoryBookLayoutModule,
+          SwitchToggleModule,
+        ],
       },
     };
   },

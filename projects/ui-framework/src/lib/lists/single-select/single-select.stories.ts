@@ -14,6 +14,7 @@ import { FormElementSize } from '../../form-elements/form-elements.enum';
 import formElemsPropsDoc from '../../form-elements/form-elements.properties.md';
 import { FormElementsCommonProps } from '../../form-elements/form-elements.stories.common';
 import { Icons } from '../../icons/icons.enum';
+import { SwitchToggleModule } from '../../indicators/switch-toggle/switch-toggle.module';
 import { mockText } from '../../mock.const';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { TypographyModule } from '../../typography/typography.module';
@@ -64,8 +65,11 @@ const template = `
       <b-text-button footerAction
           [text]="'Action'">
       </b-text-button>
+
 </b-single-select>
 `;
+
+// <b-switch-toggle label class="mrg-l-auto" [placeholder]="'Toggle'" [labelInFront]="true"></b-switch-toggle>
 
 const templateForNotes = `<b-single-select [value]="[value]"
                  [options]="options"
@@ -187,6 +191,7 @@ const toAdd = () => ({
       BrowserAnimationsModule,
       StoryBookLayoutModule,
       AvatarModule,
+      SwitchToggleModule,
     ],
     entryComponents: [AvatarImageComponent],
   },

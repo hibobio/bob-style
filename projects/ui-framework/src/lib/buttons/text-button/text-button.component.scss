@@ -1,17 +1,21 @@
 @import '../../style/common-imports';
+@import '../../style/icons.mixin';
 
 :host {
-  display: inline-block;
-  vertical-align: bottom;
+  display: inline-flex;
   user-select: none;
-  overflow: hidden;
+
+  &[data-has-icon='true'] {
+    height: height-from-text(1, $useCssVars: true);
+    vertical-align: bottom;
+  }
 }
 
 .text-button {
   display: flex;
   align-items: center;
   cursor: pointer;
-  @include b-bold-body($addCssVars: false);
+  @include b-bold-body($size: null, $lineHeight: null, $addCssVars: false);
 
   &:hover,
   &:focus {
@@ -24,13 +28,18 @@
     @include disabled-state;
   }
 
-  &:before {
+  &[data-icon-before-size='medium'] {
     overflow: hidden;
-    margin-right: 4px;
-    position: relative;
-    top: -1px;
-    padding-bottom: 1px;
+    height: inherit;
   }
+}
+
+[data-icon-before]:before {
+  margin-right: 4px;
+}
+
+:host ::ng-deep b-icon {
+  margin-left: 4px;
 }
 
 :host[data-type='primary'],
@@ -52,4 +61,19 @@
 
 :host[data-type='positive'] {
   color: var(--positive-600);
+}
+
+:host.icon-right {
+  [data-icon-before] {
+    flex-direction: row-reverse;
+
+    &:before {
+      margin-left: 4px;
+      margin-right: 0;
+    }
+  }
+}
+
+:host ::ng-deep b-icon[data-size='medium'] {
+  height: map-get($icon-sizes, 'medium') - 1px;
 }

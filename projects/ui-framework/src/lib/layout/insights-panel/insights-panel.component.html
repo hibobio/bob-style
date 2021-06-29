@@ -1,10 +1,16 @@
 <b-button *ngIf="config.collapsible!==false && !config.showMoreAfterItem"
-          class="btn-minimize clr-inherit uppercase mrg-l-auto"
-          [ngClass]="{'mrg-t-8': isExpanded}"
+          class="clr-inherit uppercase"
+          [ngClass]="config.expandButtonPosition === 'side' ?
+            ('btn-side flx-center')
+          : ('btn-minimize mrg-l-auto')"
           [button]="expandButtonConf"
-          [text]="isExpanded ? null : config.expandButtonText"
-          [icon]="isExpanded ? iconTypes.contract : iconTypes.expand"
+          [icon]="config.expandButtonPosition === 'side' ?
+            (isExpanded ? icons.chevron_right : icons.chevron_left)
+          : (isExpanded ? icons.contract : icons.expand)"
           (clicked)="onExpandClick()">
+  <span *ngIf="!isExpanded || config.expandButtonPosition === 'side'">
+    {{config.expandButtonText}}
+  </span>
 </b-button>
 
 <ng-template #item
@@ -33,17 +39,19 @@
 
   <b-text-button *ngIf="(hasShowMore) || (hasShowLess && last)"
                  [ngClass]="{'mrg-t-24': last}"
-                 class="clr-inherit expand-btn"
+                 class="clr-inherit expand-btn icon-right"
+                 [icon]="hasShowMore ? icons.chevron_down : icons.chevron_up"
                  (clicked)="onExpandClick()">
     {{ hasShowMore ? config.showMoreText : config.showLessText }}
-    <b-icon [icon]="hasShowMore ? iconTypes.chevron_down : iconTypes.chevron_up"></b-icon>
   </b-text-button>
 
 </ng-template>
 
-<div class="flx-col flx-grow scroll-visible"
+<div class="flx-col flx-grow scroll-visible-alt pad-32"
      *ngIf="config.collapsible === false || isExpanded ||
-     config.showMoreAfterItem > 0">
+     config.showMoreAfterItem > 0"
+     [ngClass]="config.panelClass"
+     [ngStyle]="config.panelStyle">
 
   <ng-container *ngIf="config.showMoreAfterItem>0">
     <ng-container *ngFor="let insight of (data | slice:0:config.showMoreAfterItem);

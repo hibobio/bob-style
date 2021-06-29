@@ -16,24 +16,6 @@ const story = storiesOf(ComponentGroupType.Buttons, module).addDecorator(
   withKnobs
 );
 
-const button1 = `<b-text-button [type]="type"
-               [text]="text"
-                 [color]="color"
-               [disabled]="disabled"
-               (clicked)="onClick($event)">
-</b-text-button>`;
-
-const button2 = `<a b-text-button href="javascript:void()"
-              [button]="{
-                type: type,
-                 text: text,
-                 icon: icon,
-                   color: color,
-                 disabled: disabled
-              }"
-              (clicked)="onClick($event)">
-</a>`;
-
 const buttonNote = `<b-text-button [type]="type"
                [text]="text"
                [icon]="icon"
@@ -74,13 +56,40 @@ const note = `
 
 const storyTemplate = `
 <b-story-book-layout [title]="'Text button'">
-  <style>
-    b-text-button {
-      margin: 0 20px;
-    }
-  </style>
-    ${button1}
-    ${button2}
+  <div class="blk striped" >
+    This is normal text
+
+    <b-text-button class="mrg-x-8 icon-right" [type]="type"
+                [text]="text"
+                [color]="color"
+                [disabled]="disabled"
+                (clicked)="onClick($event)">
+    </b-text-button>
+
+    then some text and
+
+    <a b-text-button class="mrg-x-8 icon-right" href="javascript:void()"
+                [button]="{
+                  type: type,
+                  text: 'Click there',
+                  icon: icon,
+                    color: color,
+                  disabled: disabled
+                }"
+                (clicked)="onClick($event)">
+    </a>
+
+    and after all
+
+    <span b-text-button class="mrg-x-8"
+      [text]="'Click everywhere'"
+      [color]="color"
+      [disabled]="disabled">
+      <b-icon icon="b-icon-graph-timeline" size="small" >
+      </b-icon>
+    </span>
+
+  </div>
 </b-story-book-layout>
 `;
 

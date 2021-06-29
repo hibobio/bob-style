@@ -3,6 +3,7 @@
                       [label]="label"
                       [description]="description"
                       [fieldId]="id">
+  <ng-content select="[label]"></ng-content>
 </b-form-element-label>
 
 <div class="bfe-wrap has-suffix"
