@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -9,7 +10,6 @@ import {
   OnChanges,
   OnDestroy,
   Output,
-  Renderer2,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
@@ -17,8 +17,10 @@ import {
 import { AvatarSize } from '../../avatar/avatar/avatar.enum';
 import { Keys, Types } from '../../enums';
 import { InputTypes } from '../../form-elements/input/input.enum';
-// tslint:disable-next-line: max-line-length
-import { FormElementKeyboardCntrlService, InputCursorState } from '../../form-elements/services/keyboard-cntrl.service';
+import {
+  FormElementKeyboardCntrlService,
+  InputCursorState,
+} from '../../form-elements/services/keyboard-cntrl.service';
 import { Emoji } from '../../popups/emoji/emoji.interface';
 import { HTML_TEST } from '../../services/html/html-parser.const';
 import {
@@ -54,7 +56,7 @@ export class EditCommentComponent
     private kbrdCntrlSrvc: FormElementKeyboardCntrlService,
     private mentionsService: MentionsService,
     private commentsUtilService: CommentsUtilService,
-    private renderer: Renderer2
+    private cd: ChangeDetectorRef
   ) {}
 
   @ViewChild('commentInput', { static: false }) commentInput: ElementRef<
@@ -68,8 +70,8 @@ export class EditCommentComponent
   @Input() updateOnBlur = false;
 
   @Input() public mentionsList: MentionsOption[];
-  @Input() showEmoji = false; 
-  @HostBinding('attr.data-type') @Input() type: Types = Types.primary 
+  @Input() showEmoji = false;
+  @HostBinding('attr.data-type') @Input() type: Types = Types.primary;
   @Output()
   sendComment: EventEmitter<CommentItemDto> = new EventEmitter();
 
@@ -107,7 +109,9 @@ export class EditCommentComponent
         equalCheck: COMMENT_EQ_CHECK,
       })
     ) {
-      this.value = this.inputValue = this.commentsUtilService.sanitizeValue(
+      this.cd.detectChanges();
+
+      this.inputValue = this.value = this.commentsUtilService.sanitizeValue(
         this.comment?.content,
         this.isHtml,
         true
@@ -149,8 +153,13 @@ export class EditCommentComponent
   }
 
   addEmoji(code: Emoji): void {
-    const textBeforeEmoji = this.inputValue.slice(0, this.lastInputCursorState.selectionStart);
-    const textAfterEmoji = this.inputValue.slice(this.lastInputCursorState.selectionStart)
+    const textBeforeEmoji = this.inputValue.slice(
+      0,
+      this.lastInputCursorState.selectionStart
+    );
+    const textAfterEmoji = this.inputValue.slice(
+      this.lastInputCursorState.selectionStart
+    );
     this.inputValue = textBeforeEmoji + code.icon + textAfterEmoji;
   }
 
@@ -164,7 +173,9 @@ export class EditCommentComponent
 
   onInputChange(): void {
     this.value = this.inputValue;
-    if (this.commentInput.nativeElement.isContentEditable) { return; }
+    if (this.commentInput.nativeElement.isContentEditable) {
+      return;
+    }
     this.setTextAreaHeight();
   }
 
@@ -180,7 +191,7 @@ export class EditCommentComponent
       if (!this.updateOnBlur) {
         this.updateCommentAndResetValue();
         if (this.isFlexHeight) {
-        this.setTextAreaHeight();
+          this.setTextAreaHeight();
         }
       }
       return;
@@ -196,13 +207,17 @@ export class EditCommentComponent
   }
 
   private get isFlexHeight(): boolean {
-    return this.type === Types.secondary && !this.commentInput.nativeElement.isContentEditable;
+    return (
+      this.type === Types.secondary &&
+      !this.commentInput.nativeElement.isContentEditable
+    );
   }
 
   onBlur(): void {
     if (!this.isHtml) {
-      this.lastInputCursorState = this.kbrdCntrlSrvc.
-      getInputCursorState(this.commentInput.nativeElement as HTMLTextAreaElement);
+      this.lastInputCursorState = this.kbrdCntrlSrvc.getInputCursorState(
+        this.commentInput.nativeElement as HTMLTextAreaElement
+      );
     }
     if (this.updateOnBlur) {
       this.updateCommentAndResetValue();

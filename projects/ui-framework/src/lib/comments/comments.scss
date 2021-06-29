@@ -8,39 +8,9 @@
   width: 100%;
   text-align: left;
 
-  ::ng-deep .avatar {
-    margin-top: 4px;
-    margin-right: times8(2);
-  }
-}
-
-.text-section {
-  position: relative;
-
-  &:before,
-  &:after {
-    content: '';
-    position: absolute;
-    display: inline-block;
-    width: 0;
-    height: 0;
-    border: times8(1) solid transparent;
-    top: 14px;
-  }
-  &:before {
-    border-right-color: $border-color;
-    left: times8(-2);
-    z-index: 1;
-  }
-  &:after {
-    border-right-color: #fff;
-    left: times8(-2) + 1px;
-    z-index: 2;
-  }
-}
-
-:host ::ng-deep {
-  a {
-    @include b-link($color-link-primary);
+  ::ng-deep {
+    a {
+      @include b-link($color-link-primary);
+    }
   }
 }

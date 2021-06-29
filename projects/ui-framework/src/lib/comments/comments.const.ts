@@ -16,7 +16,10 @@ export const HTML_COMMENT_SANITIZER_OPTIONS: Partial<FilterXSSOptions> = {
 
 export const COMMENT_EQ_CHECK = (a: CommentItem, b: CommentItem): boolean => {
   return (
-    a?.name === b?.name && a?.content === b?.content && a?.date === b?.date
+    a?.id === b?.id &&
+    a?.name === b?.name &&
+    a?.content === b?.content &&
+    a?.date === b?.date
   );
 };
 
