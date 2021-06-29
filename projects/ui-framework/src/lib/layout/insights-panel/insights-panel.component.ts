@@ -26,6 +26,8 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InsightsPanelComponent {
+  public isInnerContentShowing = true;
+
   constructor(
     private cdr: ChangeDetectorRef,
     private translate: TranslateService
@@ -37,9 +39,8 @@ export class InsightsPanelComponent {
       readMoreLinkText: this.translate.instant('common.read_more'),
     };
   }
-
   readonly iconSizes = IconSize;
-  readonly iconTypes = Icons;
+  readonly icons = Icons;
 
   @Input() data: InsightsPanelData[];
   @Input('expanded') isExpanded = true;
@@ -51,6 +52,10 @@ export class InsightsPanelComponent {
 
   @HostBinding('attr.data-type') @Input() type: InsightsPanelType =
     InsightsPanelType.information;
+
+  @HostBinding('attr.data-button-position') get expandButtonPosition() {
+    return this.config?.expandButtonPosition || 'top';
+  }
 
   @HostBinding('attr.data-expanded') get panelIsExpanded() {
     return (
