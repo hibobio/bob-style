@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -54,7 +55,8 @@ export class EditCommentComponent
   constructor(
     private kbrdCntrlSrvc: FormElementKeyboardCntrlService,
     private mentionsService: MentionsService,
-    private commentsUtilService: CommentsUtilService
+    private commentsUtilService: CommentsUtilService,
+    private cd: ChangeDetectorRef
   ) {}
 
   @ViewChild('commentInput', { static: false }) commentInput: ElementRef<
@@ -107,7 +109,9 @@ export class EditCommentComponent
         equalCheck: COMMENT_EQ_CHECK,
       })
     ) {
-      this.value = this.inputValue = this.commentsUtilService.sanitizeValue(
+      this.cd.detectChanges();
+
+      this.inputValue = this.value = this.commentsUtilService.sanitizeValue(
         this.comment?.content,
         this.isHtml,
         true

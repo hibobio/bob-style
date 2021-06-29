@@ -5,8 +5,8 @@
 </b-avatar-image>
 
 <div class="bfe-wrap text-section flx-grow">
-  <div class="flx text-area-wrapper"
-       *ngIf="!isHtml">
+  <div *ngIf="!isHtml"
+       class="flx text-area-wrapper">
     <textarea #commentInput
               class="bfe-input bfe-textarea scroll-visible-alt"
               [attr.placeholder]="placeholder || null"
@@ -16,7 +16,7 @@
               (input)="onInputChange()"></textarea>
 
     <b-emoji *ngIf="canDisplayEmoji"
-             class="mrg-r-4"
+             class="pad-r-8"
              (emojiSelect)="addEmoji($event)">
       <b-display-2>😀</b-display-2>
     </b-emoji>

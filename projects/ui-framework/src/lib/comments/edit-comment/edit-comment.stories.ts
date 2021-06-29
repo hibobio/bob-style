@@ -1,6 +1,12 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { action } from '@storybook/addon-actions';
-import { boolean, object, select, text, withKnobs } from '@storybook/addon-knobs';
+import {
+  boolean,
+  object,
+  select,
+  text,
+  withKnobs,
+} from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 
 import { ComponentGroupType } from '../../consts';
@@ -32,16 +38,22 @@ const avatar = mockAvatar();
 const name = mockName();
 
 const template = `<b-edit-comment
-    [comment]="{
-      content: mentionsList?.length ? contentHTML : content,
+    [type]="type"
+    [comment]="mentionsList?.length && type !== 'secondary' ? {
+      content: contentHTML,
       avatar: avatar,
-      name: name
+      name: name1,
+      id: id1
+    } : {
+      content: content,
+      avatar: avatar,
+      name: name,
+      id: id2
     }"
     [updateOnBlur]="updateOnBlur"
     [placeholder]="placeholder"
     [autoFocus]="autoFocus"
-    [mentionsList]="mentionsList"
-    [type]="type"
+    [mentionsList]="type !== 'secondary' && mentionsList"
     [showEmoji]="showEmoji"
     (sendComment)="sendComment($event)">
 </b-edit-comment>`;
@@ -59,7 +71,16 @@ const note = `
   *CommentsModule*
 
   ~~~
-  ${template}
+<b-edit-comment
+    [type]="type"
+    [comment]="comment"
+    [placeholder]="placeholder"
+    [autoFocus]="autoFocus"
+    [showEmoji]="showEmoji"
+    [updateOnBlur]="updateOnBlur"
+    [mentionsList]="mentionsList"
+    (sendComment)="sendComment($event)">
+</b-edit-comment>
   ~~~
 
   #### Properties
@@ -81,18 +102,28 @@ story.add(
     return {
       template: storyTemplate,
       props: {
-        sendComment: action('Send comment click'),
+        type: select(
+          'type',
+          Object.values(Types).slice(0, 2),
+          Types.primary,
+          'Props'
+        ),
 
         contentHTML: HTML_COMMENT_TEXT,
+        sendComment: action('Send comment click'),
         content: text('content', 'First comment!', 'Props'),
         name: text('name', name, 'Props'),
         avatar: text('avatar', avatar, 'Props'),
-        type: select('type', Object.values(Types).slice(0,2), Types.primary, 'Props'),
-        showEmoji: boolean('showEmoji', true, 'Props'),
-        placeholder: text('placeholder', 'Write your comment here.', 'Props'),
+
+        placeholder: text('placeholder', 'Write your comment here', 'Props'),
         autoFocus: boolean('autoFocus', true, 'Props'),
         updateOnBlur: boolean('updateOnBlur', false, 'Props'),
+        showEmoji: boolean('showEmoji', true, 'Props'),
+
         mentionsList: object('mentionsList', mentionsOptions, 'Data'),
+
+        id1: simpleUID(),
+        id2: simpleUID(),
       },
       moduleMetadata: {
         imports: [
@@ -103,5 +134,11 @@ story.add(
       },
     };
   },
-  { notes: { markdown: note } }
+  {
+    notes: { markdown: note },
+    knobs: {
+      timestamps: true,
+      escapeHTML: false,
+    },
+  }
 );

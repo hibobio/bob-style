@@ -7,14 +7,10 @@
   justify-content: flex-start;
   width: 100%;
   text-align: left;
-}
 
-.text-section {
-  position: relative;
-}
-
-:host ::ng-deep {
-  a {
-    @include b-link($color-link-primary);
+  ::ng-deep {
+    a {
+      @include b-link($color-link-primary);
+    }
   }
 }
