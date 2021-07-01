@@ -1,14 +1,14 @@
-import { storiesOf } from '@storybook/angular';
-import { select, withKnobs, boolean, object } from '@storybook/addon-knobs';
-import { ComponentGroupType } from '../../../consts';
-import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
-import { ProgressType, ProgressSize } from '../progress.enum';
-import { MultiProgressBarModule } from './multi-progress-bar.module';
-import { ButtonsModule } from '../../../buttons/buttons.module';
 import { action } from '@storybook/addon-actions';
-import { ColorPaletteService } from '../../../services/color-service/color-palette.service';
+import { boolean, object, select, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ButtonsModule } from '../../../buttons/buttons.module';
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../../consts';
 import { PalletteColorSet } from '../../../services/color-service/color-palette.enum';
 import { getColorGenerator } from '../../../services/utils/functional-utils';
+import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
+import { ProgressSize, ProgressType } from '../progress.enum';
+import { MultiProgressBarModule } from './multi-progress-bar.module';
 
 const story = storiesOf(ComponentGroupType.Indicators, module).addDecorator(
   withKnobs
@@ -122,15 +122,9 @@ const toAdd = () => ({
 
 story.add('Multi Progress Bar', toAdd, {
   notes: { markdown: note },
-  knobs: {
-    timestamps: true,
-    escapeHTML: false,
-  },
+  knobs: STORIES_KNOBS_OPTIONS,
 });
 story2.add('Multi Progress Bar', toAdd, {
   notes: { markdown: note },
-  knobs: {
-    timestamps: true,
-    escapeHTML: false,
-  },
+  knobs: STORIES_KNOBS_OPTIONS,
 });

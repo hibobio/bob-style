@@ -4,7 +4,7 @@ import { array, boolean, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 
 import { ButtonsModule } from '../../buttons/buttons.module';
-import { ComponentGroupType } from '../../consts';
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
 import { FormElementsCommonProps } from '../../form-elements/form-elements.stories.common';
 import { mockHobbies, mockText } from '../../mock.const';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
@@ -115,16 +115,10 @@ const toAdd = () => ({
 
 story.add('Chip Input', toAdd, {
   notes: { markdown: note },
-  knobs: {
-    timestamps: true,
-    escapeHTML: false,
-  },
+  knobs:  STORIES_KNOBS_OPTIONS,
 });
 
 story2.add('Chip Input', toAdd, {
   notes: { markdown: note },
-  knobs: {
-    timestamps: true,
-    escapeHTML: false,
-  },
+  knobs: STORIES_KNOBS_OPTIONS,
 });

@@ -2,7 +2,7 @@ import { action } from '@storybook/addon-actions';
 import { select, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 
-import { ComponentGroupType } from '../../consts';
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
 import { Icons } from '../../icons/icons.enum';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { EmptyStateModule } from './empty-state.module';
@@ -81,16 +81,10 @@ const toAdd = () => {
 
 story.add('Empty State', toAdd, {
   notes: { markdown: note },
-  knobs: {
-    timestamps: true,
-    escapeHTML: false,
-  },
+  knobs: STORIES_KNOBS_OPTIONS
 });
 
 story2.add('Empty State', toAdd, {
   notes: { markdown: note },
-  knobs: {
-    timestamps: true,
-    escapeHTML: false,
-  },
+  knobs: STORIES_KNOBS_OPTIONS
 });

@@ -1,16 +1,17 @@
+import { number, object, select, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
-import { number, object, withKnobs, select } from '@storybook/addon-knobs';
-import { ComponentGroupType } from '../../consts';
-import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
-import { LegendModule } from './legend.module';
+
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
+import { badJobsList, mockHobbiesList } from '../../mock.const';
+import { PalletteColorSet } from '../../services/color-service/color-palette.enum';
 import {
   getColorGenerator,
   makeArray,
   randomNumber,
   sortByLength,
 } from '../../services/utils/functional-utils';
-import { badJobsList, mockHobbiesList } from '../../mock.const';
-import { PalletteColorSet } from '../../services/color-service/color-palette.enum';
+import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
+import { LegendModule } from './legend.module';
 
 const story = storiesOf(ComponentGroupType.Indicators, module).addDecorator(
   withKnobs
@@ -125,22 +126,13 @@ const toAdd = () => ({
 
 story.add('Legend', toAdd, {
   notes: { markdown: note },
-  knobs: {
-    timestamps: true,
-    escapeHTML: false,
-  },
+  knobs:STORIES_KNOBS_OPTIONS
 });
 story2.add('Legend', toAdd, {
   notes: { markdown: note },
-  knobs: {
-    timestamps: true,
-    escapeHTML: false,
-  },
+  knobs: STORIES_KNOBS_OPTIONS
 });
 story3.add('Legend', toAdd, {
   notes: { markdown: note },
-  knobs: {
-    timestamps: true,
-    escapeHTML: false,
-  },
+  knobs:STORIES_KNOBS_OPTIONS
 });

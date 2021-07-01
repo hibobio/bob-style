@@ -8,7 +8,7 @@ import {
 } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 
-import { ComponentGroupType } from '../../consts';
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
 import { mockAvatar } from '../../mock.const';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { EyeCandyModule } from '../eye-candy.module';
@@ -114,8 +114,5 @@ const toAdd = () => ({
 
 story.add('Floating avatars', toAdd, {
   notes: { markdown: note },
-  knobs: {
-    timestamps: true,
-    escapeHTML: false,
-  },
+  knobs: STORIES_KNOBS_OPTIONS,
 });

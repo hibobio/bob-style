@@ -50,7 +50,7 @@ export class LabelValueComponent implements OnChanges, AfterViewInit {
   public valueClass: string | string[] | NgClass;
   public valueStyle: GenericObject<string>;
   public expectChanges = false;
-  public tooltipType = TruncateTooltipType.css;
+  public tooltipType = TruncateTooltipType.material;
   public labelStr: string;
   public valueStr: string;
 

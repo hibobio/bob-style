@@ -6,7 +6,7 @@ import { storiesOf } from '@storybook/angular';
 import { AvatarComponent } from '../../avatar/avatar/avatar.component';
 import { AvatarSize } from '../../avatar/avatar/avatar.enum';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
-import { ComponentGroupType } from '../../consts';
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { TypographyModule } from '../../typography/typography.module';
 import { MockComponentModule } from '../util-components/mock-component.module';
@@ -140,15 +140,9 @@ const toAdd = () => {
 
 story.add('Component Renderer', toAdd, {
   notes: { markdown: note },
-  knobs: {
-    timestamps: true,
-    escapeHTML: false,
-  },
+  knobs: STORIES_KNOBS_OPTIONS
 });
 story2.add('Component Renderer', toAdd, {
   notes: { markdown: note },
-  knobs: {
-    timestamps: true,
-    escapeHTML: false,
-  },
+  knobs: STORIES_KNOBS_OPTIONS
 });

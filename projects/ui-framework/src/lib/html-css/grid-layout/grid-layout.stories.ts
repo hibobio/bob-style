@@ -1,12 +1,12 @@
-import { storiesOf } from '@storybook/angular';
-import { withKnobs, select, boolean } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
-import { ComponentGroupType } from '../../consts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { boolean, select, withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
+
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import { TypographyModule } from '../../typography/typography.module';
 import { GridLayoutExampleModule } from './grid-layout-example.module';
-import { GridItemClass, GridContainerClass } from './grid-layout.enum';
+import { GridContainerClass, GridItemClass } from './grid-layout.enum';
 
 const story = storiesOf(ComponentGroupType.Layout, module).addDecorator(
   withKnobs
@@ -191,16 +191,10 @@ const toAdd = () => {
 
 story.add('Grid Layout', toAdd, {
   notes: { markdown: note },
-  knobs: {
-    timestamps: true,
-    escapeHTML: false,
-  },
+  knobs:STORIES_KNOBS_OPTIONS,
 });
 
 story2.add('Grid Layout', toAdd, {
   notes: { markdown: note },
-  knobs: {
-    timestamps: true,
-    escapeHTML: false,
-  },
+  knobs: STORIES_KNOBS_OPTIONS
 });

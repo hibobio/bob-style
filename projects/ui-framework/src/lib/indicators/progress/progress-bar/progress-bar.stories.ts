@@ -9,7 +9,7 @@ import {
 import { storiesOf } from '@storybook/angular';
 
 import { ButtonsModule } from '../../../buttons/buttons.module';
-import { ComponentGroupType } from '../../../consts';
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../../consts';
 import { Icons } from '../../../icons/icons.enum';
 import { ColorService } from '../../../services/color-service/color.service';
 import {
@@ -326,15 +326,9 @@ hideValue = true`,
 
 story.add('Progress Bar', toAdd, {
   notes: { markdown: note },
-  knobs: {
-    timestamps: true,
-    escapeHTML: false,
-  },
+  knobs: STORIES_KNOBS_OPTIONS
 });
 story2.add('Progress Bar', toAdd, {
   notes: { markdown: note },
-  knobs: {
-    timestamps: true,
-    escapeHTML: false,
-  },
+  knobs:STORIES_KNOBS_OPTIONS
 });

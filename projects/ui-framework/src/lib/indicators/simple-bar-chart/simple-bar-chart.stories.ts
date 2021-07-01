@@ -2,7 +2,7 @@ import { action } from '@storybook/addon-actions';
 import { boolean, object, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 
-import { ComponentGroupType } from '../../consts';
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
 import { StoryBookLayoutModule } from '../../story-book-layout/story-book-layout.module';
 import {
   simpleBarChartMockData,
@@ -97,15 +97,9 @@ const toAdd = () => ({
 
 story.add('Simple Bar Chart', toAdd, {
   notes: { markdown: note },
-  knobs: {
-    timestamps: true,
-    escapeHTML: false,
-  },
+  knobs: STORIES_KNOBS_OPTIONS
 });
 story2.add('Simple Bar Chart', toAdd, {
   notes: { markdown: note },
-  knobs: {
-    timestamps: true,
-    escapeHTML: false,
-  },
+  knobs:STORIES_KNOBS_OPTIONS
 });

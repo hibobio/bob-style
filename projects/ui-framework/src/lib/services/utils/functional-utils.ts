@@ -2446,6 +2446,23 @@ export const invoke = <T = unknown, R = any>(smth: T, method: string): R => {
 // LODASH WRAPS
 // ----------------------
 
+export const groupBy = <
+  T extends GenericObject<any>,
+  K extends Extract<keyof T, string>,
+  R = Record<T[K], T[]>
+>(
+  items: T[],
+  key: K | ((i: T) => K)
+): R => {
+  return items?.filter(Boolean).reduce((result, item) => {
+    const k = String(isFunction(key) ? key(item) : item[key]);
+    return {
+      ...result,
+      [k]: [...(result[k] || []), item],
+    };
+  }, {} as R);
+};
+
 export const compact = <T = unknown>(arr: T[]): T[] => {
   return asArray(arr).filter(Boolean);
 };

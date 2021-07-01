@@ -7,7 +7,7 @@ import {
 } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 
-import { ComponentGroupType } from '../../../consts';
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../../consts';
 import { Icons, IconSize } from '../../../icons/icons.enum';
 import { IconsModule } from '../../../icons/icons.module';
 import { randomNumber } from '../../../services/utils/functional-utils';
@@ -239,15 +239,9 @@ const toAdd = () => ({
 
 story.add('Progress Donut', toAdd, {
   notes: { markdown: note },
-  knobs: {
-    timestamps: true,
-    escapeHTML: false,
-  },
+  knobs: STORIES_KNOBS_OPTIONS
 });
 story2.add('Progress Donut', toAdd, {
   notes: { markdown: note },
-  knobs: {
-    timestamps: true,
-    escapeHTML: false,
-  },
+  knobs: STORIES_KNOBS_OPTIONS
 });

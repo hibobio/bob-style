@@ -11,7 +11,7 @@ import { storiesOf } from '@storybook/angular';
 
 import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
 import { ButtonsModule } from '../../buttons/buttons.module';
-import { ComponentGroupType } from '../../consts';
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
 import { Types } from '../../enums';
 import { IconColor, Icons } from '../../icons/icons.enum';
 import { MenuModule } from '../../navigation/menu/menu.module';
@@ -163,16 +163,10 @@ const toAdd = () => ({
 
 story.add('Basic list', toAdd, {
   notes: { markdown: note },
-  knobs: {
-    timestamps: true,
-    escapeHTML: false,
-  },
+  knobs:STORIES_KNOBS_OPTIONS
 });
 
 story2.add('Basic list', toAdd, {
   notes: { markdown: note },
-  knobs: {
-    timestamps: true,
-    escapeHTML: false,
-  },
+  knobs: STORIES_KNOBS_OPTIONS
 });

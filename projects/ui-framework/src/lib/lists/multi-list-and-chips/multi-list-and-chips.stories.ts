@@ -14,7 +14,7 @@ import {
 } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 
-import { ComponentGroupType } from '../../consts';
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
 import { RadioButtonModule } from '../../form-elements/radio-button/radio-button.module';
 import { Icons } from '../../icons/icons.enum';
 // @ts-ignore: md file and not a module
@@ -172,8 +172,5 @@ const toAdd = () => ({
 
 story.add('Multi List And Chips', toAdd, {
   notes: { markdown: note },
-  knobs: {
-    timestamps: true,
-    escapeHTML: false,
-  },
+  knobs: STORIES_KNOBS_OPTIONS
 });
