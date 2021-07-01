@@ -1,23 +1,25 @@
+import { format } from 'date-fns';
+
 import { Injectable } from '@angular/core';
+
 import {
-  thisYear,
   arrayMode,
-  padWith0,
-  thisMonth,
-  thisDay,
   isDate,
   isNumber,
   isString,
   lastDayOfMonth,
   monthIndex,
+  padWith0,
+  thisDay,
+  thisMonth,
+  thisYear,
 } from '../../../services/utils/functional-utils';
-import format from 'date-fns/format';
+import { DateFormat } from '../../../types';
 import {
-  FormatParserResult,
   DateFormatKeys,
   DateParseResult,
+  FormatParserResult,
 } from '../datepicker.interface';
-import { DateFormat } from '../../../types';
 
 @Injectable({
   providedIn: 'root',

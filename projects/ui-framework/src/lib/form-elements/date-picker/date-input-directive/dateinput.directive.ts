@@ -1,9 +1,11 @@
-import endOfMonth from 'date-fns/endOfMonth';
-import isAfter from 'date-fns/isAfter';
-import isBefore from 'date-fns/isBefore';
-import isSameDay from 'date-fns/isSameDay';
-import startOfMonth from 'date-fns/startOfMonth';
-import toDate from 'date-fns/toDate';
+import {
+  endOfMonth,
+  isAfter,
+  isBefore,
+  isSameDay,
+  startOfMonth,
+  toDate,
+} from 'date-fns';
 
 import {
   Directive,
@@ -48,10 +50,8 @@ export class DateInputDirective implements OnChanges, OnInit {
   private lastDate: Date;
 
   @Input('bDateInput')
-  dateFormat:
-    | FormatParserResult
-    | DateFormatFullDate
-    | string = DISPLAY_DATE_FORMAT_DEF;
+  dateFormat: FormatParserResult | DateFormatFullDate | string =
+    DISPLAY_DATE_FORMAT_DEF;
   @Input() date: Date;
   @Input() min: Date;
   @Input() max: Date;
