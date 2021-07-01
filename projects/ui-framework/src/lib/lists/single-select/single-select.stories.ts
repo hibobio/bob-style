@@ -8,7 +8,7 @@ import { storiesOf } from '@storybook/angular';
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
 import { AvatarModule } from '../../avatar/avatar/avatar.module';
 import { ButtonsModule } from '../../buttons/buttons.module';
-import { ComponentGroupType } from '../../consts';
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
 import { FormElementSize } from '../../form-elements/form-elements.enum';
 // @ts-ignore: md file and not a module
 import formElemsPropsDoc from '../../form-elements/form-elements.properties.md';
@@ -199,15 +199,9 @@ const toAdd = () => ({
 
 story.add('Single select', toAdd, {
   notes: { markdown: note },
-  knobs: {
-    timestamps: true,
-    escapeHTML: false,
-  },
+  knobs:STORIES_KNOBS_OPTIONS
 });
 story2.add('Single select', toAdd, {
   notes: { markdown: note },
-  knobs: {
-    timestamps: true,
-    escapeHTML: false,
-  },
+  knobs: STORIES_KNOBS_OPTIONS
 });

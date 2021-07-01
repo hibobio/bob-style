@@ -1,20 +1,20 @@
-import { storiesOf } from '@storybook/angular';
-import { ComponentGroupType } from '../../../consts';
-import { withKnobs, text, boolean } from '@storybook/addon-knobs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
-import { TreeSelectModule } from './tree-select.module';
-import { mockText } from '../../../mock.const';
-import { TreeListStoriesCommonProps } from '../tree-list.stories.common';
 import { action } from '@storybook/addon-actions';
+import { withKnobs } from '@storybook/addon-knobs';
+import { storiesOf } from '@storybook/angular';
 
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../../consts';
 // @ts-ignore: md file and not a module
 import formElemsPropsDoc from '../../../form-elements/form-elements.properties.md';
-// @ts-ignore: md file and not a module
-import treeListPropsDoc from '../tree-list.properties.md';
+import { FormElementsCommonProps } from '../../../form-elements/form-elements.stories.common';
+import { mockText } from '../../../mock.const';
+import { StoryBookLayoutModule } from '../../../story-book-layout/story-book-layout.module';
 // @ts-ignore: md file and not a module
 import treeListPanelPropsDoc from '../tree-list-panel.properties.md';
-import { FormElementsCommonProps } from '../../../form-elements/form-elements.stories.common';
+// @ts-ignore: md file and not a module
+import treeListPropsDoc from '../tree-list.properties.md';
+import { TreeListStoriesCommonProps } from '../tree-list.stories.common';
+import { TreeSelectModule } from './tree-select.module';
 
 const story = storiesOf(ComponentGroupType.Lists, module).addDecorator(
   withKnobs
@@ -124,15 +124,9 @@ const toAdd = () => ({
 
 story.add('Tree Select', toAdd, {
   notes: { markdown: note },
-  knobs: {
-    timestamps: true,
-    escapeHTML: false,
-  },
+  knobs:STORIES_KNOBS_OPTIONS
 });
 story2.add('Tree Select', toAdd, {
   notes: { markdown: note },
-  knobs: {
-    timestamps: true,
-    escapeHTML: false,
-  },
+  knobs: STORIES_KNOBS_OPTIONS
 });

@@ -300,4 +300,7 @@ export enum Icons {
   zoom_in = 'b-icon-zoom-in',
   zoom_out = 'b-icon-zoom-out',
   zoom_out_alt = 'b-icon-zoom-out-alt',
+  ////
+  autofix = 'b-icon-autofix',
+  refresh_info = 'b-icon-refresh-info',
 }

@@ -2,7 +2,7 @@ import { action } from '@storybook/addon-actions';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 
-import { ComponentGroupType } from '../../consts';
+import { ComponentGroupType, STORIES_KNOBS_OPTIONS } from '../../consts';
 // @ts-ignore: md file and not a module
 import formElemsPropsDoc from '../../form-elements/form-elements.properties.md';
 import { FormElementsCommonProps } from '../../form-elements/form-elements.stories.common';
@@ -100,15 +100,9 @@ const toAdd = () => ({
 
 story.add('Switch toggle', toAdd, {
   notes: { markdown: note },
-  knobs: {
-    timestamps: true,
-    escapeHTML: false,
-  },
+  knobs: STORIES_KNOBS_OPTIONS
 });
 story2.add('Switch toggle', toAdd, {
   notes: { markdown: note },
-  knobs: {
-    timestamps: true,
-    escapeHTML: false,
-  },
+  knobs:STORIES_KNOBS_OPTIONS
 });
