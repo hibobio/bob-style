@@ -102,22 +102,6 @@ describe('SearchComponent', () => {
     }));
   });
 
-  describe('onInput', () => {
-    it('should emmit only trimmed values', fakeAsync(() => {
-      const inputElement = fixture.debugElement.query(By.css('input'));
-      inputElement.nativeElement.value = '         some untrimmed string   ';
-      inputElement.nativeElement.dispatchEvent(new Event('input'));
-
-      tick(300);
-      fixture.detectChanges();
-
-      expect(component.value).toEqual(inputElement.nativeElement.value);
-      expect(component.searchChange.emit).toHaveBeenCalledWith(
-        'some untrimmed string'
-      );
-    }));
-  });
-
   describe('hideIcon', () => {
     it('should show icon by default', () => {
       const inputIconElement = fixture.debugElement.query(
@@ -128,15 +112,15 @@ describe('SearchComponent', () => {
     });
     it('should hide icon', () => {
       component.hideIcon = true;
-      fixture.detectChanges();
+      component.cd.detectChanges();
       const inputIconElement = fixture.debugElement.query(
         By.css('.input-icon')
       );
-      expect(inputIconElement).toBeNull();
+      expect(inputIconElement).toBeFalsy();
     });
     it('should show icon', () => {
       component.hideIcon = false;
-      fixture.detectChanges();
+      component.cd.detectChanges();
       const inputIconElement = fixture.debugElement.query(
         By.css('.input-icon')
       );
@@ -144,13 +128,13 @@ describe('SearchComponent', () => {
     });
     it('should not have class has-prefix', () => {
       component.hideIcon = true;
-      fixture.detectChanges();
+      component.cd.detectChanges();
       const bfeWrapElement = fixture.debugElement.query(By.css('.bfe-wrap'));
       expect(bfeWrapElement.classes['has-prefix']).toBeFalsy();
     });
     it('should have class has-prefix', () => {
       component.hideIcon = false;
-      fixture.detectChanges();
+      component.cd.detectChanges();
       const bfeWrapElement = fixture.debugElement.query(By.css('.bfe-wrap'));
       expect(bfeWrapElement.classes['has-prefix']).toBeTruthy();
     });

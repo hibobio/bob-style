@@ -45,7 +45,7 @@ export class SearchComponent implements OnChanges, OnInit, OnDestroy {
   constructor(
     public hostElRef: ElementRef<HTMLElement>,
     private zone: NgZone,
-    private cd: ChangeDetectorRef
+    public cd: ChangeDetectorRef
   ) {}
 
   @ViewChild('input', { static: true }) input: ElementRef<HTMLInputElement>;
