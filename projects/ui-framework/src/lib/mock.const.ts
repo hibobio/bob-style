@@ -1358,6 +1358,27 @@ export const meanwhileInRussia = [
   'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/05/terrifying-plush-toys13.jpg',
   'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/05/terrifying-plush-toys2.jpg',
   'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/05/terrifying-plush-toys20.jpg',
+
+  'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/06/cholombiano1.jpg',
+  'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/06/cholombiano2.jpg',
+  'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/06/cholombiano16.jpg',
+  'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/06/cholombiano3.jpg',
+  'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/06/cholombiano4.jpg',
+  'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/06/cholombiano15.jpg',
+
+  'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/07/crazy-beards7.jpg',
+  'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/07/crazy-beards3.jpg',
+  'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/07/crazy-beards12.jpg',
+  'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/07/crazy-beards9.jpg',
+
+  'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/06/cats-with-human-mouths11.jpg',
+  'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/06/cats-with-human-mouths15.jpg',
+  'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/06/cats-with-human-mouths14.jpg',
+  'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/06/cats-with-human-mouths10.jpg',
+  'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/06/cats-with-human-mouths1.jpg',
+  'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/06/cats-with-human-mouths8.jpg',
+  'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/06/cats-with-human-mouths3.jpg',
+  'https://sadanduseless.b-cdn.net/wp-content/uploads/2021/06/cats-with-human-mouths21.gif',
 ];
 
 export const diseases = [

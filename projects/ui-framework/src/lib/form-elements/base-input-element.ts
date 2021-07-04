@@ -48,9 +48,8 @@ export abstract class BaseInputElement extends BaseFormElement {
   @Input() max: number;
 
   // tslint:disable-next-line: no-output-rename
-  @Output('inputEvents') changed: EventEmitter<
-    BInputEvent<string>
-  > = new EventEmitter();
+  @Output('inputEvents') changed: EventEmitter<BInputEvent<string>> =
+    new EventEmitter();
 
   @HostBinding('attr.hidden') get isHidden() {
     return this.inputType === InputTypes.hidden ? 'hidden' : null;
@@ -101,6 +100,8 @@ export abstract class BaseInputElement extends BaseFormElement {
 
   public onInputKeydown(event: Event | KeyboardEvent): void;
   public onInputKeydown(event: DOMKeyboardEvent): void {
+    console.log('key 5', event.key);
+
     if (
       (isKey(event.key, Keys.enter) || isKey(event.key, Keys.escape)) &&
       this.changed.observers.length > 0
@@ -115,6 +116,7 @@ export abstract class BaseInputElement extends BaseFormElement {
           },
         });
       });
+      console.log('key 6', event.key);
     }
   }
 }

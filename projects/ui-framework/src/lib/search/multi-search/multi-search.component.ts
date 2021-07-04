@@ -17,6 +17,7 @@ import {
   getMatcher,
   isFunction,
   isKey,
+  normalizeString,
   padWith0,
 } from '../../services/utils/functional-utils';
 import { DOMKeyboardEvent, DOMMouseEvent } from '../../types';
@@ -244,6 +245,7 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
 
     const fuzzyMatcher = getFuzzyMatcher(searchValue);
     const regMatcher = getMatcher(searchValue, false);
+    const searchValueNorm = normalizeString(searchValue);
 
     const getMatch = (vtm: string): RegExpExecArray =>
       regMatcher.exec(vtm) ||
@@ -281,20 +283,31 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
             return false;
           }
 
+          const matched = valueToMatch.slice(
+            match.index,
+            match.index + match['0'].length
+          );
+
           highlightedMatch =
             valueToMatch.slice(0, match.index) +
             '<strong>' +
-            valueToMatch.slice(match.index, match.index + match['0'].length) +
+            matched +
             '</strong>' +
             valueToMatch.slice(match.index + match['0'].length);
 
+          const matchedNorm = normalizeString(matched);
+
           option.searchMatch = {
+            match: matched,
+            matchLength: matchedNorm.length,
+            exactMatch: matchedNorm === searchValueNorm,
+
             index: [searchValueIndex, match.index],
+
             [valueToMatch ===
             option[group.keyMap?.value || MULTI_SEARCH_KEYMAP_DEF.value]
               ? 'highlightedValue'
               : 'highlightedSearchValue']: highlightedMatch,
-            matchLength: match['0'].length,
           };
 
           return true;
@@ -304,21 +317,17 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
           group.searchMatchCount = options.length;
 
           options.sort((a, b) => {
-            return a.searchMatch.index[0] !== b.searchMatch.index[0]
-              ? `${padWith0(a.searchMatch.matchLength)}${padWith0(
-                  a.searchMatch.index[0]
-                )}`.localeCompare(
-                  `${padWith0(b.searchMatch.matchLength)}${padWith0(
-                    b.searchMatch.index[0]
-                  )}`
-                )
-              : `${padWith0(a.searchMatch.matchLength)}${padWith0(
-                  a.searchMatch.index[1]
-                )}`.localeCompare(
-                  `${padWith0(b.searchMatch.matchLength)}${padWith0(
-                    b.searchMatch.index[1]
-                  )}`
-                );
+            const midx =
+              a.searchMatch.index[0] !== b.searchMatch.index[0] ? 0 : 1;
+            return (a.searchMatch.sortValue = `${padWith0(
+              Math.abs(a.searchMatch.matchLength - searchValueNorm.length),
+              a.searchMatch.exactMatch ? 4 : 3
+            )}${padWith0(a.searchMatch.index[midx], 3)}`).localeCompare(
+              (b.searchMatch.sortValue = `${padWith0(
+                Math.abs(b.searchMatch.matchLength - searchValueNorm.length),
+                b.searchMatch.exactMatch ? 4 : 3
+              )}${padWith0(midx, 3)}`)
+            );
           });
 
           msgo.push({

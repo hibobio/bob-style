@@ -80,6 +80,7 @@ const iconsThings = [
 iconsThings.push(...iconsThings);
 
 const hobbies = mockHobbies().filter((h) => h.split(' ').length < 3);
+const sadAvatars = sadAvatar(null);
 
 const items = 30;
 const groups = 10;
@@ -93,58 +94,34 @@ export const mockSearchData: MultiSearchGroupOption[] = [
     options: [
       ...(items > 1
         ? [
-            {
-              id: simpleUID(),
-              value: 'Moritz von Goetz und Schwanenfließ',
-            },
-            {
-              id: simpleUID(),
-              value: 'Jorinde Grottker',
-            },
-            {
-              id: simpleUID(),
-              value: 'Jose Antonio Montero Morcillo',
-            },
-            {
-              id: simpleUID(),
-              value: 'Isabella-Marie Standke',
-              searchValue: 'Standke Isabella-Marie',
-            },
-            {
-              id: simpleUID(),
-              value: 'Marcel Bernat Cabrero',
-              searchValue: 'Bernat Cabrero Marcel',
-            },
-            {
-              id: simpleUID(),
-              value: 'People and Organisation Growth Team',
-            },
-            {
-              id: simpleUID(),
-              value: 'Tabea Spiekermann',
-            },
-            {
-              id: simpleUID(),
-              value: 'Jonathan Stoye',
-            },
-            {
-              id: simpleUID(),
-              value: 'Tabea Otte',
-            },
-            {
-              id: simpleUID(),
-              value: 'Something other than The ABC',
-            },
-            {
-              id: simpleUID(),
-              value: 'Otte Tabea',
-            },
-          ].map((o) => ({
-            ...o,
+            'Moritz von Goetz und Schwanenfließ',
+            'Jorinde Grottker',
+            'Jose Antonio Montero Morcillo',
+            'Isabella-Marie Standke',
+            'Marcel Bernat Cabrero',
+            'People and Organisation Growth Team',
+            'Tabea Spiekermann',
+            'Jonathan Stoye',
+            'Tabea Otte',
+            'Something other than The ABC',
+            'Otte Tabea',
+            'Lea Sophie Groten',
+            'Charlotte Ossenkop',
+            'Charlotte de Roo',
+            'Kai Rothenburger',
+            'Janine Mostert',
+            'Jelica Köster',
+            'Robert Fehrmann',
+            'Scott Butler',
+            'Sebastian Holetzek',
+            'Torsten Motzkus',
+          ].map((name, i) => ({
+            id: simpleUID(),
+            value: name,
             prefixComponent: {
               component: AvatarImageComponent,
               attributes: {
-                imageSource: sadAvatar(1),
+                imageSource: sadAvatars[i],
               },
             },
           }))

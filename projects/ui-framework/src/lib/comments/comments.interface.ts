@@ -1,10 +1,11 @@
+import { itemID } from '../lists/list.interface';
 import {
   CommonActionButton,
   MenuItem,
 } from '../navigation/menu/menu.interface';
 
 export interface CommentItem {
-  id?: string;
+  id?: itemID;
   avatar: string;
   content: string;
   name?: string;
