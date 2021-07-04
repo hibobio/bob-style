@@ -11,7 +11,7 @@ import { CommentItem } from '../comments.interface';
 export class CommentListComponent {
   @Input() comments: CommentItem[];
 
-  trackBy(index: number, comment: CommentItem): string {
+  trackBy(index: number, comment: CommentItem): string | number {
     return comment.id || comment.content;
   }
 }

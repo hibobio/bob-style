@@ -13,10 +13,13 @@ export interface MultiSearchKeyMap {
 }
 
 export interface MultiSearchMatchResult {
+  match?: string;
+  exactMatch?: boolean;
   index: [number, number];
   highlightedValue?: string;
   highlightedSearchValue?: string;
   matchLength?: number;
+  sortValue?: string;
 }
 
 export interface MultiSearchOptionMenuItem extends MenuItem<MultiSearchOption> {
