@@ -15,6 +15,7 @@ export interface QuickFilterConfig {
   showNoneOption?: boolean;
   startWithGroupsCollapsed?: boolean;
   label?: string;
+  required?: boolean;
   placeholder?: string;
   disabled?: boolean;
 
