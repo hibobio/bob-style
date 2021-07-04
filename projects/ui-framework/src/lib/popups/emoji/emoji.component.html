@@ -1,6 +1,7 @@
 <b-panel panelClass="emoji-panel"
          #overlayRef
          [showBackdrop]="false"
+         [openOnHover]="openOnHover"
          (opened)="toggleMenu(true)"
          (closed)="toggleMenu(false)">
   <div class="button-wrapper"
