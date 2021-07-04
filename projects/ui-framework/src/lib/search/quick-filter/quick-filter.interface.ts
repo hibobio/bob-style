@@ -6,7 +6,6 @@ import { QuickFilterSelectType } from './quick-filter.enum';
 export interface QuickFilterConfig {
   key: string;
   selectType?: QuickFilterSelectType;
-
   selectMode?: SelectMode;
   options?: SelectGroupOption[];
   optionsDefault?: SelectGroupOption[];
@@ -15,6 +14,7 @@ export interface QuickFilterConfig {
   showNoneOption?: boolean;
   startWithGroupsCollapsed?: boolean;
   label?: string;
+  required?: boolean;
   placeholder?: string;
   disabled?: boolean;
 
