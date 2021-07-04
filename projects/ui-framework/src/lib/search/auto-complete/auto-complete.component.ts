@@ -33,7 +33,8 @@ import { AutoCompleteOption } from './auto-complete.interface';
   styleUrls: ['./auto-complete.component.scss'],
 })
 export class AutoCompleteComponent
-  implements OverlayEnabledComponent, OnInit, OnChanges, OnDestroy {
+  implements OverlayEnabledComponent, OnInit, OnChanges, OnDestroy
+{
   constructor(
     public viewContainerRef: ViewContainerRef,
     public cd: ChangeDetectorRef,
@@ -72,8 +73,8 @@ export class AutoCompleteComponent
   }
 
   private getFilteredOptions: () => AutoCompleteOption[] = this.skipFiltering;
-  private changeOptionsFlow: (changes: SimpleChanges) => void = this
-    .changeOptions;
+  private changeOptionsFlow: (changes: SimpleChanges) => void =
+    this.changeOptions;
 
   ngOnInit(): void {
     this.getFilteredOptions = this.skipOptionsFiltering
@@ -108,7 +109,7 @@ export class AutoCompleteComponent
       this.destroyPanel();
     }
     this.updateFilteredList();
-    this.searchChange.emit(this.searchValue);
+    this.searchChange.emit(this.searchValue.trim());
   }
 
   onSearchFocus(): void {

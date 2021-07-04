@@ -3,8 +3,8 @@
        [attr.for]="id">{{label}}</label>
 
 <div class="bfe-wrap has-suffix"
-     [ngClass]="{focused: inputFocused, 'has-prefix': !hideIcon}"
-     (click.outside-zone)="input.focus()">
+     tabindex="0"
+     [ngClass]="{focused: inputFocused, 'has-prefix': !hideIcon}">
 
   <b-icon *ngIf="!hideIcon"
           class="bfe-prefix input-icon"
@@ -18,17 +18,13 @@
          [attr.id]="id"
          [value]="value"
          [attr.placeholder]="hideLabelOnFocus && label ? label : placeholder"
-         [attr.autocomplete]="enableBrowserAutoComplete"
-         (focus)="onFocus()"
-         (blur)="onBlur($event)">
-
+         [attr.autocomplete]="enableBrowserAutoComplete">
   <span *ngIf="value?.length"
         class="bfe-suffix">
     <b-icon class="clear-input"
             role="button"
             tabindex="2"
-            [config]="clearIcn"
-            (click)="$event.stopPropagation(); onResetClick()">
+            [config]="clearIcn">
     </b-icon>
   </span>
 

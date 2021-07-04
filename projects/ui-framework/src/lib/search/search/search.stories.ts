@@ -18,8 +18,9 @@ const template = `
           [placeholder]="placeholder"
           [size]="size"
           [hideIcon]="hideIcon"
-          (searchChange)="searchChange($event)"
-          (searchFocus)="searchFocus($event)">
+          (searchChange)="onSearchChange($event)"
+          (searchFocus)="onSearchFocus($event)"
+          (searchBlur)="onSearchBlur($event)">
 </b-search>
 `;
 
@@ -48,6 +49,7 @@ const note = `
   [size] | FormElementSize | regular height (44px), smaller height (36px) | regular
   [hideIcon] | boolean | hide the search icon | false
   (searchFocus) | EventEmitter<wbr>&lt;string&gt;  | emits on input focus | &nbsp;
+  (searchBlur) | EventEmitter<wbr>&lt;DOMFocusEvent&gt;  | emits on input blur | &nbsp;
   (searchChange) | EventEmitter<wbr>&lt;string&gt;  | emits on input value change | &nbsp;
 
   ~~~
@@ -64,8 +66,9 @@ story.add(
         label: text('label', ''),
         placeholder: text('placeholder', 'Search'),
         hideIcon: boolean('hideIcon', false),
-        searchChange: action('searchChange'),
-        searchFocus: action('searchFocus'),
+        onSearchChange: action('searchChange'),
+        onSearchFocus: action('searchFocus'),
+        onSearchBlur: action('searchBlur'),
         size: select(
           'size',
           Object.values(FormElementSize),

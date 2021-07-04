@@ -2,10 +2,13 @@ import { fromEvent, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
 import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
   HostBinding,
+  HostListener,
   Input,
   NgZone,
   OnChanges,
@@ -36,9 +39,14 @@ import { SearchConfig } from './search.interface';
     '../../form-elements/input/input.component.scss',
     './search.component.scss',
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchComponent implements OnChanges, OnInit, OnDestroy {
-  constructor(private zone: NgZone) {}
+  constructor(
+    public hostElRef: ElementRef<HTMLElement>,
+    private zone: NgZone,
+    public cd: ChangeDetectorRef
+  ) {}
 
   @ViewChild('input', { static: true }) input: ElementRef<HTMLInputElement>;
 
@@ -73,8 +81,59 @@ export class SearchComponent implements OnChanges, OnInit, OnDestroy {
 
   @Output() searchChange: EventEmitter<string> = new EventEmitter();
   @Output() searchFocus: EventEmitter<string> = new EventEmitter();
-  @Output()
-  searchBlur: EventEmitter<DOMFocusEvent> = new EventEmitter();
+  @Output() searchBlur: EventEmitter<DOMFocusEvent> = new EventEmitter();
+
+  @HostListener('focusin.outside-zone', ['$event']) onHostFocus(
+    event: DOMFocusEvent
+  ) {
+    if (event.target.matches('.bfe-wrap')) {
+      this.focus();
+    }
+    if (event.target.matches('.bfe-input')) {
+      this.inputFocused = true;
+      if (!this.skipFocusEvent && this.searchFocus.observers) {
+        this.zone.run(() => {
+          this.searchFocus.emit(this.value);
+        });
+      }
+      this.skipFocusEvent = false;
+      this.cd.detectChanges();
+    }
+  }
+
+  @HostListener('focusout.outside-zone', ['$event']) onHostBlur(
+    event: DOMFocusEvent
+  ) {
+    if (event.target.matches('.bfe-input')) {
+      if (this.hostElRef.nativeElement.contains(event.relatedTarget)) {
+        event.preventDefault();
+        this.input.nativeElement.focus();
+        return;
+      }
+      this.inputFocused = false;
+      if (this.searchBlur.observers) {
+        this.zone.run(() => {
+          this.searchBlur.emit(event);
+        });
+      }
+      this.cd.detectChanges();
+    }
+  }
+
+  @HostListener('click.outside-zone', ['$event']) onHostClick(
+    event: DOMFocusEvent
+  ) {
+    const target = event.target;
+    if (target.matches('.bfe-wrap')) {
+      this.focus();
+    }
+    if (target.matches('.clear-input')) {
+      event.stopPropagation();
+      this.zone.run(() => {
+        this.reset();
+      });
+    }
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.value) {
@@ -91,44 +150,31 @@ export class SearchComponent implements OnChanges, OnInit, OnDestroy {
           debounceTime(this.config?.debounceTime || 150),
           insideZone(this.zone)
         )
-        .subscribe((inputEvent: DOMInputEvent) => {
-          this.onInput(inputEvent);
+        .subscribe((event: DOMInputEvent) => {
+          //
+          const newValue = event.target.value;
+          if (this.value !== newValue) {
+            this.value = newValue;
+            this.cd.detectChanges();
+            this.searchChange.emit(this.value);
+          }
+          //
         });
     });
   }
 
-  ngOnDestroy(): void {
-    this.sub?.unsubscribe();
+  focus() {
+    this.input.nativeElement.focus();
   }
 
-  onFocus(): void {
-    this.inputFocused = true;
-
-    if (!this.skipFocusEvent && this.searchFocus.observers) {
-      this.searchFocus.emit(this.value);
-    }
-    this.skipFocusEvent = false;
-  }
-
-  onBlur(event: Event | FocusEvent): void;
-  onBlur(event: DOMFocusEvent): void {
-    this.inputFocused = false;
-    if (this.searchBlur.observers) {
-      this.searchBlur.emit(event);
-    }
-  }
-
-  onInput(event: DOMInputEvent): void {
-    const newValue = event.target.value;
-    if (this.value !== newValue) {
-      this.value = newValue;
-      this.searchChange.emit(this.value.trim());
-    }
-  }
-
-  onResetClick(): void {
+  reset(): void {
     this.skipFocusEvent = true;
     this.value = '';
+    this.cd.detectChanges();
     this.searchChange.emit(this.value);
+  }
+
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
   }
 }

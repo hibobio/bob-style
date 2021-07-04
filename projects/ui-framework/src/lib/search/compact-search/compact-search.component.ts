@@ -31,22 +31,22 @@ export class CompactSearchComponent {
   public open = false;
   public empty = true;
 
-  public onSearchOpen(): void {
-    !this.open && (this.open = true);
-  }
-
   public isOpen(): boolean {
     return Boolean(this.open || (this.config?.openIfNotEmpty && !this.empty));
   }
 
-  public onSearchClose(event: DOMFocusEvent): void {
+  public onSearchFocus(): void {
+    !this.open && (this.open = true);
+  }
+
+  public onSearchBlur(event: DOMFocusEvent): void {
     const relatedTarget = event.relatedTarget;
     if (!relatedTarget || !relatedTarget.matches('.clear-input')) {
       this.search.inputFocused = false;
       this.open = false;
     }
     if (relatedTarget?.matches('.clear-input')) {
-      this.focusSearchInput();
+      this.focus();
     }
   }
 
@@ -55,8 +55,8 @@ export class CompactSearchComponent {
     this.searchChange.emit(event);
   }
 
-  private focusSearchInput(): void {
+  public focus(): void {
     this.search['skipFocusEvent'] = true;
-    this.search.input.nativeElement.focus();
+    this.search.focus();
   }
 }
