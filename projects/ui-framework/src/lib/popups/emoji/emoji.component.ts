@@ -26,6 +26,7 @@ export class EmojiComponent implements OnInit {
   readonly tooltipType = TruncateTooltipType;
 
   @Input() title: string;
+  @Input() openOnHover = false;
   @Output() toggleClick: EventEmitter<boolean> = new EventEmitter();
   @Output() emojiSelect: EventEmitter<Emoji> = new EventEmitter();
   @ViewChild('overlayRef') panelElement: any;

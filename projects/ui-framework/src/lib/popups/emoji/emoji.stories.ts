@@ -1,5 +1,5 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { text, withKnobs } from '@storybook/addon-knobs';
+import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/angular';
 
 import { ButtonsModule } from '../../buttons/buttons.module';
@@ -14,6 +14,7 @@ const story = storiesOf(ComponentGroupType.Popups, module).addDecorator(
 
 const template = `
     <b-emoji [title]="title"
+      [openOnHover]="openOnHover"
       (emojiSelect)="emojiSelect($event)"
       (toggleClick)="toggleClick($event)">
 
@@ -61,6 +62,7 @@ story.add(
           alert(JSON.stringify(emoji));
         },
         toggleClick: () => {},
+        openOnHover: boolean('openOnHover', false)
       },
       moduleMetadata: {
         imports: [
