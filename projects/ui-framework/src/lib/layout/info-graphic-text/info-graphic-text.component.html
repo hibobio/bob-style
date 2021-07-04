@@ -1,6 +1,6 @@
-<div class="header b-display-2 clr-negative-500 text-center mrg-b-13">{{title}}</div>
+<div class="header b-display-2 text-center mrg-b-13" [class.clr-negative-500]="!useCustomColors">{{title}}</div>
 <div class="main-content text-center">
-  <span class="data-item clr-negative-500 mrg-x-8"
+  <span class="data-item mrg-x-8" [class.clr-negative-500]="!useCustomColors"
         *ngFor="let item of items"
         [class.clickable]="item.action"
         [innerHTML]="item.label"
