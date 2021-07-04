@@ -192,7 +192,7 @@ export class MultiSearchComponent extends MultiSearchBaseElement {
     }
 
     this.closePanel();
-    this.search.onResetClick();
+    this.search.reset();
   }
 
   private onShowMoreClick(

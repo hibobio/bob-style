@@ -49,7 +49,8 @@ import { TreeListItem, TreeListItemMap } from '../tree-list.interface';
 // tslint:disable-next-line: directive-class-suffix
 export abstract class BaseTreeListElement
   extends TreeListInputOutput
-  implements OnChanges, OnInit, AfterViewInit, OnDestroy {
+  implements OnChanges, OnInit, AfterViewInit, OnDestroy
+{
   constructor(
     protected modelSrvc: TreeListModelService,
     protected cntrlsSrvc: TreeListControlsService,
@@ -256,7 +257,8 @@ export abstract class BaseTreeListElement
   }
 
   public searchChange(value: string) {
-    const newSearchValue = value.length > this.minSearchLength ? value : '';
+    const newSearchValue =
+      value.length > this.minSearchLength ? value.trim() : '';
 
     if (newSearchValue !== this.searchValue) {
       this.searchValue = newSearchValue;

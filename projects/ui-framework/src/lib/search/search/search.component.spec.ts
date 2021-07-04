@@ -1,29 +1,38 @@
-import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick,
+  waitForAsync,
+} from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { SearchComponent } from './search.component';
+import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import { InputModule } from '../../form-elements/input/input.module';
 import { IconsModule } from '../../icons/icons.module';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { By } from '@angular/platform-browser';
+import { SearchComponent } from './search.component';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
   let fixture: ComponentFixture<SearchComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [SearchComponent],
-      imports: [NoopAnimationsModule, FormsModule, InputModule, IconsModule],
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [SearchComponent],
+        imports: [NoopAnimationsModule, FormsModule, InputModule, IconsModule],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(SearchComponent);
+          component = fixture.componentInstance;
+          spyOn(component.searchChange, 'emit');
+          component.ngOnChanges({});
+          fixture.detectChanges();
+        });
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(SearchComponent);
-        component = fixture.componentInstance;
-        spyOn(component.searchChange, 'emit');
-        component.ngOnChanges({});
-        fixture.detectChanges();
-      });
-  }));
+  );
 
   describe('OnChanges', () => {
     it('should assign empty string value if no value exists', () => {
@@ -73,7 +82,7 @@ describe('SearchComponent', () => {
     }));
   });
 
-  describe('onResetClick', () => {
+  describe('reset', () => {
     it('should set value to be empty', fakeAsync(() => {
       const inputElement = fixture.debugElement.query(By.css('input'));
       expect(component.value).toBe('');
@@ -103,26 +112,34 @@ describe('SearchComponent', () => {
       fixture.detectChanges();
 
       expect(component.value).toEqual(inputElement.nativeElement.value);
-      expect(component.searchChange.emit).toHaveBeenCalledWith('some untrimmed string');
+      expect(component.searchChange.emit).toHaveBeenCalledWith(
+        'some untrimmed string'
+      );
     }));
   });
 
   describe('hideIcon', () => {
     it('should show icon by default', () => {
-      const inputIconElement = fixture.debugElement.query(By.css('.input-icon'));
+      const inputIconElement = fixture.debugElement.query(
+        By.css('.input-icon')
+      );
       fixture.detectChanges();
       expect(inputIconElement).toBeTruthy();
     });
     it('should hide icon', () => {
       component.hideIcon = true;
       fixture.detectChanges();
-      const inputIconElement = fixture.debugElement.query(By.css('.input-icon'));
+      const inputIconElement = fixture.debugElement.query(
+        By.css('.input-icon')
+      );
       expect(inputIconElement).toBeNull();
     });
     it('should show icon', () => {
       component.hideIcon = false;
       fixture.detectChanges();
-      const inputIconElement = fixture.debugElement.query(By.css('.input-icon'));
+      const inputIconElement = fixture.debugElement.query(
+        By.css('.input-icon')
+      );
       expect(inputIconElement).toBeTruthy();
     });
     it('should not have class has-prefix', () => {

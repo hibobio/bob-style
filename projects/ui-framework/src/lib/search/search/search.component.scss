@@ -5,3 +5,7 @@
 }
 
 @include clear-input-suffix;
+
+.clear-input ::ng-deep .b-icon {
+  pointer-events: none;
+}

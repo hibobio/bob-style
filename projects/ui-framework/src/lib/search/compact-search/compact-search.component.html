@@ -1,8 +1,8 @@
 <b-search class="search has-hover"
-          (click)="$event.stopPropagation(); onSearchOpen()"
           [size]="formElementSize.smaller"
           [config]="config"
-          (searchBlur)="onSearchClose($event)"
+          (searchFocus)="onSearchFocus()"
+          (searchBlur)="onSearchBlur($event)"
           (searchChange)="onSearchChange($event)"
           [attr.data-open]="isOpen()">
 </b-search>

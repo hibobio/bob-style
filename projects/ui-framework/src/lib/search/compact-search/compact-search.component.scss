@@ -29,19 +29,23 @@ $transitionDuration: 0.3s;
     }
   }
 
-  &[data-open='false']::ng-deep {
-    .bfe-wrap {
-      cursor: pointer;
-      border-color: transparent;
-      background-color: transparent;
-    }
+  &[data-open='false'] {
+    overflow: hidden;
 
-    .bfe-suffix {
-      visibility: hidden;
-    }
+    ::ng-deep {
+      .bfe-wrap {
+        cursor: pointer;
+        border-color: transparent;
+        background-color: transparent;
+      }
 
-    .b-icon-normal:before {
-      color: $grey-600;
+      .bfe-suffix {
+        visibility: hidden;
+      }
+
+      .b-icon-normal:before {
+        color: $grey-600;
+      }
     }
   }
 
