@@ -1,6 +1,6 @@
 export enum TopActionBarTypesEnum {
+  normal = 'normal',
   information = 'information',
   warning = 'warning',
-  error = 'error',
   success = 'success'
 }
