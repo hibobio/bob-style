@@ -59,9 +59,8 @@ export class AlertService {
       autoClose: true,
       ...config,
     };
-    this.panel.componentRef.instance.closeAlertCallback = this.closeAlertCallback.bind(
-      this
-    );
+    this.panel.componentRef.instance.closeAlertCallback =
+      this.closeAlertCallback.bind(this);
 
     this.panel.componentRef.instance.animationState = 'enter';
     if (this.panel.componentRef.instance.alertConfig.autoClose) {
@@ -87,7 +86,7 @@ export class AlertService {
 
     let text = isString(error)
       ? error
-      : stringify(objectGetDeepestValid(error, 'error.error', null));
+      : stringify(objectGetDeepestValid(error, 'error.error', ''));
     text = text?.replace(/(^\s*["\W]+\s*)|(\s*["\W]+\s*$)/g, '');
     if (text?.replace(/\W/g, '') === 'isTrustedtrue') {
       text = null;
