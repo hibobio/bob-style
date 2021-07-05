@@ -13,17 +13,17 @@
   height: times8(4);
   margin-top: 1px;
 
+  &.normal {
+    background-color: $grey-600;
+  }
   &.information {
     background-color: $inform-600;
   }
-  &.warning {
-    background-color: $primary-600;
-  }
-  &.error {
-    background-color: $negative-600;
-  }
   &.success {
     background-color: $positive-600;
+  }
+  &.warning {
+    background-color: $primary-600;
   }
 
   .action {
