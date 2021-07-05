@@ -1,0 +1,49 @@
+@import '../../style/common-imports';
+
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  white-space: nowrap;
+  padding: 0 100px;
+  position: relative;
+  color: $white;
+  height: times8(4);
+  margin-top: 1px;
+
+  &.information {
+    background-color: $inform-600;
+  }
+  &.warning {
+    background-color: $primary-600;
+  }
+  &.error {
+    background-color: $negative-600;
+  }
+  &.success {
+    background-color: $positive-600;
+  }
+
+  .action {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    background-color: rgba($grey-800, 0.2);
+    margin-left: times8(2);
+    border-radius: 3px;
+    padding: 2px 8px;
+    height: times8(3);
+    font-weight: 500;
+
+    &:hover,
+    &:focus {
+      background-color: rgba($grey-800, 0.25);
+    }
+  }
+}
+
+:host-context(.app-page-content-wrapper) {
+  margin: -40x -40px 40px -40px;
+}

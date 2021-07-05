@@ -1,0 +1,43 @@
+<span class="b-bold-body message">
+  {{text}}
+</span>
+
+
+<ng-container
+  *ngIf="!options?.length; else selectPanel"
+>
+  <span class="action" *ngIf="!readOnly && actionText"
+        role="button"
+        tabindex="0"
+        (click)="applyAction($event)">
+  {{actionText}}
+  </span>
+</ng-container>
+
+
+<ng-template #selectPanel>
+  <b-single-select-panel
+    *ngIf="!readOnly && options?.length"
+    class="action"
+    [options]="options"
+    (selectChange)="applyAction($event)"
+  >
+    <div class="flx flx-row-align-y">
+      <span>{{ actionText }}</span>
+      <b-icon
+        class="mrg-l-16"
+        [icon]="icons.arrow_drop_down"
+        [color]="iconColor.white"
+      >
+      </b-icon>
+    </div>
+
+  </b-single-select-panel>
+
+</ng-template>
+<div>
+  <ng-content >
+  </ng-content>
+</div>
+
+

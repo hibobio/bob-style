@@ -125,6 +125,10 @@ export * from './lib/indicators/info-strip/info-strip.interface';
 export * from './lib/indicators/info-strip/info-strip.const';
 export { InfoStripModule } from './lib/indicators/info-strip/info-strip.module';
 export { InfoStripComponent } from './lib/indicators/info-strip/info-strip.component';
+// TopActionBar Module
+export * from './lib/indicators/top-action-bar/top-action-bar.consts';
+export { TopActionBarModule } from './lib/indicators/top-action-bar/top-action-bar.module';
+export { TopActionBarComponent } from './lib/indicators/top-action-bar/top-action-bar.component';
 // Link Module
 export { LinkModule } from './lib/indicators/link/link.module';
 export { LinkComponent } from './lib/indicators/link/link.component';
