@@ -1,10 +1,11 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 
-import { EmptyStateComponent } from './empty-state.component';
-import { IconsModule } from '../../icons/icons.module';
 import { ButtonsModule } from '../../buttons/buttons.module';
 import { Icons } from '../../icons/icons.enum';
-import { By } from '@angular/platform-browser';
+import { IconsModule } from '../../icons/icons.module';
+import { EmptyStateComponent } from './empty-state.component';
 
 describe('EmptyStateComponent', () => {
   let component: EmptyStateComponent;
@@ -15,6 +16,7 @@ describe('EmptyStateComponent', () => {
       TestBed.configureTestingModule({
         declarations: [EmptyStateComponent],
         imports: [IconsModule, ButtonsModule],
+        schemas: [NO_ERRORS_SCHEMA],
       })
         .compileComponents()
         .then(() => {

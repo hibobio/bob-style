@@ -1,36 +1,36 @@
+import { cloneDeep } from 'lodash';
+import { MockComponent } from 'ng-mocks';
+
+import { CommonModule } from '@angular/common';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   ComponentFixture,
   fakeAsync,
+  resetFakeAsyncZone,
   TestBed,
   tick,
-  flush,
-  resetFakeAsyncZone,
   waitForAsync,
 } from '@angular/core/testing';
-import { EmployeesShowcaseComponent } from './avatar-showcase.component';
-import { UtilsService } from '../../services/utils/utils.service';
-import { DOMhelpers } from '../../services/html/dom-helpers.service';
-import { EMPLOYEE_SHOWCASE_MOCK } from './avatar-showcase.mock';
-import { AvatarSize } from '../avatar/avatar.enum';
-import { MockComponent } from 'ng-mocks';
-import { AvatarComponent } from '../avatar/avatar.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { CommonModule } from '@angular/common';
-import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
-import { ListChange } from '../../lists/list-change/list-change';
-import { AvatarShowcase } from './avatar-showcase.interface';
-import { AvatarGap } from './avatar-showcase.const';
+
 // tslint:disable-next-line: max-line-length
 import { SingleSelectPanelComponent } from '../../lists/single-select-panel/single-select-panel.component';
-import { cloneDeep } from 'lodash';
+import { PanelPositionService } from '../../popups/panel/panel-position-service/panel-position.service';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import { simpleChange } from '../../services/utils/functional-utils';
 import {
-  elementsFromFixture,
   elementFromFixture,
+  elementsFromFixture,
   getCssVariable,
 } from '../../services/utils/test-helpers';
+import { UtilsService } from '../../services/utils/utils.service';
 import { AvatarImageComponent } from '../avatar/avatar-image/avatar-image.component';
+import { AvatarSize } from '../avatar/avatar.enum';
+import { EmployeesShowcaseComponent } from './avatar-showcase.component';
+import { AvatarGap } from './avatar-showcase.const';
+import { AvatarShowcase } from './avatar-showcase.interface';
+import { EMPLOYEE_SHOWCASE_MOCK } from './avatar-showcase.mock';
 import { AvatarShowcaseService } from './avatar-showcase.service';
-import { simpleChange } from '../../services/utils/functional-utils';
 
 const showcaseMock = cloneDeep(EMPLOYEE_SHOWCASE_MOCK).slice(0, 25);
 
@@ -151,6 +151,7 @@ xdescribe('EmployeesShowcaseComponent', () => {
           PanelPositionService,
           AvatarShowcaseService,
         ],
+        schemas: [NO_ERRORS_SCHEMA],
       })
         .compileComponents()
         .then(() => {

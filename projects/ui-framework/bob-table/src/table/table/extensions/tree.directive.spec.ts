@@ -1,15 +1,16 @@
+import { AgGridAngular } from 'ag-grid-angular';
+
+import { Component, NO_ERRORS_SCHEMA, OnInit } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { AgGridAngular } from 'ag-grid-angular';
-import { TableModule } from '../../table.module';
-import { TableComponent } from '../table.component';
-import { defaultTreeConfig, TreeConfig } from './tree.config';
 
-import { Component, OnInit } from '@angular/core';
 import {
   mockTranslatePipe,
   TranslateServiceProvideMock,
 } from '../../../../../src/lib/tests/services.stub.spec';
+import { TableModule } from '../../table.module';
+import { TableComponent } from '../table.component';
+import { defaultTreeConfig, TreeConfig } from './tree.config';
 
 @Component({
   selector: 'b-table-tree-test',
@@ -31,6 +32,7 @@ describe('TreeDirective', () => {
       declarations: [TableTreeTestComponent, mockTranslatePipe],
       imports: [TableModule],
       providers: [TranslateServiceProvideMock()],
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
     fixture = TestBed.createComponent(TableTreeTestComponent);
     component = fixture.componentInstance;

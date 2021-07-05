@@ -1,5 +1,6 @@
 import { MockComponent } from 'ng-mocks';
 
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -43,6 +44,7 @@ describe('TimePickerComponent', () => {
           FormElementKeyboardCntrlService,
           EventManagerPlugins[0],
         ],
+        schemas: [NO_ERRORS_SCHEMA],
       })
         .compileComponents()
         .then(() => {
@@ -58,8 +60,9 @@ describe('TimePickerComponent', () => {
           fixture.detectChanges();
 
           labelElem = elementFromFixture(fixture, '.bfe-label');
-          labelComp = fixture.debugElement.query(By.css('.bfe-label'))
-            .componentInstance;
+          labelComp = fixture.debugElement.query(
+            By.css('.bfe-label')
+          ).componentInstance;
           hhInputElem = elementFromFixture(
             fixture,
             '.btmpckr-input-hours'

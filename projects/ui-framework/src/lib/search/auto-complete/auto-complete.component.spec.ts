@@ -1,24 +1,27 @@
+import { MockComponent } from 'ng-mocks';
+
+import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
+import { Platform } from '@angular/cdk/platform';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   ComponentFixture,
   fakeAsync,
   flush,
   inject,
+  resetFakeAsyncZone,
   TestBed,
   tick,
-  resetFakeAsyncZone,
   waitForAsync,
 } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { AutoCompleteComponent } from './auto-complete.component';
-import { AutoCompleteModule } from './auto-complete.module';
-import { OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
-import { Platform } from '@angular/cdk/platform';
-import { AutoCompleteOption } from './auto-complete.interface';
-import { MockComponent } from 'ng-mocks';
 import { By } from '@angular/platform-browser';
-import { AutoCompletePanelComponent } from './auto-complete-panel/auto-complete-panel.component';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import { SearchComponent } from '../search/search.component';
 import { SearchModule } from '../search/search.module';
+import { AutoCompletePanelComponent } from './auto-complete-panel/auto-complete-panel.component';
+import { AutoCompleteComponent } from './auto-complete.component';
+import { AutoCompleteOption } from './auto-complete.interface';
+import { AutoCompleteModule } from './auto-complete.module';
 
 describe('AutoCompleteComponent', () => {
   let component: AutoCompleteComponent;
@@ -54,6 +57,7 @@ describe('AutoCompleteComponent', () => {
           SearchModule,
         ],
         providers: [],
+        schemas: [NO_ERRORS_SCHEMA],
       })
         .compileComponents()
         .then(() => {
@@ -184,9 +188,11 @@ describe('AutoCompleteComponent', () => {
       fixture.autoDetectChanges();
       tick(0);
 
-      (overlayContainerElement.querySelectorAll(
-        '.option-select'
-      )[0] as HTMLElement).click();
+      (
+        overlayContainerElement.querySelectorAll(
+          '.option-select'
+        )[0] as HTMLElement
+      ).click();
       expect(component.optionSelect.emit).toHaveBeenCalledWith(optionsMock[1]);
       flush();
     }));

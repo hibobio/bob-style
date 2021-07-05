@@ -1,12 +1,26 @@
 import { isEqual } from 'lodash';
 
-import { ComponentFixture, fakeAsync, flush, resetFakeAsyncZone, TestBed, waitForAsync } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import {
+  ComponentFixture,
+  fakeAsync,
+  flush,
+  resetFakeAsyncZone,
+  TestBed,
+  waitForAsync,
+} from '@angular/core/testing';
 
 import { IconColor, Icons, IconSize } from '../../../icons/icons.enum';
 import { DOMhelpers } from '../../../services/html/dom-helpers.service';
 import { EventManagerPlugins } from '../../../services/utils/eventManager.plugins';
-import { simpleChange, stringify } from '../../../services/utils/functional-utils';
-import { emitNativeEvent, emptyFilestackImg } from '../../../services/utils/test-helpers';
+import {
+  simpleChange,
+  stringify,
+} from '../../../services/utils/functional-utils';
+import {
+  emitNativeEvent,
+  emptyFilestackImg,
+} from '../../../services/utils/test-helpers';
 import { DOMhelpersProvideMock } from '../../../tests/services.stub.spec';
 import { AvatarBadge, AvatarSize } from '../avatar.enum';
 import { AvatarImageComponent } from './avatar-image.component';
@@ -51,7 +65,10 @@ const defaultAttrsWithImg: Partial<AttrCheck> = {
   iconBeforeColor: 'white',
 };
 
-const checkAttrubutes = (elem: HTMLElement, expected: Partial<AttrCheck> = defautlAttrs): boolean => {
+const checkAttrubutes = (
+  elem: HTMLElement,
+  expected: Partial<AttrCheck> = defautlAttrs
+): boolean => {
   expected = Object.assign({}, defautlAttrs, expected);
 
   const trim = (smth) => (smth ? smth.trim().replace(/\\/g, '') : smth);
@@ -68,9 +85,18 @@ const checkAttrubutes = (elem: HTMLElement, expected: Partial<AttrCheck> = defau
     iconAfterSize: trim(elem.getAttribute('data-icon-after-size')) || null,
     iconAfterColor: trim(elem.getAttribute('data-icon-after-color')) || null,
     class: trim(elem.className) || null,
-    varSize: trim(DOMhelpers.prototype.getElementCSSvar(elem, '--avatar-size')) || null,
-    varBgColor: trim(DOMhelpers.prototype.getElementCSSvar(elem, '--bg-color')) || '#f3f2f2',
-    varImg: trim(DOMhelpers.prototype.getElementCSSvar(elem, '--avatar-image').split(' ')[0]) || 'none',
+    varSize:
+      trim(DOMhelpers.prototype.getElementCSSvar(elem, '--avatar-size')) ||
+      null,
+    varBgColor:
+      trim(DOMhelpers.prototype.getElementCSSvar(elem, '--bg-color')) ||
+      '#f3f2f2',
+    varImg:
+      trim(
+        DOMhelpers.prototype
+          .getElementCSSvar(elem, '--avatar-image')
+          .split(' ')[0]
+      ) || 'none',
   };
 
   return isEqual(expected, reality) || reality;
@@ -103,6 +129,7 @@ describe('AvatarImageComponent', () => {
         declarations: [AvatarImageComponent],
         imports: [],
         providers: [DOMhelpersProvideMock(), EventManagerPlugins[0]],
+        schemas: [NO_ERRORS_SCHEMA],
       })
         .compileComponents()
         .then(() => {
@@ -119,7 +146,10 @@ describe('AvatarImageComponent', () => {
     // tslint:disable-next-line: max-line-length
     it('Should display mini icon with Person icon, no badge and other default attributes', fakeAsync(() => {
       flush();
-      expect(checkAttrubutes(componentElem, defautlAttrs)).toBe(true, 'Should contain: ' + stringify(defautlAttrs));
+      expect(checkAttrubutes(componentElem, defautlAttrs)).toBe(
+        true,
+        'Should contain: ' + stringify(defautlAttrs)
+      );
     }));
   });
 
@@ -146,7 +176,10 @@ describe('AvatarImageComponent', () => {
         iconAfterSize: 'large',
       };
 
-      expect(checkAttrubutes(componentElem, expected)).toBe(true, 'Should contain: ' + stringify(expected));
+      expect(checkAttrubutes(componentElem, expected)).toBe(
+        true,
+        'Should contain: ' + stringify(expected)
+      );
     }));
   });
 
@@ -177,7 +210,10 @@ describe('AvatarImageComponent', () => {
         iconAfterSize: 'large',
       };
 
-      expect(checkAttrubutes(componentElem, expected)).toBe(true, 'Should contain: ' + stringify(expected));
+      expect(checkAttrubutes(componentElem, expected)).toBe(
+        true,
+        'Should contain: ' + stringify(expected)
+      );
     }));
   });
 
@@ -199,7 +235,10 @@ describe('AvatarImageComponent', () => {
         iconBeforeColor: 'normal',
       };
 
-      expect(checkAttrubutes(componentElem, expected)).toBe(true, 'Should contain: ' + stringify(expected));
+      expect(checkAttrubutes(componentElem, expected)).toBe(
+        true,
+        'Should contain: ' + stringify(expected)
+      );
     }));
 
     // tslint:disable-next-line: max-line-length
@@ -223,7 +262,10 @@ describe('AvatarImageComponent', () => {
         class: 'avatar icon-on-hover',
       };
 
-      expect(checkAttrubutes(componentElem, expected)).toBe(true, 'Should contain: ' + stringify(expected));
+      expect(checkAttrubutes(componentElem, expected)).toBe(
+        true,
+        'Should contain: ' + stringify(expected)
+      );
     }));
 
     it('Should display mini Avatar with no image and custom icon', fakeAsync(() => {
@@ -248,7 +290,10 @@ describe('AvatarImageComponent', () => {
         iconBeforeColor: 'negative',
       };
 
-      expect(checkAttrubutes(componentElem, expected)).toBe(true, 'Should contain: ' + stringify(expected));
+      expect(checkAttrubutes(componentElem, expected)).toBe(
+        true,
+        'Should contain: ' + stringify(expected)
+      );
     }));
 
     // tslint:disable-next-line: max-line-length
@@ -277,7 +322,10 @@ describe('AvatarImageComponent', () => {
         class: 'avatar icon-on-hover',
       };
 
-      expect(checkAttrubutes(componentElem, expected)).toBe(true, 'Should contain: ' + stringify(expected));
+      expect(checkAttrubutes(componentElem, expected)).toBe(
+        true,
+        'Should contain: ' + stringify(expected)
+      );
     }));
   });
 
@@ -301,7 +349,10 @@ describe('AvatarImageComponent', () => {
         iconAfterColor: 'normal',
       };
 
-      expect(checkAttrubutes(componentElem, expected)).toBe(true, 'Should contain: ' + stringify(expected));
+      expect(checkAttrubutes(componentElem, expected)).toBe(
+        true,
+        'Should contain: ' + stringify(expected)
+      );
     }));
 
     it('Should display mini Avatar with testImage and custom badge icon', fakeAsync(() => {
@@ -326,7 +377,10 @@ describe('AvatarImageComponent', () => {
         iconAfterColor: 'positive',
       };
 
-      expect(checkAttrubutes(componentElem, expected)).toBe(true, 'Should contain: ' + stringify(expected));
+      expect(checkAttrubutes(componentElem, expected)).toBe(
+        true,
+        'Should contain: ' + stringify(expected)
+      );
     }));
   });
 
@@ -358,7 +412,10 @@ describe('AvatarImageComponent', () => {
         tabindex: '0',
       };
 
-      expect(checkAttrubutes(componentElem, expected)).toBe(true, 'Should contain: ' + stringify(expected));
+      expect(checkAttrubutes(componentElem, expected)).toBe(
+        true,
+        'Should contain: ' + stringify(expected)
+      );
     }));
   });
 
@@ -384,7 +441,10 @@ describe('AvatarImageComponent', () => {
         class: 'avatar has-content icon-on-hover',
       };
 
-      expect(checkAttrubutes(componentElem, expected)).toBe(true, 'Should contain: ' + stringify(expected));
+      expect(checkAttrubutes(componentElem, expected)).toBe(
+        true,
+        'Should contain: ' + stringify(expected)
+      );
     }));
   });
 
@@ -410,7 +470,10 @@ describe('AvatarImageComponent', () => {
       };
 
       expect(componentElem.innerHTML).toContain('Some text');
-      expect(checkAttrubutes(componentElem, expected)).toBe(true, 'Should contain: ' + stringify(expected));
+      expect(checkAttrubutes(componentElem, expected)).toBe(
+        true,
+        'Should contain: ' + stringify(expected)
+      );
     }));
   });
 });

@@ -5,6 +5,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  NO_ERRORS_SCHEMA,
   Output,
 } from '@angular/core';
 import {
@@ -220,6 +221,7 @@ describe('QuickFilterLayoutComponent', () => {
           DOMhelpersProvideMock(),
           MutationObservableServiceProvideMock(),
         ],
+        schemas: [NO_ERRORS_SCHEMA],
       })
         .compileComponents()
         .then(() => {
@@ -359,8 +361,9 @@ describe('QuickFilterLayoutComponent', () => {
       const minuteInput = elementFromFixture(fixture, '.btmpckr-input-minutes');
       const textInput = elementFromFixture(fixture, 'b-input .bfe-input');
 
-      const timeComp = fixture.debugElement.query(By.css('b-timepicker'))
-        .componentInstance;
+      const timeComp = fixture.debugElement.query(
+        By.css('b-timepicker')
+      ).componentInstance;
 
       inputValue(hourInput, 22);
       timeComp.valueHours = '22';
@@ -398,8 +401,9 @@ describe('QuickFilterLayoutComponent', () => {
 
       const socialInput = elementFromFixture(fixture, 'b-social .bfe-input');
       const minuteInput = elementFromFixture(fixture, '.btmpckr-input-minutes');
-      const timeComp = fixture.debugElement.query(By.css('b-timepicker'))
-        .componentInstance;
+      const timeComp = fixture.debugElement.query(
+        By.css('b-timepicker')
+      ).componentInstance;
 
       inputValue(socialInput, 'donald-trump');
       inputValue(minuteInput, 30);

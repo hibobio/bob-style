@@ -1,5 +1,6 @@
 import { MockComponent } from 'ng-mocks';
 
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   ComponentFixture,
   resetFakeAsyncZone,
@@ -39,6 +40,7 @@ describe('CardComponent', () => {
           MockComponent(TextButtonComponent),
         ],
         imports: [TruncateTooltipModule, TypographyModule],
+        schemas: [NO_ERRORS_SCHEMA],
       })
         .compileComponents()
         .then(() => {
@@ -210,8 +212,9 @@ describe('CardComponent', () => {
         imageUrl: emptyImg,
       };
       fixture.detectChanges();
-      const image = fixture.debugElement.query(By.css('.card-top'))
-        .nativeElement;
+      const image = fixture.debugElement.query(
+        By.css('.card-top')
+      ).nativeElement;
       expect(image.style.backgroundImage).toContain(emptyImgTestString);
     });
     it('should change icon color to white when image is displayed', () => {

@@ -1,48 +1,54 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { ListFooterComponent } from './list-footer.component';
 import { MockComponent } from 'ng-mocks';
-import { ButtonComponent } from '../../buttons/button/button.component';
-import { IconComponent } from '../../icons/icon.component';
+
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+
+import { ButtonComponent } from '../../buttons/button/button.component';
 import { ButtonSize, ButtonType } from '../../buttons/buttons.enum';
 import { TextButtonComponent } from '../../buttons/text-button/text-button.component';
+import { IconComponent } from '../../icons/icon.component';
 import { elementFromFixture } from '../../services/utils/test-helpers';
 import { mockTranslatePipe } from '../../tests/services.stub.spec';
+import { ListFooterComponent } from './list-footer.component';
 
 describe('ListFooterComponent', () => {
   let component: ListFooterComponent;
   let fixture: ComponentFixture<ListFooterComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        mockTranslatePipe,
-        ListFooterComponent,
-        MockComponent(ButtonComponent),
-        MockComponent(TextButtonComponent),
-        MockComponent(IconComponent),
-      ],
-      providers: [],
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [
+          mockTranslatePipe,
+          ListFooterComponent,
+          MockComponent(ButtonComponent),
+          MockComponent(TextButtonComponent),
+          MockComponent(IconComponent),
+        ],
+        providers: [],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(ListFooterComponent);
+          component = fixture.componentInstance;
+          component.listActions = {
+            clear: true,
+            apply: true,
+          };
+          component.listActionsState = {
+            clear: { disabled: false, hidden: false },
+            apply: { disabled: false, hidden: false },
+          };
+
+          fixture.detectChanges();
+
+          spyOn(component.clear, 'emit');
+          spyOn(component.apply, 'emit');
+        });
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(ListFooterComponent);
-        component = fixture.componentInstance;
-        component.listActions = {
-          clear: true,
-          apply: true,
-        };
-        component.listActionsState = {
-          clear: { disabled: false, hidden: false },
-          apply: { disabled: false, hidden: false },
-        };
-
-        fixture.detectChanges();
-
-        spyOn(component.clear, 'emit');
-        spyOn(component.apply, 'emit');
-      });
-  }));
+  );
 
   describe('listActions', () => {
     describe('clear button', () => {

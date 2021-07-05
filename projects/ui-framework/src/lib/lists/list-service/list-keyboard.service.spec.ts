@@ -1,8 +1,10 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { ListKeyboardService } from './list-keyboard.service';
-import { LIST_EL_HEIGHT } from '../list.consts';
+
 import { Keys } from '../../enums';
 import { FormElementSize } from '../../form-elements/form-elements.enum';
+import { LIST_EL_HEIGHT } from '../list.consts';
+import { ListKeyboardService } from './list-keyboard.service';
 
 describe('ListModelService', () => {
   let listKeyboardService: ListKeyboardService;
@@ -10,6 +12,7 @@ describe('ListModelService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [ListKeyboardService],
+      schemas: [NO_ERRORS_SCHEMA],
     });
 
     listKeyboardService = TestBed.inject(ListKeyboardService);

@@ -1,17 +1,30 @@
-import { ComponentFixture, TestBed, fakeAsync, tick, flush, resetFakeAsyncZone, waitForAsync } from '@angular/core/testing';
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  NO_ERRORS_SCHEMA,
+} from '@angular/core';
+import {
+  ComponentFixture,
+  fakeAsync,
+  flush,
+  resetFakeAsyncZone,
+  TestBed,
+  tick,
+  waitForAsync,
+} from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { CollapsibleSectionComponent } from './collapsible-section.component';
+
+import { ColorService } from '../../services/color-service/color.service';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
-import { UtilsService } from '../../services/utils/utils.service';
+import { simpleChange } from '../../services/utils/functional-utils';
 import {
   elementFromFixture,
   emitNativeEvent,
 } from '../../services/utils/test-helpers';
-import { ColorService } from '../../services/color-service/color.service';
+import { UtilsService } from '../../services/utils/utils.service';
 import { utilsServiceStub } from '../../tests/services.stub.spec';
-import { simpleChange } from '../../services/utils/functional-utils';
+import { CollapsibleSectionComponent } from './collapsible-section.component';
 
 @Component({
   template: `
@@ -38,37 +51,40 @@ describe('CollapsibleSectionComponent', () => {
     resetFakeAsyncZone();
   });
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [],
-      declarations: [TestComponent, CollapsibleSectionComponent],
-      providers: [
-        ColorService,
-        DOMhelpers,
-        { provide: UtilsService, useValue: utilsServiceStub },
-        EventManagerPlugins[0],
-      ],
-    })
-      .overrideComponent(CollapsibleSectionComponent, {
-        set: { changeDetection: ChangeDetectionStrategy.Default },
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [],
+        declarations: [TestComponent, CollapsibleSectionComponent],
+        providers: [
+          ColorService,
+          DOMhelpers,
+          { provide: UtilsService, useValue: utilsServiceStub },
+          EventManagerPlugins[0],
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
       })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(TestComponent);
-        component = fixture.componentInstance;
+        .overrideComponent(CollapsibleSectionComponent, {
+          set: { changeDetection: ChangeDetectionStrategy.Default },
+        })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(TestComponent);
+          component = fixture.componentInstance;
 
-        collapsibleComponent = fixture.debugElement.query(
-          By.css('b-collapsible-section')
-        ).componentInstance;
+          collapsibleComponent = fixture.debugElement.query(
+            By.css('b-collapsible-section')
+          ).componentInstance;
 
-        collapsibleComponent.title = 'Section title';
-        fixture.detectChanges();
+          collapsibleComponent.title = 'Section title';
+          fixture.detectChanges();
 
-        collapsibleSection = elementFromFixture(fixture, '.bcp-section');
-        collapsibleHeader = elementFromFixture(fixture, '.bcp-header');
-        collapsiblePanel = elementFromFixture(fixture, '.bcp-panel');
-      });
-  }));
+          collapsibleSection = elementFromFixture(fixture, '.bcp-section');
+          collapsibleHeader = elementFromFixture(fixture, '.bcp-header');
+          collapsiblePanel = elementFromFixture(fixture, '.bcp-panel');
+        });
+    })
+  );
 
   describe('Basic Section', () => {
     let titleElement: HTMLElement;

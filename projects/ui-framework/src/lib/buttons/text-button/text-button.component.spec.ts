@@ -1,5 +1,6 @@
 import { MockComponent } from 'ng-mocks';
 
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { IconComponent } from '../../icons/icon.component';
@@ -21,6 +22,7 @@ describe('TextButtonComponent', () => {
       TestBed.configureTestingModule({
         declarations: [MockComponent(IconComponent), TextButtonComponent],
         imports: [TypographyModule],
+        schemas: [NO_ERRORS_SCHEMA],
       })
         .compileComponents()
         .then(() => {

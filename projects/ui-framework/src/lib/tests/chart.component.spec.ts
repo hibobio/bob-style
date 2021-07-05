@@ -1,6 +1,6 @@
 import * as Highcharts from 'highcharts';
 
-import { ChangeDetectorRef, NgZone } from '@angular/core';
+import { ChangeDetectorRef, NgZone, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { LINE_CHART_DATA_MOCK } from '../../../bob-charts/src/charts/chart.mock';
@@ -23,6 +23,7 @@ describe('PieChartComponent', () => {
       TestBed.configureTestingModule({
         declarations: [PieChartComponent],
         providers: [ChangeDetectorRef],
+        schemas: [NO_ERRORS_SCHEMA],
       })
         .compileComponents()
         .then(() => {

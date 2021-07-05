@@ -1,5 +1,6 @@
 import { MockComponent } from 'ng-mocks';
 
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -13,7 +14,11 @@ describe('CellRenderersWrapperComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CellRenderersWrapperComponent, MockComponent(ComponentRendererComponent)],
+      declarations: [
+        CellRenderersWrapperComponent,
+        MockComponent(ComponentRendererComponent),
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
     fixture = TestBed.createComponent(CellRenderersWrapperComponent);
     component = fixture.componentInstance;
@@ -21,43 +26,67 @@ describe('CellRenderersWrapperComponent', () => {
 
   it('should not display prefix-cell-component', () => {
     fixture.detectChanges();
-    const prefixCellComponent = fixture.debugElement.query(By.css('.prefix-cell-component'));
+    const prefixCellComponent = fixture.debugElement.query(
+      By.css('.prefix-cell-component')
+    );
     expect(prefixCellComponent).toBeFalsy();
   });
   it('should display just prefix-cell-component', () => {
     component.componentRendererConfig = {
       prefixComponent: { component: 'prefix' } as any,
-    }
+    };
     fixture.detectChanges();
-    const prefixCellComponent = fixture.debugElement.query(By.css('.prefix-cell-component'));
-    const suffixCellComponent = fixture.debugElement.query(By.css('.suffix-cell-component'));
-    expect(prefixCellComponent.componentInstance.render).toEqual({ component: 'prefix' });
+    const prefixCellComponent = fixture.debugElement.query(
+      By.css('.prefix-cell-component')
+    );
+    const suffixCellComponent = fixture.debugElement.query(
+      By.css('.suffix-cell-component')
+    );
+    expect(prefixCellComponent.componentInstance.render).toEqual({
+      component: 'prefix',
+    });
     expect(suffixCellComponent).toBeFalsy();
   });
   it('should not display suffix-cell-component', () => {
     fixture.detectChanges();
-    const suffixCellComponent = fixture.debugElement.query(By.css('.suffix-cell-component'));
+    const suffixCellComponent = fixture.debugElement.query(
+      By.css('.suffix-cell-component')
+    );
     expect(suffixCellComponent).toBeFalsy();
   });
   it('should display just suffix-cell-component', () => {
     component.componentRendererConfig = {
       suffixComponent: { component: 'suffix' } as any,
-    }
+    };
     fixture.detectChanges();
-    const prefixCellComponent = fixture.debugElement.query(By.css('.prefix-cell-component'));
-    const suffixCellComponent = fixture.debugElement.query(By.css('.suffix-cell-component'));
-    expect(suffixCellComponent.componentInstance.render).toEqual({ component: 'suffix' });
+    const prefixCellComponent = fixture.debugElement.query(
+      By.css('.prefix-cell-component')
+    );
+    const suffixCellComponent = fixture.debugElement.query(
+      By.css('.suffix-cell-component')
+    );
+    expect(suffixCellComponent.componentInstance.render).toEqual({
+      component: 'suffix',
+    });
     expect(prefixCellComponent).toBeFalsy();
   });
   it('should display both *-cell-component', () => {
     component.componentRendererConfig = {
       suffixComponent: { component: 'suffix' } as any,
       prefixComponent: { component: 'prefix' } as any,
-    }
+    };
     fixture.detectChanges();
-    const prefixCellComponent = fixture.debugElement.query(By.css('.prefix-cell-component'));
-    const suffixCellComponent = fixture.debugElement.query(By.css('.suffix-cell-component'));
-    expect(suffixCellComponent.componentInstance.render).toEqual({ component: 'suffix' });
-    expect(prefixCellComponent.componentInstance.render).toEqual({ component: 'prefix' });
+    const prefixCellComponent = fixture.debugElement.query(
+      By.css('.prefix-cell-component')
+    );
+    const suffixCellComponent = fixture.debugElement.query(
+      By.css('.suffix-cell-component')
+    );
+    expect(suffixCellComponent.componentInstance.render).toEqual({
+      component: 'suffix',
+    });
+    expect(prefixCellComponent.componentInstance.render).toEqual({
+      component: 'prefix',
+    });
   });
 });

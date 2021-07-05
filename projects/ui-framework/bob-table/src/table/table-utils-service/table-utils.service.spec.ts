@@ -1,5 +1,6 @@
 import { concat } from 'lodash';
 
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { IconColor, Icons, objectRemoveKeys } from 'bob-style';
@@ -91,6 +92,7 @@ describe('TableUtilsService', () => {
 
     TestBed.configureTestingModule({
       providers: [TableUtilsService],
+      schemas: [NO_ERRORS_SCHEMA],
     });
 
     tableUtilsService = TestBed.inject(TableUtilsService);

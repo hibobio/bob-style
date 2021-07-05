@@ -1,4 +1,6 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+
 import { SelectGroupOption } from '../list.interface';
 import { ListChangeService } from './list-change.service';
 
@@ -26,6 +28,7 @@ describe('ListChangeService', () => {
 
     TestBed.configureTestingModule({
       providers: [ListChangeService],
+      schemas: [NO_ERRORS_SCHEMA],
     });
 
     listChangeServive = TestBed.inject(ListChangeService);

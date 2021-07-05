@@ -1,24 +1,27 @@
+import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
-import { ActionBarComponent } from './action-bar.component';
 import { By } from '@angular/platform-browser';
+
+import { ActionBarComponent } from './action-bar.component';
 
 describe('ActionBarComponent', () => {
   let component: ActionBarComponent;
   let fixture: ComponentFixture<ActionBarComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ActionBarComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [ActionBarComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(ActionBarComponent);
+          component = fixture.componentInstance;
+          fixture.detectChanges();
+        });
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(ActionBarComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-      });
-  }));
+  );
 
   describe('template', () => {
     let labelElement: DebugElement;

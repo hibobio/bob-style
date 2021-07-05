@@ -1,26 +1,31 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormElementLabelComponent } from './form-element-label.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
-import { IconsModule } from '../../icons/icons.module';
 import { By } from '@angular/platform-browser';
+
 import { IconColor, Icons, IconSize } from '../../icons/icons.enum';
+import { IconsModule } from '../../icons/icons.module';
+import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
+import { FormElementLabelComponent } from './form-element-label.component';
 
 describe('FormElementLabelComponent', () => {
   let component: FormElementLabelComponent;
   let fixture: ComponentFixture<FormElementLabelComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [FormElementLabelComponent],
-      imports: [MatTooltipModule, TruncateTooltipModule, IconsModule],
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [FormElementLabelComponent],
+        imports: [MatTooltipModule, TruncateTooltipModule, IconsModule],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(FormElementLabelComponent);
+          component = fixture.componentInstance;
+        });
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(FormElementLabelComponent);
-        component = fixture.componentInstance;
-      });
-  }));
+  );
 
   describe('label', () => {
     it('should show label', () => {

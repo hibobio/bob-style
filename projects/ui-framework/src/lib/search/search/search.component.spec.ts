@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   ComponentFixture,
   fakeAsync,
@@ -22,6 +23,7 @@ describe('SearchComponent', () => {
       TestBed.configureTestingModule({
         declarations: [SearchComponent],
         imports: [NoopAnimationsModule, FormsModule, InputModule, IconsModule],
+        schemas: [NO_ERRORS_SCHEMA],
       })
         .compileComponents()
         .then(() => {

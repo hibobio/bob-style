@@ -1,5 +1,6 @@
 import { endOfMonth, isDate, parseISO } from 'date-fns';
 
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatNativeDateModule } from '@angular/material/core';
 import {
@@ -64,6 +65,7 @@ describe('DateRangePickerComponent', () => {
           DateParseService,
           EventManagerPlugins[0],
         ],
+        schemas: [NO_ERRORS_SCHEMA],
       })
         .compileComponents()
         .then(() => {

@@ -1,37 +1,43 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
-import { CardEmployeeComponent } from './card-employee.component';
-import { TypographyModule } from '../../typography/typography.module';
 import { MockComponent } from 'ng-mocks';
-import { CardType } from '../cards.enum';
+
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { AvatarSize } from '../../avatar/avatar/avatar.enum';
+
 import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
+import { AvatarSize } from '../../avatar/avatar/avatar.enum';
+import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
 import {
   emptyImg,
   emptyImgTestString,
 } from '../../services/utils/test-helpers';
+import { TypographyModule } from '../../typography/typography.module';
+import { CardType } from '../cards.enum';
+import { CardEmployeeComponent } from './card-employee.component';
 
 describe('CardEmployeeComponent', () => {
   let fixture: ComponentFixture<CardEmployeeComponent>;
   let component: CardEmployeeComponent;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        CardEmployeeComponent,
-        MockComponent(AvatarImageComponent),
-      ],
-      imports: [TruncateTooltipModule, TypographyModule],
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [
+          CardEmployeeComponent,
+          MockComponent(AvatarImageComponent),
+        ],
+        imports: [TruncateTooltipModule, TypographyModule],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(CardEmployeeComponent);
+          component = fixture.componentInstance;
+          component.ngAfterViewInit = () => {};
+          fixture.nativeElement.style.width = '300px';
+        });
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(CardEmployeeComponent);
-        component = fixture.componentInstance;
-        component.ngAfterViewInit = () => {};
-        fixture.nativeElement.style.width = '300px';
-      });
-  }));
+  );
 
   describe('Type', () => {
     beforeEach(() => {

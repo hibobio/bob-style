@@ -1,26 +1,27 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import { DividerComponent } from './divider.component';
 
 describe('DividerComponent', () => {
   let component: DividerComponent;
   let fixture: ComponentFixture<DividerComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        DividerComponent,
-      ],
-      imports: [
-        NoopAnimationsModule,
-      ],
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [DividerComponent],
+        imports: [NoopAnimationsModule],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(DividerComponent);
+          component = fixture.componentInstance;
+        });
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(DividerComponent);
-        component = fixture.componentInstance;
-      });
-  }));
+  );
 
   describe('Divider layout', () => {
     it('should display text if text is provided', () => {
