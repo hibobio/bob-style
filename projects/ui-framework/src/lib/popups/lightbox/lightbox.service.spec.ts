@@ -1,11 +1,7 @@
 import { MockComponent } from 'ng-mocks';
 
 import { Overlay, OverlayContainer, OverlayModule } from '@angular/cdk/overlay';
-import {
-  ComponentFactoryResolver,
-  CUSTOM_ELEMENTS_SCHEMA,
-  NO_ERRORS_SCHEMA,
-} from '@angular/core';
+import { ComponentFactoryResolver, NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   fakeAsync,
   flush,
@@ -85,7 +81,7 @@ describe('LightboxService', () => {
           WindowRefProvideMock(),
           TranslateServiceProvideMock(),
         ],
-        schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
+        schemas: [NO_ERRORS_SCHEMA],
       }).overrideModule(BrowserDynamicTestingModule, {
         set: {
           entryComponents: [AvatarComponent, AvatarImageComponent],

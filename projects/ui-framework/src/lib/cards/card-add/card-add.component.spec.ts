@@ -1,25 +1,30 @@
-import { CardAddComponent } from './card-add.component';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+
 import { TruncateTooltipModule } from '../../popups/truncate-tooltip/truncate-tooltip.module';
 import { CardType } from '../cards.enum';
+import { CardAddComponent } from './card-add.component';
 
 describe('CardAddComponent', () => {
   let fixture: ComponentFixture<CardAddComponent>;
   let component: CardAddComponent;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [CardAddComponent],
-      imports: [TruncateTooltipModule],
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [CardAddComponent],
+        imports: [TruncateTooltipModule],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(CardAddComponent);
+          component = fixture.componentInstance;
+          fixture.nativeElement.style.width = '300px';
+        });
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(CardAddComponent);
-        component = fixture.componentInstance;
-        fixture.nativeElement.style.width = '300px';
-      });
-  }));
+  );
 
   describe('Type', () => {
     beforeEach(() => {

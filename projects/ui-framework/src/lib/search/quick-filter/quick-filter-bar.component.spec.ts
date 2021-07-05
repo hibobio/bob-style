@@ -1,20 +1,23 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { QuickFilterBarComponent } from './quick-filter-bar.component';
-import { SelectGroupOption } from '../../lists/list.interface';
-import { QuickFilterSelectType } from './quick-filter.enum';
-import { By } from '@angular/platform-browser';
-import { QuickFilterComponent } from './quick-filter.component';
 import { MockComponent } from 'ng-mocks';
+
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
+import { IconComponent } from '../../icons/icon.component';
+import { ListChange } from '../../lists/list-change/list-change';
+import { ListChangeService } from '../../lists/list-change/list-change.service';
+import { ListModelService } from '../../lists/list-service/list-model.service';
+import { SelectGroupOption } from '../../lists/list.interface';
+import { DOMhelpers } from '../../services/html/dom-helpers.service';
+import { QuickFilterBarComponent } from './quick-filter-bar.component';
+import { QuickFilterComponent } from './quick-filter.component';
+import { QuickFilterSelectType } from './quick-filter.enum';
 import {
   QuickFilterChangeEvent,
   QuickFilterConfig,
 } from './quick-filter.interface';
-import { ListModelService } from '../../lists/list-service/list-model.service';
-import { ListChangeService } from '../../lists/list-change/list-change.service';
-import { ListChange } from '../../lists/list-change/list-change';
-import { IconComponent } from '../../icons/icon.component';
-import { DOMhelpers } from '../../services/html/dom-helpers.service';
 
 describe('QuickFilterBarComponent', () => {
   let component: QuickFilterBarComponent;
@@ -23,59 +26,62 @@ describe('QuickFilterBarComponent', () => {
   let optionsMock: SelectGroupOption[];
   let quickFiltersMock: QuickFilterConfig[];
 
-  beforeEach(waitForAsync(() => {
-    optionsMock = Array.from(Array(3), (g, i) => {
-      return {
-        groupName: `Basic Info G${i} - header`,
-        options: Array.from(Array(4), (o, k) => {
-          return {
-            value: `Basic Info G${i}_E${k} - option`,
-            id: i * 4 + k,
-            selected: false,
-          };
-        }),
-      };
-    });
-
-    quickFiltersMock = [
-      {
-        selectType: QuickFilterSelectType.multiSelect,
-        label: 'department',
-        key: 'department',
-        options: [optionsMock[0]],
-      },
-      {
-        selectType: QuickFilterSelectType.multiSelect,
-        label: 'site',
-        key: 'site',
-        options: optionsMock,
-      },
-      {
-        selectType: QuickFilterSelectType.singleSelect,
-        label: 'employment',
-        key: 'employment',
-        options: [optionsMock[0]],
-      },
-    ];
-
-    TestBed.configureTestingModule({
-      declarations: [
-        QuickFilterBarComponent,
-        MockComponent(QuickFilterComponent),
-        MockComponent(IconComponent),
-      ],
-      providers: [ListModelService, ListChangeService, DOMhelpers],
-      imports: [NoopAnimationsModule],
-    })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(QuickFilterBarComponent);
-        component = fixture.componentInstance;
-        component.ngAfterViewInit = () => {};
-        spyOn(component.filtersChange, 'emit');
-        spyOn(component.resetFilters, 'emit');
+  beforeEach(
+    waitForAsync(() => {
+      optionsMock = Array.from(Array(3), (g, i) => {
+        return {
+          groupName: `Basic Info G${i} - header`,
+          options: Array.from(Array(4), (o, k) => {
+            return {
+              value: `Basic Info G${i}_E${k} - option`,
+              id: i * 4 + k,
+              selected: false,
+            };
+          }),
+        };
       });
-  }));
+
+      quickFiltersMock = [
+        {
+          selectType: QuickFilterSelectType.multiSelect,
+          label: 'department',
+          key: 'department',
+          options: [optionsMock[0]],
+        },
+        {
+          selectType: QuickFilterSelectType.multiSelect,
+          label: 'site',
+          key: 'site',
+          options: optionsMock,
+        },
+        {
+          selectType: QuickFilterSelectType.singleSelect,
+          label: 'employment',
+          key: 'employment',
+          options: [optionsMock[0]],
+        },
+      ];
+
+      TestBed.configureTestingModule({
+        declarations: [
+          QuickFilterBarComponent,
+          MockComponent(QuickFilterComponent),
+          MockComponent(IconComponent),
+        ],
+        providers: [ListModelService, ListChangeService, DOMhelpers],
+        imports: [NoopAnimationsModule],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(QuickFilterBarComponent);
+          component = fixture.componentInstance;
+          component.ngAfterViewInit = () => {};
+          spyOn(component.filtersChange, 'emit');
+          spyOn(component.resetFilters, 'emit');
+        });
+    })
+  );
 
   describe('OnChanges', () => {
     it('should render 3 quick filters', () => {

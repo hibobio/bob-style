@@ -1,11 +1,13 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { BreadcrumbsComponent } from './breadcrumbs.component';
-import { Breadcrumb } from './breadcrumbs.interface';
-import { BreadcrumbsType, BreadcrumbsStepState } from './breadcrumbs.enum';
+
 import {
   elementsFromFixture,
   emitNativeEvent,
 } from '../../services/utils/test-helpers';
+import { BreadcrumbsComponent } from './breadcrumbs.component';
+import { BreadcrumbsStepState, BreadcrumbsType } from './breadcrumbs.enum';
+import { Breadcrumb } from './breadcrumbs.interface';
 
 describe('BreadcrumbsComponent', () => {
   let component: BreadcrumbsComponent;
@@ -15,31 +17,34 @@ describe('BreadcrumbsComponent', () => {
   let titleElements: HTMLElement[];
   let stepWrapElements: HTMLElement[];
 
-  beforeEach(waitForAsync(() => {
-    breadCrumbsMock = [
-      { title: 'details', state: BreadcrumbsStepState.success },
-      { title: 'avatar', state: BreadcrumbsStepState.active },
-      { title: 'to dos', state: BreadcrumbsStepState.closed },
-      { title: 'summary', state: BreadcrumbsStepState.closed },
-    ];
+  beforeEach(
+    waitForAsync(() => {
+      breadCrumbsMock = [
+        { title: 'details', state: BreadcrumbsStepState.success },
+        { title: 'avatar', state: BreadcrumbsStepState.active },
+        { title: 'to dos', state: BreadcrumbsStepState.closed },
+        { title: 'summary', state: BreadcrumbsStepState.closed },
+      ];
 
-    TestBed.configureTestingModule({
-      declarations: [BreadcrumbsComponent],
-      imports: [],
-      providers: [],
+      TestBed.configureTestingModule({
+        declarations: [BreadcrumbsComponent],
+        imports: [],
+        providers: [],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(BreadcrumbsComponent);
+          component = fixture.componentInstance;
+          component.type = BreadcrumbsType.primary;
+          component.alwaysShowTitle = false;
+          component.steps = breadCrumbsMock;
+          fixture.detectChanges();
+
+          spyOn(component.stepClick, 'emit');
+        });
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(BreadcrumbsComponent);
-        component = fixture.componentInstance;
-        component.type = BreadcrumbsType.primary;
-        component.alwaysShowTitle = false;
-        component.steps = breadCrumbsMock;
-        fixture.detectChanges();
-
-        spyOn(component.stepClick, 'emit');
-      });
-  }));
+  );
 
   describe('breadcrumbs model', () => {
     beforeEach(() => {

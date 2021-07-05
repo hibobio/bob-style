@@ -1,14 +1,17 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { SelectGroupOption } from '../../lists/list.interface';
-import { QuickFilterSelectType } from './quick-filter.enum';
-import { By } from '@angular/platform-browser';
 import { MockComponent } from 'ng-mocks';
-import { QuickFilterComponent } from './quick-filter.component';
+
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
+import { ListChange } from '../../lists/list-change/list-change';
+import { ListModelService } from '../../lists/list-service/list-model.service';
+import { SelectGroupOption } from '../../lists/list.interface';
 import { MultiSelectComponent } from '../../lists/multi-select/multi-select.component';
 import { SingleSelectComponent } from '../../lists/single-select/single-select.component';
-import { ListModelService } from '../../lists/list-service/list-model.service';
-import { ListChange } from '../../lists/list-change/list-change';
+import { QuickFilterComponent } from './quick-filter.component';
+import { QuickFilterSelectType } from './quick-filter.enum';
 import { QuickFilterConfig } from './quick-filter.interface';
 
 describe('QuickFilterComponent', () => {
@@ -16,36 +19,39 @@ describe('QuickFilterComponent', () => {
   let fixture: ComponentFixture<QuickFilterComponent>;
   let optionsMock: SelectGroupOption[];
 
-  beforeEach(waitForAsync(() => {
-    optionsMock = Array.from(Array(3), (g, i) => {
-      return {
-        groupName: `Basic Info G${i} - header`,
-        options: Array.from(Array(4), (o, k) => {
-          return {
-            selected: false,
-            value: `Basic Info G${i}_E${k} - option`,
-            id: i * 4 + k,
-          };
-        }),
-      };
-    });
-
-    TestBed.configureTestingModule({
-      declarations: [
-        QuickFilterComponent,
-        MockComponent(MultiSelectComponent),
-        MockComponent(SingleSelectComponent),
-      ],
-      providers: [ListModelService],
-      imports: [NoopAnimationsModule],
-    })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(QuickFilterComponent);
-        component = fixture.componentInstance;
-        spyOn(component.filterChange, 'emit');
+  beforeEach(
+    waitForAsync(() => {
+      optionsMock = Array.from(Array(3), (g, i) => {
+        return {
+          groupName: `Basic Info G${i} - header`,
+          options: Array.from(Array(4), (o, k) => {
+            return {
+              selected: false,
+              value: `Basic Info G${i}_E${k} - option`,
+              id: i * 4 + k,
+            };
+          }),
+        };
       });
-  }));
+
+      TestBed.configureTestingModule({
+        declarations: [
+          QuickFilterComponent,
+          MockComponent(MultiSelectComponent),
+          MockComponent(SingleSelectComponent),
+        ],
+        providers: [ListModelService],
+        imports: [NoopAnimationsModule],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(QuickFilterComponent);
+          component = fixture.componentInstance;
+          spyOn(component.filterChange, 'emit');
+        });
+    })
+  );
 
   describe('OnChanges', () => {
     it('should render multi select element', () => {

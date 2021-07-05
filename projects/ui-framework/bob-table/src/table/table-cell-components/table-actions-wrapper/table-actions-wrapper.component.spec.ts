@@ -1,5 +1,6 @@
 import { MockComponent, MockDirective } from 'ng-mocks';
 
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatTooltip } from '@angular/material/tooltip';
 import { By } from '@angular/platform-browser';
@@ -19,40 +20,44 @@ describe('TableActionsWrapperComponent', () => {
   let component: TableActionsWrapperComponent;
   let fixture: ComponentFixture<TableActionsWrapperComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        TableActionsWrapperComponent,
-        MockComponent(SquareButtonComponent),
-        MockComponent(MenuComponent),
-        MockComponent(ButtonComponent),
-        MockComponent(IconComponent),
-        MockDirective(MatTooltip),
-      ],
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [
+          TableActionsWrapperComponent,
+          MockComponent(SquareButtonComponent),
+          MockComponent(MenuComponent),
+          MockComponent(ButtonComponent),
+          MockComponent(IconComponent),
+          MockDirective(MatTooltip),
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(TableActionsWrapperComponent);
+          component = fixture.componentInstance;
+          fixture.detectChanges();
+        });
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(TableActionsWrapperComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-      });
-  }));
+  );
 
   describe('Menu items', () => {
     it('Should display menu items', () => {
       component.menuItems = [
         {
           label: 'save',
-          action: $event => console.log('save clicked', $event),
+          action: ($event) => console.log('save clicked', $event),
         },
         {
           label: 'close',
-          action: $event => console.log('close clicked', $event),
+          action: ($event) => console.log('close clicked', $event),
         },
       ];
       fixture.detectChanges();
-      const menuItems = fixture.debugElement.query(By.css('b-menu'))
-        .componentInstance;
+      const menuItems = fixture.debugElement.query(
+        By.css('b-menu')
+      ).componentInstance;
       const button = fixture.debugElement.query(By.css('b-button'));
       expect(menuItems.menu.length).toBe(2);
       expect(button).toBe(null);
@@ -61,13 +66,14 @@ describe('TableActionsWrapperComponent', () => {
       component.menuItems = [
         {
           label: 'save',
-          action: $event => console.log('save clicked', $event),
+          action: ($event) => console.log('save clicked', $event),
         },
       ];
       fixture.detectChanges();
       const menuItems = fixture.debugElement.query(By.css('b-menu'));
-      const button = fixture.debugElement.query(By.css('b-button'))
-        .componentInstance;
+      const button = fixture.debugElement.query(
+        By.css('b-button')
+      ).componentInstance;
       expect(menuItems).toBeNull();
       expect(button.text).toBe('save');
       expect(button.type).toBe(ButtonType.primary);
@@ -77,12 +83,13 @@ describe('TableActionsWrapperComponent', () => {
       component.menuItems = [
         {
           label: 'save',
-          action: $event => console.log('save clicked', $event),
+          action: ($event) => console.log('save clicked', $event),
         },
       ];
       fixture.detectChanges();
-      const button = fixture.debugElement.query(By.css('b-button'))
-        .componentInstance;
+      const button = fixture.debugElement.query(
+        By.css('b-button')
+      ).componentInstance;
       expect(button.type).toBe(ButtonType.secondary);
     });
     it('Should not display menu and buttons', () => {
@@ -101,7 +108,7 @@ describe('TableActionsWrapperComponent', () => {
       component.menuItems = [
         {
           label: 'save',
-          action: $event => console.log('save clicked', $event),
+          action: ($event) => console.log('save clicked', $event),
         },
       ];
       component.icon = Icons.person_reports;

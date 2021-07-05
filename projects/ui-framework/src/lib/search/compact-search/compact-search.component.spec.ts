@@ -1,8 +1,10 @@
+import { MockComponent } from 'ng-mocks';
+
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CompactSearchComponent } from './compact-search.component';
 import { SearchComponent } from '../search/search.component';
-import { MockComponent } from 'ng-mocks';
+import { CompactSearchComponent } from './compact-search.component';
 
 describe('CompactSearchComponent', () => {
   let component: CompactSearchComponent;
@@ -10,12 +12,9 @@ describe('CompactSearchComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        CompactSearchComponent,
-        MockComponent(SearchComponent)
-      ]
-    })
-    .compileComponents();
+      declarations: [CompactSearchComponent, MockComponent(SearchComponent)],
+      schemas: [NO_ERRORS_SCHEMA],
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -1,6 +1,6 @@
 import { MockComponent } from 'ng-mocks';
 
-import { ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
 import {
   ComponentFixture,
   fakeAsync,
@@ -46,6 +46,7 @@ describe('AvatarComponent', () => {
         ],
         imports: [MockCompsModule],
         providers: [DOMhelpersProvideMock()],
+        schemas: [NO_ERRORS_SCHEMA],
       })
         .overrideComponent(AvatarComponent, {
           set: { changeDetection: ChangeDetectionStrategy.Default },
@@ -60,10 +61,12 @@ describe('AvatarComponent', () => {
           component.backgroundColor = 'red';
           fixture.detectChanges();
 
-          avatarElement = fixture.debugElement.query(By.css('.avatar'))
-            .nativeElement;
-          titleElement = fixture.debugElement.query(By.css('.title'))
-            .nativeElement;
+          avatarElement = fixture.debugElement.query(
+            By.css('.avatar')
+          ).nativeElement;
+          titleElement = fixture.debugElement.query(
+            By.css('.title')
+          ).nativeElement;
           spyOn(component.clicked, 'emit');
         });
     })
@@ -129,8 +132,9 @@ describe('AvatarComponent', () => {
       component.size = AvatarSize.medium;
       fixture.detectChanges();
 
-      const subtitle = fixture.debugElement.query(By.css('.slot2-medium'))
-        .nativeElement;
+      const subtitle = fixture.debugElement.query(
+        By.css('.slot2-medium')
+      ).nativeElement;
       expect(titleElement.innerText).toContain('Title');
       expect(subtitle.innerText).toContain('Subtitle');
     });

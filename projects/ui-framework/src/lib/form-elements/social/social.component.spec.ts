@@ -1,13 +1,15 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { SocialComponent } from './social.component';
+import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import { InputModule } from '../../form-elements/input/input.module';
 import { IconsModule } from '../../icons/icons.module';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { By } from '@angular/platform-browser';
-import { Social } from './social.enum';
-import { SocialTypes } from './social.const';
-import { InputEventType } from '../form-elements.enum';
 import { URLutils } from '../../services/url/url-utils.service';
+import { InputEventType } from '../form-elements.enum';
+import { SocialComponent } from './social.component';
+import { SocialTypes } from './social.const';
+import { Social } from './social.enum';
 
 describe('SocialComponent', () => {
   let component: SocialComponent;
@@ -23,22 +25,25 @@ describe('SocialComponent', () => {
     expect(`${socialTypesRes[type].prefix}AlanTulin`).toEqual(res[type]);
   };
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [SocialComponent],
-      imports: [NoopAnimationsModule, InputModule, IconsModule],
-      providers: [URLutils],
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [SocialComponent],
+        imports: [NoopAnimationsModule, InputModule, IconsModule],
+        providers: [URLutils],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(SocialComponent);
+          component = fixture.componentInstance;
+          component.wrapEvent = true;
+          spyOn(component.changed, 'emit');
+          component.changed.subscribe(() => {});
+          component.type = Social.facebook;
+        });
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(SocialComponent);
-        component = fixture.componentInstance;
-        component.wrapEvent = true;
-        spyOn(component.changed, 'emit');
-        component.changed.subscribe(() => {});
-        component.type = Social.facebook;
-      });
-  }));
+  );
 
   afterEach(() => {
     component.changed.complete();

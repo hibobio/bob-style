@@ -1,6 +1,8 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { ListModelService } from './list-model.service';
+
 import { SelectGroupOption } from '../list.interface';
+import { ListModelService } from './list-model.service';
 
 describe('ListModelService', () => {
   let listModelService: ListModelService;
@@ -26,6 +28,7 @@ describe('ListModelService', () => {
 
     TestBed.configureTestingModule({
       providers: [ListModelService],
+      schemas: [NO_ERRORS_SCHEMA],
     });
 
     listModelService = TestBed.inject(ListModelService);

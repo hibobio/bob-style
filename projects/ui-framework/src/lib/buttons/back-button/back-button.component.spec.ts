@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { Icons, IconSize } from '../../icons/icons.enum';
@@ -14,6 +15,7 @@ describe('BackButtonComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [BackButtonComponent],
+        schemas: [NO_ERRORS_SCHEMA],
       })
         .compileComponents()
         .then(() => {
@@ -31,7 +33,9 @@ describe('BackButtonComponent', () => {
     expect(component.buttonClass).toContain(ButtonSize.small);
     expect(buttonElement.classList).toContain(ButtonSize.small);
 
-    expect(buttonElement.dataset.iconBefore).toContain(Icons.back_arrow_link.replace('b-icon-', ''));
+    expect(buttonElement.dataset.iconBefore).toContain(
+      Icons.back_arrow_link.replace('b-icon-', '')
+    );
 
     expect(buttonElement.dataset.iconBeforeSize).toContain(IconSize.medium);
   });

@@ -1,5 +1,6 @@
 import { MockComponent } from 'ng-mocks';
 
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -18,6 +19,7 @@ describe('AlertComponent', () => {
       TestBed.configureTestingModule({
         imports: [ButtonsModule, TypographyModule, BrowserAnimationsModule],
         declarations: [AlertComponent, MockComponent(IconComponent)],
+        schemas: [NO_ERRORS_SCHEMA],
       })
         .compileComponents()
         .then(() => {

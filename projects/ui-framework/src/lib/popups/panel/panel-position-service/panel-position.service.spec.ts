@@ -1,14 +1,15 @@
-import { TestBed } from '@angular/core/testing';
-import { PanelPositionService } from './panel-position.service';
 import {
   CdkOverlayOrigin,
   ConnectedOverlayPositionChange,
+  ConnectedPosition,
   Overlay,
   PositionStrategy,
   ScrollStrategy,
   ScrollStrategyOptions,
-  ConnectedPosition,
 } from '@angular/cdk/overlay';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+
 import { PanelDefaultPosVer } from '../panel.enum';
 import {
   ABOVE_CENTER,
@@ -18,8 +19,9 @@ import {
   BELOW_END,
   BELOW_START,
 } from './panel-position.const';
-import createSpyObj = jasmine.createSpyObj;
+import { PanelPositionService } from './panel-position.service';
 
+import createSpyObj = jasmine.createSpyObj;
 describe('PanelPositionService', () => {
   let panelPositionService: PanelPositionService;
   let cdkOverlayOriginMock: CdkOverlayOrigin;
@@ -44,6 +46,7 @@ describe('PanelPositionService', () => {
         Overlay,
         { provide: ScrollStrategyOptions, useValue: scrollStrategyOptions },
       ],
+      schemas: [NO_ERRORS_SCHEMA],
     });
 
     panelPositionService = TestBed.inject(PanelPositionService);
@@ -52,10 +55,11 @@ describe('PanelPositionService', () => {
   describe('getPanelPositionStrategy', () => {
     it('should return strategy where above has priority', () => {
       const position: PanelDefaultPosVer = PanelDefaultPosVer.above;
-      const strategy: PositionStrategy = panelPositionService.getPanelPositionStrategy(
-        cdkOverlayOriginMock,
-        position
-      );
+      const strategy: PositionStrategy =
+        panelPositionService.getPanelPositionStrategy(
+          cdkOverlayOriginMock,
+          position
+        );
       expect(strategy['positions']).toEqual([
         ABOVE_CENTER,
         ABOVE_START,
@@ -68,10 +72,11 @@ describe('PanelPositionService', () => {
 
     it('should return strategy where below has priority', () => {
       const position: PanelDefaultPosVer = PanelDefaultPosVer.below;
-      const strategy: PositionStrategy = panelPositionService.getPanelPositionStrategy(
-        cdkOverlayOriginMock,
-        position
-      );
+      const strategy: PositionStrategy =
+        panelPositionService.getPanelPositionStrategy(
+          cdkOverlayOriginMock,
+          position
+        );
       expect(strategy['positions']).toEqual([
         BELOW_CENTER,
         BELOW_START,
@@ -84,26 +89,27 @@ describe('PanelPositionService', () => {
 
     it('should return particular postion strategy, if ConnectedPosition[] is passed ', () => {
       const position: ConnectedPosition[] = [BELOW_START, BELOW_END];
-      const strategy: PositionStrategy = panelPositionService.getPanelPositionStrategy(
-        cdkOverlayOriginMock,
-        position
-      );
+      const strategy: PositionStrategy =
+        panelPositionService.getPanelPositionStrategy(
+          cdkOverlayOriginMock,
+          position
+        );
       expect(strategy['positions']).toEqual([BELOW_START, BELOW_END]);
     });
 
     it('should return centered strategy, if no position is passed', () => {
-      const strategy: PositionStrategy = panelPositionService.getPanelPositionStrategy(
-        cdkOverlayOriginMock
-      );
+      const strategy: PositionStrategy =
+        panelPositionService.getPanelPositionStrategy(cdkOverlayOriginMock);
       expect(strategy['positions']).toEqual([BELOW_CENTER, ABOVE_CENTER]);
     });
   });
 
   describe('getCenterPanelPositionStrategy', () => {
     it('should return strategy with center position bottom, center position top', () => {
-      const strategy: PositionStrategy = panelPositionService.getCenterPanelPositionStrategy(
-        cdkOverlayOriginMock
-      );
+      const strategy: PositionStrategy =
+        panelPositionService.getCenterPanelPositionStrategy(
+          cdkOverlayOriginMock
+        );
       expect(strategy['positions']).toEqual([BELOW_CENTER, ABOVE_CENTER]);
     });
   });
@@ -179,7 +185,8 @@ describe('PanelPositionService', () => {
 
   describe('getScrollStrategy', () => {
     it('should return reposition strategy', () => {
-      const scrollStrategy: ScrollStrategy = panelPositionService.getScrollStrategy();
+      const scrollStrategy: ScrollStrategy =
+        panelPositionService.getScrollStrategy();
       expect(scrollStrategyOptions.reposition).toHaveBeenCalledTimes(1);
       expect(scrollStrategy).toEqual(scrollStrategyMock);
     });

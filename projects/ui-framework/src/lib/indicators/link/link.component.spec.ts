@@ -1,28 +1,33 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { LinkComponent } from './link.component';
 import { By } from '@angular/platform-browser';
+
+import { LinkComponent } from './link.component';
 import { LinkColor, LinkTarget } from './link.enum';
 
 describe('LinkComponent', () => {
   let component: LinkComponent;
   let fixture: ComponentFixture<LinkComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [LinkComponent],
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [LinkComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(LinkComponent);
+          component = fixture.componentInstance;
+          component.config = {
+            url: 'https://app.hibob.com',
+            text: 'Learn more',
+            color: LinkColor.primary,
+            target: LinkTarget.blank,
+          };
+        });
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(LinkComponent);
-        component = fixture.componentInstance;
-        component.config = {
-          url: 'https://app.hibob.com',
-          text: 'Learn more',
-          color: LinkColor.primary,
-          target: LinkTarget.blank,
-        };
-      });
-  }));
+  );
 
   describe('Link', () => {
     beforeEach(() => {

@@ -1,30 +1,40 @@
-import { ComponentFixture, fakeAsync, TestBed, tick, resetFakeAsyncZone, waitForAsync } from '@angular/core/testing';
-
-import { TabsComponent } from './tabs.component';
+import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
+import {
+  ComponentFixture,
+  fakeAsync,
+  resetFakeAsyncZone,
+  TestBed,
+  tick,
+  waitForAsync,
+} from '@angular/core/testing';
 import { MatTabsModule } from '@angular/material/tabs';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TabsType } from './tabs.enum';
-import { ChangeDetectionStrategy } from '@angular/core';
-import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
+
 import { AvatarBadge } from '../../avatar/avatar/avatar.enum';
-import { Icons, IconColor } from '../../icons/icons.enum';
+import { IconColor, Icons } from '../../icons/icons.enum';
+import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
+import { TabsComponent } from './tabs.component';
+import { TabsType } from './tabs.enum';
 
 describe('TabsComponent', () => {
   let component: TabsComponent;
   let fixture: ComponentFixture<TabsComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [MatTabsModule, BrowserAnimationsModule],
-      declarations: [TabsComponent],
-      providers: [EventManagerPlugins[0]],
-    })
-      .overrideComponent(TabsComponent, {
-        set: { changeDetection: ChangeDetectionStrategy.Default },
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [MatTabsModule, BrowserAnimationsModule],
+        declarations: [TabsComponent],
+        providers: [EventManagerPlugins[0]],
+        schemas: [NO_ERRORS_SCHEMA],
       })
-      .compileComponents();
-  }));
+        .overrideComponent(TabsComponent, {
+          set: { changeDetection: ChangeDetectionStrategy.Default },
+        })
+        .compileComponents();
+    })
+  );
 
   beforeEach(() => {
     resetFakeAsyncZone();
@@ -64,8 +74,9 @@ describe('TabsComponent', () => {
       component.type = TabsType.secondary;
       fixture.detectChanges();
 
-      const tabsGroupEl = fixture.debugElement.query(By.css('.mat-tab-nav-bar'))
-        .nativeElement;
+      const tabsGroupEl = fixture.debugElement.query(
+        By.css('.mat-tab-nav-bar')
+      ).nativeElement;
       expect(tabsGroupEl.classList).not.toContain('tabs-primary');
       expect(tabsGroupEl.classList).toContain('tabs-secondary');
     });

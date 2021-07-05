@@ -1,61 +1,66 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { AutoCompletePanelComponent } from './auto-complete-panel.component';
-import { ListKeyboardService } from '../../../lists/list-service/list-keyboard.service';
-import { AutoCompleteOption } from '../auto-complete.interface';
-import { By } from '@angular/platform-browser';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
-import { FiltersModule } from '../../../services/filters/filters.module';
-import { TypographyModule } from '../../../typography/typography.module';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import { Keys } from '../../../enums';
+import { ListKeyboardService } from '../../../lists/list-service/list-keyboard.service';
+import { FiltersModule } from '../../../services/filters/filters.module';
 import { UtilsService } from '../../../services/utils/utils.service';
+import { TypographyModule } from '../../../typography/typography.module';
+import { AutoCompleteOption } from '../auto-complete.interface';
+import { AutoCompletePanelComponent } from './auto-complete-panel.component';
 
 describe('AutoCompletePanelComponent', () => {
   let component: AutoCompletePanelComponent;
   let fixture: ComponentFixture<AutoCompletePanelComponent>;
   let optionsMock: AutoCompleteOption[];
 
-  beforeEach(waitForAsync(() => {
-    optionsMock = Array.from(Array(12), (_, k) => {
-      return {
-        value: `Basic Info E${k} - option`,
-        subText: `subtext e${k}`,
-        id: k.toString(),
-      };
-    });
-
-    TestBed.configureTestingModule({
-      declarations: [AutoCompletePanelComponent],
-      providers: [ListKeyboardService, UtilsService],
-      imports: [
-        NoopAnimationsModule,
-        CommonModule,
-        ScrollingModule,
-        FiltersModule,
-        TypographyModule,
-      ],
-    })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(AutoCompletePanelComponent);
-        component = fixture.componentInstance;
-        spyOn(component.optionSelect, 'emit');
-        spyOn(component.escapeClick, 'emit');
-
-        component.optionSelect.subscribe(() => {});
-
-        component.ngOnChanges({
-          options: {
-            previousValue: undefined,
-            currentValue: optionsMock,
-            firstChange: true,
-            isFirstChange: () => true,
-          },
-        });
-        fixture.autoDetectChanges();
+  beforeEach(
+    waitForAsync(() => {
+      optionsMock = Array.from(Array(12), (_, k) => {
+        return {
+          value: `Basic Info E${k} - option`,
+          subText: `subtext e${k}`,
+          id: k.toString(),
+        };
       });
-  }));
+
+      TestBed.configureTestingModule({
+        declarations: [AutoCompletePanelComponent],
+        providers: [ListKeyboardService, UtilsService],
+        imports: [
+          NoopAnimationsModule,
+          CommonModule,
+          ScrollingModule,
+          FiltersModule,
+          TypographyModule,
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(AutoCompletePanelComponent);
+          component = fixture.componentInstance;
+          spyOn(component.optionSelect, 'emit');
+          spyOn(component.escapeClick, 'emit');
+
+          component.optionSelect.subscribe(() => {});
+
+          component.ngOnChanges({
+            options: {
+              previousValue: undefined,
+              currentValue: optionsMock,
+              firstChange: true,
+              isFirstChange: () => true,
+            },
+          });
+          fixture.autoDetectChanges();
+        });
+    })
+  );
 
   afterAll(() => {
     component.optionSelect.complete();

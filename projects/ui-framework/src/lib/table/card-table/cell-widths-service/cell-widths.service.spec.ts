@@ -1,4 +1,6 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+
 import { CellWidthsService } from './cell-widths.service';
 
 describe('CellWidthsService', () => {
@@ -29,6 +31,7 @@ describe('CellWidthsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [CellWidthsService],
+      schemas: [NO_ERRORS_SCHEMA],
     });
 
     cellWidthsService = TestBed.inject(CellWidthsService);

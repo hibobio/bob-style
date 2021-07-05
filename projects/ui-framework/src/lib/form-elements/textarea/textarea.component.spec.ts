@@ -1,14 +1,16 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { TextareaComponent } from './textarea.component';
-import { InputEventType } from '../form-elements.enum';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { InputMessageModule } from '../input-message/input-message.module';
-import { inputValue } from '../../services/utils/test-helpers';
+
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
 import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
-import { FormElementLabelModule } from '../form-element-label/form-element-label.module';
+import { inputValue } from '../../services/utils/test-helpers';
 import { HtmlParserHelpersProvideMock } from '../../tests/services.stub.spec';
+import { FormElementLabelModule } from '../form-element-label/form-element-label.module';
+import { InputEventType } from '../form-elements.enum';
+import { InputMessageModule } from '../input-message/input-message.module';
+import { TextareaComponent } from './textarea.component';
 
 describe('TextareaComponent', () => {
   let component: TextareaComponent;
@@ -29,6 +31,7 @@ describe('TextareaComponent', () => {
           HtmlParserHelpersProvideMock(),
           EventManagerPlugins[0],
         ],
+        schemas: [NO_ERRORS_SCHEMA],
       })
         .compileComponents()
         .then(() => {
@@ -49,8 +52,9 @@ describe('TextareaComponent', () => {
 
   describe('emit InputEvent', () => {
     beforeEach(() => {
-      textareaElement = fixture.debugElement.query(By.css('textarea'))
-        .nativeElement;
+      textareaElement = fixture.debugElement.query(
+        By.css('textarea')
+      ).nativeElement;
     });
 
     it('should emit InputEvent on input focus with input value', () => {

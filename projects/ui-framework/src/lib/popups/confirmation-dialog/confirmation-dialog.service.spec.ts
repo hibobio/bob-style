@@ -1,13 +1,16 @@
-import { TestBed } from '@angular/core/testing';
-import { ConfirmationDialogService } from './confirmation-dialog.service';
-import { DialogService } from '../dialog/dialog-service/dialog.service';
 import { of } from 'rxjs';
-import { ConfirmationDialogConfig } from './confirmation-dialog.interface';
-import { ConfirmationDialogComponent } from './confirmation-dialog.component';
+
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+
+import { DialogService } from '../dialog/dialog-service/dialog.service';
 import { DialogSize } from '../dialog/dialog.enum';
+import { ConfirmationDialogComponent } from './confirmation-dialog.component';
+import { ConfirmationDialogConfig } from './confirmation-dialog.interface';
+import { ConfirmationDialogService } from './confirmation-dialog.service';
+
 import createSpyObj = jasmine.createSpyObj;
 import SpyObj = jasmine.SpyObj;
-
 describe('ConfirmationDialogService', () => {
   let confimationDialogService: ConfirmationDialogService;
   let dialogServiceMock: SpyObj<DialogService>;
@@ -25,6 +28,7 @@ describe('ConfirmationDialogService', () => {
 
     TestBed.configureTestingModule({
       providers: [{ provide: DialogService, useValue: dialogServiceMock }],
+      schemas: [NO_ERRORS_SCHEMA],
     });
 
     confimationDialogService = TestBed.inject(ConfirmationDialogService);

@@ -1,15 +1,17 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MenuComponent } from './menu.component';
-import { MatMenuModule } from '@angular/material/menu';
-import { By } from '@angular/platform-browser';
-import { MenuItem } from './menu.interface';
 import { CommonModule } from '@angular/common';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import {
   arrayInsertAt,
   simpleChange,
 } from '../../services/utils/functional-utils';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MenuComponent } from './menu.component';
+import { MenuItem } from './menu.interface';
 
 describe('MenuComponent', () => {
   let component: MenuComponent;
@@ -40,34 +42,42 @@ describe('MenuComponent', () => {
     },
   ];
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [MenuComponent],
-      imports: [CommonModule, NoopAnimationsModule, MatMenuModule, MatTooltipModule],
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [MenuComponent],
+        imports: [
+          CommonModule,
+          NoopAnimationsModule,
+          MatMenuModule,
+          MatTooltipModule,
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(MenuComponent);
+          component = fixture.componentInstance;
+
+          component.ngOnChanges(
+            simpleChange({
+              menu: menuMock,
+              id: 'menu_id',
+            })
+          );
+
+          component.actionClick.subscribe(() => {});
+          component.openMenu.subscribe(() => {});
+          component.closeMenu.subscribe(() => {});
+
+          fixture.detectChanges();
+
+          spyOn(component.actionClick, 'emit');
+          spyOn(component.openMenu, 'emit');
+          spyOn(component.closeMenu, 'emit');
+        });
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(MenuComponent);
-        component = fixture.componentInstance;
-
-        component.ngOnChanges(
-          simpleChange({
-            menu: menuMock,
-            id: 'menu_id',
-          })
-        );
-
-        component.actionClick.subscribe(() => {});
-        component.openMenu.subscribe(() => {});
-        component.closeMenu.subscribe(() => {});
-
-        fixture.detectChanges();
-
-        spyOn(component.actionClick, 'emit');
-        spyOn(component.openMenu, 'emit');
-        spyOn(component.closeMenu, 'emit');
-      });
-  }));
+  );
 
   afterEach(() => {
     component.actionClick.complete();

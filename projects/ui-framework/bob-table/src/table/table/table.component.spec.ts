@@ -1,17 +1,28 @@
+import { AgGridModule } from 'ag-grid-angular';
+import { cloneDeep, keys, pick } from 'lodash';
+
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef } from '@angular/core';
-import { ComponentFixture, fakeAsync, flush, TestBed, tick, resetFakeAsyncZone, waitForAsync } from '@angular/core/testing';
+import { ChangeDetectorRef, NO_ERRORS_SCHEMA } from '@angular/core';
+import {
+  ComponentFixture,
+  fakeAsync,
+  flush,
+  resetFakeAsyncZone,
+  TestBed,
+  tick,
+  waitForAsync,
+} from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { AgGridModule } from 'ag-grid-angular';
+
 import {
   AvatarModule,
   DOMhelpers,
   fakeAsyncFlush,
   simpleChange,
 } from 'bob-style';
-import { cloneDeep, keys, pick } from 'lodash';
+
 import {
   mockTranslatePipe,
   TranslateServiceProvideMock,
@@ -29,9 +40,6 @@ import { ColumnDef } from './table.interface';
 
 import createSpyObj = jasmine.createSpyObj;
 import SpyObj = jasmine.SpyObj;
-import { RowNode } from 'ag-grid-community/dist/lib/entities/rowNode';
-import { RowDragEvent } from 'ag-grid-community';
-
 describe('TableComponent', () => {
   let component: TableComponent;
   let fixture: ComponentFixture<TableComponent>;
@@ -47,69 +55,72 @@ describe('TableComponent', () => {
     resetFakeAsyncZone();
   });
 
-  beforeEach(waitForAsync(() => {
-    columnDefsMock = cloneDeep(COLUMN_DEFS_MOCK);
-    rowDataMock = cloneDeep(ROW_DATA_MOCK);
-    previousColumnDefsMock = [
-      {
-        headerName: 'Email',
-        field: 'email',
-        resizable: true,
-        sortable: true,
-      },
-    ];
-
-    spyTableUtilsService = createSpyObj('spyTableUtilsService', [
-      'getGridColumnDef',
-      'getOrderedFields',
-    ]);
-    spyTableUtilsService.getGridColumnDef.and.returnValue(columnDefsMock);
-    spyTableUtilsService.getOrderedFields.and.returnValue(columnDefsMock);
-
-    spyCdr = createSpyObj('spyCdr', ['markForChange', 'detectChanges']);
-
-    TestBed.configureTestingModule({
-      declarations: [mockTranslatePipe],
-      imports: [
-        NoopAnimationsModule,
-        CommonModule,
-        TableModule,
-        AvatarModule,
-        AgGridModule.withComponents([AvatarCellComponent]),
-      ],
-      providers: [
-        { provide: TableUtilsService, useValue: spyTableUtilsService },
-        TranslateServiceProvideMock(),
-        DOMhelpers,
-      ],
-    })
-      .overrideModule(BrowserDynamicTestingModule, {
-        set: {
-          entryComponents: [AvatarCellComponent],
+  beforeEach(
+    waitForAsync(() => {
+      columnDefsMock = cloneDeep(COLUMN_DEFS_MOCK);
+      rowDataMock = cloneDeep(ROW_DATA_MOCK);
+      previousColumnDefsMock = [
+        {
+          headerName: 'Email',
+          field: 'email',
+          resizable: true,
+          sortable: true,
         },
+      ];
+
+      spyTableUtilsService = createSpyObj('spyTableUtilsService', [
+        'getGridColumnDef',
+        'getOrderedFields',
+      ]);
+      spyTableUtilsService.getGridColumnDef.and.returnValue(columnDefsMock);
+      spyTableUtilsService.getOrderedFields.and.returnValue(columnDefsMock);
+
+      spyCdr = createSpyObj('spyCdr', ['markForChange', 'detectChanges']);
+
+      TestBed.configureTestingModule({
+        declarations: [mockTranslatePipe],
+        imports: [
+          NoopAnimationsModule,
+          CommonModule,
+          TableModule,
+          AvatarModule,
+          AgGridModule.withComponents([AvatarCellComponent]),
+        ],
+        providers: [
+          { provide: TableUtilsService, useValue: spyTableUtilsService },
+          TranslateServiceProvideMock(),
+          DOMhelpers,
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
       })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(TableComponent);
-        component = fixture.componentInstance;
-        fixture.autoDetectChanges();
+        .overrideModule(BrowserDynamicTestingModule, {
+          set: {
+            entryComponents: [AvatarCellComponent],
+          },
+        })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(TableComponent);
+          component = fixture.componentInstance;
+          fixture.autoDetectChanges();
 
-        spyOn(component.sortChanged, 'emit');
-        spyOn(component.selectionChanged, 'emit');
-        spyOn(component.rowClicked, 'emit');
-        spyOn(component.gridInit, 'emit');
-        spyOn(component.getColumnApi(), 'autoSizeAllColumns');
+          spyOn(component.sortChanged, 'emit');
+          spyOn(component.selectionChanged, 'emit');
+          spyOn(component.rowClicked, 'emit');
+          spyOn(component.gridInit, 'emit');
+          spyOn(component.getColumnApi(), 'autoSizeAllColumns');
 
-        component.ngOnChanges(
-          simpleChange({
-            columnDefs: columnDefsMock,
-            rowData: rowDataMock,
-          })
-        );
+          component.ngOnChanges(
+            simpleChange({
+              columnDefs: columnDefsMock,
+              rowData: rowDataMock,
+            })
+          );
 
-        compEl = component['elRef'].nativeElement;
-      });
-  }));
+          compEl = component['elRef'].nativeElement;
+        });
+    })
+  );
 
   describe('OnInit', () => {
     it('should add type attribute', fakeAsync(() => {
@@ -126,8 +137,9 @@ describe('TableComponent', () => {
 
   describe('maxHeight', () => {
     beforeEach(() => {
-      agRoot = fixture.debugElement.query(By.css('ag-grid-angular'))
-        ?.nativeElement;
+      agRoot = fixture.debugElement.query(
+        By.css('ag-grid-angular')
+      )?.nativeElement;
     });
 
     it('should set the grid maxHeight to 336px by default', () => {

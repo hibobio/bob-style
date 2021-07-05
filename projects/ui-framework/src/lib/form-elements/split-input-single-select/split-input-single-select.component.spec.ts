@@ -1,20 +1,22 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { CommonModule } from '@angular/common';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { SplitInputSingleSelectComponent } from './split-input-single-select.component';
-import { SingleSelectComponent } from '../../lists/single-select/single-select.component';
-import { MockComponent } from 'ng-mocks';
-import { InputEventType } from '../form-elements.enum';
-import { InputComponent } from '../input/input.component';
-import { SelectGroupOption } from '../../lists/list.interface';
-import { InputSingleSelectValue } from './split-input-single-select.interface';
-import { By } from '@angular/platform-browser';
 import { cloneDeep } from 'lodash';
+import { MockComponent } from 'ng-mocks';
+
+import { CommonModule } from '@angular/common';
+import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import { ListChange } from '../../lists/list-change/list-change';
-import { SimpleChange } from '@angular/core';
-import { InputMessageComponent } from '../input-message/input-message.component';
-import { FormElementLabelComponent } from '../form-element-label/form-element-label.component';
+import { SelectGroupOption } from '../../lists/list.interface';
+import { SingleSelectComponent } from '../../lists/single-select/single-select.component';
 import { simpleChange } from '../../services/utils/functional-utils';
+import { FormElementLabelComponent } from '../form-element-label/form-element-label.component';
+import { InputEventType } from '../form-elements.enum';
+import { InputMessageComponent } from '../input-message/input-message.component';
+import { InputComponent } from '../input/input.component';
+import { SplitInputSingleSelectComponent } from './split-input-single-select.component';
+import { InputSingleSelectValue } from './split-input-single-select.interface';
 
 describe('SplitInputSingleSelectComponent', () => {
   let component: SplitInputSingleSelectComponent;
@@ -49,6 +51,7 @@ describe('SplitInputSingleSelectComponent', () => {
           MockComponent(FormElementLabelComponent),
         ],
         imports: [NoopAnimationsModule, CommonModule],
+        schemas: [NO_ERRORS_SCHEMA],
       })
         .compileComponents()
         .then(() => {

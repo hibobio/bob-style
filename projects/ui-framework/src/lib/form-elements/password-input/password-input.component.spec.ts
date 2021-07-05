@@ -1,16 +1,18 @@
+import { MockComponent } from 'ng-mocks';
+
+import { CommonModule } from '@angular/common';
+import { ElementRef, NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { CommonModule } from '@angular/common';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
+import { IconsModule } from '../../icons/icons.module';
+import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
+import { inputValue } from '../../services/utils/test-helpers';
+import { FormElementLabelComponent } from '../form-element-label/form-element-label.component';
+import { InputEventType } from '../form-elements.enum';
 import { InputMessageModule } from '../input-message/input-message.module';
 import { PasswordInputComponent } from './password-input.component';
-import { IconsModule } from '../../icons/icons.module';
-import { inputValue } from '../../services/utils/test-helpers';
-import { ElementRef } from '@angular/core';
-import { InputEventType } from '../form-elements.enum';
-import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
-import { FormElementLabelComponent } from '../form-element-label/form-element-label.component';
-import { MockComponent } from 'ng-mocks';
 
 describe('PasswordInputComponent', () => {
   let component: PasswordInputComponent;
@@ -19,33 +21,37 @@ describe('PasswordInputComponent', () => {
   let showButtonElement: ElementRef;
   let showButtonIconElement: ElementRef;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        PasswordInputComponent,
-        MockComponent(FormElementLabelComponent),
-      ],
-      imports: [
-        NoopAnimationsModule,
-        CommonModule,
-        InputMessageModule,
-        IconsModule,
-      ],
-      providers: [EventManagerPlugins[0]],
-    })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(PasswordInputComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-        inputElement = fixture.debugElement.query(By.css('input'))
-          .nativeElement;
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [
+          PasswordInputComponent,
+          MockComponent(FormElementLabelComponent),
+        ],
+        imports: [
+          NoopAnimationsModule,
+          CommonModule,
+          InputMessageModule,
+          IconsModule,
+        ],
+        providers: [EventManagerPlugins[0]],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(PasswordInputComponent);
+          component = fixture.componentInstance;
+          fixture.detectChanges();
+          inputElement = fixture.debugElement.query(
+            By.css('input')
+          ).nativeElement;
 
-        spyOn(component.changed, 'emit');
-        component.changed.subscribe(() => {});
-        spyOn(component, 'propagateChange');
-      });
-  }));
+          spyOn(component.changed, 'emit');
+          component.changed.subscribe(() => {});
+          spyOn(component, 'propagateChange');
+        });
+    })
+  );
 
   afterEach(() => {
     component.changed.complete();

@@ -1,5 +1,6 @@
 import { MockComponent } from 'ng-mocks';
 
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatButtonModule } from '@angular/material/button';
 
@@ -19,6 +20,7 @@ describe('SquareButtonComponent', () => {
       TestBed.configureTestingModule({
         declarations: [SquareButtonComponent, MockComponent(IconComponent)],
         imports: [MatButtonModule],
+        schemas: [NO_ERRORS_SCHEMA],
       })
         .compileComponents()
         .then(() => {

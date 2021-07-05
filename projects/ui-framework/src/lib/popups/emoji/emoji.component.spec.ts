@@ -1,12 +1,21 @@
-import { ComponentFixture, fakeAsync, TestBed, tick, resetFakeAsyncZone, waitForAsync } from '@angular/core/testing';
-
-import { EmojiComponent } from './emoji.component';
-import { By } from '@angular/platform-browser';
-import { TypographyModule } from '../../typography/typography.module';
-import { EMOJI_DATA } from './emoji-data.consts';
 import { find } from 'lodash';
-import { TruncateTooltipModule } from '../truncate-tooltip/truncate-tooltip.module';
+
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import {
+  ComponentFixture,
+  fakeAsync,
+  resetFakeAsyncZone,
+  TestBed,
+  tick,
+  waitForAsync,
+} from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+
+import { TypographyModule } from '../../typography/typography.module';
 import { PanelModule } from '../panel/panel.module';
+import { TruncateTooltipModule } from '../truncate-tooltip/truncate-tooltip.module';
+import { EMOJI_DATA } from './emoji-data.consts';
+import { EmojiComponent } from './emoji.component';
 
 describe('EmojiComponent', () => {
   let component: EmojiComponent;
@@ -17,19 +26,22 @@ describe('EmojiComponent', () => {
     resetFakeAsyncZone();
   });
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [TypographyModule, TruncateTooltipModule, PanelModule],
-      declarations: [EmojiComponent],
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        imports: [TypographyModule, TruncateTooltipModule, PanelModule],
+        declarations: [EmojiComponent],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(EmojiComponent);
+          component = fixture.componentInstance;
+          emojiSelect = spyOn(component.emojiSelect, 'emit');
+          fixture.detectChanges();
+        });
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(EmojiComponent);
-        component = fixture.componentInstance;
-        emojiSelect = spyOn(component.emojiSelect, 'emit');
-        fixture.detectChanges();
-      });
-  }));
+  );
 
   it('should create', () => {
     expect(component).toBeTruthy();

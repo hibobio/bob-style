@@ -1,71 +1,80 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MockComponent } from 'ng-mocks';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { DialogComponent } from '../../dialog/dialog.component';
-import { By } from '@angular/platform-browser';
-import { ConfirmationDialogConfig } from '../confirmation-dialog.interface';
-import SpyObj = jasmine.SpyObj;
-import createSpyObj = jasmine.createSpyObj;
+
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {
-  MatDialogRef,
   MAT_DIALOG_DATA,
   MatDialogModule,
+  MatDialogRef,
 } from '@angular/material/dialog';
-import { DeleteConfirmationDialogComponent } from './delete-confirmation-dialog.component';
-import { ButtonType } from '../../.././buttons/buttons.enum';
-import { mockTranslatePipe, TranslateServiceProvideMock } from '../../../tests/services.stub.spec';
-import { InputComponent } from '../../../form-elements/input/input.component';
+import { By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
+import { ButtonType } from '../../../buttons/buttons.enum';
+import { InputComponent } from '../../../form-elements/input/input.component';
+import {
+  mockTranslatePipe,
+  TranslateServiceProvideMock,
+} from '../../../tests/services.stub.spec';
+import { DialogComponent } from '../../dialog/dialog.component';
+import { ConfirmationDialogConfig } from '../confirmation-dialog.interface';
+import { DeleteConfirmationDialogComponent } from './delete-confirmation-dialog.component';
+
+import SpyObj = jasmine.SpyObj;
+import createSpyObj = jasmine.createSpyObj;
 describe('DeleteConfirmationDialogComponent', () => {
   let component: DeleteConfirmationDialogComponent;
   let fixture: ComponentFixture<DeleteConfirmationDialogComponent>;
   let spyMatDialogRef: SpyObj<MatDialogRef<any>>;
   let config: ConfirmationDialogConfig;
 
-  beforeEach(waitForAsync(() => {
-    spyMatDialogRef = createSpyObj('spyMatDialogRef', ['close']);
+  beforeEach(
+    waitForAsync(() => {
+      spyMatDialogRef = createSpyObj('spyMatDialogRef', ['close']);
 
-    config = {
-      title: 'Confirm dialog title',
-      class: 'confirm-test',
-      buttonConfig: {
-        ok: {
-          label: 'translated common.delete',
-          action: () => true,
+      config = {
+        title: 'Confirm dialog title',
+        class: 'confirm-test',
+        buttonConfig: {
+          ok: {
+            label: 'translated common.delete',
+            action: () => true,
+          },
+          cancel: {
+            label: 'translated common.cancel',
+          },
         },
-        cancel: {
-          label: 'translated common.cancel'
-        }
-      },
-      confirmationData: {
-        confirmationText: 'test',
-        label: 'delete confirmation test',
-        errorMessage: 'error message'
-      },
-      message: 'Confirm dialog message',
-    };
+        confirmationData: {
+          confirmationText: 'test',
+          label: 'delete confirmation test',
+          errorMessage: 'error message',
+        },
+        message: 'Confirm dialog message',
+      };
 
-    TestBed.configureTestingModule({
-      declarations: [
-        DeleteConfirmationDialogComponent,
-        MockComponent(DialogComponent),
-        MockComponent(InputComponent),
-        mockTranslatePipe
-      ],
-      imports: [NoopAnimationsModule, MatDialogModule],
-      providers: [
-        { provide: MatDialogRef, useValue: spyMatDialogRef },
-        { provide: MAT_DIALOG_DATA, useValue: config },
-        TranslateServiceProvideMock()
-      ],
+      TestBed.configureTestingModule({
+        declarations: [
+          DeleteConfirmationDialogComponent,
+          MockComponent(DialogComponent),
+          MockComponent(InputComponent),
+          mockTranslatePipe,
+        ],
+        imports: [NoopAnimationsModule, MatDialogModule],
+        providers: [
+          { provide: MatDialogRef, useValue: spyMatDialogRef },
+          { provide: MAT_DIALOG_DATA, useValue: config },
+          TranslateServiceProvideMock(),
+        ],
+        schemas: [NO_ERRORS_SCHEMA],
+      })
+        .compileComponents()
+        .then(() => {
+          fixture = TestBed.createComponent(DeleteConfirmationDialogComponent);
+          component = fixture.componentInstance;
+          fixture.detectChanges();
+        });
     })
-      .compileComponents()
-      .then(() => {
-        fixture = TestBed.createComponent(DeleteConfirmationDialogComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-      });
-  }));
+  );
 
   describe('config', () => {
     it('should set dialog title', () => {
@@ -78,13 +87,13 @@ describe('DeleteConfirmationDialogComponent', () => {
       const dialog = fixture.debugElement.query(By.css('b-dialog'));
       const bConfig = {
         cancel: {
-          label: 'translated common.cancel'
+          label: 'translated common.cancel',
         },
         ok: Object.assign({}, config.buttonConfig.ok, {
           disabled: true,
           type: ButtonType.negative,
-          action: jasmine.any(Function)
-        })
+          action: jasmine.any(Function),
+        }),
       };
       expect(dialog.componentInstance.dialogButtons).toEqual(bConfig);
     });
@@ -94,7 +103,7 @@ describe('DeleteConfirmationDialogComponent', () => {
         'Confirm dialog message'
       );
     });
-    it ('should show confirmation text input with label', () => {
+    it('should show confirmation text input with label', () => {
       const input = fixture.debugElement.query(By.css('b-input'));
       expect(input.context.label).toEqual('delete confirmation test');
     });
@@ -102,9 +111,9 @@ describe('DeleteConfirmationDialogComponent', () => {
       const input = fixture.debugElement.query(By.css('b-input'));
       input.context.value = 'asd';
       const event = {
-        value: 'asd'
+        value: 'asd',
       };
-      component.valid$.subscribe(valid => {
+      component.valid$.subscribe((valid) => {
         expect(valid).toBeFalse();
         done();
       });
@@ -115,9 +124,9 @@ describe('DeleteConfirmationDialogComponent', () => {
       const input = fixture.debugElement.query(By.css('b-input'));
       input.context.value = 'test';
       const event = {
-        value: 'test'
+        value: 'test',
       };
-      component.valid$.subscribe(valid => {
+      component.valid$.subscribe((valid) => {
         expect(valid).toBeTrue();
         done();
       });

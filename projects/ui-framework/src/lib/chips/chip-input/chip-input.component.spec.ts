@@ -1,27 +1,28 @@
-import { ChangeDetectionStrategy } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { ChipInputComponent } from './chip-input.component';
+import { MockComponent } from 'ng-mocks';
 
-import {
-  elementsFromFixture,
-  elementFromFixture,
-  inputValue,
-} from '../../services/utils/test-helpers';
+import { ChangeDetectionStrategy, NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {
   MatAutocompleteModule,
   MatAutocompleteSelectedEvent,
 } from '@angular/material/autocomplete';
-import { InputMessageModule } from '../../form-elements/input-message/input-message.module';
-import { ChipComponent } from '../chip/chip.component';
-import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
-import { MockComponent } from 'ng-mocks';
-import { TextButtonComponent } from '../../buttons/text-button/text-button.component';
-import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
-import { ChipListComponent } from '../chip-list/chip-list.component';
-import { IconComponent } from '../../icons/icon.component';
-import { InputEventType } from '../../form-elements/form-elements.enum';
-import { FormElementLabelComponent } from '../../form-elements/form-element-label/form-element-label.component';
 import { By } from '@angular/platform-browser';
+
+import { AvatarImageComponent } from '../../avatar/avatar/avatar-image/avatar-image.component';
+import { TextButtonComponent } from '../../buttons/text-button/text-button.component';
+import { FormElementLabelComponent } from '../../form-elements/form-element-label/form-element-label.component';
+import { InputEventType } from '../../form-elements/form-elements.enum';
+import { InputMessageModule } from '../../form-elements/input-message/input-message.module';
+import { IconComponent } from '../../icons/icon.component';
+import { EventManagerPlugins } from '../../services/utils/eventManager.plugins';
+import {
+  elementFromFixture,
+  elementsFromFixture,
+  inputValue,
+} from '../../services/utils/test-helpers';
+import { ChipListComponent } from '../chip-list/chip-list.component';
+import { ChipComponent } from '../chip/chip.component';
+import { ChipInputComponent } from './chip-input.component';
 
 describe('ChipInputComponent', () => {
   let component: ChipInputComponent;
@@ -48,6 +49,7 @@ describe('ChipInputComponent', () => {
         ],
         imports: [MatAutocompleteModule, InputMessageModule],
         providers: [EventManagerPlugins[0]],
+        schemas: [NO_ERRORS_SCHEMA],
       })
         .overrideComponent(ChipInputComponent, {
           set: { changeDetection: ChangeDetectionStrategy.Default },
@@ -88,8 +90,9 @@ describe('ChipInputComponent', () => {
 
   describe('Component', () => {
     it('should create component with right label, placeholder etc', () => {
-      const labelComp = fixture.debugElement.query(By.css('.bfe-label'))
-        .componentInstance;
+      const labelComp = fixture.debugElement.query(
+        By.css('.bfe-label')
+      ).componentInstance;
       expect(chipsComponents().length).toEqual(0);
       expect(component.value.length).toEqual(0);
       expect(labelComp.label).toEqual('label');
@@ -201,9 +204,9 @@ describe('ChipInputComponent', () => {
       expect(chipsComponents().length).toEqual(2);
       expect(component.value.length).toEqual(2);
 
-      (chipsElements()[0].querySelector(
-        '.remove-button'
-      ) as HTMLElement).click();
+      (
+        chipsElements()[0].querySelector('.remove-button') as HTMLElement
+      ).click();
       fixture.detectChanges();
 
       expect(chipsComponents().length).toEqual(1);

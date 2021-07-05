@@ -1,16 +1,18 @@
+import { of } from 'rxjs';
+
+import { Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { DialogService } from './dialog.service';
 import { MatDialog } from '@angular/material/dialog';
-import { Component } from '@angular/core';
+
+import { DOMhelpers } from '../../../services/html/dom-helpers.service';
+import { omit } from '../../../services/utils/functional-utils';
+import { DIALOG_CONFIG_DEF } from '../dialog.const';
 import { DialogSize } from '../dialog.enum';
 import { DialogConfig } from '../dialog.interface';
+import { DialogService } from './dialog.service';
+
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
-import { of } from 'rxjs';
-import { DOMhelpers } from '../../../services/html/dom-helpers.service';
-import { DIALOG_CONFIG_DEF } from '../dialog.const';
-import { omit } from '../../../services/utils/functional-utils';
-
 @Component({
   selector: 'b-comp-mock',
   template: '<div>mock dialog component</div>',
@@ -60,6 +62,7 @@ describe('DialogService', () => {
         DialogService,
         { provide: MatDialog, useValue: spyMatDialog },
       ],
+      schemas: [NO_ERRORS_SCHEMA],
     });
 
     dialogService = TestBed.inject(DialogService);

@@ -1,23 +1,28 @@
 import { CommonModule } from '@angular/common';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { ChainSelectComponent } from './chain-select.component';
-import { IconsModule } from '../../icons/icons.module';
 import { By } from '@angular/platform-browser';
+
 import { ButtonsModule } from '../../buttons/buttons.module';
-import { ChainSelectDirective } from './chain-select.directive';
+import { IconsModule } from '../../icons/icons.module';
 import { simpleChange } from '../../services/utils/functional-utils';
+import { ChainSelectComponent } from './chain-select.component';
+import { ChainSelectDirective } from './chain-select.directive';
 import { ChainSelectEvent } from './chain-select.interface';
 
 describe('EmployeeChainSelectComponent', () => {
   let component: ChainSelectComponent;
   let fixture: ComponentFixture<ChainSelectComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ChainSelectComponent, ChainSelectDirective],
-      imports: [CommonModule, IconsModule, ButtonsModule],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [ChainSelectComponent, ChainSelectDirective],
+        imports: [CommonModule, IconsModule, ButtonsModule],
+        schemas: [NO_ERRORS_SCHEMA],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ChainSelectComponent);

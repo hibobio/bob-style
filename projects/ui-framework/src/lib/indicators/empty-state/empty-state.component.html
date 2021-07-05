@@ -1,6 +1,7 @@
 <img *ngIf="config?.imgSrc"
      class="empty-state-image blk mrg-b-16"
      [src]="config.imgSrc"
+     [style.width]="config.imgWidth ? config.imgWidth+'px' : null"
      border="0"
      alt="">
 
