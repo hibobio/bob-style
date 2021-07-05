@@ -1,4 +1,7 @@
-import { IconColor, Icons, ListChange, SelectGroupOption } from 'bob-style';
+import { IconColor } from '../../icons/icons.enum';
+import { Icons } from '../../icons/icons.enum';
+import { ListChange } from '../../lists/list-change/list-change';
+import { SelectGroupOption } from '../../lists/list.interface';
 import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
 import { TopActionBarTypesEnum } from './top-action-bar.consts';
 

@@ -1,5 +1,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { IconComponent, SingleSelectPanelComponent } from 'bob-style';
+import { IconComponent } from '../../icons/icon.component';
+import { SingleSelectPanelComponent } from '../../lists/single-select-panel/single-select-panel.component';
 import { MockComponent } from 'ng-mocks';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
