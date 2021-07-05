@@ -1,3 +1,4 @@
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { IconComponent, SingleSelectPanelComponent } from 'bob-style';
 import { MockComponent } from 'ng-mocks';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
@@ -15,7 +16,8 @@ describe('TopActionBarComponent', () => {
         TopActionBarComponent,
         MockComponent(SingleSelectPanelComponent),
         MockComponent(IconComponent),
-      ]
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
   }));
