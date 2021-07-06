@@ -6,7 +6,7 @@
 }
 
 .item-container {
-  &[data-scroll=true] {
+  &[data-vertical-scroll=true] {
     max-height: var(--container-max-height);
   }
   
