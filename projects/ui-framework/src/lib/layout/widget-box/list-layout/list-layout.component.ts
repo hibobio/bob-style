@@ -54,7 +54,7 @@ export class ListLayoutComponent extends ContentTemplateConsumer {
     this.showAll = showAll;
   }
 
-  hasScroll(): boolean {
+  hasVerticalScroll(): boolean {
     return !!(
       this.showAll && this.items?.length > this.numberOfItemsBeforeScroll
     );
