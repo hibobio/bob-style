@@ -130,7 +130,7 @@ export class DialogComponent implements OnInit, OnDestroy {
       this.dialogRef['closeOnNavigation'] !== false &&
       this.windowRef.nativeWindow.history.state?.modal
     ) {
-      this.windowRef.nativeWindow.historyistory.back();
+      this.windowRef.nativeWindow.history.back();
     }
     this.dialogRef.close();
   }
