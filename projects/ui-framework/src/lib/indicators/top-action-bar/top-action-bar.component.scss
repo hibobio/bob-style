@@ -45,5 +45,6 @@
 }
 
 :host-context(.app-page-content-wrapper) {
-  margin: -40x -40px 40px -40px;
+  margin: -40px -40px 40px -40px;
+  width: calc(100% + 80px);
 }
