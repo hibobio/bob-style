@@ -97,7 +97,7 @@ export class HorizontalLayoutComponent
       });
   }
 
-  hasScroll(): boolean {
+  hasVerticalScroll(): boolean {
     return !!(this.showAll && this.items?.length > this.itemsPerRow * 2);
   }
 
