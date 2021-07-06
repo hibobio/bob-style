@@ -100,8 +100,6 @@ export abstract class BaseInputElement extends BaseFormElement {
 
   public onInputKeydown(event: Event | KeyboardEvent): void;
   public onInputKeydown(event: DOMKeyboardEvent): void {
-    console.log('key 5', event.key);
-
     if (
       (isKey(event.key, Keys.enter) || isKey(event.key, Keys.escape)) &&
       this.changed.observers.length > 0
@@ -116,7 +114,6 @@ export abstract class BaseInputElement extends BaseFormElement {
           },
         });
       });
-      console.log('key 6', event.key);
     }
   }
 }

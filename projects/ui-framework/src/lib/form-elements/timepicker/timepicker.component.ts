@@ -293,10 +293,12 @@ export class TimePickerComponent extends BaseFormElement {
         }
       }
       if (this.minutesFocused) {
-        this.inputMinutes.nativeElement.value = this.valueMinutes = this.parseValue(
-          this.inputMinutes.nativeElement.value,
-          { ...this.parseConfig.minutes, mod: 5, round: 5 }
-        );
+        this.inputMinutes.nativeElement.value = this.valueMinutes =
+          this.parseValue(this.inputMinutes.nativeElement.value, {
+            ...this.parseConfig.minutes,
+            mod: 5,
+            round: 5,
+          });
         this.inputMinutes.nativeElement.setSelectionRange(2, 2);
         this.zone.run(() => {
           this.transmit(InputEventType.onChange);
@@ -316,10 +318,12 @@ export class TimePickerComponent extends BaseFormElement {
         });
       }
       if (this.minutesFocused) {
-        this.inputMinutes.nativeElement.value = this.valueMinutes = this.parseValue(
-          this.inputMinutes.nativeElement.value,
-          { ...this.parseConfig.minutes, mod: -5, round: 5 }
-        );
+        this.inputMinutes.nativeElement.value = this.valueMinutes =
+          this.parseValue(this.inputMinutes.nativeElement.value, {
+            ...this.parseConfig.minutes,
+            mod: -5,
+            round: 5,
+          });
         if (this.inputMinutes.nativeElement.value === '00') {
           this.switchInputs();
         } else {
@@ -457,17 +461,21 @@ export class TimePickerComponent extends BaseFormElement {
     if (!time) {
       return { time, amPm };
     }
+
     const split = time
       .split(/\D/)
       .filter(Boolean)
-      .map((v) => parseInt(v, 10));
+      .map((v) => parseInt(v, 10))
+      .concat([0, 0])
+      .slice(0, 2);
 
     // 24h > 12h
     if (
       sourceFormat === TimeFormat.Time24 &&
       targetFormat === TimeFormat.Time12
     ) {
-      amPm = split[0] === 0 || split[0] > 12 ? 'pm' : 'am';
+      split[0] > 23 && (split[0] = 0);
+      amPm = split[0] >= 12 ? 'pm' : 'am';
       split[0] = ((split[0] + 11) % 12) + 1;
     }
 
@@ -476,7 +484,7 @@ export class TimePickerComponent extends BaseFormElement {
       sourceFormat === TimeFormat.Time12 &&
       targetFormat === TimeFormat.Time24
     ) {
-      // split[0] === 12 && (split[0] = 0);
+      split[0] === 12 && (split[0] = 0);
       amPm === 'pm' && (split[0] = split[0] + 12);
     }
 
