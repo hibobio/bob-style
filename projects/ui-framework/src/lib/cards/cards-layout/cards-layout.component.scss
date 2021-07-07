@@ -5,6 +5,7 @@
   display: block;
   width: 100%;
   flex-grow: 1;
+  --viewport-width: 100vw;
 }
 
 .cards-list {
@@ -83,7 +84,8 @@ $hover-shadow-offset: 12px;
     $snap-align: start,
     $breakout: var(--padding-x-mob, #{$padding-x-mob}),
     $item-gap: var(--item-grid-gap, #{times8(2)}),
-    $ghosts: true
+    $ghosts: true,
+    $viewportWidth: --viewport-width
   ) {
     &:before {
       bottom: $hover-shadow-offset;
@@ -93,7 +95,7 @@ $hover-shadow-offset: 12px;
   &::ng-deep .single-card {
     width: calc(
       (
-          100vw - var(--padding-x-mob, #{$padding-x-mob}) * 2 -
+          var(--viewport-width, 100vw) - var(--padding-x-mob, #{$padding-x-mob}) * 2 -
             var(--item-grid-gap, #{times8(2)}) * #{var(--item-count, 1) - 1}
         ) / var(--item-count, 1)
     );
@@ -109,13 +111,13 @@ $hover-shadow-offset: 12px;
     @include mobile($min: 380px) {
       &[data-type='large'],
       &[data-type='regular'] {
-        padding-right: calc((100vw - #{$card-max-width-large}) / 2);
-        padding-left: calc((100vw - #{$card-max-width-large}) / 2);
+        padding-right: calc((var(--viewport-width, 100vw) - #{$card-max-width-large}) / 2);
+        padding-left: calc((var(--viewport-width, 100vw) - #{$card-max-width-large}) / 2);
 
         &:before,
         &:after {
           width: calc(
-            (100vw - #{$card-max-width-large}) / 2 -
+            (var(--viewport-width, 100vw) - #{$card-max-width-large}) / 2 -
               var(--item-grid-gap, #{times8(2)})
           );
         }
