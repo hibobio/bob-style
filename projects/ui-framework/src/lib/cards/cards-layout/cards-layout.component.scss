@@ -65,67 +65,67 @@
 }
 
 // Swiper
-//
-//$hover-shadow-offset: 12px;
-//
-//[data-swiper-mode='true'] {
-//  flex-wrap: nowrap;
-//  padding-bottom: $hover-shadow-offset;
-//  margin-bottom: (-1 * $hover-shadow-offset);
-//
-//  &[data-align-center='false'],
-//  &[data-few-cards='false'] {
-//    justify-content: flex-start;
-//  }
-//
-//  @include scroll-snap-x(
-//    $item: '&::ng-deep .single-card',
-//    $snap-align: start,
-//    $breakout: var(--padding-x-mob, #{$padding-x-mob}),
-//    $item-gap: var(--item-grid-gap, #{times8(2)}),
-//    $ghosts: true
-//  ) {
-//    &:before {
-//      bottom: $hover-shadow-offset;
-//    }
-//  }
-//
-//  &::ng-deep .single-card {
-//    width: calc(
-//      (
-//          100vw - var(--padding-x-mob, #{$padding-x-mob}) * 2 -
-//            var(--item-grid-gap, #{times8(2)}) * #{var(--item-count, 1) - 1}
-//        ) / var(--item-count, 1)
-//    );
-//  }
-//
-//  &[data-cards-in-row='1'] {
-//    padding-right: var(--padding-x-mob, #{$padding-x-mob});
-//
-//    &::ng-deep .single-card {
-//      scroll-snap-align: center;
-//    }
-//
-//    @include mobile($min: 380px) {
-//      &[data-type='large'],
-//      &[data-type='regular'] {
-//        padding-right: calc((100vw - #{$card-max-width-large}) / 2);
-//        padding-left: calc((100vw - #{$card-max-width-large}) / 2);
-//
-//        &:before,
-//        &:after {
-//          width: calc(
-//            (100vw - #{$card-max-width-large}) / 2 -
-//              var(--item-grid-gap, #{times8(2)})
-//          );
-//        }
-//
-//        @include scroll-snap-x-ghosts($opacity: 0.75);
-//
-//        &::ng-deep .single-card {
-//          max-width: $card-max-width-large;
-//        }
-//      }
-//    }
-//  }
-//}
+
+$hover-shadow-offset: 12px;
+
+[data-swiper-mode='true'] {
+  flex-wrap: nowrap;
+  padding-bottom: $hover-shadow-offset;
+  margin-bottom: (-1 * $hover-shadow-offset);
+
+  &[data-align-center='false'],
+  &[data-few-cards='false'] {
+    justify-content: flex-start;
+  }
+
+  @include scroll-snap-x(
+    $item: '&::ng-deep .single-card',
+    $snap-align: start,
+    $breakout: var(--padding-x-mob, #{$padding-x-mob}),
+    $item-gap: var(--item-grid-gap, #{times8(2)}),
+    $ghosts: true
+  ) {
+    &:before {
+      bottom: $hover-shadow-offset;
+    }
+  }
+
+  &::ng-deep .single-card {
+    width: calc(
+      (
+          100vw - var(--padding-x-mob, #{$padding-x-mob}) * 2 -
+            var(--item-grid-gap, #{times8(2)}) * var(--item-count, 1) - 1
+        ) / var(--item-count, 1)
+    );
+  }
+
+  &[data-cards-in-row='1'] {
+    padding-right: var(--padding-x-mob, #{$padding-x-mob});
+
+    &::ng-deep .single-card {
+      scroll-snap-align: center;
+    }
+
+    @include mobile($min: 380px) {
+      &[data-type='large'],
+      &[data-type='regular'] {
+        padding-right: calc((100vw - #{$card-max-width-large}) / 2);
+        padding-left: calc((100vw - #{$card-max-width-large}) / 2);
+
+        &:before,
+        &:after {
+          width: calc(
+            (100vw - #{$card-max-width-large}) / 2 -
+              var(--item-grid-gap, #{times8(2)})
+          );
+        }
+
+        @include scroll-snap-x-ghosts($opacity: 0.75);
+
+        &::ng-deep .single-card {
+          max-width: $card-max-width-large;
+        }
+      }
+    }
+  }
+}
