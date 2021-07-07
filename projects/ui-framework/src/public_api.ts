@@ -290,6 +290,9 @@ export {
 export {
   ChainSelectModule
 } from './lib/lists/chain-select/chain-select.module';
+export {
+  ChainSelectDirective
+} from './lib/lists/chain-select/chain-select.directive';
 
 
 /*
@@ -602,9 +605,13 @@ export * from './lib/table/card-table/card-table.interface';
 
 // Widget Box
 export { WidgetBoxModule } from './lib/layout/widget-box/widget-box.module';
+export { WidgetBoxComponent } from './lib/layout/widget-box/widget-box.component';
+export { ListLayoutComponent } from './lib/layout/widget-box/list-layout/list-layout.component';
+export { HorizontalLayoutComponent } from './lib/layout/widget-box/horizontal-layout/horizontal-layout.component';
 
 // Info Graphic Text
 export { InfoGraphicTextModule } from './lib/layout/info-graphic-text/info-graphic-text.module';
+export { InfoGraphicTextComponent } from './lib/layout/info-graphic-text/info-graphic-text.component';
 
 /*
  * Misc
@@ -620,6 +627,7 @@ export * from './lib/icons/common-icons.const';
 export * from './lib/icons/icon.static';
 // Filter Module
 export { FiltersModule } from './lib/services/filters/filters.module';
+export * from './lib/services/filters/capitalize.pipe';
 export { LinkifyPipe } from './lib/services/filters/linkify.pipe';
 export { HighlightPipe } from './lib/services/filters/highlight.pipe';
 export { FormatNumberPipe } from './lib/services/filters/formatNumber.pipe';
