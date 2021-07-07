@@ -27,7 +27,7 @@
                    (clicked)="comment.actionConfig.action($event)">
   </b-square-button>
 
-  <div class="comment-content flx-grow pad-x-16 pad-t-8 pad-b-12">
+  <div [attr.data-comment-id]="comment?.id" class="comment-content flx-grow pad-x-16 pad-t-8 pad-b-12">
 
     <div class="comment-header mrg-b-2">
       <strong *ngIf="comment?.name"
