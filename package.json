@@ -67,6 +67,8 @@
     "@storybook/addon-notes": "^5.3.21",
     "@storybook/addons": "^6.3.2",
     "@storybook/angular": "^6.3.2",
+    "@storybook/builder-webpack5": "^6.3.2",
+    "@storybook/manager-webpack5": "^6.3.2",
     "@storybook/storybook-deployer": "^2.8.10",
     "@types/estree": "0.0.47",
     "@types/jasmine": "^3.7.8",
