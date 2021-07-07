@@ -1,70 +1,70 @@
-//@import '../../style/common-imports';
-//@import '../card/card.mixin';
-//
-//:host {
-//  display: block;
-//  width: 100%;
-//  flex-grow: 1;
-//}
-//
-//.cards-list {
-//  display: grid;
-//  grid-gap: var(--item-grid-gap, #{times8(2)});
-//  grid-template-columns: repeat(
-//    auto-fill,
-//    minmax(var(--item-width, #{$card-width-regular}), 1fr)
-//  );
-//  position: relative;
-//}
-//
-//[data-align-center='false'][data-swiper-mode='false']::ng-deep {
-//  .single-card {
-//    max-width: none;
-//  }
-//}
-//
-//// Flex layout
-//
-//[data-align-center='true'],
-//[data-swiper-mode='true'] {
-//  grid-template-columns: none;
-//  grid-gap: 0;
-//  display: flex;
-//  flex-direction: row;
-//
-//  &::ng-deep .single-card:only-child {
-//    max-width: none;
-//  }
-//
-//  &[data-cards-in-row='1']::ng-deep .single-card {
-//    width: 100%;
-//  }
-//}
-//
-//// Align center
-//
-//[data-align-center='true'] {
-//  justify-content: center;
-//
-//  &[data-swiper-mode='false'] {
-//    flex-wrap: wrap;
-//    margin: calc(var(--item-grid-gap, #{times8(2)}) / -2);
-//    width: calc(100% + var(--item-grid-gap, #{times8(2)}));
-//
-//    &::ng-deep .single-card {
-//      margin: calc(var(--item-grid-gap, #{times8(2)}) / 2);
-//    }
-//  }
-//
-//  &::ng-deep .single-card {
-//    width: calc(
-//      (100% - var(--item-grid-gap, #{times8(2)}) * var(--item-count, 1)) /
-//        var(--item-count, 1)
-//    );
-//  }
-//}
-//
-//// Swiper
+@import '../../style/common-imports';
+@import '../card/card.mixin';
+
+:host {
+  display: block;
+  width: 100%;
+  flex-grow: 1;
+}
+
+.cards-list {
+  display: grid;
+  grid-gap: var(--item-grid-gap, #{times8(2)});
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(var(--item-width, #{$card-width-regular}), 1fr)
+  );
+  position: relative;
+}
+
+[data-align-center='false'][data-swiper-mode='false']::ng-deep {
+  .single-card {
+    max-width: none;
+  }
+}
+
+// Flex layout
+
+[data-align-center='true'],
+[data-swiper-mode='true'] {
+  grid-template-columns: none;
+  grid-gap: 0;
+  display: flex;
+  flex-direction: row;
+
+  &::ng-deep .single-card:only-child {
+    max-width: none;
+  }
+
+  &[data-cards-in-row='1']::ng-deep .single-card {
+    width: 100%;
+  }
+}
+
+// Align center
+
+[data-align-center='true'] {
+  justify-content: center;
+
+  &[data-swiper-mode='false'] {
+    flex-wrap: wrap;
+    margin: calc(var(--item-grid-gap, #{times8(2)}) / -2);
+    width: calc(100% + var(--item-grid-gap, #{times8(2)}));
+
+    &::ng-deep .single-card {
+      margin: calc(var(--item-grid-gap, #{times8(2)}) / 2);
+    }
+  }
+
+  &::ng-deep .single-card {
+    width: calc(
+      (100% - var(--item-grid-gap, #{times8(2)}) * var(--item-count, 1)) /
+        var(--item-count, 1)
+    );
+  }
+}
+
+// Swiper
 //
 //$hover-shadow-offset: 12px;
 //

@@ -16,7 +16,7 @@ module.exports = {
     // 'PRODUCTION' is used when building the static version of storybook.
 
     config.devServer = { stats: 'errors-only' };
-    // config.plugins.push(new DisableWarnings());
+    config.plugins.push(new DisableWarnings());
 
     // Return the altered config
     return config;
