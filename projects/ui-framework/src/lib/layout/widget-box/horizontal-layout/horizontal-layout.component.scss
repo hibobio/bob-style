@@ -29,6 +29,7 @@ b-cards {
     max-height: calc(var(--item-height) * 2 + var(--item-grid-gap));
   }
   --viewport-width: 100%;
+  --padding-x-mob: 16px;
   ::ng-deep [data-swiper-mode='true'] {
     margin: 0 0 4px;
     &::before {
