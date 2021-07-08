@@ -85,7 +85,7 @@ $hover-shadow-offset: 12px;
     $breakout: var(--padding-x-mob, #{$padding-x-mob}),
     $item-gap: var(--item-grid-gap, #{times8(2)}),
     $ghosts: true,
-    $viewportWidth: --viewport-width
+    $viewportWidth: var(--viewport-width, 100vw)
   ) {
     &:before {
       bottom: $hover-shadow-offset;

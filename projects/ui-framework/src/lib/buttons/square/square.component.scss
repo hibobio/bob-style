@@ -28,7 +28,21 @@ button {
 }
 
 :host[data-round='true']::ng-deep {
+  border-radius: 50%;
   button {
     border-radius: 50%;
+  }
+}
+
+:host[class*='clr-'] {
+  button,
+  button[disabled] {
+    color: inherit !important;
+  }
+}
+:host[class*='bg-'] {
+  button,
+  button[disabled] {
+    background-color: inherit !important;
   }
 }

@@ -1,17 +1,17 @@
 <b-round-button *ngIf="showPrev"
-  class="scroll-button prev"
+  class="scroll-button prev clr-grey-600 brd"
   [size]="buttonSize"
   [icon]="icons.chevron_left"
   (clicked)="onScrollClick(direction.prev)">
 </b-round-button>
 <b-round-button *ngIf="showNext"
-  class="scroll-button next"
+  class="scroll-button next clr-grey-600 brd"
   [size]="buttonSize"
   [icon]="icons.chevron_right"
   (clicked)="onScrollClick(direction.next)">
 </b-round-button>
 
-<b-cards
+<b-cards scroll-visible-alt
   [type]="cardType" 
   [swiper]="swiper"
   [attr.data-vertical-scroll]="hasVerticalScroll()"
