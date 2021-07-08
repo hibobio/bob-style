@@ -1,5 +1,5 @@
-@mixin scroll-snap-x-breakout($breakout: null, $item-gap: null) {
-  width: 100vw;
+@mixin scroll-snap-x-breakout($breakout: null, $item-gap: null, $viewportWidth: 100vw) {
+  width: $viewportWidth;
 
   @if (type-of($breakout) == number) or (contains($breakout, 'var(--')) {
     padding-left: $breakout;
@@ -67,7 +67,8 @@
   $breakout: null,
   $item-gap: null,
   $ghosts: false,
-  $ghost-color: $grey-300
+  $ghost-color: $grey-300,
+  $viewportWidth: 100vw
 ) {
   overflow-x: auto;
   overflow-y: visible;
@@ -77,7 +78,7 @@
   will-change: scroll-position;
   transform: translateZ(0);
   @include hide-scrollbar;
-  @include scroll-snap-x-breakout($breakout, $item-gap);
+  @include scroll-snap-x-breakout($breakout, $item-gap, $viewportWidth);
 
   @if ($snap-align != center) and $breakout {
     scroll-padding: $breakout;
