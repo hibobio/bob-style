@@ -1,9 +1,8 @@
 function DisableWarnings(options) {}
 
 DisableWarnings.prototype.apply = function (compiler) {
-  compiler.plugin('emit', function (compilation, cb) {
+  compiler.hooks.emit.tap("warnings", function (compilation) {
     compilation.warnings = [];
-    cb();
   });
 };
 

@@ -7,6 +7,9 @@ module.exports = {
     '@storybook/addon-notes',
     '@storybook/addon-essentials',
   ],
+  core: {
+    builder: 'webpack5',
+  },
   webpackFinal: async (config, { configType }) => {
     // `configType` has a value of 'DEVELOPMENT' or 'PRODUCTION'
     // You can change the configuration based on that.
@@ -19,3 +22,4 @@ module.exports = {
     return config;
   },
 };
+
