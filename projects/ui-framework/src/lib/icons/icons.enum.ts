@@ -9,6 +9,7 @@ export enum IconSize {
   small = 'small', // 16
   medium = 'medium', // 20
   large = 'large', // 24
+  vLarge = 'v-large', // 32
   xLarge = 'x-large', // 46
   xxLarge = 'xx-large', // 60
   custom = 'custom',
