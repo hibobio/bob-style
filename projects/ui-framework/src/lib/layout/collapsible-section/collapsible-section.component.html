@@ -11,9 +11,12 @@
           [attr.data-collapsible]="!!collapsible"
           [attr.aria-controls]="(collapsible && panelID) || null"
           [attr.aria-expanded]="!collapsible ? null : !!expanded"
-          [attr.data-icon-before]="!collapsible ? null : expanded ? 'arrow-drop-down' : 'arrow-drop-right'"
-          (click)="togglePanel()">
-
+          >
+    <b-icon *ngIf="collapsible"
+            class="toggle-icon"
+            [icon]="expanded ? icons.arrow_drop_down : icons.arrow_drop_right"
+            [size]="32"
+            (click)="togglePanel()"></b-icon>
     <div *ngIf="title"
          class="bcp-title-wrap {{panelID}}"
          [ngClass]="{'flx-col': options.titlesAsColumn}">
@@ -28,7 +31,6 @@
     <div *ngIf="hasHeaderContent"
          #headerContent
          class="bcp-header-content"
-         [attr.data-clickable]="(collapsible && options.headerTranscludeStopPropagation !== true) || null"
          (click.outside-zone)="options.headerTranscludeStopPropagation && $event.stopPropagation()">
       <ng-content select="[header]"></ng-content>
     </div>

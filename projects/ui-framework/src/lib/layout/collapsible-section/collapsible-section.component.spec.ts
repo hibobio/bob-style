@@ -45,6 +45,7 @@ describe('CollapsibleSectionComponent', () => {
   let collapsibleComponent: CollapsibleSectionComponent;
   let collapsibleSection: HTMLElement;
   let collapsibleHeader: HTMLElement;
+  let toggleIcon: HTMLElement;
   let collapsiblePanel: HTMLElement;
 
   beforeEach(() => {
@@ -148,6 +149,7 @@ describe('CollapsibleSectionComponent', () => {
       collapsibleComponent.closed.subscribe(() => {});
       collapsibleHost = elementFromFixture(fixture, 'b-collapsible-section');
       fixture.detectChanges();
+      toggleIcon = elementFromFixture(fixture, '.toggle-icon');
     });
 
     afterEach(() => {
@@ -184,8 +186,8 @@ describe('CollapsibleSectionComponent', () => {
       expect(collapsibleComponent.opened.emit).toHaveBeenCalled();
     });
 
-    it('should expand panel on header click and emit Opened event', fakeAsync(() => {
-      emitNativeEvent(collapsibleHeader, 'click');
+    it('should expand panel on toggleIcon click and emit Opened event', fakeAsync(() => {
+      emitNativeEvent(toggleIcon, 'click');
       tick(500);
       fixture.detectChanges();
       collapsiblePanel = elementFromFixture(fixture, '.bcp-panel');
@@ -198,13 +200,13 @@ describe('CollapsibleSectionComponent', () => {
       flush();
     }));
 
-    it('should collapse panel on header click and emit Closed event', () => {
-      emitNativeEvent(collapsibleHeader, 'click');
+    it('should collapse panel on toggleIcon click and emit Closed event', () => {
+      emitNativeEvent(toggleIcon, 'click');
       fixture.detectChanges();
 
       expect(collapsibleSection.getAttribute('data-expanded')).toEqual('true');
 
-      emitNativeEvent(collapsibleHeader, 'click');
+      emitNativeEvent(toggleIcon, 'click');
       fixture.detectChanges();
 
       expect(collapsibleSection.getAttribute('data-expanded')).toEqual('false');
@@ -221,7 +223,7 @@ describe('CollapsibleSectionComponent', () => {
     });
 
     it('should put CSS variable with content height on component host element', () => {
-      emitNativeEvent(collapsibleHeader, 'click');
+      emitNativeEvent(toggleIcon, 'click');
       fixture.detectChanges();
 
       expect(collapsibleHost.getAttribute('style')).toContain(
@@ -247,6 +249,8 @@ describe('CollapsibleSectionComponent', () => {
 
     beforeEach(() => {
       collapsibleComponent.collapsible = true;
+      fixture.detectChanges();
+      toggleIcon = elementFromFixture(fixture, '.toggle-icon');
       collapsibleComponent.ngOnChanges(
         simpleChange({
           options: {
@@ -268,7 +272,7 @@ describe('CollapsibleSectionComponent', () => {
       collapsiblePanel = elementFromFixture(fixture, '.bcp-panel');
       expect(collapsiblePanel).toBeFalsy();
 
-      emitNativeEvent(collapsibleHeader, 'click');
+      emitNativeEvent(toggleIcon, 'click');
       collapsiblePanel = elementFromFixture(fixture, '.bcp-panel');
       expect(collapsiblePanel).toBeTruthy();
     });

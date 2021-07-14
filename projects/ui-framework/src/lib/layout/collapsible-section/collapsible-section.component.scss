@@ -66,12 +66,9 @@ $bcp-header-min-height: 70px;
 .bcp-header {
   min-height: $bcp-header-min-height;
   padding: times8(1) times8(4);
-
-  @include icon-size(32px);
-  &:before {
-    width: map-get($icon-sizes, large);
-    display: flex;
-    justify-content: center;
+  .toggle-icon {
+    margin-left: -6px;
+    margin-right: 16px;
   }
   @include desktop {
     border-radius: $border-radius;
@@ -157,10 +154,6 @@ $bcp-header-min-height: 70px;
   color: $grey-600;
 }
 
-[data-clickable='true'] {
-  cursor: pointer;
-}
-
 // footer
 
 .bcp-panel-footer {
@@ -204,7 +197,9 @@ $bcp-header-min-height: 70px;
 // Collapse/expand animation
 
 .bcp-header[data-collapsible='true'] {
-  cursor: pointer;
+  .toggle-icon {
+    cursor: pointer;
+  }
   transition-duration: $bcp-transition-length;
 }
 

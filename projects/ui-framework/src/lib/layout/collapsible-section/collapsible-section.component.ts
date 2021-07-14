@@ -17,6 +17,7 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
+import { Icons } from '../../icons/icons.enum';
 
 import { ColorService } from '../../services/color-service/color.service';
 import { DOMhelpers } from '../../services/html/dom-helpers.service';
@@ -62,6 +63,7 @@ export class CollapsibleSectionComponent
 
   private contentHeight = 0;
   private resizeSubscription: Subscription;
+  icons = Icons;
 
   @Input() panelID: string | number = simpleUID('bcp');
   @Input() collapsible = false;
